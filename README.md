@@ -1,6 +1,6 @@
 # holsum
 
-Demonstration code for the paper *Approximating infinite sums of holonomic functions in subquadratic time*
+Demonstration code for the paper *Computing infinite sums of holonomic functions in subquadratic time*
 (repository: <https://github.com/fredrik-johansson/holonomic-sums>).
 
 The program computes constants of the form
