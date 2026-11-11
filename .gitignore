@@ -1,0 +1,34 @@
+# build products
+holsum
+*.o
+*.so
+*.a
+__pycache__/
+*.pyc
+
+# compiled helper programs of the paper
+paper/tools/kcf
+paper/tools/kbound
+
+# LaTeX build artifacts (the PDF is kept)
+*.aux
+*.log
+*.out
+*.toc
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.nav
+*.snm
+*.vrb
+*.lof
+*.lot
+
+# editors
+*~
+.*.swp
+.DS_Store

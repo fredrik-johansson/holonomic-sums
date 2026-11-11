@@ -1,6 +1,7 @@
 # holsum
 
-Demonstration code for the paper *Approximating infinite sums of holonomic functions in subquadratic time*.
+Demonstration code for the paper *Approximating infinite sums of holonomic functions in subquadratic time*
+(repository: <https://github.com/fredrik-johansson/holonomic-sums>).
 
 The program computes constants of the form
 
@@ -64,10 +65,19 @@ precisions.
 The code needs [FLINT](https://flintlib.org) 3 (it was developed against 3.7.0-dev) and a C compiler.
 
 ```sh
-make FLINT_PREFIX=/path/to/flint/installation     # default /usr/local
+git clone https://github.com/fredrik-johansson/holonomic-sums
+cd holonomic-sums
+make FLINT_DIR=/path/to/flint                  # a FLINT source tree built in place
+make FLINT_PREFIX=/path/to/flint/installation  # or an installed FLINT (default /usr/local)
 ```
 
-If FLINT is installed in a standard location, `make` is enough. The build produces the single binary `holsum`.
+With `FLINT_DIR`, the library is taken from the top directory of the FLINT tree and the headers from its
+`build/include`; the path to the library is recorded in the binary, so no `LD_LIBRARY_PATH` is needed. If FLINT is
+installed in a standard location, `make` is enough. Additional paths (for example for GMP and MPFR) can be given with
+`CPPFLAGS=-I...` and `LDFLAGS=-L...`. The build produces the single binary `holsum`.
+
+The paper is in `paper/` (`zetaseries.tex`; the figure data `khcf_gm.dat` and the scripts behind the continued
+fraction computations are in the same directory).
 
 ## Running
 
