@@ -49,8 +49,8 @@
 
 \begin{abstract}
 For a holonomic function $F$ that is regular at infinity we study the Dirichlet series
-$\zeta_F(s) = \sum_{k=1}^{\infty} F(k)\,k^{-s}$. This class contains the Riemann zeta function, Dirichlet
-$L$-functions, the Dirichlet series attached to rational functions, and generating functions for many
+$\zeta_F(s) = \sum_{k=1}^{\infty} F(k)\,k^{-s}$ and its twists by periodic weights. This class contains the Riemann zeta function, Dirichlet $L$-functions, the Dirichlet series attached to
+rational functions, and generating functions for many
 classical constants: Khinchin's constant is $\exp(-Z'(0))$ where $Z(s) = \sum_{k=1}^{\infty} p_k k^{-s}$ is the Mellin
 transform of the Gauss--Kuzmin distribution, and the H\"older means of the partial quotients are the values
 $Z(-p)^{1/p}$. We give an exact approximate functional equation for $\zeta_F$, obtained by generalizing
@@ -94,7 +94,9 @@ More generally, for a sequence $F(k)$ that agrees for large $k$ with a holonomic
 \begin{equation}\label{eq:zetaF}
   \zeta_F(s) = \sum_{k=1}^{\infty} F(k)\,k^{-s}.
 \end{equation}
-For $F = 1$ this is the Riemann zeta function; periodic $F$ give Dirichlet $L$-functions; rational $F$ give the
+For $F = 1$ this is the Riemann zeta function, and its twists
+$L_F(s,\chi) = \sum_{k=1}^{\infty}\chi(k)F(k)k^{-s}$ by a periodic weight $\chi$ (which is not itself regular at infinity, so it is
+kept separate from $F$; Section~\ref{sec:twists}) include the Dirichlet $L$-functions; rational $F$ give the
 Dirichlet series attached to rational functions studied since Mellin and Mahler \cite{Mah28,CN81,Sar84,Pet98,Ess97}.
 A sum $S = \sum_{k=1}^{\infty} F(k)$ is the value $\zeta_F(0)$, a sum $\sum_{k=1}^{\infty} (\log k)^j F(k)$ is
 $(-1)^j\zeta_F^{(j)}(0)$, a divergent sum $\sum_{k=1}^{\infty} k^m F(k)$ has the zeta-regularized value $\zeta_F(-m)$, and
@@ -266,9 +268,39 @@ on we assume, unless stated otherwise, that
 \end{equation}
 and we let $n_0 = \min\{n : a_n \ne 0\}$ (we exclude $f = 0$).
 
+\subsection{Twists, dilations and shifts}\label{sec:twists}
+A nonconstant periodic function is not regular at infinity (it has an irregular singularity there), which is why
+periodic weights are kept as a separate factor $\chi$. Three operations relate the functions $L_F(s,\chi)$.
+
+\emph{Dilations.} For an integer $m \ge 1$ let $F_m(k) = F(mk)$, again regular. Then
+\[
+  \sum_{k=1,\ m\mid k}^{\infty}\chi(k)F(k)k^{-s} = m^{-s}L_{F_m}(s,\chi_m), \qquad \chi_m(k) = \chi(mk),
+\]
+an identity of functions of $s$.
+
+\emph{Twists.} Every function $\chi$ of period $q$ is a combination of the functions $k \mapsto [d \mid k]\,\psi(k/d)$
+with $d \mid q$ and $\psi$ a Dirichlet character modulo $q/d$ (group the $k$ by $\gcd(k,q) = d$ and expand $\chi(dj)$,
+as a function on $(\ZZ/(q/d))^\times$, in characters). Hence
+\[
+  L_F(s,\chi) = \sum_{d\mid q}\sum_{\psi \bmod q/d}c_{d,\psi}\,d^{-s}L_{F_d}(s,\psi),
+\]
+again as functions of $s$: periodic weights reduce to dilations and twists by Dirichlet characters, but the
+characters cannot be removed.
+
+\emph{Shifts.} Summing over residue classes removes the weight altogether: for $1 \le a \le q$,
+\[
+  \sum_{k=1,\ k\equiv a \bmod q}^{\infty}F(k)k^{-s} = q^{-s}\sum_{j=0}^{\infty}F(qj+a)\Bigl(j + \frac aq\Bigr)^{-s},
+\]
+and $F(qx+a)$ is regular at infinity; but now $s$ enters the summand through $(j+a/q)^{-s} = j^{-s}(1+\frac{a}{qj})^{-s}$,
+as in the Hurwitz zeta function. So at a \emph{fixed} point $s_0$ the left-hand side is, up to the term $j = 0$, a value
+$\zeta_{F'}(s_0)$ with $F'(j) = q^{-s_0}F(qj+a)(1+\frac a{qj})^{-s_0}$, which suffices for computing it, but as a function of $s$ it is
+a diagonal of a two-variable family (Example~(4) below), not a function $\zeta_{F'}$. In the companion paper \cite{Joh26}, which only considers $s = 0$, periodic weights could therefore be removed; here we keep them, and
+Theorem~\ref{thm:split} handles them directly (Remark~\ref{rem:twist}).
+
 \subsection{Examples}
 \begin{enumerate}
-\item $F = 1$ gives $\zeta(s)$, $F = \chi$ periodic gives $L(s,\chi)$, and $F(k) = k^{-a}$ gives $\zeta(s+a)$.
+\item $F = 1$ gives $\zeta(s)$, $L_1(s,\chi) = L(s,\chi)$ for a Dirichlet character $\chi$, and $F(k) = k^{-a}$ gives
+$\zeta(s+a)$.
 \item $F$ rational gives the Dirichlet series attached to rational functions; for instance
 $\sum_{k=2}^{\infty}k^{-s}/(k^2-1)$ and $\sum_{k=1}^{\infty}k^{-s}/(k(k+1))$, whose derivatives at $0$ are the
 constants $\mathcal A$ and $\mathcal C$ of Table~\ref{tab:constants}.
@@ -1313,10 +1345,9 @@ five-dimensional dual state.
 A sum $\sum_{k=1}^{\infty}F(k) = \zeta_F(0)$ can be rewritten without changing its value (up to explicit constants) by three
 kinds of operations, which generate an equivalence relation on summands:
 \begin{enumerate}
-\item \emph{Dilations and twists}: $\sum_{k=1}^{\infty}F(mk)(mk)^{-s} = \sum_{k=1,\,m\mid k}^{\infty}F(k)k^{-s}$, and a periodic weight is a
-combination of such restrictions. These identities hold for all $s$, so they relate whole functions:
-$L_F(s,\chi)$ for periodic $\chi$ is a combination of the $m^{-s}\zeta_{F(m\,\cdot)}(s)$ and twists by characters.
-The first step of the proof of Lemma~\ref{lem:dilog} is of this kind.
+\item \emph{Dilations and twists} (Section~\ref{sec:twists}). These hold for all $s$, so they relate whole
+functions. The first step of the proof of Lemma~\ref{lem:dilog} is of this kind:
+$\sum_{k=2}^{\infty}(-1)^kG(k) = -\sum_{k=2}^{\infty}G(k) + 2\sum_{k=1}^{\infty}G(2k)$. Shifts to residue classes also preserve the value at a fixed $s$.
 \item \emph{Telescoping}: $F(k)$ and $F(k) + H(k+1) - H(k)$ have the same sum (up to $H(k_0)$ and the limit at
 infinity) for any $H$ regular at infinity. This holds only at $s = 0$, since $k^{-s}$ does not commute with the shift.
 Summation by parts, which turns \eqref{eq:K1} into \eqref{eq:K2}, is of this kind.
