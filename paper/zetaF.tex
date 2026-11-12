@@ -854,14 +854,39 @@ By Proposition~\ref{prop:cont},
   \zeta_F(s;k_0) = \sum_{n=0}^{\infty}a_n\zeta(s+n,k_0),
 \]
 with terms of size $(R/k_0)^n$, so $p$ bits need about $p/\log_2(k_0/R)$ Hurwitz zeta values. Increasing $k_0$ accelerates the convergence at the price of more
-explicit terms $F(k)k^{-s}$, $k < k_0$; this is the classical acceleration of zeta series \cite{FV96}. For integer $s$
-the values are zeta values at integers minus finite sums: the even ones follow from Bernoulli numbers, all of which
-up to a given index $N$ can be computed in $\widetilde O(N^2)$ bit operations \cite{Har10}, and the odd ones have to be
-computed one at a time, for instance by Borwein's algorithm \cite{Bor00} or Euler products. Since the $\Theta(p)$
-values to $p$ bits already have total size $\Theta(p^2)$, the method costs $p^{2+o(1)}$ at best; for non-integer
-algebraic $s$ each Hurwitz value costs $p^{3/2+o(1)}$ \cite{Joh21}, for a total of $p^{5/2+o(1)}$. The expansion
-gives the meromorphic continuation, and it is the natural reference method for checking other algorithms at
-moderate precision.
+explicit terms $F(k)k^{-s}$, $k < k_0$; this is the classical acceleration of zeta series \cite{FV96}.
+
+The $N = \Theta(p)$ values needed can be computed together in $\widetilde O(p^2)$ bit operations, for every $s$. For
+integer $s$ they are $\zeta(2), \dots, \zeta(N)$ minus finite power sums, and
+\[
+  \log\Gamma(1+x) = -\gamma x + \sum_{n=2}^{\infty}\frac{(-1)^n\zeta(n)}{n}x^n,
+\]
+so it suffices to compute $\Gamma(1+x)$ in $\RR[[x]]/(x^N)$ to $p$ bits and take the logarithm of the power series.
+With $L \approx p\log 2$ and $K \approx eL$,
+\[
+  \Gamma(1+x) = L^{1+x}e^{-L}\sum_{k=0}^{K-1}\frac{L^k}{(1+x)(2+x)\cdots(k+1+x)} + O(2^{-p}),
+\]
+truncating the lower incomplete gamma series of $\Gamma(1+x) = \gamma(1+x,L) + \Gamma(1+x,L)$, and the sum is evaluated by
+binary splitting with polynomials in $x$ truncated to degree $N$; the numbers at the top of the product tree have
+$\widetilde O(Np)$ bits, so the cost is $\widetilde O(Np)$. (Equivalently one can apply Euler--Maclaurin summation to
+$\log\Gamma(1+x)$ or $\psi(1+x)$ over $\RR[[x]]$, forming $\prod_{k<L}(k+x)$ or $\sum_{k<L}1/(k+x)$ by a product tree.) In
+particular all $\zeta(n)$, $n \le N$, even and odd, cost $\widetilde O(N^2)$ at precision $N$, which is quasi-optimal;
+the classical alternatives (Bernoulli numbers for the even values \cite{Har10}, Borwein's algorithm \cite{Bor00} or
+Euler products for each odd value) are not. For non-integer $s$, Euler--Maclaurin summation applied to the generating
+function
+\[
+  \sum_{n=0}^{\infty}\zeta(s+n,k_0)\,y^n = \sum_{k=k_0}^{\infty}\frac{k^{-s}}{1-y/k}
+\]
+does the same: with a cutoff $M = \Theta(p)$, the direct terms $k < M$ are rational functions of $y$, combined by a
+product tree; the integral is $\sum_ny^nM^{1-s-n}/(s+n-1)$; and the Bernoulli corrections for all $n$ at once,
+\[
+  \frac{M^{1-s-n}}{\Gamma(s+n)}\sum_{j=1}^{J}\frac{B_{2j}}{(2j)!\,M^{2j}}\,\Gamma(s+n+2j-1),
+\]
+form a single convolution with the sequence $\Gamma(s+m)$. This needs only $p$-bit approximations of $s$.
+
+So the zeta-value expansion costs $\widetilde O(p^2)$ bit operations at any $s$, which is optimal for the method since
+the $\Theta(p)$ values to $p$ bits have total size $\Theta(p^2)$. It also gives the meromorphic continuation, and it is
+the natural reference method for checking other algorithms.
 
 The zeta-value expansion and Theorem~\ref{thm:split} are closely related. Apply Theorem~\ref{thm:split} with
 $f(x) = x^n$, i.e.\ Riemann's splitting of the tail $\zeta(s+n,k_0)$, with the same $u_0$ for every $n$, and sum over
@@ -932,7 +957,7 @@ refining Proposition~\ref{prop:hl}, and a smoothed version of Theorem~\ref{thm:s
 method & $p$ bits, algebraic $s$ & continuation \\
 \midrule
 direct summation & $2^{\Theta(p)}$ & no \\
-zeta-value expansion & $p^{2+o(1)}$ ($s\in\ZZ$), $p^{5/2+o(1)}$ & yes \\
+zeta-value expansion & $p^{2+o(1)}$ & yes \\
 Euler--Maclaurin & $p^{2+o(1)}$ & in half-planes \\
 alternating series acceleration & $p^{2+o(1)}$ (twisted series only) & no \\
 theta splitting (Theorem~\ref{thm:split}) & $p^{3/2+o(1)}$ & yes \\
