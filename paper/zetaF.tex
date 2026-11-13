@@ -150,7 +150,11 @@ was only previously known for the Euler--Stieltjes constants.
 
 \subsection{Results}
 Let $F$ be analytic at infinity, $F(k) = f(1/k)$ for $k \ge k_0$, where
-$f(x) = \sum_{n=0}^{\infty} a_nx^n$ has radius of convergence $\rho > 1/k_0$.
+$f(x) = \sum_{n=0}^{\infty} a_nx^n$ has radius of convergence $\rho > 1/k_0$. Theorems~A and~B need nothing more:
+no differential equation is assumed. Holonomy enters in Theorem~C, where $F$ is regular at infinity
+(Definition~\ref{def:regular}), and then may also contain powers $x^{-\sigma}$ and logarithms, which reduce to the
+analytic case at the price of shifts and derivatives in $s$. Section~\ref{sec:scope} says which statements hold in
+which generality.
 
 \begin{theoremA}[exact approximate functional equation; Theorem~\ref{thm:split}]
 For every $u_0 > 0$ and every $s \in \CC$ except the poles,
@@ -159,7 +163,8 @@ For every $u_0 > 0$ and every $s \in \CC$ except the poles,
   + \sqrt\pi\sum_{m=1}^{\infty}\mathcal{D}_s(\pi^2m^2) + M(s),
 \]
 where $\mathcal{L}_s(K) = \int_{u_0}^\infty e^{-Ku}h_s(u)\dd u$ and
-$\mathcal{D}_s(c) = \int_0^{u_0}u^{-1/2}e^{-c/u}h_s(u)\dd u$ are entire in $s$ and holonomic in $K$ and $c$,
+$\mathcal{D}_s(c) = \int_0^{u_0}u^{-1/2}e^{-c/u}h_s(u)\dd u$ are entire in $s$ (and holonomic in $K$ and $c$ when
+$F$ is moreover regular at infinity),
 $h_s(u) = \sum_{n=0}^{\infty} a_n u^{(s+n)/2-1}/\Gamma(\frac{s+n}{2})$ is a Borel-type transform of $f$, and $M$ is an
 explicit series of elementary functions and incomplete gamma functions carrying all the poles.
 \end{theoremA}
@@ -176,7 +181,7 @@ Let $n_0$ be the least $n$ with $a_n \ne 0$.
 \item $\zeta_F$ is meromorphic in $\CC$ with at most simple poles at $s = 1-n$, of residue $a_n$, and
 $\zeta_F(s) - \int_{k_0}^\infty F(x)x^{-s}\dd x$ is entire.
 \item $\zeta_F$ satisfies no linear difference or differential equation in $s$ with polynomial coefficients
-(unless $F$ has finite support).
+(unless $F$ has finite support; this holds for every Dirichlet series).
 \item The growth exponent of $\zeta_F$ on vertical lines is $\mu_F(\sigma) = \mu(\sigma+n_0)$, where $\mu$ is that
 of $\zeta$. In particular the Lindel\"of hypothesis is equivalent to $\zeta_F(\frac12 - n_0 + it) \ll t^\varepsilon$.
 \item For every $\varepsilon > 0$, $\zeta_F$ has $(T/2\pi)\log(T/2\pi e k_1) + O(\log T)$ zeros with
@@ -185,6 +190,12 @@ $\operatorname{Re}s \le -n_0-\varepsilon$ and large imaginary part in any fixed 
 with $F(k) \ne 0$.
 \end{enumerate}
 \end{theoremB}
+
+Parts (1)--(3) are routine consequences of the classical expansion
+$\zeta_F(s) = \sum_{k<k_0}F(k)k^{-s} + \sum_{n=0}^{\infty}a_n\zeta(s+n,k_0)$ in Hurwitz zeta values. For regular $F$ with
+powers $x^{-\sigma}$ and logarithms, (1) holds with poles of higher order at the points $s = 1-\sigma-n$, and (2) holds
+unchanged; for
+(3) and (4) the leading term $a_{n_0}k^{-n_0}$ has to be replaced, and we do not pursue this.
 
 Numerically, the zeros of Khinchin's $Z$ accompany the zeros of $\zeta(s+2)$, displaced to the right by an amount
 that decreases slowly with the height (Section~\ref{sec:zeros}); we conjecture that almost all of them lie
@@ -197,7 +208,8 @@ arbitrarily close to the line $\operatorname{Re}s = \frac12 - n_0$, as Levinson 
 in which the dual coefficients are the values of $F$ at the stationary points (Proposition~\ref{prop:hl}).
 
 \begin{theoremC}[Theorem~\ref{thm:complexity}]
-If $F$ is regular at infinity and defined over $\Qbar$, then for every algebraic $s_0$ and fixed $j$ the
+If $F$ is regular at infinity (not necessarily analytic) and defined over $\Qbar$, then for every algebraic $s_0$
+and fixed $j$ the
 $j$-th Taylor (or Laurent) coefficient of $\zeta_F$ at $s_0$ can be computed to $p$ bits in
 $O(p^{1/2}\Mul(p)\log^2 p)$ bit operations.
 \end{theoremC}
@@ -232,11 +244,12 @@ Theorem~C generalizes.
 Crandall \cite{Cra12} developed the splitting systematically for polylogarithms, Lerch transcendents and
 related functions. Zeros of Dirichlet series without Euler product, such as the Davenport--Heilbronn examples
 \cite{DH36}, and value distribution in general, are surveyed in \cite{Ste07}. To our knowledge the class of
-holonomic $F$ has not been studied as such; what holonomy adds is that every piece of the splitting is again
-holonomic, which is what makes the fast evaluation possible.
+holonomic $F$ has not been studied as such. The analytic properties need only $F$ analytic at infinity. What holonomy
+adds is that every piece of the splitting is again holonomic, which is what makes the fast evaluation possible.
 
 \subsection{Outline}
-Section~\ref{sec:defs} defines the regular class and $\zeta_F$, and lists examples. Section~\ref{sec:properties}
+Section~\ref{sec:defs} defines the classes of $F$ (analytic and regular at infinity) and $\zeta_F$, says which
+results need which hypothesis (Section~\ref{sec:scope}), and lists examples. Section~\ref{sec:properties}
 proves the elementary properties: continuation and principal parts, the Mellin part, values at
 non-positive integers, growth and mean values, and the absence of linear difference and differential
 equations. Section~\ref{sec:splitting} proves Theorem~A. Section~\ref{sec:larget} is about large $|\operatorname{Im}s|$:
@@ -262,12 +275,24 @@ with a finite set $\Sigma$ of exponents, pairwise incongruent modulo $\ZZ$, and 
 convergent for $|t| < 1/R$.
 
 \begin{definition}\label{def:regular}
-A function $F$ on $(R,\infty)$ is \emph{regular at infinity} if it is annihilated by an operator $L$ as above.
-It is \emph{analytic at infinity} if moreover $F(x) = f(1/x)$ with $f$ analytic at $0$. It is \emph{defined over
-$\Qbar$} if $L$ can be chosen with $p_i \in \Qbar[x]$ and the coefficients of the power series $f_{\sigma,j}$ in
-\eqref{eq:frob} are algebraic numbers. A sequence $(F(k))_{k\ge1}$ is \emph{regular} if it agrees for $k \ge k_0$
-with a function regular at infinity, for some integer $k_0 > R$.
+Let $F$ be a function on $(R,\infty)$.
+\begin{enumerate}
+\item $F$ is \emph{analytic at infinity} if $F(x) = f(1/x)$ with $f$ analytic for $|t| < 1/R$. No differential
+equation is assumed.
+\item $F$ is \emph{regular at infinity} if it is annihilated by an operator $L$ as above; then $F$ has the form
+\eqref{eq:frob}.
+\item $F$ is \emph{defined over $\Qbar$} if $L$ can be chosen with $p_i \in \Qbar[x]$ and the coefficients of the
+power series $f_{\sigma,j}$ in \eqref{eq:frob} are algebraic numbers.
+\end{enumerate}
+A sequence $(F(k))_{k\ge1}$ is \emph{analytic}, respectively \emph{regular}, if it agrees for $k \ge k_0$ with a
+function analytic, respectively regular, at infinity, for some integer $k_0 > R$.
 \end{definition}
+
+A function that is both regular and analytic at infinity is $F(x) = f(1/x)$ with $f$ analytic at $0$ and annihilated
+by an operator with an ordinary or regular singular point at $0$. Holonomy of $f$ alone does not suffice for this:
+the Stieltjes transform $f(t) = \int_1^\infty(e^{1/v}-1)\,v^{-1}(v-t)^{-1}\dd v$ is holonomic and analytic at
+$t = 0$, but its jump across $(1,\infty)$ is $2\pi i(e^{1/t}-1)/t$, which every operator annihilating $f$ also
+annihilates, so every such operator has an irregular singularity at $t = 0$, and $F(x) = f(1/x)$ is not regular at infinity.
 
 Regularity at infinity is preserved by sums, products, $F(x) \mapsto F(qx+a)$, multiplication by $x^{-\sigma}$ and
 by $(\log x)^j$, differentiation and integration. It holds for all G-functions of $1/x$ (algebraic functions,
@@ -276,7 +301,7 @@ $e^{c/x^2}$, whose irregular singularity is at $x = 0$ and is never reached. Wha
 behaviour at infinity, such as $z^k$ with $|z| \ne 1$ or $e^{ik^2}$.
 
 \begin{definition}
-For a regular sequence $F$, let
+For a sequence $F$ that is analytic or regular, let
 \[
   \zeta_F(s) = \sum_{k=1}^{\infty}F(k)\,k^{-s}, \qquad
   \zeta_F(s;k_0) = \sum_{k=k_0}^{\infty}F(k)\,k^{-s},
@@ -290,7 +315,8 @@ the tail $\zeta_F(s;k_0)$. (The notation $\zeta_F(s;k_0)$ shifts the index, not 
 zeta function.)
 
 \begin{lemma}\label{lem:reduction}
-If $F$ is given for $x \ge k_0$ by \eqref{eq:frob}, and $F_{\sigma,j}(x) = f_{\sigma,j}(1/x)$, then
+If $F$ is given for $x \ge k_0$ by \eqref{eq:frob} (with any power series $f_{\sigma,j}$ convergent for
+$|t| < 1/R$), and $F_{\sigma,j}(x) = f_{\sigma,j}(1/x)$, then
 \[
   \zeta_F(s;k_0) = \sum_{\sigma\in\Sigma}\sum_{j=0}^{J}(-\partial_s)^j\,\zeta_{F_{\sigma,j}}(s+\sigma;k_0).
 \]
@@ -301,19 +327,43 @@ Termwise, since $x^{-\sigma}(\log x)^jx^{-s} = (-\partial_s)^jx^{-s-\sigma}$, fo
 continuation.
 \end{proof}
 
-So everything reduces to $F$ analytic at infinity, at the price of shifts and derivatives in $s$, and from now
-on we assume, unless stated otherwise, that
+\subsection{What depends on what}\label{sec:scope}
+The basic hypothesis is that $F$ is analytic at infinity:
 \begin{equation}\label{eq:f}
   F(k) = f(1/k) \quad (k \ge k_0), \qquad f(x) = \sum_{n=0}^{\infty}a_nx^n, \qquad |a_n| \le C R^n,
   \quad R < k_0,
 \end{equation}
-and we let $n_0 = \min\{n : a_n \ne 0\}$ (we exclude $f = 0$).
+and we let $n_0 = \min\{n : a_n \ne 0\}$ (we exclude $f = 0$). The results fall into four groups.
+\begin{enumerate}
+\item \emph{No hypothesis.} The absence of linear difference and differential equations in $s$
+(Proposition~\ref{prop:nonholonomic}) holds for every Dirichlet series with infinitely many nonzero coefficients.
+\item \emph{Analyticity \eqref{eq:f} only.} The zeta-value expansion, meromorphic continuation and principal parts
+(Proposition~\ref{prop:cont}), the Mellin part (first half of Proposition~\ref{prop:mellin}), the values at
+non-positive integers, growth and mean values (Section~\ref{sec:properties}), the splitting itself
+(Theorem~\ref{thm:split}, with Remarks~\ref{rem:poisson} and~\ref{rem:twist}), and everything in
+Section~\ref{sec:larget}. Most of these are routine consequences of the zeta-value expansion, and
+Proposition~\ref{prop:cont} is classical \cite{FV96,Zag06}; we give the short proofs to fix the constants.
+\item \emph{Holonomy.} The recurrence of the Mellin part (Proposition~\ref{prop:mellin}) and the cost bounds for the
+classical methods in Section~\ref{sec:complexity} need only that $F$ is holonomic, so that the $a_n$ and the Taylor
+coefficients of $F$ are P-recursive. The statement that both sides of the splitting are holonomic
+(Lemma~\ref{lem:kernelhol}, Proposition~\ref{prop:dual}), and hence Theorem~\ref{thm:complexity} and the algorithms of
+Section~\ref{sec:khinchin}, need $F$ regular and analytic at infinity. Condition~(H) of Section~\ref{sec:splitting}
+is what gives the dual side a first-order system with polynomial coefficients.
+\item \emph{General regular $F$.} Through Lemma~\ref{lem:reduction}, statements that are linear in $F$ carry over to
+\eqref{eq:frob} with $s$ replaced by $s + \sigma$ and with derivatives in $s$ of order at most $J$. This applies to
+Theorem~\ref{thm:split} (applied to each $f_{\sigma,j}$), to Theorem~\ref{thm:complexity}, which is stated in this
+generality, and to the principal parts, which become poles of order at most $J+1$ at $s = 1-\sigma-n$. The statements
+that depend on the leading term $a_{n_0}k^{-n_0}$ (values at non-positive integers, growth, the Hardy--Littlewood
+formula and the zeros) need modifications when the leading term is $k^{-\sigma}(\log k)^j$ or a sum of several such
+terms with the same real part of $\sigma$. We state them only under \eqref{eq:f}.
+\end{enumerate}
+From now on we assume \eqref{eq:f} unless stated otherwise, and holonomy only where it is stated.
 
 \subsection{Twists, dilations and shifts}\label{sec:twists}
 A nonconstant periodic function is not regular at infinity (it has an irregular singularity there), which is why
 periodic weights are kept as a separate factor $\chi$. Three operations relate the functions $L_F(s,\chi)$.
 
-\emph{Dilations.} For an integer $m \ge 1$ let $F_m(k) = F(mk)$, again regular. Then
+\emph{Dilations.} For an integer $m \ge 1$ let $F_m(k) = F(mk)$, again analytic, respectively regular. Then
 \[
   \sum_{k=1,\ m\mid k}^{\infty}\chi(k)F(k)k^{-s} = m^{-s}L_{F_m}(s,\chi_m), \qquad \chi_m(k) = \chi(mk),
 \]
@@ -410,7 +460,7 @@ Let $\mathcal M_F(s;k_0) = \int_{k_0}^\infty F(x)x^{-s}\dd x$, the Mellin transf
 
 \begin{proposition}\label{prop:mellin}
 Under \eqref{eq:f}, $\mathcal M_F(s;k_0) = \sum_{n=0}^{\infty} a_n k_0^{1-s-n}/(s+n-1)$, and $\zeta_F(s;k_0) - \mathcal M_F(s;k_0)$ is entire.
-If $F$ is annihilated by $\sum_{i=-r}^{r} x^ir_i(\vartheta_x)$, $\vartheta_x = x\frac{\mathrm{d}}{\mathrm{d}x}$, then $\mathcal M_F$
+If moreover $F$ is holonomic, annihilated by $\sum_{i=-r}^{r} x^ir_i(\vartheta_x)$, $\vartheta_x = x\frac{\mathrm{d}}{\mathrm{d}x}$, then $\mathcal M_F$
 satisfies the inhomogeneous linear recurrence
 \[
   \sum_{i=-r}^{r} r_i(s-i-1)\,\mathcal M_F(s-i;k_0) = k_0^{1-s}\,P(s),
@@ -419,10 +469,9 @@ where $P$ is a polynomial whose coefficients are linear in $F(k_0), F'(k_0), \do
 \end{proposition}
 
 \begin{proof}
-The first formula is termwise integration. For the second, apply the Euler--Maclaurin formula of order $2N$ to
-$g(x) = F(x)x^{-s}$ on $[k_0,\infty)$: the difference is $\frac12g(k_0)$, plus finitely many derivatives of $g$
-at $k_0$, plus $\int_{k_0}^\infty \widetilde B_{2N}(x)g^{(2N)}(x)\dd x/(2N)!$, and $g^{(2N)}(x) \ll x^{-\operatorname{Re}s-n_0-2N}$
-locally uniformly in $s$, so the difference is analytic for $\operatorname{Re}s > 1 - n_0 - 2N$, for every $N$.
+The first formula is termwise integration. By \eqref{eq:zetavalue}, the difference is
+$\sum_{n=0}^{\infty}a_n(\zeta(s+n,k_0) - k_0^{1-s-n}/(s+n-1))$, a locally uniformly convergent series of entire
+functions (the classical proof by Euler--Maclaurin summation is recalled in Section~\ref{sec:em}).
 For the recurrence, $\int_{k_0}^\infty x^{-s}\vartheta_xF\dd x = -k_0^{1-s}F(k_0) + (s-1)\mathcal M_F(s;k_0)$ and multiplication by
 $x^i$ shifts $s$ by $-i$; iterate.
 \end{proof}
@@ -537,8 +586,8 @@ $h_s$ is $u^{s/2}$ times an even and an odd entire function of $v$:
 \end{gathered}
 \end{equation}
 
-Since $F$ is regular at infinity, $f$ is annihilated by an operator that is regular singular (or ordinary) at
-$x = 0$. Written in terms of $\vartheta = x\frac{\mathrm d}{\mathrm dx}$ it has the form
+The rest of this subsection, and Section~\ref{sec:twosides}, assume moreover that $F$ is regular at infinity. Then
+$f$ is annihilated by an operator that is regular singular (or ordinary) at $x = 0$. Written in terms of $\vartheta = x\frac{\mathrm d}{\mathrm dx}$ it has the form
 \begin{equation}\label{eq:thetaform}
   \sum_{j=0}^{r}x^jq_j(\vartheta), \qquad \deg q_0 \ge \deg q_j \quad (0 \le j \le r),
 \end{equation}
@@ -591,7 +640,7 @@ Let $Q(a,x) = \Gamma(a,x)/\Gamma(a)$ and $P(a,x) = 1 - Q(a,x) = \gamma(a,x)/\Gam
 incomplete gamma functions; for fixed $x > 0$ both are entire in $a$.
 
 \begin{theorem}\label{thm:split}
-Assume \eqref{eq:f} and let $u_0 > 0$. For $s \in \CC$ not a pole,
+Assume \eqref{eq:f} ($F$ need not be holonomic) and let $u_0 > 0$. For $s \in \CC$ not a pole,
 \[
   \zeta_F(s;k_0) = \sum_{k=k_0}^{\infty}I_k(s) + \sqrt\pi\sum_{m=1}^{\infty}J_m(s) + M(s),
 \]
@@ -676,7 +725,8 @@ $k$-terms decay like $e^{-k^4u_0}$ and the dual terms like $e^{-c(m^4/u_0)^{1/3}
 and nothing is gained.
 \end{remark}
 
-\subsection{The two sides are holonomic}
+\subsection{The two sides are holonomic}\label{sec:twosides}
+In this subsection $F$ is regular and analytic at infinity, so that $f$ satisfies (H).
 For fixed $s$, the $k$-terms are values $I_k(s) = \mathcal L_s(k^2)$ of the Laplace transform
 $\mathcal L_s(K) = \int_{u_0}^\infty e^{-Ku}h_s(u)\dd u$, and the dual terms are values
 $J_m(s) = \mathcal D_s(\pi^2m^2)$ of $\mathcal D_s(c) = \int_0^{u_0}u^{-1/2}e^{-c/u}h_s(u)\dd u$. With
@@ -783,7 +833,8 @@ Section~\ref{sec:phi}.
 %======================================================================
 \section{Large imaginary part}\label{sec:larget}
 
-Throughout this section $F$ is analytic at infinity \eqref{eq:f}, $s = \sigma + it$ with $t > 0$, and
+Throughout this section $F$ is analytic at infinity \eqref{eq:f} (no differential equation is needed),
+$s = \sigma + it$ with $t > 0$, and
 $\chi(s) = 2^s\pi^{s-1}\sin(\pi s/2)\Gamma(1-s)$ is the factor in $\zeta(s) = \chi(s)\zeta(1-s)$.
 
 \subsection{A Hardy--Littlewood approximate functional equation}
@@ -1032,7 +1083,8 @@ product tree; the integral is $\sum_ny^nM^{1-s-n}/(s+n-1)$; and the Bernoulli co
 \]
 form a single convolution with the sequence $\Gamma(s+m)$. This needs only $p$-bit approximations of $s$.
 
-So the zeta-value expansion costs $\widetilde O(p^2)$ bit operations at any $s$, which is optimal for the method since
+So the zeta-value expansion costs $\widetilde O(p^2)$ bit operations at any $s$, provided that the $a_n$ are available
+(for holonomic $F$ they are P-recursive, and $a_0, \dots, a_N$ to $p$ bits cost $\widetilde O(p^2)$ as well). This is optimal for the method since
 the $\Theta(p)$ values to $p$ bits have total size $\Theta(p^2)$. It also gives the meromorphic continuation, and it is
 the natural reference method for checking other algorithms.
 
@@ -1131,8 +1183,8 @@ For $N \ge k_0$ and $J \ge 1$, with $g(x) = F(x)x^{-s}$,
 \]
 with $|R_J(s)| \le 2\zeta(2J)(2\pi)^{-2J}\int_N^\infty|g^{(2J)}(x)|\dd x$. In our setting all the ingredients are
 explicit: the Mellin part is $\mathcal M_F(s;N) = \sum_na_nN^{1-s-n}/(s+n-1)$ (Proposition~\ref{prop:mellin}), and the
-derivatives $g^{(i)}(N)$ are, up to factorials, the Taylor coefficients of $F(x)x^{-s}$ at $x = N$, which satisfy a
-linear recurrence, so that after the direct terms everything costs $O(J)$ arithmetic operations plus the Bernoulli
+derivatives $g^{(i)}(N)$ are, up to factorials, the Taylor coefficients of $F(x)x^{-s}$ at $x = N$, which for
+holonomic $F$ satisfy a linear recurrence, so that after the direct terms everything costs $O(J)$ arithmetic operations plus the Bernoulli
 numbers. Since $R_J$ is analytic for $\operatorname{Re}s > 1 - n_0 - 2J$, the formula gives the continuation in
 growing half-planes, which is the classical proof of Proposition~\ref{prop:mellin}. For $p$ bits at fixed $s$ one
 needs $N$ and $J$ proportional to $p$, so the cost is $p^{2+o(1)}$: $\Theta(p)$ values $F(k)$, each in
@@ -1178,7 +1230,7 @@ $\gamma_{3000}$ in Section~\ref{sec:zeros} can be located cheaply. An intrinsic 
 refining Proposition~\ref{prop:hl}, and a smoothed version of Theorem~\ref{thm:split} with complex $u_0$, are open.
 
 \subsection{Other generating functions}\label{sec:ogf}
-The ordinary generating function of a regular sequence is, by the same expansion as \eqref{eq:zetavalue},
+For $F$ analytic at infinity the ordinary generating function is, by the same expansion as \eqref{eq:zetavalue},
 \[
   G_F(z) = \sum_{k=k_0}^{\infty}F(k)z^k = \sum_{n=0}^{\infty}a_n\Bigl(\Li_n(z) - \sum_{k=1}^{k_0-1}\frac{z^k}{k^n}\Bigr),
 \]
