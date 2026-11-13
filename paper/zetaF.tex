@@ -222,7 +222,8 @@ what makes the fast evaluation possible.
 Section~\ref{sec:defs} defines the classes of $F$ (analytic and regular at infinity) and $\zeta_F$, and lists
 examples. Section~\ref{sec:splitting} proves Theorem~A and shows that both sides are holonomic.
 Section~\ref{sec:beyond} extends the splitting to summands with exponential or stretched-exponential decay, such as
-the polylogarithm inside the unit disk, and discusses its limits. Section~\ref{sec:complexity} proves Theorem~B and
+the polylogarithm and Lerch transcendent inside the unit disk and the generating functions of regular sequences,
+and discusses its limits. Section~\ref{sec:complexity} proves Theorem~B and
 compares it with the classical methods. Section~\ref{sec:special} discusses the special values in
 Table~\ref{tab:constants}, Section~\ref{sec:khinchin} gives two algorithms for Khinchin's constant, and
 Section~\ref{sec:open} lists open problems. The appendices contain the cost analysis, the computations of Khinchin's
@@ -692,20 +693,127 @@ for $J_m$ at a rational $c_0$, and for $T_w$ are P-recursive in $j$ within each 
 $Q(a+1,x) = Q(a,x) + x^ae^{-x}/\Gamma(a+1)$ and \eqref{eq:Drec}), and $h_s$ is holonomic in $u$, so that the moments
 are holonomic in $c$ (as in Proposition~\ref{prop:dual}). The analysis of Appendix~\ref{app:cost} therefore applies:
 \emph{for algebraic $s$ and $\tau$ and rational $0 < r < 2$, $\Lambda_r(s,\tau)$ can be computed to $p$ bits in
-$p^{3/2+o(1)}$ bit operations}, against $p^{1+1/r+o(1)}$ for direct summation and, for $r = 1$, $p^{2+o(1)}$ for the
-expansion $\Li_s(e^{-\tau}) = \Gamma(1-s)\tau^{s-1} + \sum_{n=0}^{\infty}\zeta(s-n)(-\tau)^n/n!$ in zeta values
-($\tau < 2\pi$), which is the analogue of \eqref{eq:zetavalue}. We have checked the identities numerically but not
-written out the full cost analysis. For algebraic $z = e^{-\tau}$, $\tau$ is transcendental; every piece is a power
-series in $\tau$ with P-recursive coefficients, so one more bit-burst, in $\tau$, should give the same bound.
-Complex $z$ with $|z| < 1$ should be accessible by rotating the integration path in $u$, and products
-$e^{-\tau k^r}G(k)$ with $G$ regular at infinity by combining the two expansions, which gives a kernel that is a
-series in $u^{1/2}$ infinite in both directions.
+$p^{3/2+o(1)}$ bit operations}, against $p^{1+1/r+o(1)}$ for direct summation. The classical alternative is the
+expansion $\Lambda_r(s,\tau) = M_\tau(1-s) + \sum_{n=0}^{\infty}\zeta(s-rn)(-\tau)^n/n!$ in zeta values (from the
+Mellin--Barnes integral of Remark~\ref{rem:mb}), which converges for $r < 1$, and for $r = 1$ when $\tau < 2\pi$; it
+costs $p^{2+o(1)}$, like \eqref{eq:zetavalue}. We have checked the identities numerically but not written out the
+full cost analysis. For algebraic $z = e^{-\tau}$, $\tau$ is transcendental; every piece is a power series in $\tau$
+with P-recursive coefficients, so one more bit-burst, in $\tau$, should give the same bound.
 
 Crandall \cite{Cra12}, see also \cite{BB15}, gave a Riemann splitting for the Lerch transcendent
 $\sum_{n}z^n(n+a)^{-s}$ with $\operatorname{Re}z \in [0,1)$ in which $z^n = e^{2\pi i\alpha n}$ is treated as a twist
 with complex $\alpha = \log z/(2\pi i)$: the theta function with characteristic still transforms, with dual points
 $\pi^2(m + \alpha)^2$. Putting $e^{-\tau x}$ into the kernel instead keeps the dual points real and the formula valid
-for every $z \in (0,1)$.
+for every $z$ with $|z| < 1$ (Section~\ref{sec:twistshift}).
+
+\subsection{Products with regular functions}\label{sec:products}
+Now let $F$ satisfy \eqref{eq:f}, let $r = 1/q$ with an integer $q \ge 1$, and consider
+\[
+  S_F(s) = \sum_{k=k_0}^{\infty}e^{-\tau k^r}F(k)\,k^{-s}.
+\]
+Expanding $F(x) = \sum_na_nx^{-n}$ and using the kernels of $e^{-\tau x^r}x^{-s-n}$, the kernel of the summand is
+\[
+  h_s(u) = \sum_{\ell\in\ZZ}b_\ell\,\frac{u^{w_\ell-1}}{\Gamma(w_\ell)}, \qquad w_\ell = \frac{s+\ell/q}{2}, \qquad
+  b_\ell = \sum_{n \ge \max(0,\ell/q)}a_n\frac{(-\tau)^{qn-\ell}}{(qn-\ell)!},
+\]
+so that $b_\ell$ is the coefficient of $t^{\ell/q}$ in the Laurent expansion of $f(t)e^{-\tau t^{-1/q}}$ on
+$0 < t < 1/R$. The series converges for every $u > 0$, infinitely in both directions: for $\ell \to \infty$ like the
+kernel of Section~\ref{sec:splitting}, and for $\ell \to -\infty$ like that of Proposition~\ref{prop:expsplit}. Write
+$h_s = h_+ + h_-$, where $h_+$ collects the terms with $\ell \ge 0$. Then $h_-$ is the kernel of $x^{-s}V(x)$, where
+\[
+  V(x) = \sum_{\ell<0}b_\ell x^{-\ell/q} = \sum_{n=0}^{\infty}a_nx^{-n}\Bigl(e^{-\tau x^r} - \sum_{j=0}^{qn}\frac{(-\tau x^r)^j}{j!}\Bigr)
+\]
+is an entire function of $x^r$, and by the Cauchy--Saalschütz representation of $\Gamma$ \cite[(5.9.5)]{DLMF},
+\begin{multline*}
+  M_V(z) = \int_0^\infty x^{z-s-1}V(x)\dd x = \sum_{n=0}^{\infty}a_n\,q\,\Gamma\bigl(q(z-s-n)\bigr)\,\tau^{-q(z-s-n)} \\
+  \Bigl(-\frac1q < \operatorname{Re}(z-s) < 0\Bigr),
+\end{multline*}
+continued meromorphically by the same series.
+
+\begin{proposition}\label{prop:prodsplit}
+For $u_0 > 0$ and $s$ outside a discrete set,
+\[
+  S_F(s) = \sum_{k=k_0}^{\infty}I_k + \sqrt\pi\sum_{m=1}^{\infty}J_m + M_+ + M_-,
+\]
+where, with $I^-_k$ the part of $I_k$ with $\ell < 0$, and the restriction of $h_-$ to $u \ge u_0$ integrated termwise,
+\begin{gather*}
+  I_k = \sum_{\ell\in\ZZ}b_\ell\,k^{-2w_\ell}\,Q(w_\ell, k^2u_0), \qquad
+  J_m = \sum_{\ell\in\ZZ}\frac{b_\ell}{\Gamma(w_\ell)}\,D_{w_\ell-1/2}(\pi^2m^2), \\
+  M_+ = \sum_{\ell\ge0}b_\ell\Bigl(\frac{\sqrt\pi\,u_0^{w_\ell-1/2}}{(2w_\ell-1)\Gamma(w_\ell)} - \frac{u_0^{w_\ell}}{2\Gamma(w_\ell+1)}
+  - \sum_{k=1}^{k_0-1}\frac{P(w_\ell, k^2u_0)}{k^{2w_\ell}}\Bigr), \\
+  M_- = M_V(1) - \int_{u_0}^\infty\Bigl(\frac{\sqrt\pi}{2\sqrt u} - \frac12\Bigr)h_-(u)\dd u
+  - \sum_{k=1}^{k_0-1}\bigl(k^{-s}V(k) - I^-_k\bigr).
+\end{gather*}
+\end{proposition}
+
+\begin{proof}
+For $x > R$ the summand is $\int_0^\infty e^{-x^2u}h_s(u)\dd u$, and the proof of Theorem~\ref{thm:split} applies to
+the $k$-terms, the dual terms and $h_+$ unchanged. For $h_-$ the integrals over $(0,u_0]$ in the main term are complete
+integrals minus tails, as in Proposition~\ref{prop:expsplit}: $\int_0^\infty u^{-z/2}h_-\dd u = 2M_V(z)/\Gamma(\frac z2)$,
+which is $2M_V(1)/\sqrt\pi$ at $z = 1$ and $0$ at $z = 0$, and $\int_0^\infty e^{-k^2u}h_-\dd u = k^{-s}V(k)$ for every
+$k > 0$, since $V$ is entire.
+\end{proof}
+
+Numerically, with $F(k) = \log(1+\frac1k)$, $k_0 = 2$, $s = 0.3$, $\tau = 1$ and $u_0 = \frac14$, the proposition
+reproduces $\sum_{k=2}^{\infty}e^{-k}\log(1+\frac1k)k^{-0.3}$ to $45$ digits, and with $q = 2$ the sum
+$\sum_{k=2}^{\infty}e^{-\sqrt k}\log(1+\frac1k)k^{-0.3}$ to the $33$ digits of the working precision.
+
+The coefficients $b_\ell$ are themselves infinite series, but every piece of the proposition is a double series
+over $n$ and $j$, with terms $a_n(-\tau)^j/j!$ times incomplete gamma values or moments, P-recursive in both indices. Summed over $j$, the inner
+sums are P-recursive in $n$ (by creative telescoping), so the outer sum can be computed by binary splitting from
+finitely many initial values, each a series summed by binary splitting, with $O(p)$ guard bits against the growth of
+unwanted solutions of the recurrence. The kernel $h_s$ is holonomic in $u$, so the dual moments are holonomic in $c$
+and the bit-burst applies. So we expect the bound $p^{3/2+o(1)}$ for $S_F$ as well, for algebraic $s$ and $\tau$ and
+$F$ regular and analytic at infinity and defined over~$\Qbar$. At $s = 0$ this covers the generating
+function
+$\sum_{k\ge k_0}F(k)z^k$ of a regular sequence at $0 < z < 1$ (Section~\ref{sec:ogf}), and with the twists below at
+every $z$ with $|z| < 1$. When $F(k)$ is itself P-recursive in $k$ (for example rational), the generating function is
+holonomic in $z$ and costs $\widetilde O(p)$ directly; the gain is for $F$ such as $\log(1+\frac1k)$, $p_k$ or
+$(1+\frac ak)^{-s}$.
+
+\subsection{Twists, complex \texorpdfstring{$z$}{z} and shifts}\label{sec:twistshift}
+A periodic weight $\chi(k)$, or an additive twist $e^{2\pi i\alpha k}$ with real $\alpha$, acts only on the theta side
+(Remark~\ref{rem:twist}): the kernels are unchanged, the odd part uses the kernel of the summand divided by $x$, and
+the dual points become $\pi^2n^2/q^2$, respectively $\pi^2(n-\alpha)^2$. Writing $z = e^{-\tau+2\pi i\alpha}$ with
+$\alpha \notin \ZZ$, this gives, for instance,
+\begin{multline*}
+  \Li_s(z) = \sum_{k=1}^{\infty}\bigl(\cos(2\pi\alpha k)I_k(s) + i\,k\sin(2\pi\alpha k)I_k(s+1)\bigr) \\
+  + \frac{\sqrt\pi}2\sum_{n\in\ZZ}\bigl(J^{(0)}_s(c_n) - i\pi(n-\alpha)J^{(1)}_{s+1}(c_n)\bigr) + \frac12T_1,
+\end{multline*}
+with $I_k$ and $T_1$ as in Proposition~\ref{prop:expsplit} ($r = 1$), $c_n = \pi^2(n-\alpha)^2$, and
+$J^{(\delta)}_w(c) = \int_0^{u_0}u^{-1/2-\delta}e^{-c/u}h_w(u)\dd u$, $h_w$ the kernel of $e^{-\tau x}x^{-w}$. With
+$s = 0.3$, $\tau = 1$, $\alpha = 0.3$ and $u_0 = \frac14$ this reproduces $\Li_{0.3}(z)$ to $41$ digits. (The series
+for $J^{(\delta)}_w(c_n)$ converges when $c_n > \tau^2/4$; for the few other $n$ the bit-burst starts at a larger $c$.)
+
+For $r = 1$ the power may also be shifted: $z^k(k+a)^{-s}F(k) = z^{-a}\psi(k+a)$ with
+$\psi(y) = e^{-\tau y}F(y-a)y^{-s}$, and $F(y-a)$ is again regular at infinity. Poisson summation over the shifted
+lattice $n + a$ (a theta function with characteristic), applied to the even and the odd part of $\psi$ (the latter
+written as $y$ times the kernel of $\psi(y)/y$), gives dual terms with the factors $\cos 2\pi ma$ and $\sin 2\pi ma$,
+and the lattice points with $|n+a| < k_0$ are treated like the terms $k < k_0$ in Theorem~\ref{thm:split}. For $F = 1$
+this is the Lerch transcendent $\Phi(z,s,a) = \sum_{k=0}^{\infty}z^k(k+a)^{-s}$; with $z = e^{-1}$, $s = 0.3$ and
+$a = 0.3$ we reproduced it to $41$ digits.
+
+Table~\ref{tab:expclass} summarizes. In each case the splitting identity has been checked numerically, and the bound
+$p^{3/2+o(1)}$ is what the analysis of Appendix~\ref{app:cost} gives once the double series are organized as above;
+we have not written out the details.
+
+\begin{table}[ht]
+\centering\small
+\caption{Sums with exponential factors, to $p$ bits at algebraic parameters ($F$ regular at infinity, not P-recursive;
+$s$ not an integer).}
+\label{tab:expclass}
+\begin{tabular}{llll}
+\toprule
+sum & direct & zeta values & splitting \\
+\midrule
+$\Li_s(z)$, $|z| < 1$ (Bose--Einstein, Fermi--Dirac) & $p^{2}$ & $p^{2}$ & $p^{3/2}$ \\
+$\Phi(z,s,a) = \sum_{k\ge0}z^k(k+a)^{-s}$ & $p^{2}$ & $p^{2}$ & $p^{3/2}$ \\
+$\sum_k\chi(k)z^kF(k)k^{-s}$, e.g.\ $\sum_kz^k\log(1+\frac1k)$ & $p^{2}$ & $p^{2}$ & $p^{3/2}$ \\
+$\sum_ke^{-\tau k^{1/q}}F(k)k^{-s}$ & $p^{1+q}$ & $p^{2}$ & $p^{3/2}$ \\
+$\sum_ke^{-\tau k^r}k^{-s}$, $1 < r < 2$ & $p^{1+1/r}$ & -- & $p^{3/2}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{Limits}\label{sec:limits}
 \emph{Balancing.} The numbers of terms in \eqref{eq:counts} satisfy $k_{\max}m_{\max} \approx qp\log2/\pi$ ($q$ the
@@ -980,8 +1088,9 @@ Remark~\ref{rem:whyk2}: the generating function is the Stieltjes transform of $B
 logarithmic change of variable. On the unit circle the values $G_F(e^{2\pi i\alpha})$ are the twisted values
 $L_F(0,e^{2\pi i\alpha k})$ of Remark~\ref{rem:twist}, so the theta splitting applies. Inside the disk, at a fixed
 $z$ with $0 < |z| < 1$, the series converges geometrically, and direct summation costs $p^{2+o(1)}$; the factor
-$z^k = e^{-\tau k}$ can be moved into the kernel (Section~\ref{sec:beyond}), at least for $0 < z < 1$ and $F = 1$,
-which covers $\Li_s(z)$ with non-integer $s$. The
+$|z|^k = e^{-\tau k}$ can be moved into the kernel and $(z/|z|)^k$ treated as a twist, which gives
+$p^{3/2+o(1)}$ for every $|z| < 1$ (Sections~\ref{sec:products} and~\ref{sec:twistshift}); this covers $\Li_s(z)$ with
+non-integer $s$ and the generating functions of regular sequences such as $\log(1+\frac1k)$. The
 Lambert series $\sum_kF(k)z^k/(1-z^k)$ is the generating function of $\sum_{d\mid n}F(d)$, with Dirichlet series
 $\zeta(s)\zeta_F(s)$, and its expansion at $z = 1$ starts with $\zeta_F(1)/t$; for the Gauss--Kuzmin probabilities,
 $\sum_{d\mid n}p_d$ is the probability that $a_1$ divides $n$, whose mean over $n$ is $Z(1) = 1/K_{-1}$.
@@ -1446,9 +1555,9 @@ search would amount to creative telescoping for functions regular at infinity, m
 \section{Open problems}\label{sec:open}
 
 \begin{enumerate}
-\item \emph{Inside the unit disk.} Write out the cost analysis of Section~\ref{sec:beyond}, including algebraic
-$z = e^{-\tau}$, complex $z$ with $|z| < 1$, and products $z^kF(k)$ with $F$ regular at infinity. Are there other
-natural classes of summands for which both sides of the splitting are cheap (Section~\ref{sec:limits})?
+\item \emph{Exponential factors.} Write out the cost analysis of Section~\ref{sec:beyond} (double series, algebraic
+$z$ with transcendental $\log|z|$ and $\arg z$, irrational $r$). Are there other natural classes of summands for which
+both sides of the splitting are cheap (Section~\ref{sec:limits})?
 \item \emph{Large height.} Give an exact, smoothed Riemann--Siegel formula for $\zeta_F$ with $O(\sqrt t)$ terms, and
 an algorithm uniform in $\operatorname{Im}s$.
 \item \emph{Good representatives.} Given a constant $\sum_{k=1}^{\infty}F(k)$, find, by dilations, twists, telescoping and
@@ -2533,6 +2642,8 @@ $\frac12 - n_0 < \operatorname{Re}s < 1 - n_0$? Is it hypertranscendental?
 \bibitem{CRVZ00} H.~Cohen, F.~Rodriguez Villegas and D.~Zagier, Convergence acceleration of alternating series, Experiment.\ Math.\ 9 (2000), 3--12.
 \bibitem{CS67} S.~Chowla and A.~Selberg, On Epstein's zeta-function, J.\ Reine Angew.\ Math.\ 227 (1967), 86--110.
 \bibitem{DH36} H.~Davenport and H.~Heilbronn, On the zeros of certain Dirichlet series, J.\ London Math.\ Soc.\ 11 (1936), 181--185 and 307--312.
+\bibitem{DLMF} F.~W.~J.~Olver et al.\ (eds.), \emph{NIST Digital Library of Mathematical Functions}, \url{https://dlmf.nist.gov/}.
+
 \bibitem{Dok04} T.~Dokchitser, Computing special values of motivic $L$-functions, Experiment.\ Math.\ 13 (2004), 137--149.
 \bibitem{Eli95} E.~Elizalde, \emph{Ten Physical Applications of Spectral Zeta Functions}, Lecture Notes in Physics m35, Springer, 1995.
 \bibitem{Ess97} D.~Essouabri, Singularit\'es des s\'eries de Dirichlet associ\'ees \`a des polyn\^omes de plusieurs variables et applications en th\'eorie analytique des nombres, Ann.\ Inst.\ Fourier 47 (1997), 429--483.
