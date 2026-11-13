@@ -1,0 +1,200 @@
+% Pseudocode for the dilogarithm-series algorithm (Theorem thm:khinchin).
+% Self-contained subsection, \input from Appendix app:khinchin; delete the
+% \input line to drop it.  Reference implementation: khinchin_ref.py.
+
+\subsection{Pseudocode}\label{sec:khpseudo}
+
+Algorithms~\ref{alg:binsplit}--\ref{alg:khinchin} spell out the evaluation of Theorem~\ref{thm:khinchin}, with the
+bounds of Section~\ref{sec:khbounds}, at the level of a direct implementation. They are written for clarity, not
+speed. A line-by-line Python transcription using python-flint (exact matrices \texttt{fmpq\_mat}, Arb balls),
+\texttt{khinchin\_ref.py}, is in the repository; it agrees with \texttt{arb\_const\_khinchin} for $64 \le p \le 5000$,
+taking $11$ seconds at $p = 5000$.
+
+\emph{Conventions.} The parameters $u_0 = \frac1{16}$, $r_0 = 16$ (bits of the first bit-burst point), $g = 4$ (growth
+factor), the target $p$ and $\varepsilon = 2^{-p-10}$ are global. Quantities computed from $u_0$, $k$, $n$, $j$, $c_0$,
+$c$, $\delta$ alone are exact rationals, and so are all matrices. Every other quantity is a real ball at working
+precision $p' = p + 30$, and $x \pm r$ adds $r$ to the radius of $x$. A line $N \gets \min\{N \ge n_0 : R(N) \le
+\varepsilon\}$ tests an upper bound for $R(N)$, which can be computed in low precision. The black boxes are
+$\exp$, $\sqrt{\cdot}$, $\erfc$, $\pi$, $\log 2$, $\Li_2(-\frac12)$ (or the series of Section~\ref{sec:dilog}), and
+$\Eip(y) = \sum_{n=1}^{\infty}y^n/(n\,n!) = \operatorname{Ei}(y) - \gamma - \log y$. We write
+\[
+  \operatorname{Forcing}(E) = E\,u_0^{-1/2}\bigl(\Eip(4u_0),\ e^{4u_0},\ 1\bigr)
+\]
+for the last three components of the dual state.
+
+\emph{Binary splitting.} All series are summed by one primitive (Algorithm~\ref{alg:binsplit}). If $v_{n+1} = T_nv_n$
+with $T_n \in \QQ^{d\times d}$ and $W_n \in \QQ^{e\times d}$, then $v_b = Pv_a$ and $\sum_{n=a}^{b-1}W_nv_n = Sv_a$.
+An efficient implementation writes $T_n = \tilde T_n/q_n$ with integer $\tilde T_n$, $q_n$, uses the triangular or
+sparse structure of the $T_n$, and applies partial products to the state instead of forming $S$ exactly (Section~\ref{sec:khimpl}).
+
+\begin{algorithm}[ht]
+\caption{$\textsc{BinSplit}(T, W, a, b)$}\label{alg:binsplit}
+\begin{algorithmic}[1]
+\Require functions $n \mapsto T_n \in \QQ^{d\times d}$, $n \mapsto W_n \in \QQ^{e\times d}$; integers $a < b$
+\Ensure $P = T_{b-1}\cdots T_a$ and $S = \sum_{n=a}^{b-1}W_nT_{n-1}\cdots T_a$
+\If{$b = a + 1$} \Return $(T_a, W_a)$ \EndIf
+\State $m \gets \lfloor (a+b)/2\rfloor$
+\State $(P_1, S_1) \gets \textsc{BinSplit}(T, W, a, m)$
+\State $(P_2, S_2) \gets \textsc{BinSplit}(T, W, m, b)$
+\State \Return $(P_2P_1,\ S_1 + S_2P_1)$
+\end{algorithmic}
+\end{algorithm}
+
+\emph{The $k$-terms.} Algorithm~\ref{alg:kterm} sums $I_k = e^{-x}\sum_{n=1}^{\infty}P_n/n^2$ with the state
+$(P_n, Q_n) = ((4/K)^ne_n(x), (4u_0)^n/n!)$, so $(P_1, Q_1) = (q, 4u_0)$.
+
+\begin{algorithm}[ht]
+\caption{$\textsc{KTerm}(k)$}\label{alg:kterm}
+\begin{algorithmic}[1]
+\Require an integer $k \ge 3$
+\Ensure a ball containing $I_k$
+\State $K \gets k^2$, \ $x \gets Ku_0$, \ $q \gets 4/K$, \ $n_1 \gets \lceil x\rceil + 1$
+\State $\tau(n) := q^n\min\bigl(1,\ n\,x^{n-1}e^{-x}/(n-1)!\bigr)/n^2$
+\State $R(N) := 2\tau(N) + \frac95q^{n_1}n_1^{-2}$ if $N < n_1$
+\State $R(N) := \frac95q^{N+1}(N+1)^{-2}$ if $N \ge n_1$
+\State $N \gets \min\{N \ge 1 : R(N) \le \varepsilon\}$
+\State $T_n := \left(\begin{smallmatrix} q & q \\ 0 & 4u_0/(n+1)\end{smallmatrix}\right)$, \quad
+  $W_n := \left(\begin{smallmatrix} 1/n^2 & 0\end{smallmatrix}\right)$
+\State $(\cdot, S) \gets \textsc{BinSplit}(T, W, 1, N+1)$
+\State $s \gets S\,(q,\ 4u_0)^{\mathsf T}$ \Comment{$s = \sum_{n=1}^{N}P_n/n^2 \in \QQ$}
+\State \Return $e^{-x}s \pm R(N)$
+\end{algorithmic}
+\end{algorithm}
+
+\emph{The main term.} Since $\pi_n(y) = e^{-y}\sum_{i=n}^{\infty}y^i/i!$, exchanging the order of summation gives
+$M = e^{-u_0}A - e^{-4u_0}B - \frac12C$ with $A = \sum_{i=1}^{\infty}w_i$, $B = \sum_{i=1}^{\infty}\hat w_i$,
+$C = \sum_{i=1}^{\infty}v_i/i^2$, where
+\[
+  v_i = \frac{(4u_0)^i}{i!}, \qquad w_i = \frac{u_0^i}{i!}\sum_{n=1}^{i}\frac{4^n}{n^2}, \qquad
+  \hat w_i = v_i\sum_{n=1}^{i}\frac1{n^2},
+\]
+and $v_1 = w_1 = \hat w_1 = 4u_0$ (Algorithm~\ref{alg:main}).
+
+\begin{algorithm}[ht]
+\caption{$\textsc{MainTerm}()$}\label{alg:main}
+\begin{algorithmic}[1]
+\Ensure a ball containing $M$
+\State $R(N) := 6(8u_0)^N/N!$; \ $N \gets \min\{N \ge 1 : R(N) \le \varepsilon\}$
+\State $a_i := \frac{4u_0}{i+1}$, \ $r_i := \frac{4u_0}{(i+1)^3}$
+\State $T_i := \left(\begin{smallmatrix} a_i & 0 & 0 \\ r_i & a_i/4 & 0 \\ r_i & 0 & a_i\end{smallmatrix}\right)$, \quad
+  $W_i := \left(\begin{smallmatrix} 0 & 1 & 0 \\ 0 & 0 & 1 \\ 1/i^2 & 0 & 0\end{smallmatrix}\right)$
+\State $(\cdot, S) \gets \textsc{BinSplit}(T, W, 1, N+1)$
+\State $(A, B, C)^{\mathsf T} \gets S\,(4u_0,\ 4u_0,\ 4u_0)^{\mathsf T}$
+\State \Return $e^{-u_0}A - e^{-4u_0}B - \frac12C \pm R(N)$
+\end{algorithmic}
+\end{algorithm}
+
+\emph{Starting values.} At a rational point $c_0$, with $D = D_{-1/2}(c_0)$ and $\hat E = e^{-c_0/u_0}u_0^{-1/2}$,
+the recurrence \eqref{eq:Drec} gives $D_{n-1/2} = \alpha_nD + \tilde\beta_n\hat E$ with $\alpha_0 = 1$,
+$\tilde\beta_0 = 0$ and
+\[
+  \alpha_{n+1} = -\frac{c_0\alpha_n}{n+\frac12}, \qquad \tilde\beta_{n+1} = \frac{u_0^{n+1} - c_0\tilde\beta_n}{n+\frac12}.
+\]
+With $b_n = 4^n/n!$, the state of Algorithm~\ref{alg:start} is $(x_n, y_n, z_n) = (b_n\alpha_n, b_n\tilde\beta_n,
+b_nu_0^n)$, and the six rows of $W_n$ are the $n$-th terms of the $D$- and $\hat E$-parts of
+$\nu_{3/2} = \sum_{n=1}^{\infty}\frac{b_n}nD_{n-1/2}$, $Y_{3/2} = \sum_{n=0}^{\infty}b_nD_{n-1/2}$ and
+$Y_{1/2} = \sum_{n=0}^{\infty}b_nD_{n+1/2}$. The $n = 0$ terms are added separately. The two parts have size about
+$e^{4\sqrt{c_0} - c_0/u_0}$ and their sum about $e^{-c_0/u_0}$; the cancellation of about $4\sqrt{c_0}\log_2e$ bits
+costs no absolute precision, since both parts are smaller than $1$.
+
+\begin{algorithm}[ht]
+\caption{$\textsc{StartValues}(c_0)$}\label{alg:start}
+\begin{algorithmic}[1]
+\Require $c_0 \in \QQ_{>0}$
+\Ensure balls containing $V(c_0) = (\nu_{3/2}, Y_{3/2}, Y_{1/2}, C_{3/2}, a, b, w)$
+\State $D \gets \sqrt{\pi/c_0}\,\erfc\sqrt{c_0/u_0}$, \ $E \gets e^{-c_0/u_0}$, \ $\hat E \gets Eu_0^{-1/2}$
+\State $\alpha(n) := c_0^n/(\frac12)_n$, \ $b(n) := 4^n/n!$
+\State $R(N) := 2b(N)\max_{s\in\{0,1\}}\bigl(2\alpha(N+s)D + Eu_0^{N+s-1/2}/(N+s-\frac12)\bigr)$
+\State $N \gets \min\{N \ge 1 : 32c_0 \le (2N+1)(2N+2),\ 8u_0 \le N+1,\ R(N) \le \varepsilon\}$
+\State $h_n := n + \frac12$, \ $d_n := \frac{4}{(n+1)h_n}$
+\State $T_n := \left(\begin{smallmatrix} -c_0d_n & 0 & 0 \\ 0 & -c_0d_n & u_0d_n \\ 0 & 0 & 4u_0/(n+1)\end{smallmatrix}\right)$
+\State $W_n := \left(\begin{smallmatrix} 1/n & 0 & 0 \\ 0 & 1/n & 0 \\ 1 & 0 & 0 \\ 0 & 1 & 0 \\
+  -c_0/h_n & 0 & 0 \\ 0 & -c_0/h_n & u_0/h_n\end{smallmatrix}\right)$
+\State $(\cdot, S) \gets \textsc{BinSplit}(T, W, 1, N)$
+\State $s \gets (0, 0, 1, 0, -2c_0, 2u_0)^{\mathsf T} + S\,(-8c_0,\ 8u_0,\ 4u_0)^{\mathsf T}$
+  \Comment{$s \in \QQ^6$}
+\State $\nu \gets Ds_1 + \hat Es_2 \pm R(N)$
+\State $Y \gets Ds_3 + \hat Es_4 \pm R(N)$
+\State $Y_- \gets Ds_5 + \hat Es_6 \pm R(N)$
+\State \Return $(\nu, Y, Y_-, D, \operatorname{Forcing}(E))$
+\end{algorithmic}
+\end{algorithm}
+
+\emph{Taylor stages.} At a fixed point $c$, let $V_j$ be the state at $t = \frac32 + j$,
+\[
+  V_j = \bigl(\nu_t,\ Y_t,\ Y_{t-1},\ C_t,\ \Eip(4u_0)Eu_0^{1-t},\ e^{4u_0}Eu_0^{1-t},\ Eu_0^{1-t}\bigr).
+\]
+The integration-by-parts recurrences of Section~\ref{sec:dilog} read $V_{j+1} = M_jV_j$ with
+\[
+  M_j = \frac1c\begin{pmatrix}
+  \eta_j & -1 & 0 & 1 & 1 & 0 & 0 \\
+  0 & \eta_j & -4 & 0 & 0 & 1 & 0 \\
+  0 & c & 0 & 0 & 0 & 0 & 0 \\
+  0 & 0 & 0 & \eta_j & 0 & 0 & 1 \\
+  0 & 0 & 0 & 0 & c/u_0 & 0 & 0 \\
+  0 & 0 & 0 & 0 & 0 & c/u_0 & 0 \\
+  0 & 0 & 0 & 0 & 0 & 0 & c/u_0
+  \end{pmatrix}, \qquad \eta_j = j + \tfrac12.
+\]
+Since $\partial_cZ_t = -Z_{t+1}$, and $E(c+\delta) = E(c)e^{-\delta/u_0}$, every component satisfies
+$V(c+\delta) = \sum_{j=0}^{\infty}\frac{(-\delta)^j}{j!}V_j(c)$. Algorithm~\ref{alg:taylor} sums the first four
+components this way and recomputes the last three.
+
+\begin{algorithm}[ht]
+\caption{$\textsc{TaylorStage}(c, \delta, V)$}\label{alg:taylor}
+\begin{algorithmic}[1]
+\Require $c, \delta \in \QQ$ with $0 \le \delta < c$; balls $V$ containing $V(c)$
+\Ensure balls containing $V(c+\delta)$
+\State $\rho \gets \delta/c$, \ $R(L) := 2e^{4u_0}\rho^L/(\sqrt c\,(1-\rho))$
+\State $L \gets \min\{L \ge 2 : R(L) \le \varepsilon\}$
+\State $T_j := -\frac{\delta}{j+1}M_j$ with $M_j$ as above, \quad $W_j := (I_4\ \ 0_{4\times3})$
+\State $(\cdot, S) \gets \textsc{BinSplit}(T, W, 0, L)$
+\State \Return $(SV \pm R(L),\ \operatorname{Forcing}(e^{-(c+\delta)/u_0}))$
+\end{algorithmic}
+\end{algorithm}
+
+\emph{Dual terms.} Algorithm~\ref{alg:dual} is the bit-burst algorithm. The point $c_m$ is truncated to
+$r_0, gr_0, g^2r_0, \dots$ fractional bits, up to the number $r^*$ of bits required by the bound for $|J'|$ in
+Section~\ref{sec:khbounds}.
+
+\begin{algorithm}[ht]
+\caption{$\textsc{DualTerm}(m)$}\label{alg:dual}
+\begin{algorithmic}[1]
+\Require an integer $m \ge 0$
+\Ensure a ball containing $J_m$
+\State $c \gets \pi^2(m+\frac12)^2$ \Comment{a ball}
+\State $c_r := \lfloor 2^r\operatorname{mid}(c)\rfloor/2^r \in \QQ$
+\State $c_- \gets \inf(c) - 2^{-r_0}$, \
+  $K_0 \gets 2\sqrt\pi\,\Eip(4u_0)\,e^{-c_-/u_0}/(\sqrt{u_0}\,c_-)$
+\State $r^* \gets \max\bigl(r_0, \lceil\log_2(K_0/(\varepsilon - K_0\operatorname{rad}(c)))\rceil\bigr)$
+\State $r \gets r_0$, \ $c' \gets c_r$, \ $V \gets \textsc{StartValues}(c')$
+\While{$r < r^*$}
+  \State $r \gets \min(gr, r^*)$
+  \State $V \gets \textsc{TaylorStage}(c', c_r - c', V)$, \ $c' \gets c_r$
+\EndWhile
+\State \Return $\sqrt\pi\,V_1 \pm K_0(2^{-r^*} + \operatorname{rad}(c))$ \Comment{$J_m = \sqrt\pi\,\nu_{3/2}(c_m)$}
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[ht]
+\caption{$\textsc{Khinchin}(p)$}\label{alg:khinchin}
+\begin{algorithmic}[1]
+\Require a target precision $p$ (bits)
+\Ensure a ball containing $K$ of radius about $2^{-p}$
+\State $u_0 \gets \frac1{16}$, \ $r_0 \gets 16$, \ $g \gets 4$, \ $\varepsilon \gets 2^{-p-10}$, \ $p' \gets p + 30$
+\State $G \gets \Eip(4u_0)/u_0$
+\State $t_I(k) := 2e^{-((k+1)^2-4)u_0}/\bigl(((k+1)^2-4)u_0\bigr)$
+\State $t_J(m) := 4\sqrt{\pi u_0}\,G\,e^{-\pi^2(m+3/2)^2/u_0}$
+\State $k_{\max} \gets \min\{k \ge 3 : t_I(k) \le \varepsilon\}$
+\State $m_{\max} \gets \min\{m \ge 0 : t_J(m) \le \varepsilon\}$
+\State $S \gets \textsc{MainTerm}()$
+\For{$k = 3, \dots, k_{\max}$} \ $S \gets S + (-1)^k\,\textsc{KTerm}(k)$ \EndFor
+\For{$m = 0, \dots, m_{\max}$} \ $S \gets S + \textsc{DualTerm}(m)$ \EndFor
+\State $S \gets S \pm \bigl(t_I(k_{\max}) + t_J(m_{\max})\bigr)$
+\State $L_0 \gets \log^22 + \Li_2(-\frac12) + \frac{\pi^2}{12}$
+\State \Return $\exp\bigl((L_0 + S/2)/\log 2\bigr)$
+\end{algorithmic}
+\end{algorithm}
+
+For example, $p = 5000$ gives $k_{\max} = 235$ and $m_{\max} = 4$, and the dual term $m = 0$ uses the points
+$c_r$ with $r = 16, 64, 256, 1024, 4096, 4951$, and $m = 4$ those with $r = 16, 64, 256, 391$.

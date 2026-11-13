@@ -5,6 +5,8 @@
 \usepackage{xcolor}
 \usepackage{xurl}
 \usepackage{pgfplots}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 \pgfplotsset{compat=1.18}
 \usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
 
@@ -1802,6 +1804,8 @@ largest first, with at most half of the threads on dual terms while $k$-chunks r
 exactly in fixed point, so that no term is kept and the result does not depend on the scheduling. The memory is linear
 in the precision times the number of threads, mostly for FFT transforms.
 \end{itemize}
+
+\input{khinchin_pseudocode}
 
 \subsection{Results}\label{sec:khresults}
 Table~\ref{tab:khinchin} compares the theta splitting (with $u_0 = \frac1{16}$) with the zeta-value expansion in FLINT,
