@@ -1044,6 +1044,85 @@ $n$; Theorem~\ref{thm:split} sums over $n$ inside each $k$-term and each dual te
 P-recursive terms, computable by binary splitting, and then over the $O(\sqrt p)$ values of $k$ and $m$. Exchanging the
 two summations is what turns $p^{2+o(1)}$ into $p^{3/2+o(1)}$.
 
+\emph{The cells of the double sum.} Both methods can be pictured as ways of covering the cells $(k, n)$,
+$k \ge k_0$, $n \ge 0$, of the double series
+\[
+  \zeta_F(s;k_0) = \sum_{k=k_0}^{\infty}\sum_{n=0}^{\infty}a_nk^{-s-n},
+\]
+of which only those with $|a_n|k^{-\sigma-n} \gtrsim 2^{-p}$ matter. A refined zeta-value expansion covers
+them in three ways (Figure~\ref{fig:cells}, left):
+\begin{itemize}
+\item \emph{rows} $k_0 \le k < K_0$, each summed as $F(k)k^{-s}$. For holonomic $F$ a row is the series
+$k^{-s}f(1/k)$, which converges like $(R/k)^n$ and costs $O(\Mul(p)\log^2p)$ by binary splitting, and less when $F$ is
+elementary;
+\item \emph{short columns} $n \ge n_1$, summed directly over $K_0 \le k \le K(n)$, where $K(n)$ is the largest $k$
+with $|a_n|k^{-\sigma-n} \ge 2^{-p}$; the cell $(k, n)$ needs only about $p + \log_2|a_n| - (\sigma+n)\log_2k$ bits;
+\item \emph{long columns} $n < n_1$, as $\zeta(s+n, K_0) = \zeta(s+n) - \sum_{k=1}^{K_0-1}k^{-s-n}$, where the
+subtraction costs relative but not absolute precision.
+\end{itemize}
+No algorithm for the Hurwitz zeta function is needed, and only $n_1$ zeta values. In a column, by a dilation (Section~\ref{sec:twists}),
+only $K_0 \le k < 2K_0$ and the odd $k \ge 2K_0$ need to be summed: if $X$ is that
+partial sum, then $\zeta(s+n, K_0) = X/(1 - 2^{-s-n})$. The rows cost $\widetilde O(pK_0)$ and the
+$\Theta(p/\log(K_0/R))$ columns $\widetilde O(p^2/\log(K_0/R))$, so peeling off rows saves at most a factor $\log p$
+(with $K_0 \approx p/\log p$), and the cost remains $p^{2+o(1)}$. In practice the gain is a constant factor. The
+implementation for Khinchin's constant in FLINT (Appendix~\ref{app:khinchin}) uses $K_0$ between $6$ and $12$, so
+about three times fewer columns than with $K_0 = 2$, and $K(n_1)$ between $2^3$ and $2^{17}$, so no zeta values for
+$n \ge n_1$. Its rows are products of logarithms, all obtained from $\log q$ for the primes $q \le K_0$.
+
+Theorem~\ref{thm:split} is a smooth version of the same picture (Figure~\ref{fig:cells}, right). By its series for
+$I_k$, the $k$-term is row $k$ with the weight $Q(\frac{s+n}2, k^2u_0)$. This weight is close to $1$ above the parabola
+$n = 2u_0k^2 - \sigma$ and close to $0$ below it, with a transition of width $O(k\sqrt{u_0})$. Once the parabola has
+left the significant cells, the remaining weight of row $k$ is about $e^{-k^2u_0}$, so the $k$-terms end at
+$k_{\max} \approx \sqrt{p\log2/u_0}$. The cells below the parabola are never summed individually. In column $n$ their
+sum is $\sum_{k}k^{-s-n}P(\frac{s+n}2, k^2u_0)$, the part of Riemann's splitting of $\zeta(s+n, k_0)$ that Poisson
+summation turns into dual terms, and the sum over $n$ of these columns is $\sqrt\pi\sum_mJ_m + M$. The zeta-value
+expansion covers what the rows leave with $\Theta(p)$ columns of $p$ bits each, and the theta splitting covers it with
+$O(\sqrt p)$ dual terms.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[x=0.52cm, y=0.62cm, font=\footnotesize]
+  % significant cells: n = P / ln k, schematic
+  \def\P{4.159}
+  \fill[gray!30] (2,0) rectangle (4,6.3);
+  \fill[orange!30] (4,2.2) -- plot[domain=4:6.62, samples=40] (\x, {\P/ln(\x)}) -- cycle;
+  \fill[blue!18] (4,0) rectangle (11.2,2.2);
+  \draw[thick, domain=2:11.2, samples=80] plot (\x, {\P/ln(\x)});
+  \draw[->] (2,0) -- (11.6,0) node[below left] {$k$};
+  \draw[->] (2,0) -- (2,6.7) node[below left] {$n$};
+  \draw (4,0) -- (4,-0.12) node[below] {$K_0$};
+  \draw (2,2.2) -- (1.88,2.2) node[left] {$n_1$};
+  \draw (2,0) node[below] {$k_0$};
+  \node at (3,5.4) {rows};
+  \node (dl) at (6.6,3.7) {direct};
+  \draw[->] (dl) -- (4.7,2.65);
+  \node at (7.6,1.1) {long columns $\zeta(s+n, K_0)$};
+  \node[align=left] at (8.6,4.4) {negligible};
+\end{tikzpicture}
+\hfil
+\begin{tikzpicture}[x=0.52cm, y=0.62cm, font=\footnotesize]
+  \def\P{4.159}
+  \def\a{0.0645}
+  \fill[gray!30] (2,6.3) -- (2,{\a*4}) -- plot[domain=2:9.88, samples=40] (\x, {\a*\x*\x}) -- cycle;
+  \fill[blue!18] (2,0) -- (2,{\a*4}) -- plot[domain=2:9.88, samples=40] (\x, {\a*\x*\x})
+    -- (11.2,6.3) -- (11.2,0) -- cycle;
+  \draw[dashed, domain=2:9.88, samples=40] plot (\x, {\a*\x*\x});
+  \draw[thick, domain=2:11.2, samples=80] plot (\x, {\P/ln(\x)});
+  \draw[->] (2,0) -- (11.6,0) node[below left] {$k$};
+  \draw[->] (2,0) -- (2,6.7) node[below left] {$n$};
+  \draw (2,0) node[below] {$k_0$};
+  \node at (4.1,4.7) {$k$-terms};
+  \node at (7.7,1.1) {dual terms and $M$};
+  \node[above] at (9.4,6.3) {$n = 2u_0k^2$};
+\end{tikzpicture}
+\caption{The cells $(k, n)$ of $\sum_{k=k_0}^{\infty}\sum_{n=0}^{\infty}a_nk^{-s-n}$ (schematic); the cells above the
+solid curve $|a_n|k^{-\sigma-n} = 2^{-p}$ are negligible. Left: zeta-value expansion with rows $k < K_0$, short columns
+summed directly and long columns from zeta values. Right: Theorem~\ref{thm:split}, where row $k$ is weighted by
+$Q(\frac{s+n}2, k^2u_0)$, which switches smoothly across the dashed parabola, and the cells below it are replaced by
+the dual terms.}
+\label{fig:cells}
+\end{figure}
+
 \subsection{Euler--Maclaurin summation}\label{sec:em}
 For $N \ge k_0$ and $J \ge 1$, with $g(x) = F(x)x^{-s}$,
 \[
