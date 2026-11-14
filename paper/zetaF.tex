@@ -1919,7 +1919,66 @@ Theorem~\ref{thm:complexity}. In particular, can all ``weight two'' sums $\sum_{
 dilogarithm sums with hypergeometric coefficients?
 \item \emph{Closed forms.} Are there identities relating $Z'(0)$, i.e.\ $\log K$, to other periods or special
 values? The derivatives $Z^{(j)}(0)$, $j \ge 1$, are the moments of $\log a_1$ under the Gauss measure.
+\item \emph{Algebraic values.} Every sequence in Table~\ref{tab:sequences} comes from $F = 1$, with a periodic weight
+or a geometric factor. Is there an integer sequence of this kind for a nontrivial $F$? We expect not
+(Conjecture~\ref{conj:algebraic} below).
 \end{enumerate}
+
+\emph{Algebraic values.} Let $F$ be analytic and regular at infinity and defined over $\Qbar$, and let $z \in \Qbar$
+with $0 < |z| < 1$, or $z = 1$. Let $V_F(z)$ be the $\Qbar$-vector space spanned by $1$ and the values
+$\Li_F(-m, z)$, $m \ge 0$; for $z = 1$ we take instead the constant terms $\CT_{s=-m}\zeta_F(s)$. These are the
+zeta-regularized moments $\sum_kF(k)k^mz^k$. Up to the factors $(-1)^m/m!$, they are the Taylor coefficients of the
+regular part of $\sum_kF(k)e^{-kt}$ at $t = -\log z$ (Section~\ref{sec:ogf}).
+
+\begin{proposition}\label{prop:rationalF}
+\begin{enumerate}
+\item If $F(k)$ agrees for large $k$ with a rational function of $k$, then $\dim V_F(z) < \infty$.
+\item If the sequence $F(k)$ is P-recursive, then it agrees for large $k$ with a rational function of $k$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(1) The finitely many terms with $k < k_0$ are algebraic. Write $F(k) = c + \sum_{a,i}c_{a,i}(k+a)^{-i}$ for
+$k \ge k_0$, with algebraic $a$ and $c_{a,i}$. Then $k^m(k+a)^{-i} = Q_{m}(k) + \sum_{l=1}^{i}d_{m,l}(k+a)^{-l}$, with
+a polynomial $Q_m$ and numbers $d_{m,l}$, all algebraic. The polynomial parts contribute values $\Li_{-j}(z)$, which
+are rational functions of $z$, or $\zeta(-j) \in \QQ$ for $z = 1$. The other parts contribute the finitely many
+constants $\sum_{k\ge k_0}z^k(k+a)^{-l}$, $l \le \max i$. For $z = 1$ and $l = 1$ the constant is
+$\CT_{s=0}\sum_{k\ge k_0}k^{-s}(k+a)^{-1}$, the same for all $m$.
+
+(2) Suppose $\sum_{i=0}^dc_i(k)F(k+i) = 0$ for large integers $k$. The left side, with $k$ replaced by $x$, is a
+function of $x$ analytic in $1/x$ near $x = \infty$. It vanishes at the points $1/k \to 0$, so it vanishes
+identically, and $F(x)$ satisfies the difference equation. It also satisfies a linear differential equation, and it
+lies in $\CC[[1/x]]$. By a theorem of Sch\"afke and Singer \cite[Corollary~5]{SS19}, a series in $\CC[[1/x]][x]$
+that satisfies both a linear differential equation and a linear difference equation $x \mapsto x+1$ over $\CC(x)$ is
+rational.
+\end{proof}
+
+So rational $F$, with P-recursive values $F(k)$, are exactly the summands for which the moments have the finite
+structure behind Table~\ref{tab:sequences}. These moments are Hurwitz--Lerch values at algebraic shifts, up to a
+finite set of constants such as $\psi(a)$ and $\log(1-z)$. Any other mechanism would have to make infinitely many
+values of a non-holonomic function algebraic.
+
+\begin{conjecture}\label{conj:algebraic}
+If $F$ is not eventually a rational function of $k$, then $V_F(z)$ is infinite-dimensional. In particular, the
+values
+$\Li_F(-m,z)$, respectively $\CT_{s=-m}\zeta_F(s)$, are not all algebraic for large $m$.
+\end{conjecture}
+
+For $F(k) = \log(1+\frac1k)$ and $z = 1$, the first values are
+\begin{gather*}
+  0, \qquad \frac{1 - \log 2\pi}2, \qquad \frac{\log 2\pi - 1 + 4\zeta'(-1)}2, \\
+  \frac{11 - 12\log 2\pi - 72\zeta'(-1) + 72\zeta'(-2)}{24},
+\end{gather*}
+for $m = 0, 1, 2, 3$, found numerically with PSLQ at $50$ digits. In general $\CT_{s=-m}\zeta_F(s)$ lies in the span
+of $1$, $\log 2\pi$ and $\zeta'(-j)$, $1 \le j < m$. Since $\zeta'(-2n) = (-1)^n(2n)!\,\zeta(2n+1)/(2(2\pi)^{2n})$, the
+space $V_F(1)$ contains $\zeta(3)/\pi^2, \zeta(5)/\pi^4, \dots$. For this $F$ the conjecture therefore follows from the
+algebraic independence of $\pi, \zeta(3), \zeta(5), \dots$ (Grothendieck's period conjecture), but unconditionally
+it is not even known that $\dim V_F(1) \ge 3$. For summands such as $e^{1/k}$ the values are not obviously periods,
+and we know of no conditional proof. The conjecture says nothing about sequences expressed less directly in terms of
+these functions, for example through compositions with other functions or products of values. We make no claim
+about those. Rational values of $L$-functions of higher degree do occur, for instance the Hurwitz numbers, from
+Eisenstein series of the Gaussian lattice. They are two-dimensional lattice sums, which need about $p$ terms
+(Remark~\ref{rem:practical}(5)), so they are outside the subquadratic class anyway.
 
 %======================================================================
 \appendix
@@ -3356,6 +3415,8 @@ Hamburg 27 (1964), 142--144.
 \bibitem{Sar84} P.~Sargos, Prolongement m\'eromorphe des s\'eries de Dirichlet associ\'ees \`a des fractions rationnelles de plusieurs variables, Ann.\ Inst.\ Fourier 34 (1984), no.~3, 83--123.
 \bibitem{SH07} J.~Sondow and P.~Hadjicostas, The generalized-Euler-constant function $\gamma(z)$ and a generalization of Somos's quadratic recurrence constant, J.\ Math.\ Anal.\ Appl.\ 332 (2007), 292--314.
 
+\bibitem{SS19} R.~Sch\"afke and M.~F.~Singer, Consistent systems of linear differential and difference equations,
+J.\ Eur.\ Math.\ Soc.\ 21 (2019), 2751--2792.
 \bibitem{Sta80} R.~P.~Stanley, Differentiably finite power series, European J.\ Combin.\ 1 (1980), 175--188.
 \bibitem{Ste07} J.~Steuding, \emph{Value-Distribution of $L$-Functions}, Lecture Notes in Math.\ 1877, Springer, 2007.
 \bibitem{Tit86} E.~C.~Titchmarsh, \emph{The Theory of the Riemann Zeta-Function}, 2nd ed., revised by D.~R.~Heath-Brown, Oxford University Press, 1986.
