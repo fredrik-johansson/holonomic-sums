@@ -2840,7 +2840,8 @@ Tables~\ref{tab:apps} and~\ref{tab:appsref}). The runs at $10^6$ digits were spl
 term indices (\texttt{--part}), and the CPU times are summed over the pieces, counting the precomputation once. All
 results agree where they overlap, and at $u_0 = \frac14$ and $u_0 = \frac1{16}$ (Somos) and $u_0 = 1$ and
 $u_0 = \frac14$ ($\sum_ke^{-\sqrt k}$) at $10^3$ and $10^4$ digits. The theta splitting grows by factors of
-DAMPEDRATIOS per decade from $10^5$ to $10^6$ digits. For $\sum_ke^{-\sqrt k}$ the reference is slower already at
+$52$ ($\sigma$) and $53$ ($\sum_ke^{-\sqrt k}$) from $10^5$ to $10^6$ digits, as from $10^4$ to $10^5$ digits ($53$
+and $52$), against $100$ for a quadratic method. For $\sum_ke^{-\sqrt k}$ the reference is slower already at
 $10^5$ digits. For $\sigma$ it is not: the special structure of $\sum_k2^{-k}\log k$ makes the sum over prime powers
 a very cheap quasi-quadratic method (about $p/\log p$ logarithms of primes, each a short binary splitting series),
 which grows by a factor of about $120$ per decade but is $6$ times faster than the theta splitting at $10^5$ digits, so
@@ -2850,10 +2851,10 @@ there is no such shortcut.
 \begin{table}[tp]
 \centering\small
 \caption{Timings for Somos's constant $\sigma$ and for $\sum_ke^{-\sqrt k}$ on $2$ cores: theta splitting (CPU time
-summed over the threads, with the fraction spent on the $k$-side in parentheses, wall time, peak memory) and the
-reference methods (CPU and wall time).}
+summed over the threads, with the fraction spent on the $k$-side in parentheses, wall time, peak memory, at $10^6$
+digits the maximum over the pieces) and the reference methods (CPU time).}
 \label{tab:damped}
-\begin{tabular}{llrrrrr}
+{\tabcolsep4pt\begin{tabular}{llrrrrr}
 \toprule
 constant & digits & $k$/dual terms & CPU ($k$-side) & wall & memory & reference \\
 \midrule
@@ -2863,9 +2864,9 @@ $\sigma$ & $10^4$ & $152$/$48$ & $14.0$\,s ($0.30$) & $7.15$\,s & $19$\,MB & $1.
 \midrule
 $\sum_ke^{-\sqrt k}$ & $10^4$ & $608$/$12$ & $21.9$\,s ($0.60$) & $11.1$\,s & $25$\,MB & $8.48$\,s \\
  & $10^5$ & $1\,920$/$38$ & $1\,135$\,s ($0.57$) & $573$\,s & $171$\,MB & $2\,395$\,s \\
- & $10^6$ & EXPSQRTROW \\
+ & $10^6$ & $6\,069$/$120$ & $59\,705$\,s ($0.50$) & $30\,419$\,s & $884$\,MB & -- \\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \end{table}
 
 The values are

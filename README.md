@@ -1,6 +1,6 @@
 # holsum
 
-Demonstration code for the paper *Computing infinite sums of holonomic functions in subquadratic time*
+Demonstration code for the paper *Computing infinite sums of holonomic functions*
 (repository: <https://github.com/fredrik-johansson/holonomic-sums>).
 
 The program computes constants of the form
@@ -170,6 +170,22 @@ default $u_0$; in parentheses the peak memory in MB where it exceeds 100 MB.
 | `hardy_littlewood` | $10^4$ | 303 | 24 | 6.0 | 1.2 | 9.3 |
 | | $3\cdot10^4$ | | | 48 | 16 | 169 (172) |
 | | $10^5$ | 959 | 76 | 407 | 285 | 3784 (345) |
+
+For the two damped constants (`theta` as above, the reference is direct summation over prime powers for `somos`
+and Euler–Maclaurin for `expsqrt`; the $10^6$-digit runs were split into pieces with `--part` and the CPU times
+summed, the memory is the maximum over the pieces):
+
+| constant | digits | k-terms | dual terms | theta | reference |
+|---|--:|--:|--:|--:|--:|
+| `somos` | $10^4$ | 152 | 48 | 14.0 | 1.03 |
+| | $10^5$ | 480 | 152 | 743 | 125 (1190) |
+| | $10^6$ | 1517 | 483 | 38519 (347) | |
+| `expsqrt` | $10^4$ | 608 | 12 | 21.9 | 8.5 |
+| | $10^5$ | 1920 | 38 | 1135 (171) | 2395 (336) |
+| | $10^6$ | 6069 | 120 | 59705 (884) | |
+
+The theta splitting grows by a factor of 52–53 per decade for both, from $10^4$ to $10^5$ and from $10^5$ to $10^6$
+digits. Direct summation for `somos` is quasi-quadratic but very cheap, so it is still ahead at $10^5$ digits.
 
 All runs agree with each other to all digits, and the $10^5$-digit values agree with earlier runs of
 separate programs. The cost of theta splitting grows by a factor of about 55 per decade at these sizes ($p^{3/2}$ times
