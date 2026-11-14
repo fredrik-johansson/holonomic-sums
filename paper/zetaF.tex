@@ -71,9 +71,13 @@ Euler's constant and Khinchin's constant have strikingly similar series,
 \end{align*}
 both of the form $\sum_{k=k_0}^{\infty} F(k)$ with $F$ holonomic and analytic at infinity. Euler's constant also has a
 second life as a coefficient of a Dirichlet series: $\zeta(s) = 1/(s-1) + \gamma + O(s-1)$. The same is
-true of Khinchin's constant. With the Gauss--Kuzmin probabilities
-$p_k = \log_2(1 + 1/(k(k+2)))$ of the partial quotients in the continued fraction
-expansion of a random real number, let
+true of Khinchin's constant, the limit
+\[
+  K = \lim_{n\to\infty}(a_1a_2\cdots a_n)^{1/n} = 2.6854520010\ldots
+\]
+of the geometric means of the partial quotients of the continued fraction $x = [a_0; a_1, a_2, \dots]$ of almost
+every real number $x$. With the Gauss--Kuzmin probabilities $p_k = \log_2(1 + 1/(k(k+2)))$ that a partial
+quotient equals $k$, let
 \begin{equation}\label{eq:Z}
   Z(s) = \sum_{k=1}^{\infty} p_k\,k^{-s} = \mathbb{E}\bigl[a_1^{-s}\bigr],
 \end{equation}
@@ -128,7 +132,8 @@ for Euler's constant and the Stieltjes constants, we are not aware of earlier su
 \renewcommand{\arraystretch}{1.2}
 \caption{Constants as special values of the functions \eqref{eq:functions}. The Alladi--Grinstead and Kalpazidou
 constants are $e^{\mathcal C-1}$ and $e^{\mathcal C}$. For the vortex sum $\lambda$ is fixed and $k_0 > 2/\lambda$; for
-Planck--Larkin $x = I/(k_BT)$. $F_1(k) = \frac1k - \log(1+\frac1k)$ and $F_2(k) = \log(1+\frac1k)$.}
+Planck--Larkin $x = I/(k_BT)$. $F_1(k) = \frac1k - \log(1+\frac1k)$, $F_2(k) = \log(1+\frac1k)$ and
+$F_3(k) = 3k + \frac12 - k(3k+2)\log(1+\frac1k)$.}
 \label{tab:constants}
 \begin{tabular}{lll}
 \toprule
@@ -136,6 +141,7 @@ constant & $F(k)$ & expression \\
 \midrule
 Euler's $\gamma$ & $1$; or $F_1$ & $\CT_{s=1}\zeta(s)$; or $\zeta_{F_1}(0)$ \\
 Stieltjes $\gamma_1$ & $F_1$; $F_2^2$ & $-\zeta_{F_1}'(0) - \frac12\zeta_{F_2^2}(0)$ \\
+Glaisher's $A$ & $1$; or $F_3$ & $e^{1/12-\zeta'(-1)}$; or $(2\pi e)^{\frac1{12}}e^{\zeta_{F_3}(0)/6}$ \\
 Khinchin's $K$ & $p_k = \log_2(1+\frac{1}{k(k+2)})$ & $\exp(-Z'(0))$ \\
 H\"older means $K_p$, $p<1$ & $p_k$ & $Z(-p)^{1/p}$ \\
 $\mathcal A = \sum_{k=2}^{\infty}\frac{\log k}{k^2-1}$ & $\frac1{k^2-1}$ ($k\ge2$) & $-\zeta_F'(0)$ \\
@@ -229,6 +235,13 @@ zeta-value expansion is Theorem~A with the order of two summations exchanged, an
 summation with a sharp instead of a smoothed cutoff. At large height and moderate precision, $\zeta_F$ can be computed
 in $O(t^{1/2})$ operations by combining the zeta-value expansion with the Riemann--Siegel formula.
 
+The algorithms of Theorem~B(1) need only $O(p)$ bits of memory, and their cost is uniform in the data: it stays
+$O(p^{1/2}\Mul(p)\log^2p)$ when $s_0$ varies with $p$ in a fixed number field with height $p^{O(1)}$ and
+$|s_0| = O(p/\log p)$, and when the coordinates of $F$ in a fixed basis of solutions of a fixed equation have
+logarithmic height $O(p)$ (Theorem~\ref{thm:uniform}). Taking $s_0 = 1-n$ gives exact Bernoulli numbers, Euler numbers,
+Bernoulli polynomials at a fixed rational point and generalized Bernoulli numbers $B_{n,\chi}$ in $n^{3/2+o(1)}$ bit
+operations and $O(n\log n)$ bits of memory (Corollary~\ref{cor:bernoulli}).
+
 For Khinchin's constant we develop two complete algorithms (Section~\ref{sec:khinchin}): the natural one from the
 logarithmic series $\log K\log 2 = \sum_{k=2}^{\infty}-\log(1-\frac1k)\log(1+\frac1k)$, and a faster one from a dilogarithm
 series of Bailey, Borwein and Crandall, which is a twisted $L_G$ for the non-elementary function
@@ -248,9 +261,14 @@ and others; Apostol and Vu \cite{AV84} treat series such as $\sum_{k=1}^{\infty}
 give the continuation of hypergeometric cases such as $\sum_{k=1}^{\infty} k^{-s}(k+a)^{-t}$ and their asymptotic
 expansions in parameters \cite{Kat97}. Approximate functional equations go back to Riemann \cite{Rie59} and
 Hardy and Littlewood \cite{HL23}; the theta-function (``smoothed'') form for general $L$-functions is due to
-Lavrik \cite{Lav68} and is the basis of the algorithms of Rubinstein \cite{Rub05} and Dokchitser \cite{Dok04};
-for Dirichlet $L$-functions at algebraic points it gives $p^{3/2+o(1)}$ algorithms \cite{Joh21}, which
-Theorem~B generalizes.
+Lavrik \cite{Lav68} and is the basis of the algorithms of Rubinstein \cite{Rub05} and Dokchitser \cite{Dok04}.
+For $F = 1$ every term of the theta splitting is a single incomplete gamma value, and that the splitting then gives
+$p^{3/2+o(1)}$ at algebraic points, by fast evaluation of the incomplete gamma function \cite{CC90,vdH99}, is
+folklore. To our knowledge it was first stated explicitly, for Dirichlet $L$-functions and with applications to
+Stieltjes constants and Bernoulli and Euler numbers, in the author's preprint \cite{Joh21}. That preprint is
+preliminary work, subsumed by the present paper, which generalizes it substantially: Theorem~B extends it from
+$F = 1$ to all regular $F$ and to the damped functions, and Theorem~\ref{thm:uniform} proves the uniformity in $s$
+that \cite{Joh21} argued only briefly.
 Crandall \cite{Cra12} developed the splitting systematically for polylogarithms, Lerch transcendents and
 related functions (see also \cite{BB15}), without a complexity analysis. To our knowledge the class of holonomic $F$
 has not been studied as such. What holonomy adds is that every piece of the splitting is again holonomic, which is
@@ -269,9 +287,22 @@ and other constants, and the analytic properties of $\zeta_F$.
 %======================================================================
 \section{Definitions and examples}\label{sec:defs}
 
-\subsection{The regular class}
-Let $L = \sum_{i=0}^r p_i(x)\,\partial_x^i$ with $p_i \in \CC[x]$, $p_r \ne 0$, and suppose that $x = \infty$ is
-an ordinary point or a regular singular point of $L$, i.e.\ that $t = 1/x$ is such a point of the transformed
+\subsection{Holonomic functions and the regular class}
+A function $F$ of one variable, analytic on some open set, is \emph{holonomic} (or \emph{D-finite}) if it satisfies a
+linear differential equation $LF = 0$ with
+\[
+  L = \sum_{i=0}^r p_i(x)\,\partial_x^i, \qquad p_i \in \CC[x], \quad p_r \ne 0;
+\]
+equivalently, its derivatives span a finite-dimensional vector space over $\CC(x)$. A sequence $(a_n)$ is
+\emph{holonomic} (or \emph{P-recursive}) if it satisfies a linear recurrence $\sum_{i=0}^{d}c_i(n)a_{n+i} = 0$ with
+polynomial coefficients, $c_d \ne 0$. Holonomic functions are closed under sums, products, differentiation and
+integration and under composition with algebraic functions, and the coefficients of a power series are a holonomic
+sequence if and only if the series is a holonomic function \cite{Sta80}. Elementary functions such as $\exp$, $\log$
+and algebraic functions, the hypergeometric functions ${}_pF_q$, Bessel functions, the error function and the
+incomplete gamma functions are holonomic; $\Gamma(x)$, $\zeta(x)$ and $\tan x$ are not. The summands $F$ of this paper
+are holonomic functions with a restriction on their behaviour at $x = \infty$, which we now define.
+
+Let $L$ be as above, and suppose that $x = \infty$ is an ordinary point or a regular singular point of $L$, i.e.\ that $t = 1/x$ is such a point of the transformed
 operator. Let $R$ exceed the absolute values of the finite singular points of $L$. By Frobenius's method
 \cite[\S16]{Inc26}, every solution of $L$ on $(R, \infty)$ can be written as
 \begin{equation}\label{eq:frob}
@@ -1003,12 +1034,100 @@ $p$ bits in $O(p^{1/2}\Mul(p)\log^2 p)$ bit operations.
 
 The proof, a cost analysis of each piece of Theorem~\ref{thm:split}, is in Appendix~\ref{app:cost}.
 
-\begin{remark}
+\emph{Uniformity.} In Theorem~\ref{thm:complexity} everything is fixed except $p$. The proof only uses that the
+recurrences have coefficients of $O(\log p)$ bits, that the intermediate quantities are bounded by $2^{O(p)}$, and
+that the number of terms and the lengths of the series are $O(\sqrt p)$ and $O(p)$. This leaves room for the data to
+vary with $p$. For $\alpha$ in a number field $\mathbb K$ let
+$H(\alpha) = \prod_v\max(1,|\alpha|_v)^{[\mathbb K_v:\QQ_v]/[\mathbb K:\QQ]}$ be the absolute multiplicative height and
+$h(\alpha) = \log H(\alpha)$ the logarithmic height. An $\alpha \in \mathbb K$ with $H(\alpha) \le B$ can be written
+with $O(\log B)$ bits, all its conjugates are at most $B^{[\mathbb K:\QQ]}$ in absolute value, and, if $\alpha \ne 0$,
+$|\alpha| \ge B^{-[\mathbb K:\QQ]}$ (Liouville's inequality, from the product formula). By a \emph{Frobenius basis} at
+$\infty$ of an operator $L$ we mean a basis of solutions on $(R,\infty)$ of the form \eqref{eq:frob}.
+
+\begin{theorem}[uniformity]\label{thm:uniform}
+Fix a number field $\mathbb K \subset \CC$, an operator $L$ with coefficients in $\mathbb K[x]$ for which $\infty$ is
+an ordinary or regular singular point and whose exponents at $\infty$ lie in $\mathbb K$, a Frobenius basis
+$y_1, \dots, y_r$ of $L$ at $\infty$ whose power series have coefficients in $\mathbb K$, integers $k_0 > R$,
+$q \ge 1$ and $j \ge 0$, and a constant $c > 0$. For $p \ge 2$ let
+\begin{itemize}
+\item $s_0 \in \mathbb K$ with $H(s_0) \le p^c$ and $|s_0| \le cp/\log p$;
+\item $F(k) = \sum_{i=1}^r\lambda_iy_i(k)$ for $k \ge k_0$, with $\lambda_i \in \mathbb K$, and $F(1), \dots, F(k_0-1)
+\in \mathbb K$;
+\item $\chi\colon\ZZ \to \mathbb K$ periodic with period $q$;
+\end{itemize}
+where $h(\lambda_i)$, $h(F(k))$ and $h(\chi(k))$ are at most $cp$. Then the $j$-th Laurent coefficient of
+$L_F(s,\chi)$ at $s_0$ can be computed with absolute error at most $2^{-p}$ in $O(p^{1/2}\Mul(p)\log^2p)$ bit
+operations and $O(p)$ bits of memory, with implied constants depending only on the fixed data. If only
+$|s_0| \le cp$ is assumed, the bounds become $O(p^{1/2}\Mul(p)\log^{7/2}p)$ bit operations and $O(p\log p)$ bits.
+\end{theorem}
+
+The memory bounds assume that $p$-bit integers can be multiplied in time $\Mul(p)$ and space $O(p)$, as with
+FFT-based algorithms. Without the blocking of the binary splitting described in the proof, the memory is
+$O(p\log p)$ bits in the first case. The proof is in Appendix~\ref{app:uniform}. The hypotheses on $s_0$ are of two
+kinds. The bound $H(s_0) \le p^{O(1)}$ means that $s_0$ has $O(\log p)$ bits, which is what binary splitting needs;
+an $s_0$ of $p$ bits is in effect an arbitrary real number (Remark~\ref{rem:complexity}(1)). The bound on $|s_0|$
+keeps the intermediate quantities below $2^{O(p)}$, or $2^{O(p\log p)}$ in the second case. Some such bound is needed
+with real $u_0$: for $|\operatorname{Im}s_0| \gg p$ the cancellation $e^{\pi|\operatorname{Im}s_0|/4}$ exceeds
+$2^{O(p)}$ (Remark~\ref{rem:complexu0}), and for $s_0 \to -\infty$ the value itself may have more than $p$ bits
+before the point. For rational $s_0$, and for $s_0$ in an imaginary quadratic field, $|s_0| \le H(s_0)$, so the
+hypothesis of the second case is just $H(s_0) \le cp$. In a general number field a bound on $H(s_0)$ does not bound
+$|s_0|$ by $H(s_0)$ (consider the units of a real quadratic field). The coefficients $\lambda_i$, the initial values
+and the values of $\chi$ enter linearly, which is why heights $e^{O(p)}$ are allowed for them.
+
+The theorem applies at $s_0 = 1 - n$, where the values are rational and their size is known in advance. Let
+$B_n(x)$ and $E_n(x)$ be the Bernoulli and Euler polynomials, $B_n = B_n(0)$ and $E_n = 2^nE_n(\frac12)$, and, for a
+function $\chi$ of period $f$, let $B_{n,\chi} = f^{n-1}\sum_{a=1}^f\chi(a)B_n(a/f)$ be the generalized Bernoulli
+numbers.
+
+\begin{corollary}\label{cor:bernoulli}
+Fix a rational number $x$ and an integer $f \ge 1$. Then $B_n(x)$ and $E_n(x)$ can be computed exactly in
+$O(n^{1/2}\Mul(n)\log^{7/2}n) \subset n^{3/2+o(1)}$ bit operations and $O(n\log n)$ bits of memory. In particular this
+holds for $B_n$, for $E_n$, for the tangent and Genocchi numbers, and for $B_{n,\chi}$ for every $\chi$ of period $f$
+with values in a fixed number field.
+\end{corollary}
+
+\begin{proof}
+By $B_n(x+1) = B_n(x) + nx^{n-1}$ we may assume $0 < x = b/f' \le 1$, with $b, f'$ fixed. For $n \ge 1$ and
+$\operatorname{Re}s > 1$,
+\[
+  \zeta(s, x) = \sum_{k=0}^{\infty}(k+x)^{-s} = f'^{\,s}\sum_{k\equiv b \bmod f'}k^{-s} = f'^{\,s}L_1(s, \mathbf 1_{b+f'\ZZ}),
+\]
+and $\zeta(1-n, x) = -B_n(x)/n$, so $B_n(x) = -nf'^{\,1-n}L_1(1-n, \mathbf 1_{b+f'\ZZ})$. Write
+$B_n(x) = \sum_k\binom nkB_kx^{n-k}$. By von Staudt--Clausen the denominator of $B_k$ divides $\prod_{\ell\le k+1}\ell$
+over primes $\ell$, so $D_nB_n(x) \in \ZZ$ with $D_n = f'^{\,n}\prod_{\ell\le n+1}\ell = e^{O(n)}$. From
+$|B_k| \le 4k!/(2\pi)^k$ we get $|B_n(x)| \le 4n!\sum_k(2\pi)^{-k}/(n-k)! \le 4e\cdot n!$ for $0 \le x \le 1$. So
+$p = n\log_2n + O(n)$ bits of $L_1(1-n, \mathbf 1_{b+f'\ZZ})$ determine $B_n(x)$. Theorem~\ref{thm:uniform} applies
+with $F = 1$ ($L = \partial_x$), $\mathbb K = \QQ$, $j = 0$ and $s_0 = 1 - n$: $H(s_0) \le n \le p$ and
+$|s_0| \le n = O(p/\log p)$. The cost is $O(p^{1/2}\Mul(p)\log^2p)$ with $p = \Theta(n\log n)$, and
+$\Mul(n\log n) = O(\Mul(n)\log n)$. For the Euler polynomials,
+$E_n(x) = \frac2{n+1}(B_{n+1}(x) - 2^{n+1}B_{n+1}(\frac x2))$. The tangent and Genocchi numbers are $2^{2n}(2^{2n}-1)|B_{2n}|/(2n)$
+and $2(1-2^n)B_n$, and $B_{n,\chi}$ is a fixed linear combination of the rationals $f^{n-1}B_n(a/f)$.
+\end{proof}
+
+Equivalently, $L(1-n,\chi) = -B_{n,\chi}/n$ for every $\chi$ of period $f$, and
+$\beta(-n) = L(-n, \chi_{-4}) = E_n/2$ for the Dirichlet beta function. So the corollary computes the values of all
+Dirichlet $L$-functions of bounded conductor at the negative integers, exactly. These are the statements of
+\cite[Theorem~2]{Joh21} for $B_n$ and $E_n$, now with a complete proof, extended to $B_n(x)$ and $B_{n,\chi}$, and with
+the explicit bounds above. For comparison, the classical algorithms for $B_n$ (from $\zeta(n)$ by an Euler product,
+or multimodular \cite{Har10}) take $n^{2+o(1)}$ bit operations. Harvey's subquadratic algorithm \cite{Har14} has a
+time--space tradeoff: with a parameter $\frac13 \le \alpha \le \frac12$ it uses $n^{1+\alpha}\log^{4-\alpha+o(1)}n$
+bit operations and $O(n^{2-2\alpha}\log^{1+2\alpha}n)$ bits of memory. At $\alpha = \frac13$ it is faster than
+Corollary~\ref{cor:bernoulli}, $n^{4/3+o(1)}$, but needs $n^{4/3+o(1)}$ bits of memory. At $\alpha = \frac12$ its memory
+is quasilinear, $O(n\log^2n)$, and its time is $n^{3/2}\log^{7/2+o(1)}n$, comparable to the
+$O(n^{3/2}\log^{9/2}n)$ that Corollary~\ref{cor:bernoulli} gives with $\Mul(n) = O(n\log n)$. Harvey's algorithm is
+specific to $B_n$, computing it modulo many primes. We know of no other published subquadratic algorithm for $E_n$,
+$B_n(x)$ or $B_{n,\chi}$. With $F \ne 1$ the theorem gives, in the same way, the constant terms of $\zeta_F$ at
+$s = 1-n$, the zeta-regularized values of the divergent sums $\sum_kk^{n-1}F(k)$, at uniform cost for
+$n = O(p/\log p)$. These are in general transcendental (Proposition~\ref{prop:negative}).
+
+\begin{remark}\label{rem:complexity}
 \begin{enumerate}
 \item For $s_0$ given only by approximations the series can no longer be summed by binary splitting and the cost
 is $p^{2+o(1)}$; the same is true if the coefficients of $f$ are not algebraic.
-\item The bound is not uniform in $s_0$: the constants grow with the height of $s_0$, and, for real $u_0$,
-exponentially with $|\operatorname{Im}s_0|$ (Remark~\ref{rem:complexu0}).
+\item The bound of Theorem~\ref{thm:complexity} does not depend on $s_0$ as long as $H(s_0) = p^{O(1)}$ and
+$|s_0| = O(p/\log p)$ (Theorem~\ref{thm:uniform}). Beyond that, with real $u_0$, the cost grows exponentially with
+$|\operatorname{Im}s_0|$ (Remark~\ref{rem:complexu0}). The dependence on $L$ (order, degree and size of the
+coefficients) is not uniform.
 \item In floating-point evaluation of $M$, the functions $P(a,x)$ for $k < k_0$ must be computed directly from the
 lower series and not as $1 - Q(a,x)$, since they are multiplied by $a_nk^{-n}$, which may be exponentially large.
 \end{enumerate}
@@ -1354,7 +1473,8 @@ so that every $k$-term and dual term is a series rather than a single incomplete
 in $f$, and the contributions of the terms $x^1$ of $x$ and $\log(1+x)$ cancel). The classical formulas are the
 special case of the monomial kernel at the self-dual point $u_0 = \pi$; the new ones exist because the $\gamma_n$ are
 also sums of holonomic functions. They are not meant to be competitive: $\gamma$ can be computed in quasilinear time
-\cite{BM80}, and the $\gamma_n$ in time $p^{3/2+o(1)}$ \cite{Joh21}. In the same way Glaisher's constant is a value at
+\cite{BM80}, and the $\gamma_n$ in time $p^{3/2+o(1)}$ by Theorem~\ref{thm:complexity} with $F = 1$ (see also
+\cite{Joh21}). In the same way Glaisher's constant is a value at
 $s = 0$,
 \[
   \sum_{k=1}^{\infty}\Bigl(3k + \frac12 - k(3k+2)\log\Bigl(1+\frac1k\Bigr)\Bigr) = 6\log A - \frac12 - \frac12\log(2\pi),
@@ -1821,7 +1941,11 @@ With \eqref{eq:kernelparts},
 \]
 (or $\pi^2m^2/q^2$), and by Lemma~\ref{lem:kernelhol} and Proposition~\ref{prop:dual} it is a fixed linear form in the
 solution $Y(c)$ of a system \eqref{eq:fuchsys} of fixed dimension (two blocks, for $G_0$ and $G_1$), whose matrices
-depend only on $f$, $s$ and $u_0$, with entries in a fixed number field times powers $u_0^{s/2}$ that are computed
+depend only on $f$, $s$ and $u_0$. We multiply $G_0$ and $G_1$ by the constants $\Gamma(m_2 + \frac s2)$ and
+$\Gamma(m_2 + \frac{s+1}2)$, with $m_2$ the least integer for which their real parts are at least $\frac12$. Then their
+power series coefficients become rational functions of $s$. We also replace $E$ by $\widetilde E = Eu_0^{1-t}$, which
+satisfies $c\,\partial_c\widetilde E = -(c/u_0)\widetilde E$. After this, the entries of $B_0$ and $B_1$ are polynomials in $s$
+with coefficients in a fixed number field, and the inverse factors $1/\Gamma$ and the powers $u_0^{1-t}$ are computed
 once. We evaluate it by the bit-burst algorithm from a rational point $c_0$ with $c_0 \le c$ and $|c - c_0| \le 2^{-8}c$.
 
 \emph{Starting values.} By \eqref{eq:startvals}, the components of $Y(c_0)$ are series of the form
@@ -1875,6 +1999,137 @@ algebraic coefficients of $O(\sqrt p)$ $k$-terms and dual terms and the main ter
 bits in $O(\Mul(p)\log^2p)$ bit operations, with coefficients bounded by $p^{O(1)}$. Arithmetic in a fixed number field
 costs $O(1)$ multiplications of rationals per operation.
 \end{proof}
+
+\subsection{Uniformity and memory}\label{app:uniform}
+\begin{proof}[Proof of Theorem~\ref{thm:uniform}]
+Assume first that $|s_0| \le cp/\log p$, and let $S = |s_0| + 2$, so that $S\log S \le c'p$. Constants in $O(\cdot)$
+depend only on the fixed data. The cost bounds of Section~\ref{app:tools} depend on four quantities:
+\begin{enumerate}
+\item[(a)] the numbers of $k$-terms and dual terms;
+\item[(b)] the lengths of the series;
+\item[(c)] the bit sizes of the coefficients of their recurrences;
+\item[(d)] the size of the intermediate quantities, which determines the guard bits.
+\end{enumerate}
+We show that (a) is $O(\sqrt p)$, (b) is $O(p)$, (c) is $O(\log p)$ (up to $O(\log p)$ times the step index in the
+bit-burst, as there), and (d) is $2^{O(p)}$, so that $O(p)$ guard bits suffice. Then the proof of
+Theorem~\ref{thm:complexity} goes through unchanged. Elements of $\mathbb K$ of height $p^{O(1)}$ have $O(\log p)$ bits.
+
+\emph{The gamma function.} We use three estimates.
+\begin{itemize}
+\item[(G1)] If $\operatorname{Re}w \ge \frac12$, then
+\[
+  \Bigl|\frac1{\Gamma(w)}\Bigr| \le \frac{e^{\pi|\operatorname{Im}w|/2}}{\Gamma(\operatorname{Re}w)}.
+\]
+Indeed,
+$|\Gamma(x)/\Gamma(x+iy)|^2 = \prod_{n\ge0}(1 + y^2/(x+n)^2)$ decreases in $x$ and equals $\cosh\pi y$ at $x = \frac12$.
+Also $|\Gamma(w)| \le \Gamma(\operatorname{Re}w)$, and $\Gamma \ge 0.88$ on $(0,\infty)$.
+\item[(G2)] If $|w| \le 2S$, then
+$|1/\Gamma(w)| \le e^{O(S\log S)} = 2^{O(p)}$, by (G1) or by $1/\Gamma(w) = \Gamma(1-w)\sin(\pi w)/\pi$.
+\item[(G3)] If moreover
+$w \in \mathbb K$, $H(w) \le p^{O(1)}$ and $w$ is not a pole, then $|\Gamma(w)| \le 2^{O(p)}$. To see this, write
+$\Gamma(w) = \Gamma(w+N)/(w)_N$ with $N = \lceil 2S\rceil + 1$. In $(w)_N$ every factor but the one nearest to $0$ has
+absolute value at least $\frac12$, and that one is at least $p^{-O(1)}$ by Liouville's inequality. In the same way
+$|s_0 + \sigma + n|^{-1} \le p^{O(1)}$ for the exponents $\sigma$ and integers $n$ with $s_0 + \sigma + n \ne 0$.
+\end{itemize}
+
+\emph{Reduction.} Lemma~\ref{lem:reduction}, applied to each $y_i$, and the decomposition of $\chi$ into the indicator
+functions of the $q$ residue classes write the Laurent coefficient as a linear combination of a fixed finite set of
+pieces. The coefficients are the $\lambda_i\chi(a)$ times fixed algebraic numbers, and the pieces are Laurent
+coefficients of bounded order of the functions $\sum_{k\ge k_0,\,k\equiv a}f(1/k)k^{-s}$ at the points
+$s_0 + \sigma$, together with the terms $F(k)\chi(k)k^{-s}$ for $k < k_0$. Here $f$ and $\sigma$ range over fixed
+finite sets. The coefficients have $O(p)$ bits and absolute value $e^{O(p)}$, so each piece is needed with absolute
+error $2^{-O(p)}$, and the $O(1)$ multiplications by coefficients cost $O(\Mul(p))$. The points $s_0 + \sigma$ satisfy
+the hypotheses on $s_0$ with a larger $c$. So we may assume that $F = f(1/k)$ is fixed and that $\chi$ is a fixed
+indicator function. The weights $w(k)$, the Gauss sums and the dual points of Remark~\ref{rem:twist} are then fixed.
+
+\emph{Truncation.} Let $s = s_0$. In the kernel
+\[
+  h_s(u) = \sum_{n=0}^{\infty}a_n\frac{u^{(s+n)/2-1}}{\Gamma(\frac{s+n}2)},
+\]
+use (G2) for the $O(S)$ indices $n$ with $\operatorname{Re}\frac{s+n}2 < \frac12$ and (G1) for the others.
+Summing gives
+\begin{alignat*}{2}
+  |h_s(u)| &\le 2^{O(p)}(1+u)^2e^{R^2u} &\qquad& (u \ge u_0), \\
+  |h_s(u)| &\le 2^{O(p)}u^{-S/2-1} && (0 < u \le u_0).
+\end{alignat*}
+The first bound gives $|I_k(s)| \le 2^{O(p)}e^{-(k^2-R^2)u_0}$. For the second, use the inequality
+$e^{-\pi^2m^2/u} \le e^{-\pi^2m^2/(2u_0)}e^{-\pi^2m^2/(2u)}$ and $\max_{u>0}u^{-A}e^{-b/u} \le A^A$ for $b \ge 1$. This
+gives $|J_m(s)| \le 2^{O(p)}e^{-\pi^2m^2/(2u_0)}$, and the same holds for the twisted dual terms. Hence (a) holds:
+$O(\sqrt p)$ terms on each side reach $2^{-O(p)}$. The same bounds, with $s$ in the disk $|s - s_0| \le 1$, bound the
+Taylor coefficients of every piece at $s_0$ by $2^{O(p)}$, by Cauchy's estimate.
+
+\emph{$k$-terms.} In \eqref{eq:Ik}, factor out $1/\Gamma(\frac s2 + j_1 + 1)$ instead of $1/\Gamma(\frac s2 + 1)$, with
+$j_1 = O(S)$ the least index for which $\operatorname{Re}(\frac s2 + j_1 + 1) \ge \frac12$, and likewise for the odd
+part. The terms with $j \ge j_1$ then follow a recurrence that divides only by numbers $\frac s2 + j + 1$ of real part
+at least $\frac12$. These are units of $\mathbb K[\varepsilon]/(\varepsilon^{j+1})$ when $s = s_0 + \varepsilon$. The
+$O(S)$ terms with $j < j_1$ are polynomials in $s$ times that factor. By (G1) and (G2),
+$\sum_j x^j|1/\Gamma(\frac s2+j+1)| \le 2^{O(p)}x^{S}e^x$, and $x^S = 2^{O(p)}$ since $x = k^2u_0 = O(p)$. So the
+terms of the double sums are at most $2^{O(p)}|a_{2m}|K^{-m}$, which gives (b) and (d). The coefficients are
+polynomials in $s$, $m$ and $j$ of bounded degree, hence (c). Further, $|k^{-s}| \le k^S = 2^{O(p)}$, and $A_0(1/K)$,
+$A_1(1/K)$ do not depend on $s$.
+
+\emph{Incomplete gamma functions.} For $|a| \le 2S$ and rational $0 < y = O(p)$ write
+$P(a,y) = y^ae^{-y}\sum_iy^i/\Gamma(a+i+1)$ and factor out $1/\Gamma(a+i_1+1)$ as above. The terms are at most
+$2^{O(p)}y^{S}e^{y}\cdot 2^{-i}$ for $i \ge 2y + 2S$, so $O(p)$ terms and $O(p)$ guard bits suffice. The factors
+$1/\Gamma(w)$ with $\operatorname{Re}w \ge \frac12$, $|w| \le 3S$, of which $O(1)$ are needed, come from
+$\Gamma(w) = \gamma(w,N) + \Gamma(w,N)$ with $N = O(p)$. Here $|\Gamma(w,N)| \le N^{3S}e^{-N} \le 2^{-\Omega(p)}$
+and $|\Gamma(w)| \ge 0.88\,e^{-\pi S/2}$ by (G1), so $O(p)$ guard bits give $1/\Gamma(w)$.
+
+\emph{Dual terms.} After the normalization of the dual terms in Section~\ref{app:cost}, the entries of $B_0$ and
+$B_1$ in \eqref{eq:fuchsys} are polynomials in $s$ of bounded degree with fixed coefficients. Their dimension does not
+depend on $s$. So their entries have $O(\log p)$ bits and $\|B_0\| + \|B_1\| \le p^{A_0}$ for a fixed $A_0$. For
+$\operatorname{Re}c' \ge \frac12\pi^2$ the components of $Y(c')$ are at most $2^{O(p)}$, by the bounds on $h_s$ and
+$|u^{-t}| \le u^{-S}$. We now take the starting point $c_0 \le c$ much closer to $c$ than before. Let
+$\rho = cp^{-A}$ with $A = A_0 + 2$, and take $c - c_0 \le \rho/2$; this still leaves $c_0$ with $O(\log p)$ bits. On
+the disk $|c' - c_0| \le \rho$, Gronwall's inequality bounds the transition matrices of \eqref{eq:fuchsys} and their
+inverses by $\exp\bigl(\rho(\|B_0\|/(c_0-\rho) + \|B_1\|)\bigr) = O(1)$, since $c = O(p)$. So errors in $Y(c_0)$ are not
+amplified, and on this disk $|Y| = O(|Y(c_0)|)$, which bounds the Taylor tails by Cauchy's estimate. In the
+bit-burst, the first step goes from $c_0$ to a point at distance at most $\rho/2$. It has $O(p)$ terms with
+$O(\log p)$-bit coefficients. The later steps have $|c_{i+1} - c_i| \le c\,2^{-b_i}$ with
+$b_i = 2^ib_0 \ge 2A\log_2p$. Their ratio to $\rho$ is at most $2^{-b_i/2}$, so they have $O(p/b_i)$ terms of $O(b_i)$
+bits, as in Section~\ref{app:tools}. For the starting values at $c_0$, choose a base exponent $a_*$ in each class of exponents modulo $\ZZ$. In
+a class of non-integers, take the least exponent that occurs. In the class of integers (if the exponents at $s_0$ are
+integers), take $a_* = 0$, with $D_0 = E_1(c_0/u_0)$. Going up from $a_*$, \eqref{eq:Drec} divides by
+$a = a_* + n \ne 0$, and $|a| \ge p^{-O(1)}$ by Liouville's inequality. Going down from $0$, it divides by $c_0$.
+Going up, the coefficients are $\alpha_a = (-c_0)^n/(a_*+1)_n$, bounded by
+$2^{O(p)}c_0^n/\Gamma(\operatorname{Re}a_* + n + 1)$ by (G1)--(G3). Going down from $0$ they are at most
+$n!\,c_0^{-n}u_0^{O(1)} = 2^{O(p)}$, since $n = O(S)$. The estimate
+for the cancellation in Section~\ref{app:cost} becomes $2^{O(p)}e^{2R\sqrt{c_0}}c_0^{O(S)} = 2^{O(p)}$, so
+$O(p)$ guard bits suffice. The base values $D_{a_*}(c_0) = c_0^{a_*}(\Gamma(-a_*) - \gamma(-a_*, c_0/u_0))$ need
+$\Gamma(-a_*) \le 2^{O(p)}$ (G3), or $E_1$, and the series of the previous paragraph. With $s = s_0 + \varepsilon$
+the exponents are $a + \frac\varepsilon2$, and the divisions by $a + \frac\varepsilon2$ with $a \ne 0$ are by units
+whose inverses have coefficients of size $p^{O(j)}$. The base values are then computed as jets in $a$, as in
+Section~\ref{app:jets}.
+
+\emph{Main term and jets.} The terms of $M(s)$ are bounded as those of $h_s$, with $u_0^{n/2}$ in place of $u^{n/2}$.
+Its only small divisors are $s + n - 1 \ne 0$, of size at least $p^{-O(1)}$. At a pole $s_0 = 1 - n_1$, where
+$n_1 = O(S)$, one term is singular and is expanded explicitly. Truncated power series in $\varepsilon$ of fixed
+length multiply all costs by a constant.
+
+Hence every piece costs $O(\Mul(p)\log^2p)$ bit operations at precision $O(p)$, and there are $O(\sqrt p)$ of them.
+
+\emph{Memory.} The pieces are computed one after another and added to a running sum. The precomputed constants
+($\pi$, the factors $1/\Gamma$, the powers of $u_0$, the base values and the logarithms $\log k$ as they are needed)
+are $O(1)$ numbers of $O(p)$ bits at any time. Each piece is a fixed number of series summed by binary splitting, or a
+bit-burst evaluation, which is a sequence of $O(\log p)$ such series. Take a series of $N$ terms whose recurrence
+coefficients have $b$ bits, with $Nb = O(p\log p)$. Split it into blocks of $\lceil p/b\rceil$ consecutive terms. The
+product tree of a block has $O(p)$ bits on each level. Computed depth-first, it occupies $O(p)$ bits at any time, plus
+$O(p)$ for multiplication, and costs $O(\Mul(p)\log p)$. The $O(Nb/p)$ block matrices are multiplied in turn into a
+running product rounded to $O(p)$ bits, at cost $O(\Mul(p))$ each. The total time is $O(\Mul(p)\log^2p)$, as without
+blocking. The entries of the normalized partial products are the partial sums and terms of the series, so by (d) they
+are at most $2^{O(p)}$, and the rounding errors are absorbed by $O(p)$ guard bits. Hence the memory is $O(p)$ bits.
+Without blocking, the top of the product tree has $O(Nb) = O(p\log p)$ bits.
+
+\emph{Large $|s_0|$.} If only $|s_0| \le cp$, run the algorithm with precision $P = \lceil p\log_2p\rceil$. For
+$p \ge p_0$ the hypotheses hold with $P$ in place of $p$ and $2c$ in place of $c$: $|s_0| \le cp \le 2cP/\log P$ and
+$H(s_0) \le P^c$. The result has error at most $2^{-P} \le 2^{-p}$. The time is $O(P^{1/2}\Mul(P)\log^2P) =
+O(p^{1/2}\Mul(p)\log^{7/2}p)$, by $\Mul(p\log p) = O(\Mul(p)\log p)$, and the memory is $O(P) = O(p\log p)$.
+\end{proof}
+
+We have not written out the corresponding modifications of the proof of Theorem~\ref{thm:geometric}(2). The new
+ingredients would be the same: (G1)--(G3), the closer starting points and the choice of base exponents. With them, the
+same argument would also give, for instance, the Fubini numbers $\sum_{k\ge1}k^n2^{-k-1} = \frac12\Li_{-n}(\frac12)$
+exactly in $n^{3/2+o(1)}$.
 
 \subsection{Geometric factors}\label{app:geometric}
 \begin{proof}[Proof of Theorem~\ref{thm:geometric}(2)]
@@ -1955,11 +2210,10 @@ transformation), at the price of $O(p^{d/2})$ terms.
 \end{remark}
 
 \begin{remark}[Uniformity]\label{rem:uniform}
-For $f = 1$ the kernel is a monomial and every term is a single incomplete gamma function; this is the approximate
-functional equation for $L(s,\chi)$, and \cite{Joh21} shows that the cost remains $p^{3/2+o(1)}$ even when $s$ grows
-with $p$, which gives exact Bernoulli numbers $B_n$ in $n^{3/2+o(1)}$. Theorem~\ref{thm:complexity} is uniform only
-for fixed $F$ and $s_0$: its constants grow with the order and degree of the equation for $f$, the size of its
-coefficients, and the height of $s_0$.
+For $f = 1$ the kernel is a monomial and every term is a single incomplete gamma function. This is the approximate
+functional equation for $L(s,\chi)$, the case treated in \cite{Joh21}. Theorem~\ref{thm:uniform} gives uniformity in
+$s_0$ and in the coordinates of $F$, but not in the operator $L$. The constants grow with the order and degree of
+$L$, with the size of its coefficients and with the degree of $\mathbb K$.
 \end{remark}
 
 \section{Computing Khinchin's constant}\label{app:khinchin}
@@ -2968,6 +3222,7 @@ $\frac12 - n_0 < \operatorname{Re}s < 1 - n_0$? Is it hypertranscendental?
 \bibitem{Gau05} W.~Gautschi, The Hardy--Littlewood function: an exercise in slowly convergent series, J.\ Comput.\ Appl.\ Math.\ (2005), 249--254.
 \bibitem{Gha26} R.~K.~Ghazi, khinchin-fast: Khinchin's constant to $2\,000\,000$ certified decimal digits, Zenodo, 2026, \url{https://doi.org/10.5281/zenodo.22134905}.
 \bibitem{Har10} D.~Harvey, A multimodular algorithm for computing Bernoulli numbers, Math.\ Comp.\ 79 (2010), 2361--2370.
+\bibitem{Har14} D.~Harvey, A subquadratic algorithm for computing the $n$-th Bernoulli number, Math.\ Comp.\ 83 (2014), 2471--2477.
 \bibitem{HL23} G.~H.~Hardy and J.~E.~Littlewood, The approximate functional equation in the theory of the zeta-function, with applications to the divisor-problems of Dirichlet and Piltz, Proc.\ London Math.\ Soc.\ (2) 21 (1923), 39--74.
 \bibitem{HLS24} D.~Harnett, S.~Li and T.~G.~Steele, Numerically computing finite temperature loop integrals using pySecDec, Eur.\ Phys.\ J.\ A (2024), arXiv:2401.05258.
 \bibitem{HP98} B.~Haible and T.~Papanikolaou, Fast multiprecision evaluation of series of rational numbers, Proc.\ ANTS-III, LNCS 1423, Springer, 1998, 338--350.
@@ -2999,6 +3254,7 @@ Hamburg 27 (1964), 142--144.
 \bibitem{Sar84} P.~Sargos, Prolongement m\'eromorphe des s\'eries de Dirichlet associ\'ees \`a des fractions rationnelles de plusieurs variables, Ann.\ Inst.\ Fourier 34 (1984), no.~3, 83--123.
 \bibitem{SH07} J.~Sondow and P.~Hadjicostas, The generalized-Euler-constant function $\gamma(z)$ and a generalization of Somos's quadratic recurrence constant, J.\ Math.\ Anal.\ Appl.\ 332 (2007), 292--314.
 
+\bibitem{Sta80} R.~P.~Stanley, Differentiably finite power series, European J.\ Combin.\ 1 (1980), 175--188.
 \bibitem{Ste07} J.~Steuding, \emph{Value-Distribution of $L$-Functions}, Lecture Notes in Math.\ 1877, Springer, 2007.
 \bibitem{Tit86} E.~C.~Titchmarsh, \emph{The Theory of the Riemann Zeta-Function}, 2nd ed., revised by D.~R.~Heath-Brown, Oxford University Press, 1986.
 \bibitem{vdH99} J.~van der Hoeven, Fast evaluation of holonomic functions, Theoret.\ Comput.\ Sci.\ 210 (1999), 199--215.
