@@ -1,5 +1,6 @@
 /* Shared engine for the theta-splitting programs; see engine.h. */
 #include <math.h>
+#include <stdlib.h>
 #include <pthread.h>
 #include <time.h>
 #include <sys/resource.h>
@@ -10,6 +11,7 @@ arb_t U0, SQRT_U0;
 double U0_D;
 slong U0_EXP;
 int ENGINE_THREADS = 1;
+int ENGINE_NEED_MAIN = 1;
 
 void engine_set_u0(slong a, slong prec)
 {

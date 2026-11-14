@@ -1946,7 +1946,8 @@ recurrences.
 $k$-terms need only relative precision $p - (k^2u_0)\log_2 e$ and the dual terms $p - (c/u_0)\log_2e$, which also
 shortens the series. (3) For $u_0 = 4^{-a}$ the arguments $k\sqrt{u_0}$ and $c_0/u_0$ are short dyadic numbers, so the
 incomplete gamma values are cheap binary splitting series. (4) A dual term is typically several dozen times as
-expensive as a $k$-term, which pushes the optimal $u_0$ below $1$ (in our applications $u_0 = \frac1{16}$).
+expensive as a $k$-term, which pushes the optimal $u_0$ below $1$ (in most of our applications $u_0 = \frac1{16}$; for
+Somos's constant, whose $k$-terms are single incomplete gamma values, $u_0 = 1$).
 (5) The weights $e^{-k^2u}$ can be replaced by $e^{-Q(k)u}$ for a positive definite quadratic form $Q$ in several
 variables, which gives the corresponding statement for lattice sums $\sum_{k \in \ZZ^d}F(Q(k))$ (with Ewald's theta
 transformation), at the price of $O(p^{d/2})$ terms.

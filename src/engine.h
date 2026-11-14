@@ -34,6 +34,7 @@ extern double U0_D;
 void engine_set_u0(slong a, slong prec);     /* u0 = 4^-a */
 extern slong U0_EXP;                         /* a */
 extern int ENGINE_THREADS;                   /* --threads, for parallel precomputations in setup */
+extern int ENGINE_NEED_MAIN;                 /* 0 if this process does not need the main term (--part I/N, I > 0) */
 void engine_clear(void);
 
 /* ---------------- binary splitting ----------------

@@ -49,3 +49,15 @@
 | hardy_littlewood | zeta | 100000 |  |  |  |  | 304 / 39.13 | 51 | ok | agrees with 9 other runs |
 | hardy_littlewood | em | 100000 |  |  |  |  | 1925 / 345 | 356 | ok | agrees with 9 other runs |
 | hardy_littlewood | theta | 1000000 | 241 | 3034 | 18133 / 2271 | 10331 / 1292 | 28465 / 3564 | 2497 | ok | agrees with 9 other runs |
+| somos | theta | 1000 | 15 | 49 | 0.17 / 0.09 | 0.09 / 0.04 | 0.26 / 0.14 | 15 | ok | agrees with 5 other runs |
+| somos | direct | 1000 |  |  |  |  | 0.01 / 0.00 | 20 | ok | agrees with 5 other runs |
+| somos | theta | 10000 | 48 | 152 | 9.68 / 4.93 | 4.25 / 2.14 | 14.01 / 7.15 | 19 | ok | agrees with 5 other runs |
+| somos | direct | 10000 |  |  |  |  | 1.03 / 0.53 | 25 | ok | agrees with 5 other runs |
+| somos | theta | 100000 | 152 | 480 | 518 / 261 | 222 / 112 | 743 / 375 | 42 | ok | agrees with 5 other runs |
+| somos | direct | 100000 |  |  |  |  | 125 / 64.66 | 1190 | ok | agrees with 5 other runs |
+| expsqrt | theta | 1000 | 3 | 196 | 0.06 / 0.03 | 0.29 / 0.15 | 0.36 / 0.18 | 19 | ok | agrees with 5 other runs |
+| expsqrt | em | 1000 |  |  |  |  | 0.03 / 0.02 | 20 | ok | agrees with 5 other runs |
+| expsqrt | theta | 10000 | 12 | 608 | 8.68 / 4.45 | 13.18 / 6.67 | 21.87 / 11.14 | 25 | ok | agrees with 5 other runs |
+| expsqrt | em | 10000 |  |  |  |  | 8.48 / 4.54 | 29 | ok | agrees with 5 other runs |
+| expsqrt | theta | 100000 | 38 | 1920 | 490 / 248 | 646 / 325 | 1135 / 573 | 171 | ok | agrees with 5 other runs |
+| expsqrt | em | 100000 |  |  |  |  | 2395 / 1303 | 336 | ok | agrees with 5 other runs |

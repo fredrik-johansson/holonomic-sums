@@ -104,10 +104,13 @@ static void X_k(arb_t res, slong idx, slong prec, void * unused)
         Bs.d = 3; Bs.s = 2; Bs.leaf = xk_leaf; Bs.ctx = &c;
         arb_one(x0); arb_div_ui(x0, x0, rr == 1 ? 1 : (rr == 2 ? 2 : 6), W + 32);
         arb_set(x0 + 1, x0); arb_set(x0 + 2, x0);
+        { double t0 = cpu_seconds(), t1;
         bs_eval(NULL, sm, x0, 0, N, &Bs, W + 32);
+        t1 = cpu_seconds();
         /* B = Q(1 - rr/4, x) */
         fmpq_set_si(a, 4 - rr, 4);
         gamma_upper_fmpq_exact(B, a, xa, X_gam[4 - rr], W + 32);
+        if (getenv("HOLSUM_PROF")) flint_fprintf(stderr, "k=%wd rr=%d N=%wd W=%wd series %.3f gamma %.3f\n", k, rr, N, W, t1 - t0, cpu_seconds() - t1); }
         arb_mul(B, B, X_ig1[rr], W + 32);
         /* k^(rr/2) */
         if (rr == 2) arb_set_ui(sk, k);

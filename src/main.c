@@ -155,6 +155,7 @@ int main(int argc, char ** argv)
     {
         wrap_ctx w;
         ENGINE_THREADS = threads;
+        ENGINE_NEED_MAIN = (part == 0);
         C->setup(prec);
         setup_cpu = cpu_seconds() - c0; setup_wall = wall_seconds() - w0;
         nd = (C->dual_count != NULL) ? C->dual_count(prec) : dual_term_count(prec);

@@ -790,6 +790,8 @@ static void somos_setup(slong prec)
 
     /* n = 0: (sqrt(pi)/2) (Re J0' - (tau/2) Re J1'), with |y| = tau^2/(4 u0), c = -tau^2/4,
        Re J0' = -sqrt(pi) erfi(sqrt|y|)/(2 sqrt(u0) sqrt|y|), Re J1' = (e^|y| L0 + Ei(|y|))/(2 sqrt(pi) c) */
+    arb_zero(S_main);
+    if (!ENGINE_NEED_MAIN) return;
     wp = prec + 128;
     arb_init(t); arb_init(u); arb_init(ay); arb_init(ra); arb_init(J0); arb_init(J1); arb_init(c);
     arb_mul_2exp_si(ra, S_log2, U0_EXP - 1);                         /* sqrt|y| = tau/(2 sqrt u0) */
