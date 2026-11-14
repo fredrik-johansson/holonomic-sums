@@ -2420,6 +2420,46 @@ $M = 2 - \frac{\sqrt\pi}2T_{1/2} - \frac12(1 - T_1)$. We use $u_0 = \frac1{16}$.
 summation, with the Taylor coefficients of $e^{-\sqrt x}$ at the cutoff from $4xF'' + 2F' - F = 0$ and
 $\int_M^\infty e^{-\sqrt x}\dd x = 2(\sqrt M+1)e^{-\sqrt M}$.
 
+Table~\ref{tab:damped} shows the timings, on a virtual machine with $2$ cores (not the machine of
+Tables~\ref{tab:apps} and~\ref{tab:appsref}). The runs at $10^6$ digits were split into pieces by residue classes of the
+term indices (\texttt{--part}), and the CPU times are summed over the pieces, counting the precomputation once. All
+results agree where they overlap, and at $u_0 = \frac14$ and $u_0 = \frac1{16}$ (Somos) and $u_0 = 1$ and
+$u_0 = \frac14$ ($\sum_ke^{-\sqrt k}$) at $10^3$ and $10^4$ digits. The theta splitting grows by factors of
+DAMPEDRATIOS per decade from $10^5$ to $10^6$ digits. For $\sum_ke^{-\sqrt k}$ the reference is slower already at
+$10^5$ digits. For $\sigma$ it is not: the special structure of $\sum_k2^{-k}\log k$ makes the sum over prime powers
+a very cheap quasi-quadratic method (about $p/\log p$ logarithms of primes, each a short binary splitting series),
+which grows by a factor of about $120$ per decade but is $6$ times faster than the theta splitting at $10^5$ digits, so
+that the crossover should be near $10^7$ digits. For the generating function $\sum_kF(k)2^{-k}$ of a general regular $F$
+there is no such shortcut.
+
+\begin{table}[tp]
+\centering\small
+\caption{Timings for Somos's constant $\sigma$ and for $\sum_ke^{-\sqrt k}$ on $2$ cores: theta splitting (CPU time
+summed over the threads, with the fraction spent on the $k$-side in parentheses, wall time, peak memory) and the
+reference methods (CPU and wall time).}
+\label{tab:damped}
+\begin{tabular}{llrrrrr}
+\toprule
+constant & digits & $k$/dual terms & CPU ($k$-side) & wall & memory & reference \\
+\midrule
+$\sigma$ & $10^4$ & $152$/$48$ & $14.0$\,s ($0.30$) & $7.15$\,s & $19$\,MB & $1.03$\,s \\
+ & $10^5$ & $480$/$152$ & $743$\,s ($0.30$) & $375$\,s & $42$\,MB & $125$\,s \\
+ & $10^6$ & $1\,517$/$483$ & $38\,519$\,s ($0.28$) & $19\,518$\,s & $347$\,MB & -- \\
+\midrule
+$\sum_ke^{-\sqrt k}$ & $10^4$ & $608$/$12$ & $21.9$\,s ($0.60$) & $11.1$\,s & $25$\,MB & $8.48$\,s \\
+ & $10^5$ & $1\,920$/$38$ & $1\,135$\,s ($0.57$) & $573$\,s & $171$\,MB & $2\,395$\,s \\
+ & $10^6$ & EXPSQRTROW \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The values are
+\begin{align*}
+  \sigma &= 1.66168794963359412129581892274995074996441863502506\ldots, \\
+  \sum_{k=1}^{\infty}e^{-\sqrt k} &= 1.67040681796633972123962780986372002147147238406408\ldots
+\end{align*}
+The OEIS lists $\sigma$ to about $1\,000$ digits \cite[A112302]{OEIS}.
+
 \subsection{Computations}\label{sec:appcomp}
 Tables~\ref{tab:apps} and~\ref{tab:appsref} show timings of \texttt{holsum} with $8$ threads (on the machine of
 Section~\ref{sec:khresults}) for $\mathcal A$, $\mathcal C$, $T$ (for $K_{-1}$), the vortex sum at $\lambda = 1$
