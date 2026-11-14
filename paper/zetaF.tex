@@ -50,11 +50,18 @@
 \begin{document}
 
 \begin{abstract}
-For a holonomic function $F$ that is regular at infinity we study the special functions $\sum_{k}F(k)k^{-s}$,
-$\sum_kF(k)z^kk^{-s}$ and their relatives, of which most infinite sums of holonomic functions are values.
-Generalizing Riemann's theta-function splitting, we write each of them as two rapidly convergent sums of values of
-holonomic functions. When $F$ is defined over $\Qbar$, the values and derivatives at algebraic points can be computed
-to $p$ bits in $p^{3/2+o(1)}$ bit operations. For example, we obtain the first known subquadratic algorithm for
+For a holonomic function $F$ that is regular at infinity we study the zeta function
+$\zeta_F(s) = \sum_{k}F(k)k^{-s}$.
+Using Riemann's theta-function splitting, we write
+$\zeta_F$ as two rapidly convergent sums of values of
+holonomic functions.
+We show that when the expansion of $F$ at infinity has algebraic coefficients, the
+values and derivatives of $\zeta_F$ at algebraic $s$ can be computed
+to $p$ bits in $p^{3/2+o(1)}$ bit operations.
+These results also hold for polylogarithm-type and Lerch-type sums over $F$.
+As a result, we obtain first known subquadratic algorithms for computing a large class of numbers
+expressible as infinite sums of holonomic functions;
+for example, we obtain the first such algorithm for
 Khinchin's constant, which we compute to $10^7$ digits.
 \end{abstract}
 
@@ -69,44 +76,45 @@ Euler's constant and Khinchin's constant have strikingly similar series,
   \gamma &= \sum_{k=1}^{\infty}\Bigl(\frac1k - \log\Bigl(1+\frac1k\Bigr)\Bigr), \\
   \log K\,\log 2 &= -\sum_{k=2}^{\infty}\log\Bigl(1-\frac1k\Bigr)\log\Bigl(1+\frac1k\Bigr),
 \end{align*}
-both of the form $\sum_{k=k_0}^{\infty} F(k)$ with $F$ holonomic and analytic at infinity. Euler's constant also has a
-second life as a coefficient of a Dirichlet series: $\zeta(s) = 1/(s-1) + \gamma + O(s-1)$. The same is
-true of Khinchin's constant, the limit
+both of the form $\sum_{k=k_0}^{\infty} F(k)$ with $F$ holonomic and analytic at infinity.
+Euler's constant also has a second life as a particular value (here in the regularized sense)
+of a Dirichlet series, $\zeta(s) = \sum_{k=1}^{\infty} k^{-s} = \tfrac{1}{s-1} + \gamma + O(s-1)$.
+The same is true for Khinchin's constant, the limit
 \[
   K = \lim_{n\to\infty}(a_1a_2\cdots a_n)^{1/n} = 2.6854520010\ldots
 \]
 of the geometric means of the partial quotients of the continued fraction $x = [a_0; a_1, a_2, \dots]$ of almost
 every real number $x$. For almost every $x$, the proportion of partial quotients equal to $k$ is the
-Gauss--Kuzmin probability $p_k = \log_2(1 + 1/(k(k+2)))$, which is also the probability that $a_1 = \lfloor 1/x\rfloor$
-equals $k$ when $x \in (0,1)$ has the density $1/((1+x)\log 2)$ (the Gauss measure). Let
+Gauss--Kuzmin probability $p_k = \log_2(1 + 1/(k(k+2)))$.
+If we define a ``Khinchin zeta function''
 \begin{equation}\label{eq:Z}
-  Z(s) = \sum_{k=1}^{\infty} p_k\,k^{-s} = \mathbb{E}\bigl[a_1^{-s}\bigr].
+  Z(s) = \sum_{k=1}^{\infty} p_k\,k^{-s} = \mathbb{E}\bigl[a_1^{-s}\bigr],
 \end{equation}
-Then $Z(0) = 1$
+then $Z(0) = 1$
 (the product $\prod_k (k+1)^2/(k(k+2))$ telescopes to $2$), $K = \prod_k k^{p_k} = \exp(-Z'(0))$, and the
 H\"older means of the partial quotients are $K_p = Z(-p)^{1/p}$ for $p < 1$, $p \ne 0$; in particular the
 harmonic mean is $K_{-1} = 1/Z(1)$. The function $Z$ is meromorphic in $\CC$, with simple poles at
 $s = -1, -2, -3, \dots$ (Section~\ref{sec:khinchinzeta}).
 
 \subsection{Sums as special function values}
-The point of view of this paper is that an infinite sum of values of a holonomic function is best understood, and
+The point of view of this paper is that an infinite sum of values of a holonomic function might be understood, and
 computed, as a value of a special function attached to the summand. Let $F$ be a sequence that agrees for large
 $k$ with a holonomic function regular at infinity (Definition~\ref{def:regular}), such as $\log(1+\frac1k)$, $p_k$,
-$\sin(x/k)$, a rational function or ${}_2F_1(\dots;-1/k^2)$: a function with a convergent expansion in powers of
-$1/k$, possibly with non-integral powers and logarithms. We attach to $F$ the following functions, which are classical
-for $F = 1$:
+$\sin(x/k)$, a rational function or ${}_2F_1(\dots;-1/k^2)$. We attach to $F$ the following functions:
 \begin{equation}\label{eq:functions}
 \begin{aligned}
   \zeta_F(s) &= \sum_{k=1}^{\infty}F(k)\,k^{-s} &&\text{(zeta function)}, \\
-  L_F(s,\chi) &= \sum_{k=1}^{\infty}\chi(k)F(k)\,k^{-s} &&\text{(twisted zeta function, $\chi$ periodic)}, \\
+  L_F(s,\chi) &= \sum_{k=1}^{\infty}\chi(k)F(k)\,k^{-s} &&\text{(twisted zeta function}, \\
   \Li_F(s,z) &= \sum_{k=1}^{\infty}F(k)\,z^kk^{-s} &&\text{(polylogarithm, $|z| < 1$)}, \\
   \Phi_F(z,s,a) &= \sum_{k=0}^{\infty}F(k)\,z^k(k+a)^{-s} &&\text{(Lerch transcendent)}, \\
   \Lambda_F(s;\tau,r) &= \sum_{k=1}^{\infty}e^{-\tau k^r}F(k)\,k^{-s} &&\text{(damped zeta function)},
 \end{aligned}
 \end{equation}
-with $\tau > 0$ and $0 < r < 2$ in the last. For $F = 1$ these are the Riemann zeta function, the Dirichlet $L$-functions, the polylogarithm $\Li_s(z)$, the Lerch
-transcendent $\Phi(z,s,a)$, and the sums $\sum_ke^{-\tau k^r}k^{-s}$ of stretched exponentials, with
-$\Lambda(s;\tau,1) = \Li_s(e^{-\tau})$, where $\Lambda = \Lambda_1$; rational $F$ give the Dirichlet series attached to rational functions
+with $\chi$ periodic, $\tau > 0$ and $0 < r < 2$ in the last. For $F = 1$ these are the classical
+Riemann zeta function, Dirichlet $L$-functions (when $\chi$ is a Dirichlet character), polylogarithm $\Li_s(z)$, Lerch
+transcendent $\Phi(z,s,a)$, and sums $\sum_ke^{-\tau k^r}k^{-s}$ of stretched exponentials, with
+$\Lambda(s;\tau,1) = \Li_s(e^{-\tau})$, where $\Lambda = \Lambda_1$.
+Rational $F$ give the Dirichlet series attached to rational functions
 studied since Mellin and Mahler \cite{Mah28,CN81,Sar84,Pet98,Ess97}. The periodic weight $\chi$ and the factors $z^k$
 and $e^{-\tau k^r}$ are kept separate from $F$ because they are not regular at infinity
 (Section~\ref{sec:defs}).
