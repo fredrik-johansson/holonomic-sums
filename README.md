@@ -24,6 +24,8 @@ the same family, is separate and is not part of this repository.)
 | `Kminus1` | 1.7454056624073468634… | Khinchin's harmonic mean $K_{-1} = \log 2 \big/ \sum_{k\ge1} k^{-1}\log\bigl(1 + 1/(k(k+2))\bigr)$ |
 | `vortex` | 0.2688277250400421579… | $U(1)$: the extra speed, in units of $\Gamma/r$, of a ring in a row of coaxial vortex rings spaced one radius apart: $\lambda^{-3}\sum_{n\ge1} n^{-3}\, {}_2F_1(\tfrac32,\tfrac32;2;-4/(n\lambda)^2)$ at $\lambda = 1$ |
 | `hardy_littlewood` | 1.4728282319561852962… | the Hardy–Littlewood function $H(x) = \sum_{k\ge1} \sin(x/k)/k$ at $x = 1$ |
+| `somos` | 1.6616879496335941212… | Somos's quadratic recurrence constant $\sigma = \prod_{k\ge1} k^{1/2^k}$ ([A112302](https://oeis.org/A112302)), $\log\sigma = -\partial_s \mathrm{Li}_s(\tfrac12)\vert_{s=0}$ |
+| `expsqrt` | 1.6704068179663397212… | the damped sum $\sum_{k\ge1} e^{-\sqrt k}$ |
 
 Two constants take a parameter from the environment: `HOLSUM_VORTEX_S=s` gives the vortex sum at
 $\lambda = 2/s$ (default $s = 2$), and `HOLSUM_HL_X=x` gives $H(x)$ for an integer $x$ (default 1).
@@ -40,6 +42,19 @@ satisfy linear recurrences and differential equations in $c = \pi^2m^2$ and are 
 algorithm. About $\sqrt{p}$ terms are needed on each side, each costing $\widetilde O(p)$. The split point is
 $u_0 = 4^{-a}$ (option `--u0-exp a`); the defaults are $u_0 = 1/16$ for the three logarithmic sums and $u_0 = 1/4$
 for the other two. Changing $u_0$ changes every term but not the sum, which makes it a good self-check.
+
+The last two constants are values of *damped* functions (Section 4 of the paper), whose summands carry an
+exponential factor that is not regular at infinity. For `somos` the factor $2^{-k}$ is a twist by a complex
+characteristic: the theta function $\sum_k z^k e^{-k^2u}$ is transformed with dual points $\pi^2(n - \alpha)^2$,
+$z = e^{2\pi i\alpha}$, which are complex; this is Crandall's formula for the polylogarithm, differentiated in $s$.
+The $k$-terms are incomplete gamma functions $\Gamma(0, x)$ and $\Gamma(\tfrac12 + \epsilon, x)$ (to first order in
+$\epsilon$), from Legendre's continued fraction or the lower series; the dual terms need $\Gamma(0, y)$ and
+$\Gamma(\tfrac12, y)$ at complex $y$, by the bit-burst algorithm from a real starting point. For `expsqrt` the factor
+$e^{-\sqrt k}$ goes into the kernel, which becomes an entire function of $u^{-1/4}$ in three classes; each $k$-term
+needs three incomplete gamma functions and rational series, and each dual term the bit-burst evaluation of three moment
+systems of dimension 8. The references are direct summation over prime powers for `somos`
+($\log\sigma = \sum_p \log p \sum_{e\ge1} 1/(2^{p^e}-1)$, `--method direct`) and Euler–Maclaurin summation for
+`expsqrt`. The default split points are $u_0 = 1$ and $u_0 = 1/16$.
 
 **Zeta-value expansion** (`--method zeta`). Expanding $f$ in its Taylor series,
 $\sum_k f(1/k) = \sum_n a_n \zeta(n)$; the terms $k \le 31$ are taken out (summed in closed form) so that the
@@ -82,7 +97,8 @@ fraction computations are in the same directory).
 ## Running
 
 ```
-./holsum CONSTANT DIGITS [--method theta|zeta|em] [--threads N] [--u0-exp A] [--guard G] [--out FILE]
+./holsum CONSTANT DIGITS [--method theta|zeta|em|direct] [--threads N] [--u0-exp A] [--guard G] [--out FILE]
+         [--part I/N --partial FILE] [--combine FILE,FILE,...]
 ./holsum --list
 ```
 
@@ -104,6 +120,11 @@ $ ./holsum vortex 10000 --threads 8 --out vortex.txt
 term and the precomputation shared by the dual terms; times are CPU seconds (all threads) and wall-clock
 seconds; `peak_rss_kb` is the peak resident memory of the process. For the reference methods only the total
 times are reported. `HOLSUM_DEBUG=1` prints the magnitude and radius of every theta term to standard error.
+
+Long theta computations can be split into pieces: `--part I/N --partial FILE` computes only the terms with index
+$\equiv I \pmod N$ on both sides (and the main term for $I = 0$) and writes their sum, as an exact ball, to `FILE`;
+`--combine FILE,FILE,...` adds the pieces and finishes the computation. The pieces can run in separate processes or
+sessions.
 
 ### The benchmark script
 
@@ -169,6 +190,8 @@ part evaluates one ${}_2F_1$ per term, so `run.py` stops it at $10^4$ digits.
 * `src/logsums.c`: `A340440`, `A085361`, `Kminus1` (the theta splitting and both references).
 * `src/vortex.c`: `vortex`.
 * `src/hardy_littlewood.c`: `hardy_littlewood`.
+* `src/somos.c`: `somos` (geometric factor, complex dual points).
+* `src/expsqrt.c`: `expsqrt` (stretched-exponential kernel).
 * `src/refs.c`: shared code for the reference methods.
 * `src/main.c`: the command-line program.
 * `run.py`: the benchmark script.

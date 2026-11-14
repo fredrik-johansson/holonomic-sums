@@ -8,6 +8,8 @@
 fmpz_t U0_NUM, U0_DEN;
 arb_t U0, SQRT_U0;
 double U0_D;
+slong U0_EXP;
+int ENGINE_THREADS = 1;
 
 void engine_set_u0(slong a, slong prec)
 {
@@ -17,6 +19,7 @@ void engine_set_u0(slong a, slong prec)
     arb_one(U0); arb_mul_2exp_si(U0, U0, -2 * a);              /* exact */
     arb_one(SQRT_U0); arb_mul_2exp_si(SQRT_U0, SQRT_U0, -a);    /* exact */
     U0_D = ldexp(1.0, -2 * (int) a);
+    U0_EXP = a;
     (void) prec;
 }
 
@@ -133,6 +136,18 @@ void bs_eval(arb_ptr xend, arb_ptr sums, arb_srcptr x0, slong a, slong b, const 
             arb_div(sums + i, sums + i, Q, prec);
         }
     arb_mat_clear(T); arb_clear(Q);
+}
+
+void bs_product(arb_mat_t T, arb_t Q, slong a, slong b, const bs_t * B, slong prec)
+{
+    slong lb;
+    fmpz_mat_t Tl; fmpz_t ql;
+    fmpz_mat_init(Tl, B->d + B->s, B->d); fmpz_init(ql);
+    fmpz_mat_zero(Tl);
+    B->leaf(Tl, ql, b - 1, B->ctx);
+    lb = FLINT_ABS(fmpz_mat_max_bits(Tl)) + fmpz_bits(ql) + 1;
+    fmpz_mat_clear(Tl); fmpz_clear(ql);
+    bs_top(T, Q, a, b, B, FLINT_MAX(1, 2 * prec / lb), prec);
 }
 
 /* ======================= Gamma(a, y), a in {0, 1/2} ======================= */
@@ -282,6 +297,106 @@ void gamma_upper_exact(arb_t G, int half, const arb_t y, slong wp)
     }
 done:
     fmpq_clear(a); mag_clear(tol); mag_clear(AE); arb_clear(t); arb_clear(s); fmpz_clear(p); fmpz_clear(q);
+}
+
+
+/* ======================= Gamma(a, y), rational 0 < a < 1 ======================= */
+
+/* Legendre's continued fraction y + (1-a)/(1 + 1/(y + (2-a)/(1 + 2/(y + ...)))), scaled by c_even = 2 q ad,
+   c_odd = 2 ad: b_n = 2 p ad (n even), 2 ad (odd); al_n = 2 q ad ((n+1) ad - 2 an) (n odd), 2 q ad^2 n (even);
+   the value is 2 q ad x and Gamma(a, y) = e^-y y^a 2 q ad / X. */
+typedef struct { slong an, ad; fmpz_t p, q; } cfa_ctx;
+
+static void cfa_leaf(fmpz_mat_t T, fmpz_t qq, slong n, const void * vctx)
+{
+    const cfa_ctx * c = vctx;
+    if (n % 2 == 0) fmpz_mul_ui(fmpz_mat_entry(T, 0, 0), c->p, 2 * c->ad);
+    else fmpz_set_ui(fmpz_mat_entry(T, 0, 0), 2 * c->ad);
+    if (n % 2 == 1)
+    {
+        fmpz_mul_ui(fmpz_mat_entry(T, 0, 1), c->q, 2 * c->ad);
+        fmpz_mul_si(fmpz_mat_entry(T, 0, 1), fmpz_mat_entry(T, 0, 1), (n + 1) * c->ad - 2 * c->an);
+    }
+    else
+    {
+        fmpz_mul_ui(fmpz_mat_entry(T, 0, 1), c->q, 2 * c->ad * c->ad);
+        fmpz_mul_ui(fmpz_mat_entry(T, 0, 1), fmpz_mat_entry(T, 0, 1), n);
+    }
+    fmpz_one(fmpz_mat_entry(T, 1, 0));
+    fmpz_one(qq);
+}
+
+static int gamma_cfa(arb_t G, const fmpq_t a, const fmpz_t p, const fmpz_t q, slong nsteps, slong W)
+{
+    cfa_ctx c; arb_mat_t T; arb_t Q, b0, xa, xb, y, t;
+    slong prec = W + 64, lim;
+    int ok;
+    bs_t B;
+    c.an = fmpz_get_si(fmpq_numref(a)); c.ad = fmpz_get_si(fmpq_denref(a));
+    fmpz_init_set(c.p, p); fmpz_init_set(c.q, q);
+    B.d = 2; B.s = 0; B.leaf = cfa_leaf; B.ctx = &c;
+    arb_mat_init(T, 2, 2); arb_init(Q); arb_init(b0); arb_init(xa); arb_init(xb); arb_init(y); arb_init(t);
+    lim = FLINT_MAX(2, 2 * prec / (2 * (fmpz_bits(p) + fmpz_bits(q) + FLINT_BIT_COUNT(nsteps) + 8) + 4));
+    bs_top(T, Q, 1, nsteps + 1, &B, lim, prec);
+    arb_set_fmpz(b0, p); arb_mul_ui(b0, b0, 2 * c.ad, prec);
+    arb_mul(xa, b0, arb_mat_entry(T, 0, 0), prec); arb_add(xa, xa, arb_mat_entry(T, 0, 1), prec);
+    arb_div(xa, xa, arb_mat_entry(T, 0, 0), prec);
+    arb_mul(xb, b0, arb_mat_entry(T, 1, 0), prec); arb_add(xb, xb, arb_mat_entry(T, 1, 1), prec);
+    arb_div(xb, xb, arb_mat_entry(T, 1, 0), prec);
+    arb_union(xa, xa, xb, prec);
+    arb_set_fmpz(y, p); arb_div_fmpz(y, y, q, prec);
+    arb_set_fmpz(t, q); arb_mul_ui(t, t, 2 * c.ad, prec);
+    arb_div(t, t, xa, prec);
+    arb_pow_fmpq(b0, y, a, prec); arb_mul(t, t, b0, prec);
+    arb_neg(y, y); arb_exp(y, y, prec); arb_mul(G, t, y, prec);
+    ok = arb_rel_accuracy_bits(G) >= W;
+    arb_mat_clear(T); arb_clear(Q); arb_clear(b0); arb_clear(xa); arb_clear(xb); arb_clear(y); arb_clear(t);
+    fmpz_clear(c.p); fmpz_clear(c.q);
+    return ok;
+}
+
+void gamma_upper_fmpq_exact(arb_t G, const fmpq_t a, const arb_t y, const arb_t gamma_a, slong wp)
+{
+    mag_t tol, AE; arb_t t;
+    slong NN, wpu = wp + 20, wpl, Nlow;
+    double yd = arf_get_d(arb_midref(y), ARF_RND_NEAR), ad = fmpq_get_d(a);
+    fmpz_t p, q;
+    mag_init(tol); mag_init(AE); arb_init(t); fmpz_init(p); fmpz_init(q);
+    exact_pq(p, q, y);
+    /* tolerance 2^-wpu e^-y y^(a-1) */
+    arb_neg(t, y); arb_exp(t, t, 64);
+    { arb_t s; arb_init(s); fmpq_t a1; fmpq_init(a1); fmpq_sub_ui(a1, a, 1); arb_pow_fmpq(s, y, a1, 64); arb_mul(t, t, s, 64); arb_clear(s); fmpq_clear(a1); }
+    arb_get_mag_lower(tol, t);
+    mag_mul_2exp_si(tol, tol, -wpu);
+    NN = _arb_hypgeom_gamma_upper_fmpq_inf_choose_N(AE, a, y, tol);
+    if (NN != -1)
+    {
+        _arb_hypgeom_gamma_upper_fmpq_inf_bsplit(G, a, y, NN, wpu);
+        arb_add_error_mag(G, AE);
+        goto done;
+    }
+    Nlow = _arb_hypgeom_gamma_lower_fmpq_0_choose_N(AE, a, y, tol);
+    {
+        double ncf = pow(wpu / 2.4, 2) / yd + 1000;
+        if (Nlow < 0 || 1.5 * ncf < (double) Nlow)
+        {
+            slong ns = (slong) ncf;
+            for (;;)
+            {
+                if (gamma_cfa(G, a, p, q, ns, wpu)) goto done;
+                if (ns > 4 * ncf) break;
+                ns = ns * 3 / 2;
+            }
+        }
+    }
+    (void) ad;
+    wpl = wpu + (slong) (yd * 1.4426950408889634) + 32;
+    _arb_hypgeom_gamma_lower_fmpq_0_bsplit(G, a, y, Nlow, wpl);
+    arb_add_error_mag(G, AE);
+    if (gamma_a != NULL && arb_rel_accuracy_bits(gamma_a) >= wpl) arb_set(t, gamma_a); else arb_gamma_fmpq(t, a, wpl);
+    arb_sub(G, t, G, wpl);
+done:
+    mag_clear(tol); mag_clear(AE); arb_clear(t); fmpz_clear(p); fmpz_clear(q);
 }
 
 /* ======================= bit-burst for a moment system ======================= */

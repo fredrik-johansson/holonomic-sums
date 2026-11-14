@@ -32,6 +32,8 @@ extern fmpz_t U0_NUM, U0_DEN;
 extern arb_t U0, SQRT_U0;
 extern double U0_D;
 void engine_set_u0(slong a, slong prec);     /* u0 = 4^-a */
+extern slong U0_EXP;                         /* a */
+extern int ENGINE_THREADS;                   /* --threads, for parallel precomputations in setup */
 void engine_clear(void);
 
 /* ---------------- binary splitting ----------------
@@ -41,10 +43,14 @@ typedef void (*bs_leaf_fn)(fmpz_mat_t T, fmpz_t q, slong n, const void * ctx);
 typedef struct { slong d, s; bs_leaf_fn leaf; const void * ctx; } bs_t;
 /* xend = M x0 / Q (may be NULL), sums = S x0 / Q (may be NULL) */
 void bs_eval(arb_ptr xend, arb_ptr sums, arb_srcptr x0, slong a, slong b, const bs_t * B, slong prec);
+/* the product itself: T = [M; S] ((d+s) x d) and Q, for a < b */
+void bs_product(arb_mat_t T, arb_t Q, slong a, slong b, const bs_t * B, slong prec);
 
 /* ---------------- incomplete gamma at exact dyadic y > 0 ----------------
    G = Gamma(1/2, y) (half = 1) or E1(y) = Gamma(0, y) (half = 0), relative accuracy about wp */
 void gamma_upper_exact(arb_t G, int half, const arb_t y, slong wp);
+/* the same for rational 0 < a < 1 (asymptotic series, Legendre's continued fraction or the lower series) */
+void gamma_upper_fmpq_exact(arb_t G, const fmpq_t a, const arb_t y, const arb_t gamma_a, slong wp);   /* gamma_a = Gamma(a) or NULL */
 
 /* ---------------- bit-burst for a moment system ----------------
    State V_j (d components, component i = c^(j + o_i) Z^(i)_{t0 + j + s_i}) with

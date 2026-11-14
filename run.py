@@ -23,8 +23,10 @@ import subprocess
 import sys
 import time
 
-ALL_CONSTANTS = ["A340440", "A085361", "Kminus1", "vortex", "hardy_littlewood"]
-ALL_METHODS = ["theta", "zeta", "em"]
+ALL_CONSTANTS = ["A340440", "A085361", "Kminus1", "vortex", "hardy_littlewood", "somos", "expsqrt"]
+ALL_METHODS = ["theta", "zeta", "em", "direct"]
+# methods implemented for each constant (default: theta, zeta, em)
+AVAILABLE = {"somos": ["theta", "direct"], "expsqrt": ["theta", "em"]}
 
 
 def parse_args():
@@ -39,6 +41,7 @@ def parse_args():
     p.add_argument("--max-theta", type=int, default=10**6)
     p.add_argument("--max-zeta", type=int, default=10**5, help="largest size for the zeta-value expansion")
     p.add_argument("--max-em", type=int, default=10**5, help="largest size for Euler-Maclaurin")
+    p.add_argument("--max-direct", type=int, default=10**5, help="largest size for direct summation")
     p.add_argument("--max-em-vortex", type=int, default=10**4,
                    help="largest size for Euler-Maclaurin for the vortex sum (its direct part, a 2F1 per term, is slow)")
     p.add_argument("--timeout", type=float, default=None, help="per-run timeout in seconds")
@@ -165,13 +168,15 @@ def main():
     os.makedirs(os.path.join(args.results, "digits"), exist_ok=True)
     runs_path = os.path.join(args.results, "runs.jsonl")
     recs = load_records(runs_path)
-    limits = {"theta": args.max_theta, "zeta": args.max_zeta, "em": args.max_em}
+    limits = {"theta": args.max_theta, "zeta": args.max_zeta, "em": args.max_em, "direct": args.max_direct}
     constants = [c for c in args.constants.split(",") if c]
     methods = [m for m in args.methods.split(",") if m]
     sizes = sorted(int(float(d)) for d in args.digits.split(","))
     for digits in sizes:
         for const in constants:
             for method in methods:
+                if method not in AVAILABLE.get(const, ["theta", "zeta", "em"]):
+                    continue
                 limit = limits.get(method, 0)
                 if (const, method) == ("vortex", "em"):
                     limit = min(limit, args.max_em_vortex)

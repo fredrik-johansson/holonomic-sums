@@ -20,10 +20,15 @@ typedef struct
     void (*ref_zeta)(arb_t res, slong prec, int threads);
     void (*ref_em)(arb_t res, slong prec, int threads);
     slong u0_exp;                             /* default split point u0 = 4^-u0_exp */
+    /* optional: numbers of k-terms (largest k + 1) and dual terms; NULL = engine defaults */
+    slong (*k_count)(slong prec);
+    slong (*dual_count)(slong prec);
+    /* optional third reference method (--method direct) */
+    void (*ref_direct)(arb_t res, slong prec, int threads);
 }
 constant_t;
 
-extern const constant_t CONST_A340440, CONST_A085361, CONST_KMINUS1, CONST_VORTEX, CONST_HL;
+extern const constant_t CONST_A340440, CONST_A085361, CONST_KMINUS1, CONST_VORTEX, CONST_HL, CONST_SOMOS, CONST_EXPSQRT;
 
 /* helpers shared by the reference methods (refs.c) */
 typedef void (*block_fn)(slong block, void * ctx);
