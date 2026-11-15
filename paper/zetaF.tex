@@ -1890,15 +1890,15 @@ Only the representations differ, and each is run at its best split point.
 
 \begin{table}[t]
 \centering\small
-\caption{Khinchin's constant by the three algorithms in \texttt{holsum}: CPU time (summed over $2$ threads on a virtual machine with $2$ cores), at the best split point
+\caption{Khinchin's constant by the three algorithms in \texttt{holsum}: CPU time (summed over $8$ threads, on the machine of Section~\ref{sec:khresults}), at the best split point
 $u_0$ of each, with the fraction spent on the $k$-side in parentheses.}
 \label{tab:khcompare}
 \begin{tabular}{lrrr}
 \toprule
 digits & \eqref{eq:K1}, $u_0 = \frac1{16}$ & \eqref{eq:K2}, $u_0 = \frac1{64}$ & \eqref{eq:K3}, $u_0 = \frac1{16}$ \\
 \midrule
-$10^4$ & $94.2$\,s ($0.47$) & $21.7$\,s ($0.47$) & $4.84$\,s ($0.46$) \\
-$10^5$ & $4\,568$\,s ($0.50$) & $1\,250$\,s ($0.42$) & $238$\,s ($0.48$) \\
+$10^4$ & $80.0$\,s ($0.46$) & $18.4$\,s ($0.51$) & $4.04$\,s ($0.45$) \\
+$10^5$ & $4\,415$\,s ($0.50$) & $1\,320$\,s ($0.41$) & $234$\,s ($0.48$) \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1908,8 +1908,9 @@ alternating harmonic numbers $A_n$ are not hypergeometric (they are a first deri
 $A_n = \log 2 + \frac12(\psi(n+\frac12)-\psi(n))$), so its kernel has order $4$ instead of $1$, and its dual system has
 dimension $12$ instead of $4$. The dilogarithm series \eqref{eq:K3} pays for its hypergeometric coefficients with
 exponential type $4$ instead of $1$ (slightly longer $k$-series, and $k = 2$ excluded), which costs far less.
-The dilogarithm form is $4.5$ and $5.3$ times faster than the logarithmic series at $10^4$ and $10^5$
-digits. Earlier, separately optimized implementations of \eqref{eq:K2} and \eqref{eq:K3} in FLINT \cite{FLINT}
+The dilogarithm form is $4.6$ and $5.6$ times faster than the logarithmic series at $10^4$ and $10^5$
+digits. (The optimized implementation of Section~\ref{sec:khimpl} takes $88$ CPU seconds at $10^5$ digits on the
+same machine, against $234$.) Earlier, separately optimized implementations of \eqref{eq:K2} and \eqref{eq:K3} in FLINT \cite{FLINT}
 gave similar ratios, $3.9$ to $4.6$ from $10^4$ to $10^6$ digits.
 
 The first representation \eqref{eq:K1} has the simplest kernel of all, but it is the slowest, by a factor of about
