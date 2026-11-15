@@ -13,7 +13,8 @@ $\widetilde O(p^{3/2})$ bit operations for $p$ bits, against roughly $p^2$ for t
 Two classical methods are included as references: the **zeta-value expansion** and **Euler–Maclaurin
 summation**. The point of the code is to show that the method works and to measure how it scales; it is
 generic and not heavily optimized. (The optimized implementation for Khinchin's constant, which belongs to
-the same family, is separate and is not part of this repository.)
+the same family, is separate and is not part of this repository; the three generic `khinchin_*` constants below
+compare the three representations of Khinchin's constant in the paper with the same machinery.)
 
 ## Constants
 
@@ -26,6 +27,9 @@ the same family, is separate and is not part of this repository.)
 | `hardy_littlewood` | 1.4728282319561852962… | the Hardy–Littlewood function $H(x) = \sum_{k\ge1} \sin(x/k)/k$ at $x = 1$ |
 | `somos` | 1.6616879496335941212… | Somos's quadratic recurrence constant $\sigma = \prod_{k\ge1} k^{1/2^k}$ ([A112302](https://oeis.org/A112302)), $\log\sigma = -\partial_s \mathrm{Li}_s(\tfrac12)\vert_{s=0}$ |
 | `expsqrt` | 1.6704068179663397212… | the damped sum $\sum_{k\ge1} e^{-\sqrt k}$ |
+| `khinchin_Z` | 2.6854520010653064453… | Khinchin's constant from $\log K = -Z'(0)$, $Z(s) = \sum_{k\ge1} \log_2\bigl(1 + 1/(k(k+2))\bigr) k^{-s}$ (the splitting differentiated in $s$) |
+| `khinchin_log` | 2.6854520010653064453… | Khinchin's constant from $\log K \log 2 = -\sum_{k\ge2} \log(1 - 1/k)\log(1 + 1/k)$ |
+| `khinchin_dilog` | 2.6854520010653064453… | Khinchin's constant from $\log K\log 2 = \log^2 2 + \mathrm{Li}_2(-\tfrac12) + \tfrac12\sum_{k\ge2}(-1)^k\mathrm{Li}_2(4/k^2)$ |
 
 Two constants take a parameter from the environment: `HOLSUM_VORTEX_S=s` gives the vortex sum at
 $\lambda = 2/s$ (default $s = 2$), and `HOLSUM_HL_X=x` gives $H(x)$ for an integer $x$ (default 1).
@@ -54,7 +58,9 @@ $e^{-\sqrt k}$ goes into the kernel, which becomes an entire function of $u^{-1/
 needs three incomplete gamma functions and rational series, and each dual term the bit-burst evaluation of three moment
 systems of dimension 8. The references are direct summation over prime powers for `somos`
 ($\log\sigma = \sum_p \log p \sum_{e\ge1} 1/(2^{p^e}-1)$, `--method direct`) and Euler–Maclaurin summation for
-`expsqrt`. The default split points are $u_0 = 1$ and $u_0 = 1/16$.
+`expsqrt`. The default split points are $u_0 = 1$ and $u_0 = 1/16$. For the three Khinchin constants they are
+$u_0 = 1/16$ (`khinchin_Z`, `khinchin_dilog`) and $u_0 = 1/64$ (`khinchin_log`), the best of $4^{-1}, \dots, 4^{-4}$ at
+$10^4$ digits.
 
 **Zeta-value expansion** (`--method zeta`). Expanding $f$ in its Taylor series,
 $\sum_k f(1/k) = \sum_n a_n \zeta(n)$; the terms $k \le 31$ are taken out (summed in closed form) so that the
@@ -208,6 +214,11 @@ part evaluates one ${}_2F_1$ per term, so `run.py` stops it at $10^4$ digits.
 * `src/hardy_littlewood.c`: `hardy_littlewood`.
 * `src/somos.c`: `somos` (geometric factor, complex dual points).
 * `src/expsqrt.c`: `expsqrt` (stretched-exponential kernel).
+* `src/khinchin.c`: `khinchin_Z`, `khinchin_log`, `khinchin_dilog`. The dual moment systems are built generically
+  from first-order $\vartheta$-relations between the kernel functions (a table per system), with starting values from
+  one binary splitting of the kernel coefficients times the recurrence of $D_a$; `khinchin_Z` also needs moments with
+  a weight $\log u$ and $\partial_b\Gamma(b, y)$ at $b = \tfrac12$ and $b = 0$. The reference method (`--method zeta`)
+  is FLINT's `arb_const_khinchin`.
 * `src/refs.c`: shared code for the reference methods.
 * `src/main.c`: the command-line program.
 * `run.py`: the benchmark script.

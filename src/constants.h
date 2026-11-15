@@ -29,6 +29,7 @@ typedef struct
 constant_t;
 
 extern const constant_t CONST_A340440, CONST_A085361, CONST_KMINUS1, CONST_VORTEX, CONST_HL, CONST_SOMOS, CONST_EXPSQRT;
+extern const constant_t CONST_KHINCHIN_Z, CONST_KHINCHIN_LOG, CONST_KHINCHIN_DILOG;
 
 /* helpers shared by the reference methods (refs.c) */
 typedef void (*block_fn)(slong block, void * ctx);

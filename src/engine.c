@@ -414,9 +414,10 @@ static void taylor_leaf(fmpz_mat_t T, fmpz_t q, slong l, const void * vctx)
     slong d = S->d, ng = S->ng, i, j;
     fmpz * A = _fmpz_vec_init(d * d);
     fmpz_t f, g;
+    ulong den = S->aden > 1 ? S->aden : 1;
     fmpz_init(f); fmpz_init(g);
-    S->amat(A, l, c->C, c->D);
-    fmpz_mul(q, c->dd, c->C); fmpz_mul_ui(q, q, 2 * (ulong) (l + 1)); fmpz_mul(q, q, U0_NUM);
+    if (S->amatc != NULL) S->amatc(A, l, c->C, c->D, S->actx); else S->amat(A, l, c->C, c->D);
+    fmpz_mul(q, c->dd, c->C); fmpz_mul_ui(q, q, 2 * (ulong) (l + 1)); fmpz_mul(q, q, U0_NUM); fmpz_mul_ui(q, q, den);
     fmpz_mul(f, c->dn, U0_NUM); fmpz_neg(f, f);
     for (i = 0; i < d; i++)
     {
@@ -425,11 +426,11 @@ static void taylor_leaf(fmpz_mat_t T, fmpz_t q, slong l, const void * vctx)
                 fmpz_mul(fmpz_mat_entry(T, i, j), A + i * d + j, f);
         if (S->fsel[i] >= 0)
         {
-            fmpz_mul(g, c->D, f); fmpz_mul_2exp(g, g, 1);
+            fmpz_mul(g, c->D, f); fmpz_mul_2exp(g, g, 1); fmpz_mul_ui(g, g, den);
             fmpz_set(fmpz_mat_entry(T, i, d + S->fsel[i]), g);
         }
     }
-    fmpz_mul(g, c->C, c->dn); fmpz_mul(g, g, U0_DEN); fmpz_mul_2exp(g, g, 1); fmpz_neg(g, g);
+    fmpz_mul(g, c->C, c->dn); fmpz_mul(g, g, U0_DEN); fmpz_mul_2exp(g, g, 1); fmpz_neg(g, g); fmpz_mul_ui(g, g, den);
     for (i = 0; i < ng; i++)
         fmpz_set(fmpz_mat_entry(T, d + i, d + i), g);
     for (i = 0; i < d; i++)

@@ -23,10 +23,12 @@ import subprocess
 import sys
 import time
 
-ALL_CONSTANTS = ["A340440", "A085361", "Kminus1", "vortex", "hardy_littlewood", "somos", "expsqrt"]
+ALL_CONSTANTS = ["A340440", "A085361", "Kminus1", "vortex", "hardy_littlewood", "somos", "expsqrt",
+                 "khinchin_Z", "khinchin_log", "khinchin_dilog"]
 ALL_METHODS = ["theta", "zeta", "em", "direct"]
 # methods implemented for each constant (default: theta, zeta, em)
-AVAILABLE = {"somos": ["theta", "direct"], "expsqrt": ["theta", "em"]}
+AVAILABLE = {"somos": ["theta", "direct"], "expsqrt": ["theta", "em"],
+             "khinchin_Z": ["theta", "zeta"], "khinchin_log": ["theta", "zeta"], "khinchin_dilog": ["theta", "zeta"]}
 
 
 def parse_args():

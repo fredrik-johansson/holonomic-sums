@@ -58,7 +58,7 @@ void gamma_upper_fmpq_exact(arb_t G, const fmpq_t a, const arb_t y, const arb_t 
    V_{j+1} = A(j) V_j + F_j kappa, F_{j+1} = (c/u0) F_j, F_0 = E u0^(1 - t0), E = exp(-c/u0).
    amat writes 2 D A(l) as an integer matrix (c0 = C/D). Each state row gets at most one
    forcing constant (fsel[i], coefficient 1). init computes V and E at c0 = C/2^e. */
-#define SYS_MAXD 8
+#define SYS_MAXD 32
 typedef struct
 {
     int d, ng;
@@ -69,6 +69,11 @@ typedef struct
     arb_ptr kappa;            /* ng forcing constants */
     arb_t f0scale;            /* u0^(1 - t0) */
     double t0;
+    /* optional: amatc(A, l, C, D, actx) writes 2 D aden A(l) (used instead of amat when non-NULL);
+       aden = 0 means 1 */
+    void (*amatc)(fmpz * A, slong l, const fmpz_t C, const fmpz_t D, const void * actx);
+    const void * actx;
+    slong aden;
 }
 moment_sys_t;
 
