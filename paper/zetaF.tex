@@ -321,12 +321,14 @@ Eulerian polynomials $A_n(z)$ & & $\frac{z-1}{z-e^{(z-1)t}}$ & $(1-z)^{n+1}z^{-1
 \end{table}
 
 For Khinchin's constant we develop three complete algorithms (Section~\ref{sec:khinchin}): from the derivative
-$-Z'(0)$, from the logarithmic series $\log K\log 2 = \sum_{k=2}^{\infty}-\log(1-\frac1k)\log(1+\frac1k)$, and from a
-dilogarithm series of Bailey, Borwein and Crandall, a value of the twisted zeta function $L_G$ of the non-elementary
-function $G(k) = \Li_2(4/k^2)$. With the same machinery, the third is KHINTRORATIO, because its coefficients are
-hypergeometric, and we discuss to what extent such rewritings generalize. With an implementation of the second in FLINT we computed $K$ to $10^7$
-digits, and with a generic program the other constants of Table~\ref{tab:constants} to $10^6$ digits, among them
-Somos's constant and $\sum_ke^{-\sqrt k}$ (Section~\ref{sec:other}).
+$-Z'(0)$, from the logarithmic series for $\log K\log 2$ at the beginning of this introduction, and from a
+dilogarithm series of Bailey, Borwein
+and Crandall, a value of the twisted zeta function $L_G$ of the non-elementary function $G(k) = \Li_2(4/k^2)$. With the
+same machinery, the third is about $5$ times faster than the second and $19$ times faster than the first, because its
+coefficients are hypergeometric, and we discuss to what extent such rewritings generalize. With an implementation of
+the dilogarithm series in FLINT we computed $K$ to $10^7$ digits, and with a generic program the other constants of
+Table~\ref{tab:constants} to $10^6$ digits, among them Somos's constant and $\sum_ke^{-\sqrt k}$
+(Section~\ref{sec:other}).
 
 \subsection{Related work}
 The meromorphic continuation of a Dirichlet series $\sum_{k=1}^{\infty} F(k)k^{-s}$ whose coefficients have an asymptotic
@@ -1888,14 +1890,15 @@ Only the representations differ, and each is run at its best split point.
 
 \begin{table}[t]
 \centering\small
-\caption{Khinchin's constant by the three algorithms in \texttt{holsum}: CPU time KHMACHINE, at the best split point
+\caption{Khinchin's constant by the three algorithms in \texttt{holsum}: CPU time (summed over $2$ threads on a virtual machine with $2$ cores), at the best split point
 $u_0$ of each, with the fraction spent on the $k$-side in parentheses.}
 \label{tab:khcompare}
 \begin{tabular}{lrrr}
 \toprule
 digits & \eqref{eq:K1}, $u_0 = \frac1{16}$ & \eqref{eq:K2}, $u_0 = \frac1{64}$ & \eqref{eq:K3}, $u_0 = \frac1{16}$ \\
 \midrule
-KHCMPROWS
+$10^4$ & $94.2$\,s ($0.47$) & $21.7$\,s ($0.47$) & $4.84$\,s ($0.46$) \\
+$10^5$ & $4\,568$\,s ($0.50$) & $1\,250$\,s ($0.42$) & $238$\,s ($0.48$) \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1905,10 +1908,12 @@ alternating harmonic numbers $A_n$ are not hypergeometric (they are a first deri
 $A_n = \log 2 + \frac12(\psi(n+\frac12)-\psi(n))$), so its kernel has order $4$ instead of $1$, and its dual system has
 dimension $12$ instead of $4$. The dilogarithm series \eqref{eq:K3} pays for its hypergeometric coefficients with
 exponential type $4$ instead of $1$ (slightly longer $k$-series, and $k = 2$ excluded), which costs far less.
-KHCMPRATIO Earlier, separately optimized implementations of \eqref{eq:K2} and \eqref{eq:K3} in FLINT \cite{FLINT}
+The dilogarithm form is $4.5$ and $5.3$ times faster than the logarithmic series at $10^4$ and $10^5$
+digits. Earlier, separately optimized implementations of \eqref{eq:K2} and \eqref{eq:K3} in FLINT \cite{FLINT}
 gave similar ratios, $3.9$ to $4.6$ from $10^4$ to $10^6$ digits.
 
-The first representation \eqref{eq:K1} has the simplest kernel of all, but it is the slowest. $\log K$ is a
+The first representation \eqref{eq:K1} has the simplest kernel of all, but it is the slowest, by a factor of about
+$19$ against \eqref{eq:K3}. $\log K$ is a
 derivative in $s$, and differentiating $1/\Gamma(\frac{s+n}2)$ introduces $\psi(\frac n2)$, that is, harmonic numbers
 again, while the weight $\log u$ doubles the dual states. In addition the coefficients
 $(-1)^n(2^n-2)/n$ combine two exponential scales, which doubles the states once more, and each term needs extra
