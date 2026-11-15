@@ -320,11 +320,11 @@ Eulerian polynomials $A_n(z)$ & & $\frac{z-1}{z-e^{(z-1)t}}$ & $(1-z)^{n+1}z^{-1
 \end{tabular}
 \end{table}
 
-For Khinchin's constant we develop two complete algorithms (Section~\ref{sec:khinchin}): the natural one from the
-logarithmic series $\log K\log 2 = \sum_{k=2}^{\infty}-\log(1-\frac1k)\log(1+\frac1k)$, and a faster one from a dilogarithm
-series of Bailey, Borwein and Crandall, a value of the twisted zeta function $L_G$ of the non-elementary function
-$G(k) = \Li_2(4/k^2)$. The second is about four times faster because its coefficients are hypergeometric, and we discuss
-to what extent such rewritings generalize. With an implementation of the second in FLINT we computed $K$ to $10^7$
+For Khinchin's constant we develop three complete algorithms (Section~\ref{sec:khinchin}): from the derivative
+$-Z'(0)$, from the logarithmic series $\log K\log 2 = \sum_{k=2}^{\infty}-\log(1-\frac1k)\log(1+\frac1k)$, and from a
+dilogarithm series of Bailey, Borwein and Crandall, a value of the twisted zeta function $L_G$ of the non-elementary
+function $G(k) = \Li_2(4/k^2)$. With the same machinery, the third is KHINTRORATIO, because its coefficients are
+hypergeometric, and we discuss to what extent such rewritings generalize. With an implementation of the second in FLINT we computed $K$ to $10^7$
 digits, and with a generic program the other constants of Table~\ref{tab:constants} to $10^6$ digits, among them
 Somos's constant and $\sum_ke^{-\sqrt k}$ (Section~\ref{sec:other}).
 
@@ -1509,12 +1509,49 @@ where $Z$ is the Khinchin zeta function \eqref{eq:Z},
   \chi(k) = (-1)^k
 \]
 for $k \ge 2$, and $F(1) = G(1) = 0$.
-The second follows from the first by summation by parts, and the third from the second by a dilation and a
-telescoping identity (Lemma~\ref{lem:dilog}). All three lead to algorithms with the complexity of
-Theorem~\ref{thm:complexity}, but the constant factors differ. After a closer look at $Z$, we develop the natural
-algorithm from \eqref{eq:K2}, then the one from \eqref{eq:K3}, which is about four times faster, discuss why, and ask
-to what extent such rewritings generalize. The dilogarithm series is the basis of an implementation in FLINT, with
-which we computed $K$ to $10^7$ digits (Sections~\ref{sec:khimpl}--\ref{sec:khcf}).
+The three are linked by the operations of Section~\ref{sec:generalize}. Summation by parts turns the weight $\log k$
+in $-Z'(0) = \sum_kp_k\log k$ into the product of logarithms in \eqref{eq:K2}; this holds only at $s = 0$, so $Z$
+and $\zeta_F$ are different functions that share one value. A dilation and a telescoping identity then turn
+\eqref{eq:K2} into \eqref{eq:K3} (Lemma~\ref{lem:dilog}). Each representation gives an algorithm with the complexity
+of Theorem~\ref{thm:complexity}, by a different route. \eqref{eq:K1} is a derivative at a regular point, so the
+splitting must be differentiated in $s$; \eqref{eq:K2} is a value of $\zeta_F$; and \eqref{eq:K3} is a value of the
+twisted zeta function of the non-elementary $G$.
+
+The constant factors differ widely. Table~\ref{tab:khstates} lists the sizes of what each algorithm evaluates: the
+series of each $k$-term, the moment systems of the dual terms (Proposition~\ref{prop:dual}), and the incomplete gamma
+values. In \eqref{eq:K1} the kernel is elementary, but the derivative in $s$ brings in digamma values, that is,
+harmonic numbers, and log-weighted moments, which double the states, and the coefficients mix two exponential
+scales, which doubles them again. In \eqref{eq:K2} the coefficients are alternating harmonic numbers, so the
+kernel has order $4$. In \eqref{eq:K3} they are hypergeometric. After a closer look at $Z$
+(Section~\ref{sec:khinchinzeta}), we work out the three algorithms (Sections~\ref{sec:Zprime},
+\ref{sec:logform} and~\ref{sec:dilog}), compare implementations that share all their machinery
+(Section~\ref{sec:khcompare}), and ask to what extent such rewritings generalize (Section~\ref{sec:generalize}). The
+dilogarithm series is also the basis of an optimized implementation in FLINT, with which we computed $K$ to $10^7$
+digits (Sections~\ref{sec:khimpl}--\ref{sec:khcf}).
+
+\begin{table}[t]
+\centering\footnotesize
+\caption{The three algorithms for Khinchin's constant at $s = 0$: the coefficients of the kernel and its exponential
+type, the series evaluated for each $k$-term (number of series $\times$ dimension of the state), the incomplete gamma
+values $\Gamma(b, \cdot)$ and $\partial_b\Gamma(b, \cdot)$ needed for each $k$-term and each dual term, and the moment
+systems of the dual terms (number of systems
+$\times$ dimension of the state, with the number of forcing constants in parentheses), as implemented in
+\texttt{holsum}.}
+\label{tab:khstates}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{llll}
+\toprule
+ & \eqref{eq:K1} & \eqref{eq:K2} & \eqref{eq:K3} \\
+\midrule
+kernel coefficients & $2$ hypergeometric & alt.\ harmonic & hypergeometric \\
+exponential type & $4$ & $1$ & $4$ \\
+$k$-side series & $4\times4$ & $1\times4$ & $1\times2$ \\
+gamma values, $k$-term & $E_1$, $\Gamma(\frac12)$, $\partial_b\Gamma(\frac12)$ & -- & -- \\
+dual systems & $2\times16$ ($10$ each) & $1\times12$ ($5$) & $1\times4$ ($3$) \\
+gamma values, dual term & $\Gamma(\frac12)$, $E_1$; $\partial_b$ of both & $\Gamma(\frac12)$ & $\Gamma(\frac12)$ \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{The Khinchin zeta function}\label{sec:khinchinzeta}
 For the Khinchin zeta function \eqref{eq:Z},
@@ -1574,6 +1611,61 @@ So Euler's and Khinchin's constants are coefficients of the same function at the
 the splitting of $\Psi$ is a one-parameter deformation of Riemann's formula (Example~\ref{ex:riemann}), to which it
 reduces at $t = 0$.
 
+\subsection{The derivative of $Z$}\label{sec:Zprime}
+For \eqref{eq:K1} let $L(s) = \log 2\sum_{k=3}^{\infty}p_kk^{-s}$, so that $\log K = \log\frac98 - L'(0)/\log 2$,
+with $f(x) = 2\log(1+x) - \log(1+2x)$, $a_n = (-1)^n(2^n - 2)/n$ and $k_0 = 3$. At $s = 0$ both parts
+\eqref{eq:kernelparts} of the kernel are elementary,
+\[
+  G_0(u) = u\,g_0(u) = \tfrac12e^{4u} - e^u + \tfrac12, \qquad G_1(u) = g_1(u) = -\bigl(\omega(4u) - \omega(u)\bigr),
+\]
+where $\omega(y) = \sum_{m\ge0}y^m/\Gamma(m+\frac32) = y^{-1/2}e^y\operatorname{erf}\sqrt y$. We need the derivative of
+the splitting,
+\[
+  L'(0) = \sum_{k=3}^{\infty}I_k'(0) + \sqrt\pi\sum_{m=1}^{\infty}J_m'(0) + M'(0),
+\]
+and $s$ enters in two ways: through $k^{-s}$ and $u^{s/2}$, which produce weights $\log k$ and $\log u$, and through
+$1/\Gamma(\frac{s+n}2)$, which produces digamma values $\psi(\frac n2)$, that is, harmonic numbers.
+
+\emph{$k$-terms.} With $x = k^2u_0$,
+\[
+  I_k'(0) = \sum_na_nk^{-n}\Bigl(-\log k\,Q\bigl(\tfrac n2,x\bigr) + \frac12\partial_aQ\bigl(\tfrac n2,x\bigr)\Bigr),
+\]
+and $\partial_aQ(a+1,x) = \partial_aQ(a,x) + x^ae^{-x}(\log x - \psi(a+1))/\Gamma(a+1)$ reduces each parity class to
+its first member. For even $n = 2m$, with $e_m(x) = \sum_{i<m}x^i/i!$ and $H_i$ the harmonic numbers,
+\[
+  \sum_{m\ge1}a_{2m}k^{-2m}\Bigl(\frac{\log u_0 + \gamma}2e^{-x}e_m(x) + \frac12E_1(x)
+  - \frac12e^{-x}\sum_{i<m}H_i\frac{x^i}{i!}\Bigr),
+\]
+and the odd terms are similar, with $x^i/\Gamma(i+\frac32)$, the partial sums $O_i = \sum_{j<i}1/(2j+1)$, and the
+values $\Gamma(\frac12,x)$ and $\partial_a\Gamma(a,x)|_{a=1/2}$. Since $a_{2m} = \frac12\cdot4^m/m - 1/m$ and
+$a_{2m+1} = 2(1 - 4^m)/(2m+1)$ combine two exponential scales, each $k$-term costs four series with states of
+dimension $4$ (the harmonic numbers double the states), and three incomplete gamma values, against one series of
+dimension $2$ for \eqref{eq:K3}.
+
+\emph{Dual terms.} Writing $Z^{\log}_t[g] = \int_0^{u_0}u^{-t}\log u\,e^{-c/u}g(u)\dd u = -\partial_tZ_t[g]$,
+\[
+  J_m'(0) = \tfrac12Z^{\log}_{3/2}[G_0] + Z_{3/2}[\partial_sG_0] + \tfrac12Z^{\log}_1[G_1] + Z_1[\partial_sG_1]
+  \quad (c = \pi^2m^2),
+\]
+with
+\begin{gather*}
+  \partial_sG_0 = -\tfrac14\bigl(\varphi(4u) - 2\varphi(u) - \gamma(e^{4u} - 2e^u + 1)\bigr), \\
+  \partial_sG_1 = \tfrac12\bigl(\psi(\tfrac12)(\omega(4u) - \omega(u)) + 2(\varrho(4u) - \varrho(u))\bigr),
+\end{gather*}
+where $\varphi(y) = e^y\Ein(y) - \Eip(y)$ and $\varrho(y) = \sum_{m\ge0}O_my^m/\Gamma(m+\frac32)$.
+All these functions satisfy first-order relations in $\vartheta$: $\vartheta(e^y\Ein y) = y\,e^y\Ein y + e^y - 1$,
+$\vartheta\Eip y = e^y - 1$, $\vartheta\omega = (y - \frac12)\omega + 1/\sqrt\pi$, $\vartheta\sigma = \frac12\sigma +
+\frac12y\,\omega$ and $\vartheta\varrho = (y - \frac12)\varrho + \sigma$, with
+$\sigma(y) = \sum_{m\ge1}y^m/((2m-1)\Gamma(m+\frac12))$, and the log-weighted moments satisfy \eqref{eq:ibp} with one
+more term, $c\,Z^{\log}_{t+1}[g] = E\,u_0^{1-t}\log u_0\,g(u_0) - (1-t)Z^{\log}_t[g] - Z_t[g] - Z^{\log}_t[\vartheta g]$.
+Proposition~\ref{prop:dual} then gives two moment systems, at $t = \frac32$ and $t = 1$, of dimension $16$ each. Their
+starting values are the series \eqref{eq:startvals} and their derivatives in the index $a$ of $D_a$, which need
+$\Gamma(\frac12,y)$, $E_1(y)$ and $\partial_b\Gamma(b,y)$ at $b = \frac12$ and $b = 0$.
+
+\emph{Main term.} $M'(0)$ is a sum over $n$ of elementary terms with $\psi(\frac n2)$, and, for $k = 1, 2$, of the
+derivatives of $k^{-s-n}P(\frac{s+n}2,k^2u_0)$; reorganized by the lower series of $P$, these are rational series with
+harmonic weights, summed by binary splitting once.
+
 \subsection{The logarithmic series}\label{sec:logform}
 For \eqref{eq:K2}, $k_0 = 2$ and
 \[
@@ -1602,11 +1694,12 @@ with the $k$-terms
 \[
   I_k = e^{-x}\sum_{n=0}^{\infty}\frac{A_{n+1}}{n+1}\,\frac{e_{n+1}(x)}{K^{n+1}}, \qquad K = k^2,\ x = Ku_0,
 \]
-where $e_n(x) = \sum_{i=0}^{n-1}x^i/i!$. The terms satisfy a $5\times5$ triangular recurrence (for $A_n$, the
-truncated exponential, and the powers of $x$ and $K$), summed by binary splitting. The moments $Z_t[H](c)$ satisfy
-a scalar recurrence of order $6$ in $t$ with coefficients of degree up to $4$ in $c$ and five forcing constants
-$(\vartheta^iH)(u_0)$, $i < 4$, and $1$; as a first-order system in $c$ (Proposition~\ref{prop:dual}) it is linear in
-$c$, of dimension about $16$. The starting values at a rational $c_0$ are the series
+where $e_n(x) = \sum_{i=0}^{n-1}x^i/i!$. The terms satisfy a $4\times4$ triangular recurrence (for the truncated
+exponential, the powers of $x$ and $K$, and their products with $A_n$), summed by binary splitting. The moments
+$Z_t[H](c)$ satisfy a scalar recurrence of order $6$ in $t$ with coefficients of degree up to $4$ in $c$ and five
+forcing constants $(\vartheta^iH)(u_0)$, $i < 4$, and $1$. As a first-order system in $c$
+(Proposition~\ref{prop:dual}), for the moments of $(H, \vartheta H, \vartheta^2H, \vartheta^3H)$ and their shifts by
+$u$ and $u^2$, it is linear in $c$, of dimension $12$. The starting values at a rational $c_0$ are the series
 $Z_t[H](c_0) = \sum_jh_jD_{j-t+1}(c_0)$ of \eqref{eq:startvals}, with $t = \frac12$, so that all $D_s$ are reduced to
 $D_{-1/2} = \sqrt{\pi/c}\erfc\sqrt{c/u_0}$ and $E = e^{-c/u_0}$. Since $H$ has type $1$, the $k$-terms decay like
 $e^{-(k^2-1)u_0}$ and the dual terms like $e^{-\pi^2m^2/u_0}$, and $O(\sqrt p)$ terms of each kind suffice for $p$ bits.
@@ -1787,41 +1880,41 @@ $\Li_2(\frac19)$ after $N$ terms is at most $9^{-N}$.
 \end{itemize}
 
 \subsection{Comparison}\label{sec:khcompare}
-The logarithmic series \eqref{eq:K2} has the simpler summand, but the alternating harmonic numbers $A_n$ are not
-hypergeometric (they are a first derivative with respect to a parameter,
-$A_n = \log 2 + \frac12(\psi(n+\frac12)-\psi(n))$), so its kernel has order $4$ instead of $1$, and its dual
-system has order $6$ plus forcing, with quartic instead of linear coefficients in $c$. The dilogarithm series
-\eqref{eq:K3} pays for its hypergeometric coefficients with exponential type $4$ instead of $1$ (slightly slower
-$k$-series, and $k = 2$ excluded), which costs far less. With comparable implementations in FLINT \cite{FLINT}
-(CPU time, totals at the optimal $u_0$):
-\begin{center}
-\small
-\begin{tabular}{lrrrrrr}
+Table~\ref{tab:khcompare} compares the three algorithms as implemented in the generic program \texttt{holsum} of
+Section~\ref{sec:appcomp}. They share all their machinery: the binary splitting, the bit-burst evaluation of the moment
+systems, which are built from the $\vartheta$-relations of the kernel functions as in Proposition~\ref{prop:dual},
+and the starting values, from one binary splitting of the kernel coefficients times the recurrence \eqref{eq:Drec}.
+Only the representations differ, and each is run at its best split point.
+
+\begin{table}[t]
+\centering\small
+\caption{Khinchin's constant by the three algorithms in \texttt{holsum}: CPU time KHMACHINE, at the best split point
+$u_0$ of each, with the fraction spent on the $k$-side in parentheses.}
+\label{tab:khcompare}
+\begin{tabular}{lrrr}
 \toprule
- & \multicolumn{2}{c}{one $k$-term} & \multicolumn{2}{c}{one dual term} & \multicolumn{2}{c}{total} \\
-\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
-digits & \eqref{eq:K2} & \eqref{eq:K3} & \eqref{eq:K2} & \eqref{eq:K3} & \eqref{eq:K2} & \eqref{eq:K3} \\
+digits & \eqref{eq:K1}, $u_0 = \frac1{16}$ & \eqref{eq:K2}, $u_0 = \frac1{64}$ & \eqref{eq:K3}, $u_0 = \frac1{16}$ \\
 \midrule
-$10^4$ & $0.018$\,s & $0.0073$\,s & $0.71$\,s & $0.19$\,s & $19$\,s & $4.9$\,s \\
-$10^5$ & $0.25$\,s & $0.078$\,s & $18.5$\,s & $3.4$\,s & $1\,165$\,s & $280$\,s \\
-$10^6$ & $\approx 4$\,s & $1.0$\,s & $300$\,s & $56$\,s & $\approx 59\,000$\,s & $12\,880$\,s \\
+KHCMPROWS
 \bottomrule
 \end{tabular}
-\end{center}
-The dilogarithm form is $3.9$--$4.6$ times faster, the ratio growing slowly with the precision. (The implementation
-of Section~\ref{sec:khimpl} is a further optimized version of the second.)
+\end{table}
 
-The first representation \eqref{eq:K1} has the simplest kernel of all. Here $f(x) = \log_2((1+x)^2/(1+2x))$, whose
-coefficients $(-1)^n(2^n-2)/(n\log2)$ are a sum of two hypergeometric terms, and at $s = 0$ the even part of the kernel
-is elementary,
-\[
-  g_0(u) = \frac{(e^{4u} - 1) - 2(e^u - 1)}{2u\log 2},
-\]
-and the odd part is of $\operatorname{erfi}$ type. But $\log K$ is a derivative in $s$, and differentiating
-$1/\Gamma(\frac{s+n}2)$ introduces $\psi(\frac n2)$, i.e.\ harmonic numbers again; in the evaluation this appears as a
-doubling of all states (Theorem~\ref{thm:complexity}). So the logarithm $\log k$, whether as a weight in \eqref{eq:K1}
-or after summation by parts as a product of logarithms in \eqref{eq:K2}, shows up as harmonic numbers in the
-coefficients; the dilogarithm identity removes it. We have not implemented \eqref{eq:K1}. The second identity of
+The ordering follows Table~\ref{tab:khstates}. The logarithmic series \eqref{eq:K2} has the simpler summand, but the
+alternating harmonic numbers $A_n$ are not hypergeometric (they are a first derivative with respect to a parameter,
+$A_n = \log 2 + \frac12(\psi(n+\frac12)-\psi(n))$), so its kernel has order $4$ instead of $1$, and its dual system has
+dimension $12$ instead of $4$. The dilogarithm series \eqref{eq:K3} pays for its hypergeometric coefficients with
+exponential type $4$ instead of $1$ (slightly longer $k$-series, and $k = 2$ excluded), which costs far less.
+KHCMPRATIO Earlier, separately optimized implementations of \eqref{eq:K2} and \eqref{eq:K3} in FLINT \cite{FLINT}
+gave similar ratios, $3.9$ to $4.6$ from $10^4$ to $10^6$ digits.
+
+The first representation \eqref{eq:K1} has the simplest kernel of all, but it is the slowest. $\log K$ is a
+derivative in $s$, and differentiating $1/\Gamma(\frac{s+n}2)$ introduces $\psi(\frac n2)$, that is, harmonic numbers
+again, while the weight $\log u$ doubles the dual states. In addition the coefficients
+$(-1)^n(2^n-2)/n$ combine two exponential scales, which doubles the states once more, and each term needs extra
+incomplete gamma values. So the logarithm $\log k$, whether as a weight in \eqref{eq:K1} or after summation by parts
+as a product of logarithms in \eqref{eq:K2}, shows up as harmonic numbers in the coefficients; the dilogarithm
+identity removes it. The second identity of
 \cite[\S3]{BBC97},
 \[
   \log K\log2 = \frac{\pi^2}{6} - \frac12\log^22 + \sum_{k=2}^{\infty}\Li_2\Bigl(-\frac1{k^2-1}\Bigr),
