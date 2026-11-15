@@ -180,6 +180,20 @@ Each function in \eqref{eq:functions} is, as a function of $s$, a deformation of
 $\zeta_F$ and $L_F$ are meromorphic in $\CC$, and $\Li_F(s,z)$, $\Phi_F$ and $\Lambda_F$ are entire in $s$. We show that the classical
 theta-function method for $\zeta$ extends to all of them, and that holonomy of $F$ is what makes it fast.
 
+Why single out the factor $k^{-s}$, which could be absorbed into $F$? Other parameters may enter $F$ in other ways,
+and the method allows this (Remark~\ref{rem:twovar}), but $k^{-s}$ is the parameter intrinsic to the class.
+Multiplying by $k^{-s}$ only shifts the exponents at infinity, and conversely the exponents and logarithms of a
+general regular $F$ \eqref{eq:frob} are shifts and derivatives in $s$ of the analytic case
+(Lemma~\ref{lem:reduction}). The poles of $\zeta_F$ record the expansion of $F$ at infinity
+(Proposition~\ref{prop:cont}), and $(mk)^{-s} = m^{-s}k^{-s}$ makes dilations and twists identities of functions of
+$s$ (Section~\ref{sec:twists}). Correspondingly, the regularized values $\zeta_F(-m)$ of divergent sums are
+canonical. Away from poles they are the constant terms of the smoothed sums $\sum_kk^mF(k)\varphi(k/N)$ as
+$N \to \infty$, for every smooth cutoff with $\varphi(0) = 1$ \cite{Zag06}. Other deformations need not agree: for
+$F = 1$, $\sum_k(k+a)^{-s}$ gives $-\frac12 - a$ at $s = 0$, not $-\frac12$. Finally, $s$ enters the splitting only
+through $1/\Gamma(\frac{s+n}2)$, so the cost is uniform in $s$ (Theorem~\ref{thm:uniform}). The applications to
+Bernoulli numbers need exactly this, whereas absorbing $k^{n-1}$ into $F$ would change the differential operator
+with $n$.
+
 \subsection{Results}
 Let $F$ be analytic at infinity, $F(k) = f(1/k)$ for $k \ge k_0$, where
 $f(x) = \sum_{n=0}^{\infty} a_nx^n$ has radius of convergence $\rho > 1/k_0$. Holonomy of $f$ is what makes the
@@ -754,7 +768,7 @@ $\sum_{k\in\ZZ}\cos(2\pi\alpha k)e^{-k^2u} = \sqrt{\pi/u}\sum_{n\in\ZZ}e^{-\pi^2
 $\alpha$, and the dual terms are the same moments at the points $c = \pi^2(n-\alpha)^2$.
 \end{remark}
 
-\begin{remark}[Two variables]
+\begin{remark}[Two variables]\label{rem:twovar}
 If the coefficients $a_n = a_n(t)$ depend polynomially (or analytically, with uniform bounds) on a parameter $t$,
 all pieces of Theorem~\ref{thm:split} are analytic in $(s,t)$, and $\sum_{k=1}^{\infty}F_t(k)k^{-s}$ is meromorphic in $\CC^2$
 with polar divisor contained in $\bigcup_n\{s = 1-n\}$ and residues $a_n(t)$. For the families
