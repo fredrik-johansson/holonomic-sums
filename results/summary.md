@@ -63,3 +63,15 @@
 | expsqrt | theta | 100000 | 38 | 1920 | 450 / 56.99 | 575 / 71.95 | 1025 / 129 | 400 | ok | agrees with 6 other runs |
 | expsqrt | em | 100000 |  |  |  |  | 1703 / 302 | 321 | ok | agrees with 6 other runs |
 | expsqrt | theta | 1000000 | 120 | 6069 | 33490 / 4190 | 33484 / 4188 | 66975 / 8379 | 3201 | ok | agrees with 6 other runs |
+| khinchin_Z | theta | 10000 | 12 | 605 | 43.05 / 6.33 | 36.76 / 4.60 | 79.98 / 11.09 | 146 | ok | agrees with 3 other runs |
+| khinchin_Z | zeta | 10000 |  |  |  |  | 0.13 / 0.13 | 25 | ok | agrees with 3 other runs |
+| khinchin_Z | theta | 100000 | 38 | 1917 | 2214 / 284 | 2200 / 275 | 4415 / 561 | 1839 | ok | agrees with 3 other runs |
+| khinchin_Z | zeta | 100000 |  |  |  |  | 12.97 / 12.97 | 25 | ok | agrees with 3 other runs |
+| khinchin_log | theta | 10000 | 6 | 1213 | 9.03 / 2.40 | 9.31 / 1.16 | 18.39 / 3.62 | 112 | ok | agrees with 3 other runs |
+| khinchin_log | zeta | 10000 |  |  |  |  | 0.13 / 0.13 | 24 | ok | agrees with 3 other runs |
+| khinchin_log | theta | 100000 | 19 | 3838 | 772 / 98.58 | 547 / 68.41 | 1320 / 167 | 1390 | ok | agrees with 3 other runs |
+| khinchin_log | zeta | 100000 |  |  |  |  | 13.02 / 13.02 | 25 | ok | agrees with 3 other runs |
+| khinchin_dilog | theta | 10000 | 12 | 605 | 2.06 / 0.29 | 1.82 / 0.23 | 4.04 / 0.68 | 65 | ok | agrees with 3 other runs |
+| khinchin_dilog | zeta | 10000 |  |  |  |  | 0.13 / 0.13 | 24 | ok | agrees with 3 other runs |
+| khinchin_dilog | theta | 100000 | 38 | 1917 | 121 / 15.46 | 113 / 14.09 | 234 / 30.68 | 303 | ok | agrees with 3 other runs |
+| khinchin_dilog | zeta | 100000 |  |  |  |  | 12.94 / 12.94 | 25 | ok | agrees with 3 other runs |
