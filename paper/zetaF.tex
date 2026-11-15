@@ -1058,7 +1058,7 @@ functions) enter the splitting only through truncated Laplace transforms and Gau
 through point values; complete Laplace transforms of theta functions are elementary (Mittag-Leffler), but truncated
 ones lead back to the two-dimensional sums. We know no class of summands, beyond periodic twists and the
 exponential factors above (and their products with regular functions), for which both sides of the splitting are
-cheap.
+cheap; Section~\ref{sec:open} lists some candidates.
 
 %======================================================================
 \section{Computation}\label{sec:complexity}
@@ -2496,7 +2496,7 @@ values too early (their $E$-part decays only like $(\beta u_0)^j/j!$), and the c
 beyond $75\,000$ digits; a first version of \texttt{holsum} lost about $\sqrt{\beta c}$ bits to cancellation in the
 dual recurrences of the vortex sum, which the ball arithmetic revealed at $10^4$ digits.
 
-\subsection{Further examples}
+\subsection{Further examples}\label{sec:furtherex}
 \emph{Planck--Larkin.} The Planck--Larkin sum of Table~\ref{tab:constants} is $\sigma(T) = \zeta_F(-2)$ with
 $F(k) = e^{x/k^2} - 1 - x/k^2$. Here $f$ is entire, the poles are at $s = -3, -5, \dots$, and $s = -2$ is a regular
 point, at which the series $\sigma(T) = \sum_{k=1}^{\infty}k^2F(k)$ converges.
@@ -2538,11 +2538,37 @@ hydrogen atom. Whether such sums admit subquadratic algorithms is open.
 \section{Open problems}\label{sec:open}
 
 \begin{enumerate}
+\item \emph{Beyond regular summands.} The summands in \eqref{eq:functions} are a function regular at infinity times a
+periodic weight, a geometric factor or a stretched exponential. Can sums of holonomic functions with other irregular
+singularities at infinity be computed in subquadratic time? More generally, is there any other natural class of
+summands for which both sides of a splitting are cheap (compare Section~\ref{sec:limits})? Examples from the
+literature include the following.
+\begin{itemize}
+\item Schl\"omilch series $\sum_ka_kJ_\nu(kx)$ \cite{Wat44}, such as $\sum_kJ_0(kx)k^{-s}$, or
+$\sum_ke^{-kz}J_0(kr)$, a solution of Laplace's equation in cylindrical coordinates. By Hankel's expansion,
+$J_\nu(kx)$ is a combination of $e^{\pm ikx}k^{-1/2}$ times divergent series in $1/k$, so it is not a twist
+(Remark~\ref{rem:twist}) of a regular function.
+\item Relativistic Boltzmann sums $\sum_ke^{-\beta\sqrt{k^2+m^2}}$. The summand is $e^{-\beta k}F(k)$ with
+$F(x) = e^{\beta(x-\sqrt{x^2+m^2})}$, which is analytic at infinity but not regular there: as for the Stieltjes
+transform in Section~\ref{sec:defs}, every operator annihilating $F$ also annihilates the conjugate
+$e^{\beta(x+\sqrt{x^2+m^2})}$. So Theorem~\ref{thm:geometric}(1) gives a splitting, but condition~(H) fails and
+the proof of Proposition~\ref{prop:dual} does not apply. By Poisson summation, these sums are dual to sums of values
+$K_1(m\sqrt{\beta^2+4\pi^2\ell^2})/\sqrt{\beta^2+4\pi^2\ell^2}$. Such sums of Bessel functions $K_\nu$ give the
+finite-size and finite-temperature corrections for massive fields, and with divisor weights they appear in the
+Chowla--Selberg formula for Epstein zeta functions \cite{Eli95,Kir02}. Since
+$K_0(y) = \int_1^\infty e^{-yt}(t^2-1)^{-1/2}\dd t$, a sum of values $K_0(kx)$ is an integral over $z = e^{-xt}$ of
+sums covered by Theorem~\ref{thm:geometric}; we do not know whether this leads to a fast algorithm.
+\item Summands that are P-recursive in $k$ but not holonomic as functions of a continuous variable, such as $k^n/k!$
+in Dobinski's formula $B_n = e^{-1}\sum_kk^n/k!$ for the Bell numbers, which Corollary~\ref{cor:egf} does not
+cover.
+\item Summands that are analytic at infinity but not holonomic, such as $\log\cos(\pi/k)$, whose zeta-value
+expansions converge geometrically (Section~\ref{sec:furtherex}).
+\item Kernels that are themselves theta series (Section~\ref{sec:limits}), as for the Lambert series
+$\sum_kk^{-s}/(e^{\tau k}-1)$, for which the splitting needs about $p$ terms.
+\end{itemize}
 \item \emph{Damped zeta functions.} For $\Lambda_F$ with general regular $F$ (Appendix~\ref{app:stretched}),
 make the cost analysis explicit, with the orders and degrees of the recurrences, and treat irrational $r$ and $r$
 not of the form $1/q$.
-Are there other natural classes of summands for which both sides of the splitting are cheap
-(Section~\ref{sec:limits})?
 \item \emph{Large height.} Give an exact, smoothed Riemann--Siegel formula for $\zeta_F$ with $O(\sqrt t)$ terms, and
 an algorithm uniform in $\operatorname{Im}s$.
 \item \emph{Good representatives.} Given a constant $\sum_{k=1}^{\infty}F(k)$, find, by dilations, twists, telescoping and
@@ -3399,6 +3425,7 @@ J.\ Eur.\ Math.\ Soc.\ 21 (2019), 2751--2792.
 \bibitem{Ste07} J.~Steuding, \emph{Value-Distribution of $L$-Functions}, Lecture Notes in Math.\ 1877, Springer, 2007.
 \bibitem{Tit86} E.~C.~Titchmarsh, \emph{The Theory of the Riemann Zeta-Function}, 2nd ed., revised by D.~R.~Heath-Brown, Oxford University Press, 1986.
 \bibitem{vdH99} J.~van der Hoeven, Fast evaluation of holonomic functions, Theoret.\ Comput.\ Sci.\ 210 (1999), 199--215.
+\bibitem{Wat44} G.~N.~Watson, \emph{A Treatise on the Theory of Bessel Functions}, 2nd ed., Cambridge University Press, 1944.
 \bibitem{Zag06} D.~Zagier, The Mellin transform and related analytic techniques, appendix to E.~Zeidler, \emph{Quantum Field Theory I}, Springer, 2006, 305--323.
 \bibitem{Zei90} D.~Zeilberger, A holonomic systems approach to special functions identities, J.\ Comput.\ Appl.\ Math.\ 32 (1990), 321--368.
 
