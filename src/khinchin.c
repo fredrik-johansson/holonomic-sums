@@ -311,7 +311,7 @@ static void jleaf(jblk * B, slong n, const cfj_ctx * c)
     }
     else
     {
-        fmpz_mul_ui(B->a + 1, c->q, 2 * c->ad * c->ad);
+        fmpz_mul_ui(B->a + 1, c->q, 2); fmpz_mul_ui(B->a + 1, B->a + 1, c->ad); fmpz_mul_ui(B->a + 1, B->a + 1, c->ad);
         fmpz_mul_ui(B->a + 1, B->a + 1, n);
     }
     fmpz_one(B->a + 2);
@@ -410,7 +410,7 @@ static void lz_leaf(fmpz_mat_t T, fmpz_t qq, slong n, const void * v)
 {
     const pq_ctx * c = v;
     ulong n1 = n + 1;
-    fmpz_mul_ui(qq, c->q, n1 * n1 * n1);
+    fmpz_mul_ui(qq, c->q, n1); fmpz_mul_ui(qq, qq, n1); fmpz_mul_ui(qq, qq, n1);
     fmpz_mul_ui(fmpz_mat_entry(T, 0, 0), c->p, n1 * n1);
     fmpz_mul_ui(fmpz_mat_entry(T, 1, 1), c->p, n1 * n1); fmpz_mul_ui(fmpz_mat_entry(T, 1, 0), c->p, n1);
     fmpz_mul_ui(fmpz_mat_entry(T, 2, 2), c->p, n1 * n1); fmpz_mul_ui(fmpz_mat_entry(T, 2, 1), c->p, 2 * n1);
@@ -802,9 +802,9 @@ static void k3_leaf(fmpz_mat_t T, fmpz_t q, slong n, const void * v)
 {
     ulong K = ((const kctx *) v)->K, n2 = (ulong) n * n;
     fmpz_set_ui(q, K); fmpz_mul_ui(q, q, n2 * (n + 1)); fmpz_mul(q, q, U0_DEN);
-    fmpz_mul_ui(fmpz_mat_entry(T, 0, 0), U0_DEN, 4 * n2 * (n + 1));
+    fmpz_mul_ui(fmpz_mat_entry(T, 0, 0), U0_DEN, 4); fmpz_mul_ui(fmpz_mat_entry(T, 0, 0), fmpz_mat_entry(T, 0, 0), n2); fmpz_mul_ui(fmpz_mat_entry(T, 0, 0), fmpz_mat_entry(T, 0, 0), (n + 1));
     fmpz_set(fmpz_mat_entry(T, 0, 1), fmpz_mat_entry(T, 0, 0));
-    fmpz_mul_ui(fmpz_mat_entry(T, 1, 1), U0_NUM, 4 * K * n2);
+    fmpz_mul_ui(fmpz_mat_entry(T, 1, 1), U0_NUM, 4); fmpz_mul_ui(fmpz_mat_entry(T, 1, 1), fmpz_mat_entry(T, 1, 1), K); fmpz_mul_ui(fmpz_mat_entry(T, 1, 1), fmpz_mat_entry(T, 1, 1), n2);
     fmpz_mul_ui(fmpz_mat_entry(T, 2, 0), U0_DEN, K * (n + 1));
 }
 
@@ -813,17 +813,17 @@ typedef struct { fmpz_t yn, yd; ulong c; } uv_ctx;
 static void uv_leaf(fmpz_mat_t T, fmpz_t q, slong i, const void * v)
 {
     const uv_ctx * x = v; ulong i1 = i + 1;
-    fmpz_mul_ui(q, x->yd, i1 * i1 * i1);
+    fmpz_mul_ui(q, x->yd, i1); fmpz_mul_ui(q, q, i1); fmpz_mul_ui(q, q, i1);
     fmpz_mul_ui(fmpz_mat_entry(T, 0, 0), x->yn, i1 * i1);
     fmpz_mul_ui(fmpz_mat_entry(T, 0, 1), x->yn, x->c);
-    fmpz_mul_ui(fmpz_mat_entry(T, 1, 1), x->yn, x->c * i1 * i1);
+    fmpz_mul_ui(fmpz_mat_entry(T, 1, 1), x->yn, x->c); fmpz_mul_ui(fmpz_mat_entry(T, 1, 1), fmpz_mat_entry(T, 1, 1), i1); fmpz_mul_ui(fmpz_mat_entry(T, 1, 1), fmpz_mat_entry(T, 1, 1), i1);
     fmpz_set(fmpz_mat_entry(T, 2, 0), q);
 }
 /* t_n = (4u0)^n/n!, sum t_n/n^2 */
 static void h4_leaf(fmpz_mat_t T, fmpz_t q, slong n, const void * v)
 {
-    fmpz_mul_ui(q, U0_DEN, (ulong) (n + 1) * n * n);
-    fmpz_mul_ui(fmpz_mat_entry(T, 0, 0), U0_NUM, 4 * (ulong) n * n);
+    fmpz_mul_ui(q, U0_DEN, (ulong) (n + 1)); fmpz_mul_ui(q, q, n); fmpz_mul_ui(q, q, n);
+    fmpz_mul_ui(fmpz_mat_entry(T, 0, 0), U0_NUM, 4); fmpz_mul_ui(fmpz_mat_entry(T, 0, 0), fmpz_mat_entry(T, 0, 0), (ulong) n); fmpz_mul_ui(fmpz_mat_entry(T, 0, 0), fmpz_mat_entry(T, 0, 0), n);
     fmpz_mul_ui(fmpz_mat_entry(T, 1, 0), U0_DEN, n + 1);
 }
 
@@ -940,7 +940,7 @@ static void c2_leaf(fmpz_mat_t M, fmpz_t q, slong n)
         fmpz_set_ui(fmpz_mat_entry(M, 0, 0), 5); fmpz_set_ui(fmpz_mat_entry(M, 1, 0), 12); fmpz_set_ui(q, 12);
         return;
     }
-    fmpz_set_ui(q, (ulong) (n + 1) * (n + 1) * (n + 2) * (2 * n + 3));
+    fmpz_set_ui(q, (ulong) (n + 1)); fmpz_mul_ui(q, q, (n + 1)); fmpz_mul_ui(q, q, (n + 2)); fmpz_mul_ui(q, q, (2 * n + 3));
     fmpz_set_ui(fmpz_mat_entry(M, 0, 0), (ulong) (n + 1) * (4 * n * n + 6 * n + 3));
     fmpz_set_si(fmpz_mat_entry(M, 0, 1), -(slong) n * (2 * n + 1));
     fmpz_set(fmpz_mat_entry(M, 1, 0), q);
@@ -975,8 +975,8 @@ static void k2_leaf(fmpz_mat_t T, fmpz_t q, slong N, const void * v)
 {
     ulong K = ((const kctx *) v)->K, D1 = 2 * (ulong) N * (2 * N + 1);
     fmpz_t a, b; fmpz_init(a); fmpz_init(b);
-    fmpz_mul_ui(a, U0_DEN, (ulong) (N + 1) * D1 * N);            /* (N+1) ud D1 N */
-    fmpz_mul_ui(b, U0_NUM, K * D1 * N);                           /* un K D1 N */
+    fmpz_mul_ui(a, U0_DEN, (ulong) (N + 1)); fmpz_mul_ui(a, a, D1); fmpz_mul_ui(a, a, N);            /* (N+1) ud D1 N */
+    fmpz_mul_ui(b, U0_NUM, K); fmpz_mul_ui(b, b, D1); fmpz_mul_ui(b, b, N);                           /* un K D1 N */
     fmpz_mul_ui(q, a, K);
     fmpz_set(fmpz_mat_entry(T, 0, 0), a); fmpz_set(fmpz_mat_entry(T, 0, 1), a);
     fmpz_set(fmpz_mat_entry(T, 1, 1), b);
@@ -985,7 +985,7 @@ static void k2_leaf(fmpz_mat_t T, fmpz_t q, slong N, const void * v)
     fmpz_set(fmpz_mat_entry(T, 2, 1), fmpz_mat_entry(T, 2, 0));
     fmpz_set(fmpz_mat_entry(T, 3, 3), b);
     fmpz_mul_si(fmpz_mat_entry(T, 3, 1), U0_NUM, -(slong) (K * N));
-    fmpz_mul_ui(fmpz_mat_entry(T, 4, 2), U0_DEN, K * (N + 1) * D1);
+    fmpz_mul_ui(fmpz_mat_entry(T, 4, 2), U0_DEN, K); fmpz_mul_ui(fmpz_mat_entry(T, 4, 2), fmpz_mat_entry(T, 4, 2), (N + 1)); fmpz_mul_ui(fmpz_mat_entry(T, 4, 2), fmpz_mat_entry(T, 4, 2), D1);
     fmpz_clear(a); fmpz_clear(b);
 }
 
@@ -993,7 +993,7 @@ static void k2_leaf(fmpz_mat_t T, fmpz_t q, slong N, const void * v)
 static void m2a_leaf(fmpz_mat_t T, fmpz_t q, slong i, const void * v)
 {
     ulong i1 = i + 1, D1 = 2 * (ulong) i * (2 * i + 1);
-    fmpz_mul_ui(q, U0_DEN, i1 * i1 * D1);
+    fmpz_mul_ui(q, U0_DEN, i1); fmpz_mul_ui(q, q, i1); fmpz_mul_ui(q, q, D1);
     fmpz_mul_ui(fmpz_mat_entry(T, 0, 0), U0_NUM, i1 * D1);
     fmpz_mul_ui(fmpz_mat_entry(T, 1, 1), U0_NUM, i1 * D1); fmpz_mul_si(fmpz_mat_entry(T, 1, 0), U0_NUM, -(slong) i1);
     fmpz_mul_ui(fmpz_mat_entry(T, 2, 2), U0_NUM, i1 * D1); fmpz_mul_ui(fmpz_mat_entry(T, 2, 1), U0_NUM, D1);
@@ -1004,12 +1004,12 @@ static void m2a_leaf(fmpz_mat_t T, fmpz_t q, slong i, const void * v)
 static void m2b_leaf(fmpz_mat_t T, fmpz_t q, slong n, const void * v)
 {
     ulong n1 = n + 1, D1 = 2 * n1 * (2 * n + 3), o = 2 * n + 1;
-    fmpz_mul_ui(q, U0_DEN, (n + 2) * D1 * o * n1);
-    fmpz_mul_ui(fmpz_mat_entry(T, 0, 0), U0_NUM, D1 * o * n1);
-    fmpz_mul_ui(fmpz_mat_entry(T, 1, 1), U0_NUM, D1 * o * n1);
+    fmpz_mul_ui(q, U0_DEN, (n + 2)); fmpz_mul_ui(q, q, D1); fmpz_mul_ui(q, q, o); fmpz_mul_ui(q, q, n1);
+    fmpz_mul_ui(fmpz_mat_entry(T, 0, 0), U0_NUM, D1); fmpz_mul_ui(fmpz_mat_entry(T, 0, 0), fmpz_mat_entry(T, 0, 0), o); fmpz_mul_ui(fmpz_mat_entry(T, 0, 0), fmpz_mat_entry(T, 0, 0), n1);
+    fmpz_mul_ui(fmpz_mat_entry(T, 1, 1), U0_NUM, D1); fmpz_mul_ui(fmpz_mat_entry(T, 1, 1), fmpz_mat_entry(T, 1, 1), o); fmpz_mul_ui(fmpz_mat_entry(T, 1, 1), fmpz_mat_entry(T, 1, 1), n1);
     fmpz_mul_si(fmpz_mat_entry(T, 1, 0), U0_NUM, -(slong) (o * n1));
-    fmpz_mul_ui(fmpz_mat_entry(T, 2, 1), U0_DEN, 2 * (n + 2) * D1 * n1);
-    fmpz_mul_ui(fmpz_mat_entry(T, 3, 1), U0_DEN, (n + 2) * D1 * o);
+    fmpz_mul_ui(fmpz_mat_entry(T, 2, 1), U0_DEN, 2); fmpz_mul_ui(fmpz_mat_entry(T, 2, 1), fmpz_mat_entry(T, 2, 1), (n + 2)); fmpz_mul_ui(fmpz_mat_entry(T, 2, 1), fmpz_mat_entry(T, 2, 1), D1); fmpz_mul_ui(fmpz_mat_entry(T, 2, 1), fmpz_mat_entry(T, 2, 1), n1);
+    fmpz_mul_ui(fmpz_mat_entry(T, 3, 1), U0_DEN, (n + 2)); fmpz_mul_ui(fmpz_mat_entry(T, 3, 1), fmpz_mat_entry(T, 3, 1), D1); fmpz_mul_ui(fmpz_mat_entry(T, 3, 1), fmpz_mat_entry(T, 3, 1), o);
 }
 
 static void K2_setup(slong prec)
@@ -1179,14 +1179,14 @@ static void k1e_leaf(fmpz_mat_t T, fmpz_t q, slong m, const void * v)
 {
     const kcctx * x = v; ulong m1 = m + 1;
     fmpz_t a, b; fmpz_init(a); fmpz_init(b);
-    fmpz_mul_ui(a, U0_DEN, x->c * m1 * m1 * m);
-    fmpz_mul_ui(b, U0_NUM, x->c * x->K * m1 * m);
-    fmpz_mul_ui(q, U0_DEN, x->K * m1 * m1 * m);
+    fmpz_mul_ui(a, U0_DEN, x->c); fmpz_mul_ui(a, a, m1); fmpz_mul_ui(a, a, m1); fmpz_mul_ui(a, a, m);
+    fmpz_mul_ui(b, U0_NUM, x->c); fmpz_mul_ui(b, b, x->K); fmpz_mul_ui(b, b, m1); fmpz_mul_ui(b, b, m);
+    fmpz_mul_ui(q, U0_DEN, x->K); fmpz_mul_ui(q, q, m1); fmpz_mul_ui(q, q, m1); fmpz_mul_ui(q, q, m);
     fmpz_set(fmpz_mat_entry(T, 0, 0), a); fmpz_set(fmpz_mat_entry(T, 0, 1), a);
     fmpz_set(fmpz_mat_entry(T, 1, 1), b);
     fmpz_set(fmpz_mat_entry(T, 2, 2), a); fmpz_set(fmpz_mat_entry(T, 2, 3), a);
-    fmpz_set(fmpz_mat_entry(T, 3, 3), b); fmpz_mul_ui(fmpz_mat_entry(T, 3, 1), U0_NUM, x->c * x->K * m);
-    fmpz_mul_ui(fmpz_mat_entry(T, 4, 0), U0_DEN, x->K * m1 * m1);
+    fmpz_set(fmpz_mat_entry(T, 3, 3), b); fmpz_mul_ui(fmpz_mat_entry(T, 3, 1), U0_NUM, x->c); fmpz_mul_ui(fmpz_mat_entry(T, 3, 1), fmpz_mat_entry(T, 3, 1), x->K); fmpz_mul_ui(fmpz_mat_entry(T, 3, 1), fmpz_mat_entry(T, 3, 1), m);
+    fmpz_mul_ui(fmpz_mat_entry(T, 4, 0), U0_DEN, x->K); fmpz_mul_ui(fmpz_mat_entry(T, 4, 0), fmpz_mat_entry(T, 4, 0), m1); fmpz_mul_ui(fmpz_mat_entry(T, 4, 0), fmpz_mat_entry(T, 4, 0), m1);
     fmpz_set(fmpz_mat_entry(T, 5, 2), fmpz_mat_entry(T, 4, 0));
     fmpz_clear(a); fmpz_clear(b);
 }
@@ -1195,14 +1195,14 @@ static void k1o_leaf(fmpz_mat_t T, fmpz_t q, slong m, const void * v)
 {
     const kcctx * x = v; ulong b = 2 * m + 3, a = 2 * m + 1;
     fmpz_t A, B; fmpz_init(A); fmpz_init(B);
-    fmpz_mul_ui(A, U0_DEN, x->c * b * b * a);
-    fmpz_mul_ui(B, U0_NUM, 2 * x->c * x->K * b * a);
-    fmpz_mul_ui(q, U0_DEN, x->K * b * b * a);
+    fmpz_mul_ui(A, U0_DEN, x->c); fmpz_mul_ui(A, A, b); fmpz_mul_ui(A, A, b); fmpz_mul_ui(A, A, a);
+    fmpz_mul_ui(B, U0_NUM, 2); fmpz_mul_ui(B, B, x->c); fmpz_mul_ui(B, B, x->K); fmpz_mul_ui(B, B, b); fmpz_mul_ui(B, B, a);
+    fmpz_mul_ui(q, U0_DEN, x->K); fmpz_mul_ui(q, q, b); fmpz_mul_ui(q, q, b); fmpz_mul_ui(q, q, a);
     fmpz_set(fmpz_mat_entry(T, 0, 0), A); fmpz_set(fmpz_mat_entry(T, 0, 1), A);
     fmpz_set(fmpz_mat_entry(T, 1, 1), B);
     fmpz_set(fmpz_mat_entry(T, 2, 2), A); fmpz_set(fmpz_mat_entry(T, 2, 3), A);
-    fmpz_set(fmpz_mat_entry(T, 3, 3), B); fmpz_mul_ui(fmpz_mat_entry(T, 3, 1), U0_NUM, 2 * x->c * x->K * a);
-    fmpz_mul_ui(fmpz_mat_entry(T, 4, 0), U0_DEN, x->K * b * b);
+    fmpz_set(fmpz_mat_entry(T, 3, 3), B); fmpz_mul_ui(fmpz_mat_entry(T, 3, 1), U0_NUM, 2); fmpz_mul_ui(fmpz_mat_entry(T, 3, 1), fmpz_mat_entry(T, 3, 1), x->c); fmpz_mul_ui(fmpz_mat_entry(T, 3, 1), fmpz_mat_entry(T, 3, 1), x->K); fmpz_mul_ui(fmpz_mat_entry(T, 3, 1), fmpz_mat_entry(T, 3, 1), a);
+    fmpz_mul_ui(fmpz_mat_entry(T, 4, 0), U0_DEN, x->K); fmpz_mul_ui(fmpz_mat_entry(T, 4, 0), fmpz_mat_entry(T, 4, 0), b); fmpz_mul_ui(fmpz_mat_entry(T, 4, 0), fmpz_mat_entry(T, 4, 0), b);
     fmpz_set(fmpz_mat_entry(T, 5, 2), fmpz_mat_entry(T, 4, 0));
     fmpz_clear(A); fmpz_clear(B);
 }
@@ -1335,11 +1335,11 @@ static void m1e_leaf(fmpz_mat_t T, fmpz_t q, slong m, const void * v)
 {
     ulong c = ((const mctx *) v)->c, m1 = m + 1, o = 2 * m - 1;
     fmpz_t Q; fmpz_init(Q);
-    fmpz_mul_ui(Q, U0_DEN, m1 * m1 * m * o * o);
+    fmpz_mul_ui(Q, U0_DEN, m1); fmpz_mul_ui(Q, Q, m1); fmpz_mul_ui(Q, Q, m); fmpz_mul_ui(Q, Q, o); fmpz_mul_ui(Q, Q, o);
     fmpz_set(q, Q);
-    fmpz_mul_ui(fmpz_mat_entry(T, 0, 0), U0_NUM, c * m1 * m * o * o);
+    fmpz_mul_ui(fmpz_mat_entry(T, 0, 0), U0_NUM, c); fmpz_mul_ui(fmpz_mat_entry(T, 0, 0), fmpz_mat_entry(T, 0, 0), m1); fmpz_mul_ui(fmpz_mat_entry(T, 0, 0), fmpz_mat_entry(T, 0, 0), m); fmpz_mul_ui(fmpz_mat_entry(T, 0, 0), fmpz_mat_entry(T, 0, 0), o); fmpz_mul_ui(fmpz_mat_entry(T, 0, 0), fmpz_mat_entry(T, 0, 0), o);
     fmpz_set(fmpz_mat_entry(T, 1, 1), fmpz_mat_entry(T, 0, 0));
-    fmpz_mul_ui(fmpz_mat_entry(T, 1, 0), U0_NUM, c * m * o * o);
+    fmpz_mul_ui(fmpz_mat_entry(T, 1, 0), U0_NUM, c); fmpz_mul_ui(fmpz_mat_entry(T, 1, 0), fmpz_mat_entry(T, 1, 0), m); fmpz_mul_ui(fmpz_mat_entry(T, 1, 0), fmpz_mat_entry(T, 1, 0), o); fmpz_mul_ui(fmpz_mat_entry(T, 1, 0), fmpz_mat_entry(T, 1, 0), o);
     fmpz_divexact_ui(fmpz_mat_entry(T, 2, 0), Q, o);
     fmpz_divexact_ui(fmpz_mat_entry(T, 3, 0), Q, o * o);
     fmpz_divexact_ui(fmpz_mat_entry(T, 4, 1), Q, o);
@@ -1354,16 +1354,16 @@ static void m1o_leaf(fmpz_mat_t T, fmpz_t q, slong m, const void * v)
 {
     ulong c = ((const mctx *) v)->c, a = 2 * m + 1, m2 = (ulong) m * m;
     fmpz_t Q; fmpz_init(Q);
-    fmpz_mul_ui(Q, U0_DEN, a * a * a * m2);
+    fmpz_mul_ui(Q, U0_DEN, a); fmpz_mul_ui(Q, Q, a); fmpz_mul_ui(Q, Q, a); fmpz_mul_ui(Q, Q, m2);
     fmpz_set(q, Q);
-    fmpz_mul_ui(fmpz_mat_entry(T, 0, 0), U0_NUM, 2 * c * a * a * m2);
+    fmpz_mul_ui(fmpz_mat_entry(T, 0, 0), U0_NUM, 2); fmpz_mul_ui(fmpz_mat_entry(T, 0, 0), fmpz_mat_entry(T, 0, 0), c); fmpz_mul_ui(fmpz_mat_entry(T, 0, 0), fmpz_mat_entry(T, 0, 0), a); fmpz_mul_ui(fmpz_mat_entry(T, 0, 0), fmpz_mat_entry(T, 0, 0), a); fmpz_mul_ui(fmpz_mat_entry(T, 0, 0), fmpz_mat_entry(T, 0, 0), m2);
     fmpz_set(fmpz_mat_entry(T, 1, 1), fmpz_mat_entry(T, 0, 0));
-    fmpz_mul_ui(fmpz_mat_entry(T, 1, 0), U0_NUM, 2 * c * a * m2);
-    fmpz_mul_ui(fmpz_mat_entry(T, 2, 0), U0_DEN, a * a * m);
+    fmpz_mul_ui(fmpz_mat_entry(T, 1, 0), U0_NUM, 2); fmpz_mul_ui(fmpz_mat_entry(T, 1, 0), fmpz_mat_entry(T, 1, 0), c); fmpz_mul_ui(fmpz_mat_entry(T, 1, 0), fmpz_mat_entry(T, 1, 0), a); fmpz_mul_ui(fmpz_mat_entry(T, 1, 0), fmpz_mat_entry(T, 1, 0), m2);
+    fmpz_mul_ui(fmpz_mat_entry(T, 2, 0), U0_DEN, a); fmpz_mul_ui(fmpz_mat_entry(T, 2, 0), fmpz_mat_entry(T, 2, 0), a); fmpz_mul_ui(fmpz_mat_entry(T, 2, 0), fmpz_mat_entry(T, 2, 0), m);
     fmpz_mul_ui(fmpz_mat_entry(T, 3, 0), U0_DEN, a * a);
-    fmpz_mul_ui(fmpz_mat_entry(T, 4, 1), U0_DEN, a * a * m);
-    fmpz_mul_ui(fmpz_mat_entry(T, 5, 0), U0_DEN, 2 * a * m2);
-    fmpz_mul_ui(fmpz_mat_entry(T, 6, 1), U0_DEN, 2 * a * m2);
+    fmpz_mul_ui(fmpz_mat_entry(T, 4, 1), U0_DEN, a); fmpz_mul_ui(fmpz_mat_entry(T, 4, 1), fmpz_mat_entry(T, 4, 1), a); fmpz_mul_ui(fmpz_mat_entry(T, 4, 1), fmpz_mat_entry(T, 4, 1), m);
+    fmpz_mul_ui(fmpz_mat_entry(T, 5, 0), U0_DEN, 2); fmpz_mul_ui(fmpz_mat_entry(T, 5, 0), fmpz_mat_entry(T, 5, 0), a); fmpz_mul_ui(fmpz_mat_entry(T, 5, 0), fmpz_mat_entry(T, 5, 0), m2);
+    fmpz_mul_ui(fmpz_mat_entry(T, 6, 1), U0_DEN, 2); fmpz_mul_ui(fmpz_mat_entry(T, 6, 1), fmpz_mat_entry(T, 6, 1), a); fmpz_mul_ui(fmpz_mat_entry(T, 6, 1), fmpz_mat_entry(T, 6, 1), m2);
     fmpz_mul_ui(fmpz_mat_entry(T, 6, 0), U0_DEN, 2 * m2);
     fmpz_clear(Q);
 }
@@ -1371,7 +1371,7 @@ static void m1o_leaf(fmpz_mat_t T, fmpz_t q, slong m, const void * v)
 static void l1e_leaf(fmpz_mat_t T, fmpz_t q, slong j, const void * v)
 {
     ulong k2 = ((const mctx *) v)->k2, j1 = j + 1;
-    fmpz_mul_ui(q, U0_DEN, j1 * j1 * j1);
+    fmpz_mul_ui(q, U0_DEN, j1); fmpz_mul_ui(q, q, j1); fmpz_mul_ui(q, q, j1);
 #define E(r, c, val) fmpz_mul_si(fmpz_mat_entry(T, r, c), U0_NUM, (slong) (val))
     E(0, 0, k2 * j1 * j1); E(0, 2, 2 * j1); E(0, 4, -(slong) j1);
     E(1, 1, k2 * j1 * j1); E(1, 0, k2 * j1); E(1, 3, 2 * j1); E(1, 5, -(slong) j1); E(1, 2, 2); E(1, 4, -1);
@@ -1385,7 +1385,7 @@ static void l1e_leaf(fmpz_mat_t T, fmpz_t q, slong j, const void * v)
 static void l1o_leaf(fmpz_mat_t T, fmpz_t q, slong j, const void * v)
 {
     ulong k2 = ((const mctx *) v)->k2, b = 2 * j + 3;
-    fmpz_mul_ui(q, U0_DEN, b * b * b);
+    fmpz_mul_ui(q, U0_DEN, b); fmpz_mul_ui(q, q, b); fmpz_mul_ui(q, q, b);
 #define E(r, c, val) fmpz_mul_si(fmpz_mat_entry(T, r, c), U0_NUM, (slong) (val))
     E(0, 0, 2 * k2 * b * b); E(0, 2, -16 * (slong) b); E(0, 4, 4 * b);
     E(1, 1, 2 * k2 * b * b); E(1, 0, 2 * k2 * b); E(1, 3, -16 * (slong) b); E(1, 5, 4 * b); E(1, 2, -16); E(1, 4, 4);
