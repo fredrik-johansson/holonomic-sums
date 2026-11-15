@@ -77,21 +77,33 @@ Euler's constant and Khinchin's constant have strikingly similar series,
   \log K\,\log 2 &= -\sum_{k=2}^{\infty}\log\Bigl(1-\frac1k\Bigr)\log\Bigl(1+\frac1k\Bigr),
 \end{align*}
 both of the form $\sum_{k=k_0}^{\infty} F(k)$ with $F$ holonomic and analytic at infinity.
-Euler's constant also has a second life as a particular value (here in the regularized sense)
-of a Dirichlet series, $\zeta(s) = \sum_{k=1}^{\infty} k^{-s} = \tfrac{1}{s-1} + \gamma + O(s-1)$.
-The same is true for Khinchin's constant, the limit
+
+Euler's constant $\gamma$ is the regularized limit of the harmonic numbers,
+\[
+\gamma = \lim_{n \to \infty} ( ( \tfrac{1}{1} + \tfrac{1}{2} + \ldots + \tfrac{1}{n} ) - \log n) = 0.5772156649\ldots
+\]
+while Khinchin's constant is the limit
 \[
   K = \lim_{n\to\infty}(a_1a_2\cdots a_n)^{1/n} = 2.6854520010\ldots
 \]
 of the geometric means of the partial quotients of the continued fraction $x = [a_0; a_1, a_2, \dots]$ of almost
-every real number $x$. For almost every $x$, the proportion of partial quotients equal to $k$ is the
-Gauss--Kuzmin probability $p_k = \log_2(1 + 1/(k(k+2)))$.
-If we define a ``Khinchin zeta function''
+every real number $x$.
+
+Euler's constant also has a second life as a particular value (in the regularized sense)
+of a Dirichlet series, $\zeta(s) = \sum_{k=1}^{\infty} k^{-s} = \tfrac{1}{s-1} + \gamma + O(s-1)$.
+The same is true for Khinchin's constant.
+For almost every $x$, the proportion of partial quotients equal to $k$ is the
+Gauss--Kuzmin probability $p_k = \log_2(1 + 1/(k(k+2)))$;
+if we define a ``Khinchin zeta function''
 \begin{equation}\label{eq:Z}
   Z(s) = \sum_{k=1}^{\infty} p_k\,k^{-s} = \mathbb{E}\bigl[a_1^{-s}\bigr],
 \end{equation}
 then $Z(0) = 1$
-(the product $\prod_k (k+1)^2/(k(k+2))$ telescopes to $2$), $K = \prod_k k^{p_k} = \exp(-Z'(0))$, and the
+(the product $\prod_k (k+1)^2/(k(k+2))$ telescopes to $2$),
+\[
+K = \prod_k k^{p_k} = \exp(-Z'(0)),
+\]
+and more generally the
 H\"older means of the partial quotients are $K_p = Z(-p)^{1/p}$ for $p < 1$, $p \ne 0$; in particular the
 harmonic mean is $K_{-1} = 1/Z(1)$. The function $Z$ is meromorphic in $\CC$, with simple poles at
 $s = -1, -2, -3, \dots$ (Section~\ref{sec:khinchinzeta}).
@@ -180,7 +192,9 @@ Each function in \eqref{eq:functions} is, as a function of $s$, a deformation of
 $\zeta_F$ and $L_F$ are meromorphic in $\CC$, and $\Li_F(s,z)$, $\Phi_F$ and $\Lambda_F$ are entire in $s$. We show that the classical
 theta-function method for $\zeta$ extends to all of them, and that holonomy of $F$ is what makes it fast.
 
-Why single out the factor $k^{-s}$, which could be absorbed into $F$? Other parameters may enter $F$ in other ways,
+\begin{remark}
+The factor $k^{-s}$ could be absorbed into $F$, but it is natural to factor it out.
+Other parameters may enter $F$ in other ways,
 and the method allows this (Remark~\ref{rem:twovar}), but $k^{-s}$ is the parameter intrinsic to the class.
 Multiplying by $k^{-s}$ only shifts the exponents at infinity, and conversely the exponents and logarithms of a
 general regular $F$ \eqref{eq:frob} are shifts and derivatives in $s$ of the analytic case
@@ -191,8 +205,9 @@ canonical. Away from poles they are the constant terms of the smoothed sums $\su
 $N \to \infty$, for every smooth cutoff with $\varphi(0) = 1$ \cite{Zag06}. Other deformations need not agree: for
 $F = 1$, $\sum_k(k+a)^{-s}$ gives $-\frac12 - a$ at $s = 0$, not $-\frac12$. Finally, $s$ enters the splitting only
 through $1/\Gamma(\frac{s+n}2)$, so the cost is uniform in $s$ (Theorem~\ref{thm:uniform}). The applications to
-Bernoulli numbers need exactly this, whereas absorbing $k^{n-1}$ into $F$ would change the differential operator
-with $n$.
+integer sequences (Table~\ref{tab:sequences}) need exactly this,
+whereas absorbing $k^{n-1}$ into $F$ would change the differential operator with $n$.
+\end{remark}
 
 \subsection{Results}
 Let $F$ be analytic at infinity, $F(k) = f(1/k)$ for $k \ge k_0$, where
