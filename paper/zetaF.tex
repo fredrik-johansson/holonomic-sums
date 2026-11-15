@@ -87,13 +87,13 @@ while Khinchin's constant is the limit
   K = \lim_{n\to\infty}(a_1a_2\cdots a_n)^{1/n} = 2.6854520010\ldots
 \]
 of the geometric means of the partial quotients of the continued fraction $x = [a_0; a_1, a_2, \dots]$ of almost
-every real number $x$.
+every real number $x$ \cite{Khi35,Khi64}; see \cite[\S\S1.5, 1.8]{Fin03} for both constants.
 
 Euler's constant also has a second life as a particular value (in the regularized sense)
 of a Dirichlet series, $\zeta(s) = \sum_{k=1}^{\infty} k^{-s} = \tfrac{1}{s-1} + \gamma + O(s-1)$.
 The same is true for Khinchin's constant.
 For almost every $x$, the proportion of partial quotients equal to $k$ is the
-Gauss--Kuzmin probability $p_k = \log_2(1 + 1/(k(k+2)))$;
+Gauss--Kuzmin probability $p_k = \log_2(1 + 1/(k(k+2)))$ \cite{Khi64,IK02};
 if we define a ``Khinchin zeta function''
 \begin{equation}\label{eq:Z}
   Z(s) = \sum_{k=1}^{\infty} p_k\,k^{-s} = \mathbb{E}\bigl[a_1^{-s}\bigr],
@@ -104,7 +104,7 @@ then $Z(0) = 1$
 K = \prod_k k^{p_k} = \exp(-Z'(0)),
 \]
 and more generally the
-H\"older means of the partial quotients are $K_p = Z(-p)^{1/p}$ for $p < 1$, $p \ne 0$; in particular the
+H\"older means of the partial quotients are $K_p = Z(-p)^{1/p}$ for $p < 1$, $p \ne 0$ \cite{BBC97}; in particular the
 harmonic mean is $K_{-1} = 1/Z(1)$. The function $Z$ is meromorphic in $\CC$, with simple poles at
 $s = -1, -2, -3, \dots$ (Section~\ref{sec:khinchinzeta}).
 
@@ -3427,6 +3427,7 @@ $\frac12 - n_0 < \operatorname{Re}s < 1 - n_0$? Is it hypertranscendental?
 \bibitem{Kal88} S.~Kalpazidou, Khintchine's constant for L\"uroth representation, J.\ Number Theory 29 (1988), 196--205.
 \bibitem{Kat97} M.~Katsurada, An application of Mellin--Barnes' type integrals to the mean square of Lerch zeta-functions, Collect.\ Math.\ 48 (1997), 137--153.
 \bibitem{Khi35} A.~Khintchine, Metrische Kettenbruchprobleme, Compositio Math.\ 1 (1935), 361--382.
+\bibitem{Khi64} A.~Ya.~Khinchin, \emph{Continued Fractions}, University of Chicago Press, 1964.
 \bibitem{Kir02} K.~Kirsten, \emph{Spectral Functions in Mathematics and Physics}, Chapman \& Hall/CRC, 2002.
 \bibitem{Lav68} A.~F.~Lavrik, Approximate functional equations of Dirichlet functions, Izv.\ Akad.\ Nauk SSSR Ser.\ Mat.\ 32 (1968), 134--185.
 \bibitem{Lev36} P.~L\'evy, Sur le d\'eveloppement en fraction continue d'un nombre choisi au hasard, Compositio
