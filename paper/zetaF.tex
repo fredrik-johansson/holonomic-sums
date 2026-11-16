@@ -149,6 +149,24 @@ this way. One of our main findings is that all of them can be computed in time s
 for the constants of Euler, Stieltjes and Glaisher, which are values of $\zeta$ and its derivatives
 \cite{BM80,Joh21}, we are not aware of earlier subquadratic algorithms for them.
 
+The method applies equally to the many constants in the tables of Flajolet and Vardi \cite{FV96} and of Finch
+\cite{Fin03} that are sums of a regular holonomic function: the H\"older means $K_{-n}$, sums
+$\sum_kG(1/k)$ with $G$ a product of logarithms, polylogarithms or inverse trigonometric functions (such as
+$\sum_k\frac1k\arctan\frac1k$), sums $\sum_k(\log k)^jR(1/k)$ with $R$ rational, and products $\prod_kG(1/k)$ with
+$\log G$ holonomic. Not every such sum is new: sums of logarithms or inverse trigonometric or hyperbolic functions of
+a rational function of $k$ reduce to gamma values at algebraic points, as in (A352619, A393668)
+\[
+  \sum_{k=1}^{\infty}\Bigl(\frac1k - \arctan\frac1k\Bigr) = \gamma + \arg\Gamma(1+i), \qquad
+  \sum_{n=2}^{\infty}\arctanh\frac1{n^2} = \frac12\log\frac{\sinh\pi}{\pi},
+\]
+and can be computed in quasilinear time; in $\sum_k\frac1k\arctan\frac1k$, the extra factor $\frac1k$ already
+destroys this structure. In physics, sums of the class are usually truncated and the tail estimated by its leading term;
+besides the vortex rings of Table~\ref{tab:constants}, examples are Matsubara-frequency sums of one-loop integrals at
+finite temperature \cite{HLS24}, with arctangents of algebraic functions of the frequency index, and sums over
+Kaluza--Klein towers \cite{Pet02}, with $\arcsin^2$ of algebraic functions of the mode number. Classical sums such as
+$\sum_k\log\cos\frac\pi k$, whose summands are analytic at infinity but not holonomic, are outside the class
+(Section~\ref{sec:open}).
+
 \begin{table}[t]
 \centering\footnotesize
 \renewcommand{\arraystretch}{1.2}
@@ -193,20 +211,10 @@ $\zeta_F$ and $L_F$ are meromorphic in $\CC$, and $\Li_F(s,z)$, $\Phi_F$ and $\L
 theta-function method for $\zeta$ extends to all of them, and that holonomy of $F$ is what makes it fast.
 
 \begin{remark}
-The factor $k^{-s}$ could be absorbed into $F$, but it is natural to factor it out.
-Other parameters may enter $F$ in other ways,
-and the method allows this (Remark~\ref{rem:twovar}), but $k^{-s}$ is the parameter intrinsic to the class.
-Multiplying by $k^{-s}$ only shifts the exponents at infinity, and conversely the exponents and logarithms of a
-general regular $F$ \eqref{eq:frob} are shifts and derivatives in $s$ of the analytic case
-(Lemma~\ref{lem:reduction}). The poles of $\zeta_F$ record the expansion of $F$ at infinity
-(Proposition~\ref{prop:cont}), and $(mk)^{-s} = m^{-s}k^{-s}$ makes dilations and twists identities of functions of
-$s$ (Section~\ref{sec:twists}). Correspondingly, the regularized values $\zeta_F(-m)$ of divergent sums are
-canonical. Away from poles they are the constant terms of the smoothed sums $\sum_kk^mF(k)\varphi(k/N)$ as
-$N \to \infty$, for every smooth cutoff with $\varphi(0) = 1$ \cite{Zag06}. Other deformations need not agree: for
-$F = 1$, $\sum_k(k+a)^{-s}$ gives $-\frac12 - a$ at $s = 0$, not $-\frac12$. Finally, $s$ enters the splitting only
-through $1/\Gamma(\frac{s+n}2)$, so the cost is uniform in $s$ (Theorem~\ref{thm:uniform}). The applications to
-integer sequences (Table~\ref{tab:sequences}) need exactly this,
-whereas absorbing $k^{n-1}$ into $F$ would change the differential operator with $n$.
+The factor $k^{-s}$ could be absorbed into $F$, but $s$ is the parameter intrinsic to the class: multiplying by
+$k^{-s}$ only shifts the exponents at infinity, the poles of $\zeta_F$ record the expansion of $F$ at infinity
+(Proposition~\ref{prop:cont}), and $s$ enters the splitting only through $1/\Gamma(\frac{s+n}2)$, so that the cost is
+uniform in $s$ (Theorem~\ref{thm:uniform}).
 \end{remark}
 
 \subsection{Results}
@@ -246,7 +254,7 @@ like that of $\zeta(s+n_0)$ in vertical strips, $n_0$ being the order of vanishi
 like every Dirichlet series with infinitely many nonzero coefficients, satisfies no linear difference or
 differential equation in $s$. Its zeros near the line $\operatorname{Re}s = \frac12 - n_0$ behave like
 $a$-points of $\zeta$ \cite{Lev75,Ste07}: there are $(T/2\pi)\log T + O(T)$ of height at most $T$. These facts
-use no holonomy and play no role in the algorithms; we collect them in Appendix~\ref{app:analytic}, together with a
+use no holonomy and play no role in the algorithms; they are proved in a companion note \cite{Joh26}, together with a
 Hardy--Littlewood approximate functional equation and numerical experiments on the zeros of Khinchin's $Z$.
 
 \begin{theoremB}[Theorems~\ref{thm:complexity} and~\ref{thm:geometric}, Section~\ref{sec:stretched}]
@@ -528,7 +536,23 @@ irrational real $\alpha$, which is the limit $|z| \to 1$ of $\Li_1(s,z)$ and can
 %======================================================================
 \section{Theta splitting}\label{sec:splitting}
 
-\subsection{The kernel}
+The model is Riemann's second proof of the functional equation \cite{Rie59}. Inserting
+$k^{-s} = \Gamma(\frac s2)^{-1}\int_0^\infty u^{s/2-1}e^{-k^2u}\dd u$ into $\zeta(s) = \sum_{k=1}^{\infty}k^{-s}$
+writes $\zeta(s)$ as the Mellin transform of the theta series $\Theta(u) = \sum_{k=1}^{\infty}e^{-k^2u}$. Splitting the
+integral at $u = \pi$, integrating termwise on $[\pi,\infty)$ and using the theta transformation
+$\Theta(u) = \frac12\sqrt{\pi/u} - \frac12 + \sqrt{\pi/u}\,\Theta(\pi^2/u)$ on $(0,\pi]$ gives
+\begin{multline}\label{eq:riemann}
+  \zeta(s) = \sum_{k=1}^{\infty}k^{-s}Q\Bigl(\frac s2,\pi k^2\Bigr)
+  + \frac{\pi^{s-1/2}\Gamma(\frac{1-s}2)}{\Gamma(\frac s2)}\sum_{m=1}^{\infty}m^{s-1}Q\Bigl(\frac{1-s}2,\pi m^2\Bigr) \\
+  + \frac{\pi^{s/2}}{\Gamma(\frac s2)\,s(s-1)},
+\end{multline}
+where $Q(a,x) = \Gamma(a,x)/\Gamma(a)$. Both sums converge like $\sum_ke^{-\pi k^2}$, for all $s$, and their symmetry
+under $s \mapsto 1-s$ is the functional equation. For general $F$, the factor $f(1/k)$ is absorbed by replacing
+$u^{s/2-1}/\Gamma(\frac s2)$ with a kernel $h_s(u)$ (Section~\ref{sec:kernel}); the splitting point $u_0$ becomes a
+free parameter that balances the two sides (Theorem~\ref{thm:split}); and when $F$ is holonomic, so are both sides,
+as functions of $k^2$ and $m^2$ (Section~\ref{sec:twosides}).
+
+\subsection{The kernel}\label{sec:kernel}
 Under \eqref{eq:f} define, for $s \in \CC$ and $u > 0$,
 \begin{equation}\label{eq:kernel}
   h_s(u) = \sum_{n=0}^{\infty} a_n\frac{u^{(s+n)/2-1}}{\Gamma(\frac{s+n}{2})} = u^{s/2-1}E_s(u^{1/2}), \qquad
@@ -647,13 +671,8 @@ $a_n\sqrt\pi/\Gamma(\frac12) = a_n$.
 
 \begin{example}[Riemann]\label{ex:riemann}
 For $f = 1$, $k_0 = 1$ and $u_0 = \pi$, the substitution $u = \pi^2m^2/v$ gives
-$\sqrt\pi J_m(s) = \pi^{s-1/2}m^{s-1}\Gamma(\frac{1-s}2,\pi m^2)/\Gamma(\frac s2)$, and
-\begin{multline*}
-  \zeta(s) = \sum_{k=1}^{\infty}k^{-s}Q\Bigl(\frac s2,\pi k^2\Bigr)
-  + \frac{\pi^{s-1/2}\Gamma(\frac{1-s}2)}{\Gamma(\frac s2)}\sum_{m=1}^{\infty}m^{s-1}Q\Bigl(\frac{1-s}2,\pi m^2\Bigr) \\
-  + \frac{\pi^{s/2}}{\Gamma(\frac s2)\,s(s-1)},
-\end{multline*}
-which is Riemann's formula \cite{Rie59}; the symmetry of the two sums under $s \mapsto 1-s$ is the functional equation.
+$\sqrt\pi J_m(s) = \pi^{s-1/2}m^{s-1}\Gamma(\frac{1-s}2,\pi m^2)/\Gamma(\frac s2)$, and Theorem~\ref{thm:split}
+becomes Riemann's formula \eqref{eq:riemann}.
 \end{example}
 
 \begin{remark}[Poisson summation]\label{rem:poisson}
@@ -958,8 +977,8 @@ $Q(a+1,x) = Q(a,x) + x^ae^{-x}/\Gamma(a+1)$ and \eqref{eq:Drec}), and $h_s$ is h
 are holonomic in $c$ (as in Proposition~\ref{prop:dual}). The analysis of Appendix~\ref{app:cost} therefore applies:
 \emph{for algebraic $s$ and $\tau$ and rational $0 < r < 2$, $\Lambda(s;\tau,r)$ can be computed to $p$ bits in
 $p^{3/2+o(1)}$ bit operations}, against $p^{1+1/r+o(1)}$ for direct summation. The classical alternative is the
-expansion $\Lambda(s;\tau,r) = M_\tau(1-s) + \sum_{n=0}^{\infty}\zeta(s-rn)(-\tau)^n/n!$ in zeta values (from the
-Mellin--Barnes integral of Remark~\ref{rem:mb}), which converges for $r < 1$, and for $r = 1$ when $\tau < 2\pi$; it
+expansion $\Lambda(s;\tau,r) = M_\tau(1-s) + \sum_{n=0}^{\infty}\zeta(s-rn)(-\tau)^n/n!$ in zeta values (from a
+Mellin--Barnes integral \cite{Joh26}), which converges for $r < 1$, and for $r = 1$ when $\tau < 2\pi$; it
 costs $p^{2+o(1)}$, like \eqref{eq:zetavalue}; the details of the cost analysis are in Appendix~\ref{app:stretched}.
 An implementation for $r = \frac12$ computes $\sum_ke^{-\sqrt k}$ to $10^6$ digits (Section~\ref{sec:dampedconst}).
 For $r = 1$ the proposition is an alternative to Theorem~\ref{thm:geometric} with real dual points, but $\tau = \log(1/z)$
@@ -1196,7 +1215,7 @@ $O(n^{3/2}\log^{9/2}n)$ that Corollary~\ref{cor:bernoulli} gives with $\Mul(n) =
 specific to $B_n$, computing it modulo many primes. We know of no other published subquadratic algorithm for $E_n$,
 $B_n(x)$ or $B_{n,\chi}$. With $F \ne 1$ the theorem gives, in the same way, the constant terms of $\zeta_F$ at
 $s = 1-n$, the zeta-regularized values of the divergent sums $\sum_kk^{n-1}F(k)$, at uniform cost for
-$n = O(p/\log p)$. These are in general transcendental (Proposition~\ref{prop:negative}).
+$n = O(p/\log p)$. These are convergent sums of the same type plus Bernoulli corrections \cite{Joh26}, and in general transcendental.
 
 The last statement of Theorem~\ref{thm:uniform} extends this from roots of unity to all algebraic poles of an
 exponential generating function that is rational in $e^t$.
@@ -1402,11 +1421,12 @@ For $N \ge k_0$ and $J \ge 1$, with $g(x) = F(x)x^{-s}$,
   - \sum_{j=1}^{J}\frac{B_{2j}}{(2j)!}g^{(2j-1)}(N) + R_J(s),
 \]
 with $|R_J(s)| \le 2\zeta(2J)(2\pi)^{-2J}\int_N^\infty|g^{(2J)}(x)|\dd x$. In our setting all the ingredients are
-explicit: the Mellin part is $\mathcal M_F(s;N) = \sum_na_nN^{1-s-n}/(s+n-1)$ (Proposition~\ref{prop:mellin}), and the
+explicit: the Mellin part is $\mathcal M_F(s;N) = \int_N^\infty g(x)\dd x$, which equals
+$\sum_na_nN^{1-s-n}/(s+n-1)$, and the
 derivatives $g^{(i)}(N)$ are, up to factorials, the Taylor coefficients of $F(x)x^{-s}$ at $x = N$, which for
 holonomic $F$ satisfy a linear recurrence, so that after the direct terms everything costs $O(J)$ arithmetic operations plus the Bernoulli
 numbers. Since $R_J$ is analytic for $\operatorname{Re}s > 1 - n_0 - 2J$, the formula gives the continuation in
-growing half-planes, which is the classical proof of Proposition~\ref{prop:mellin}. For $p$ bits at fixed $s$ one
+growing half-planes, which is the classical proof that $\zeta_F(s;N) - \mathcal M_F(s;N)$ is entire. For $p$ bits at fixed $s$ one
 needs $N$ and $J$ proportional to $p$, so the cost is $p^{2+o(1)}$: $\Theta(p)$ values $F(k)$, each in
 $O(\Mul(p)\log^2p)$, and $\Theta(p)$ Bernoulli numbers.
 
@@ -1444,18 +1464,13 @@ finitely many $\zeta(s+n,k_0)$ is $\zeta(s+n)$ minus a finite sum, and $\zeta(s+
 formula in $O(t^{1/2})$ operations \cite{AdR11}.
 \end{proof}
 
-With the Odlyzko--Sch\"onhage algorithm \cite{OS88} the values of $\zeta(s+n)$ on a grid of $T^{1/2}$ points near
-height $T$ can be computed in $T^{1/2+o(1)}$ operations, and so can those of $\zeta_F$; this is how the zeros near
-$\gamma_{3000}$ in Section~\ref{sec:zeros} can be located cheaply. An intrinsic Riemann--Siegel formula for $\zeta_F$,
-refining Proposition~\ref{prop:hl}, and a smoothed version of Theorem~\ref{thm:split} with complex $u_0$, are open.
-
 \begin{remark}\label{rem:complexu0}
 Theorem~\ref{thm:split} with real $u_0$ is not efficient for large $t$: $\Gamma(\frac s2)^{-1}$ is of size
 $e^{\pi t/4}$ and the terms cancel to that extent. For $L$-functions this is overcome by rotating the
 integration path, i.e.\ taking $u_0$ complex \cite{Rub05}, which gives Riemann--Siegel-like formulas with
 $O(\sqrt t)$ terms. All pieces of Theorem~\ref{thm:split} are holonomic in $u_0$ and analytic for
 $\operatorname{Re}u_0 > 0$, so the same idea should apply here and give an exact, smoothed version of the
-Hardy--Littlewood formula (Proposition~\ref{prop:hl}); we have not worked this out (Section~\ref{sec:open}).
+Hardy--Littlewood-type approximate functional equation for $\zeta_F$ proved in \cite{Joh26}; we have not worked this out (Section~\ref{sec:open}).
 \end{remark}
 
 \subsection{Other generating functions}\label{sec:ogf}
@@ -2624,44 +2639,6 @@ values too early (their $E$-part decays only like $(\beta u_0)^j/j!$), and the c
 beyond $75\,000$ digits; a first version of \texttt{holsum} lost about $\sqrt{\beta c}$ bits to cancellation in the
 dual recurrences of the vortex sum, which the ball arithmetic revealed at $10^4$ digits.
 
-\subsection{Further examples}\label{sec:furtherex}
-\emph{Planck--Larkin.} The Planck--Larkin sum of Table~\ref{tab:constants} is $\sigma(T) = \zeta_F(-2)$ with
-$F(k) = e^{x/k^2} - 1 - x/k^2$. Here $f$ is entire, the poles are at $s = -3, -5, \dots$, and $s = -2$ is a regular
-point, at which the series $\sigma(T) = \sum_{k=1}^{\infty}k^2F(k)$ converges.
-
-\emph{Further candidates.} The method applies to every constant in the tables of Flajolet and Vardi \cite{FV96} and of Finch \cite{Fin03}
-that has a zeta-value expansion whose generating function $f$ is holonomic and satisfies (H) (with the terms $k < k_0$, $k_0 > 1/\rho$,
-added separately): the H\"older means $K_{-n}$; constants of the form
-$\sum_{k=k_0}^{\infty} F(1/k)$ with $F$ a product of logarithms, polylogarithms or inverse trigonometric functions (such as
-$\sum_{k=1}^{\infty} \frac1k\arctan\frac1k$); and, through Theorem~\ref{thm:complexity}, sums $\sum_{k=k_0}^{\infty} (\log k)^j R(1/k)$ with $R$ rational.
-Products $\prod_{k=k_0}^{\infty} F(1/k)$ reduce to such sums by taking logarithms when $\log F$ is holonomic.
-Not every member of the class is new: sums of logarithms or inverse trigonometric or hyperbolic functions of a
-rational function of $k$ are logarithms or arguments of products of gamma values at algebraic points, for instance
-(A352619, A393668)
-\[
-  \sum_{k=1}^{\infty}\Bigl(\frac1k - \arctan\frac1k\Bigr) = \gamma + \arg\Gamma(1+i), \qquad
-  \sum_{n=2}^{\infty}\arctanh\frac1{n^2} = \frac12\log\frac{\sinh\pi}{\pi},
-\]
-and these can be computed in quasilinear time.
-The extra factor $\frac1k$ in $\sum_{k=1}^{\infty}\frac1k\arctan\frac1k$ destroys this product structure.
-
-Sums of the class also occur in physics, where they are usually truncated and the tail estimated by its leading
-term. Besides the vortex-ring sum (Section~\ref{sec:vortex}), examples are Matsubara-frequency sums of one-loop
-integrals at finite temperature \cite{HLS24}, whose summands are arctangents of algebraic functions of the frequency
-index, and sums over Kaluza--Klein towers \cite{Pet02}, whose summands involve $\arcsin^2$ of algebraic functions of
-the mode number.
-
-\emph{Non-examples.} Some classical sums with summands analytic at infinity are not in the class because the summand
-is not holonomic, although their zeta-value expansions converge geometrically. Examples are the logarithm of the
-Kepler--Bouwkamp constant and two constants from the OEIS (A342680, A336405),
-\[
-  \sum_{k=3}^{\infty}\log\cos\frac\pi k, \qquad \sum_{n=1}^{\infty}\Bigl(\tan\frac1n - \sin\frac1n\Bigr), \qquad
-  \sum_{n=1}^{\infty}\log\Bigl(n\sin\frac1n\Bigr)
-\]
-(the derivative of $\log\cos$ is $-\tan$, which has infinitely many poles), sums of Clausen
-functions $\operatorname{Cl}_2(2\pi/n)$, and sums involving $(1 - \frac2{n+1})^{2n}$, such as the oscillator strengths of the
-hydrogen atom. Whether such sums admit subquadratic algorithms is open.
-
 %======================================================================
 \section{Open problems}\label{sec:open}
 
@@ -2689,8 +2666,16 @@ sums covered by Theorem~\ref{thm:geometric}; we do not know whether this leads t
 \item Summands that are P-recursive in $k$ but not holonomic as functions of a continuous variable, such as $k^n/k!$
 in Dobinski's formula $B_n = e^{-1}\sum_kk^n/k!$ for the Bell numbers, which Corollary~\ref{cor:egf} does not
 cover.
-\item Summands that are analytic at infinity but not holonomic, such as $\log\cos(\pi/k)$, whose zeta-value
-expansions converge geometrically (Section~\ref{sec:furtherex}).
+\item Summands that are analytic at infinity but not holonomic, although their zeta-value expansions converge
+geometrically. Examples are the logarithm of the Kepler--Bouwkamp constant and two constants from the OEIS (A342680,
+A336405),
+\[
+  \sum_{k=3}^{\infty}\log\cos\frac\pi k, \qquad \sum_{n=1}^{\infty}\Bigl(\tan\frac1n - \sin\frac1n\Bigr), \qquad
+  \sum_{n=1}^{\infty}\log\Bigl(n\sin\frac1n\Bigr)
+\]
+(the derivative of $\log\cos$ is $-\tan$, which has infinitely many poles), sums of Clausen functions
+$\operatorname{Cl}_2(2\pi/n)$, and sums involving $(1 - \frac2{n+1})^{2n}$, such as the oscillator strengths of the
+hydrogen atom.
 \item Kernels that are themselves theta series (Section~\ref{sec:limits}), as for the Lambert series
 $\sum_kk^{-s}/(e^{\tau k}-1)$, for which the splitting needs about $p$ terms.
 \end{itemize}
@@ -3164,328 +3149,7 @@ $L$, with the size of its coefficients and with the degree of $\mathbb K$.
 \end{remark}
 
 %======================================================================
-\section{Analytic properties}\label{app:analytic}
-
-This appendix collects properties of $\zeta_F$ that need only \eqref{eq:f} (or no hypothesis at all) and play no
-role in the algorithms. Most are routine consequences of the zeta-value expansion \eqref{eq:zetavalue}.
-
-\begin{remark}[Mellin--Barnes]\label{rem:mb}
-If $F$ is defined on all of $(0,\infty)$, with Mellin transform $\mathcal M F(w) = \int_0^\infty F(x)x^{w-1}\dd x$ in a strip
-$c_1 < \operatorname{Re}w < n_0$, then by Mellin inversion
-\[
-  \zeta_F(s) = \frac1{2\pi i}\int_{(c)}\mathcal MF(w)\,\zeta(s+w)\dd w \qquad (c_1 < c < n_0,\ \operatorname{Re}(s+c) > 1).
-\]
-Unlike $\zeta_F$, the Mellin transform of a holonomic function satisfies a linear recurrence in $w$ with polynomial
-coefficients. Moving the contour to the right picks up the poles of $\mathcal MF$ at $w = n$, which come from the
-expansion of $F$ at infinity and have residues $-a_n$: this gives \eqref{eq:zetavalue} (for the tail $k \ge k_0$, where
-it converges). Moving it to the left picks up the poles coming from the behaviour of $F$ at $0$, i.e.\ of $f$ at
-infinity, and gives a second expansion in values $\zeta(s - w_j)$ and their derivatives, typically divergent but
-asymptotic. For Khinchin's $Z$, $p(x) = -\log_2(2x) + \sum_jb_jx^j$ near $x = 0$, and the left-hand expansion involves
-$\zeta'(s)$, $\zeta(s)$ and $\sum_jb_j\zeta(s-j)$. With a scale parameter, $\sum_kF(ky)k^{-s}$ has Mellin transform
-$\mathcal MF(w)\zeta(s+w)$ in $y$, which gives asymptotic expansions in parameters such as the spacing $\lambda$ of the
-vortex sum or the argument $x$ of the Hardy--Littlewood function \cite{FGD95,Kat97}; this complements
-Theorem~\ref{thm:split}, which is exact at a fixed parameter.
-\end{remark}
-
-\subsection{The Mellin part}
-Let $\mathcal M_F(s;k_0) = \int_{k_0}^\infty F(x)x^{-s}\dd x$, the Mellin transform of $F$ restricted to $[k_0,\infty)$.
-
-\begin{proposition}\label{prop:mellin}
-Under \eqref{eq:f}, $\mathcal M_F(s;k_0) = \sum_{n=0}^{\infty} a_n k_0^{1-s-n}/(s+n-1)$, and $\zeta_F(s;k_0) - \mathcal M_F(s;k_0)$ is entire.
-If moreover $F$ is holonomic, annihilated by $\sum_{i=-r}^{r} x^ir_i(\vartheta_x)$, $\vartheta_x = x\frac{\mathrm{d}}{\mathrm{d}x}$, then $\mathcal M_F$
-satisfies the inhomogeneous linear recurrence
-\[
-  \sum_{i=-r}^{r} r_i(s-i-1)\,\mathcal M_F(s-i;k_0) = k_0^{1-s}\,P(s),
-\]
-where $P$ is a polynomial whose coefficients are linear in $F(k_0), F'(k_0), \dots$.
-\end{proposition}
-
-\begin{proof}
-The first formula is termwise integration. By \eqref{eq:zetavalue}, the difference is
-$\sum_{n=0}^{\infty}a_n(\zeta(s+n,k_0) - k_0^{1-s-n}/(s+n-1))$, a locally uniformly convergent series of entire
-functions (the classical proof by Euler--Maclaurin summation is recalled in Section~\ref{sec:em}).
-For the recurrence, $\int_{k_0}^\infty x^{-s}\vartheta_xF\dd x = -k_0^{1-s}F(k_0) + (s-1)\mathcal M_F(s;k_0)$ and multiplication by
-$x^i$ shifts $s$ by $-i$; iterate.
-\end{proof}
-
-So all the poles of $\zeta_F$, and all of its ``holonomic'' structure in $s$, sit in the Mellin part. The
-remainder is entire but, in contrast to $\mathcal M_F$, not holonomic in $s$:
-
-\begin{proposition}\label{prop:nonholonomic}
-Let $F$ be any sequence with $F(k) \ne 0$ for infinitely many $k$ and $\sum_{k=1}^{\infty}F(k)k^{-s}$ convergent somewhere.
-Then $\zeta_F$ satisfies no relation $\sum_{i=0}^rp_i(s)\zeta_F(s+i) = q(s)$ and no relation
-$\sum_{i=0}^rp_i(s)\zeta_F^{(i)}(s) = q(s)$ with polynomials $p_i$ not all zero and $q$ a finite
-linear combination of exponentials $c^{-s}$ with polynomial coefficients.
-\end{proposition}
-
-\begin{proof}
-For $\operatorname{Re}s$ large the left-hand sides are generalized Dirichlet series
-\[
-  \sum_{k=1}^{\infty} F(k)\,c_k(s)\,k^{-s}, \quad c_k(s) = \sum_{i=0}^{r}p_i(s)k^{-i}
-  \ \text{or}\ c_k(s) = \sum_{i=0}^{r}p_i(s)(-\log k)^i,
-\]
-polynomial in $s$ of bounded degree. By the uniqueness theorem for such series (divide by the highest power of
-$s$ and let $\operatorname{Re}s\to\infty$, inductively), $F(k)c_k(s) = 0$ for every $k$ not among the finitely many
-frequencies of $q$. Hence $c_k(s) = 0$ for infinitely many $k$, and as a polynomial in $k^{-1}$ (respectively
-$\log k$) with infinitely many roots, $\sum_{i=0}^{r}p_i(s)y^i \equiv 0$, so all $p_i = 0$.
-\end{proof}
-
-Whether $\zeta_F$ can satisfy an algebraic differential equation is a different matter: $\zeta$ itself does not
-(Hilbert, Ostrowski \cite{Ost20}), and we expect the same for every $\zeta_F$ that is not a finite combination of
-exponentials, but we have no proof.
-
-\subsection{Values at non-positive integers}
-Let $B_n(x)$ denote the Bernoulli polynomials and $\psi$ the digamma function.
-
-\begin{proposition}\label{prop:negative}
-Under \eqref{eq:f}, for every integer $m \ge 0$,
-\begin{multline*}
-  \CT_{s=-m}\zeta_F(s;k_0) = -\sum_{n=0}^{m}a_n\frac{B_{m-n+1}(k_0)}{m-n+1} - a_{m+1}\psi(k_0) \\
-  + \sum_{k=k_0}^{\infty}k^m\Bigl(f(1/k) - \sum_{n=0}^{m+1}a_nk^{-n}\Bigr),
-\end{multline*}
-where $\CT$ is the constant term of the Laurent expansion (the value, if $a_{m+1} = 0$).
-\end{proposition}
-
-\begin{proof}
-In \eqref{eq:zetavalue}, $\zeta(-j, k_0) = -B_{j+1}(k_0)/(j+1)$ for $j \ge 0$,
-$\zeta(1+\varepsilon,k_0) = 1/\varepsilon - \psi(k_0) + O(\varepsilon)$, and the terms with $n \ge m+2$ sum to the
-absolutely convergent last sum.
-\end{proof}
-
-So the zeta-regularized value of a divergent sum $\sum_{k=1}^{\infty} k^mF(k)$ is a convergent sum of the same type plus
-rational (if the $a_n$ are rational) Bernoulli corrections. For Khinchin's $Z$, Proposition~\ref{prop:negative}
-at $m = 1$ gives $\CT_{s=-1}Z(s) = -1/\log2$ (Section~\ref{sec:khinchinzeta}).
-
-\subsection{Growth and mean values}
-Let $\mu_F(\sigma) = \inf\{\mu : \zeta_F(\sigma+it) \ll |t|^\mu \text{ for } |t| \ge 1\}$, and let $\mu = \mu_\zeta$.
-
-\begin{proposition}\label{prop:growth}
-Under \eqref{eq:f}, $\mu_F(\sigma) = \mu(\sigma + n_0)$ for every real $\sigma$.
-\end{proposition}
-
-\begin{proof}
-Fix $\sigma$ and choose $N$ with $1 - N < \sigma - 1$. By \eqref{eq:zetavalue},
-\[
-  \zeta_F(s) = \sum_{k<k_0}F(k)k^{-s} + \sum_{n=n_0}^{N-1}a_n\zeta(s+n,k_0) + R_N(s),
-\]
-where $R_N(s) = \sum_{k=k_0}^{\infty}k^{-s}\bigl(f(1/k) - \sum_{n=0}^{N-1}a_nk^{-n}\bigr)$ is bounded on
-$\operatorname{Re}s = \sigma$, as are the finite sums, and $\zeta(w,k_0)$ differs from $\zeta(w)$ by a
-bounded finite sum. Since $\mu$ is nonincreasing, $\mu_F(\sigma) \le \mu(\sigma+n_0)$. Conversely
-$a_{n_0}\zeta(s+n_0) = \zeta_F(s) - \sum_{n=n_0+1}^{N-1}a_n\zeta(s+n) + O(1)$. If $\mu(\sigma+n_0) = 0$ there is nothing to
-prove ($\mu_F \ge 0$ everywhere: $\mu_F$ is convex, and $\mu_F = 0$ far to the right, where $\zeta_F$ is an
-absolutely convergent Dirichlet series that is not $o(1)$). If $\mu(\sigma+n_0) > 0$, then
-$\mu(\sigma+n_0+1) < \mu(\sigma+n_0)$: with $x = \sigma+n_0$, for $x \le 0$ because $\mu(x) = \frac12 - x$ while
-$\mu(x+1) \le \max(-\frac x2, -\frac12 - x)$, and for $x > 0$ because $\mu(x+1) = 0$. Hence
-$\mu(\sigma+n_0) \le \max(\mu_F(\sigma), \mu(\sigma+n_0+1))$ forces $\mu(\sigma+n_0) \le \mu_F(\sigma)$.
-\end{proof}
-
-\begin{corollary}\label{cor:lindelof}
-\begin{enumerate}
-\item The Lindel\"of hypothesis holds if and only if $\zeta_F(\frac12 - n_0 + it) \ll |t|^\varepsilon$ for every
-$\varepsilon > 0$.
-\item $\displaystyle\int_1^T\bigl|\zeta_F(\tfrac12 - n_0 + it)\bigr|^2\dd t = |a_{n_0}|^2\,T\log T + O\bigl(T(\log T)^{1/2}\bigr)$.
-\end{enumerate}
-\end{corollary}
-
-\begin{proof}
-On the line $\operatorname{Re}s = \frac12 - n_0$, $\zeta_F(s) = a_{n_0}\zeta(s+n_0) + O(1)$, since
-$\zeta(s+n)$ for $n > n_0$ is evaluated at real part at least $\frac32$. (1) is immediate, and (2) follows from
-$\int_1^T|\zeta(\frac12+it)|^2\dd t \sim T\log T$ and the Cauchy--Schwarz inequality for the cross term.
-\end{proof}
-
-\subsection{Large imaginary part}\label{sec:larget}
-
-Throughout this subsection $F$ is analytic at infinity \eqref{eq:f} (no differential equation is needed),
-$s = \sigma + it$ with $t > 0$, and
-$\chi(s) = 2^s\pi^{s-1}\sin(\pi s/2)\Gamma(1-s)$ is the factor in $\zeta(s) = \chi(s)\zeta(1-s)$.
-
-\subsubsection{A Hardy--Littlewood approximate functional equation}
-
-\begin{proposition}\label{prop:hl}
-Let $0 < \sigma + n_0 < 1$ be fixed, and let $x, y \ge C$ with $2\pi xy = t$, $x \ge k_0$ and $y \le x$. Then
-\begin{multline*}
-  \zeta_F(s) = \sum_{1\le k\le x}F(k)k^{-s} + \chi(s)\sum_{1\le m\le y}F\Bigl(\frac{t}{2\pi m}\Bigr)m^{s-1} \\
-  + O\bigl(x^{-\sigma-n_0} + t^{1/2-\sigma-n_0}y^{\sigma+n_0-1}\bigr).
-\end{multline*}
-\end{proposition}
-
-\begin{proof}
-Write $F(k) = a_{n_0}k^{-n_0} + r(k)$ for $k \ge k_0$, with $r(k) = O(k^{-n_0-1})$. Since $\sigma + n_0 > 0$, the series
-$\sum_kr(k)k^{-s}$ converges absolutely, and its tail beyond $x$ is $O(x^{-\sigma-n_0})$. Hence
-\[
-  \zeta_F(s) = \sum_{k<k_0}F(k)k^{-s} + a_{n_0}\zeta(s+n_0,k_0) + \sum_{k_0\le k\le x}r(k)k^{-s} + O(x^{-\sigma-n_0}).
-\]
-By the approximate functional equation of Hardy and Littlewood \cite{HL23}, \cite[Theorem~4.13]{Tit86}, applied at
-$s + n_0$, whose real part lies in $(0,1)$,
-\begin{multline*}
-  \zeta(s+n_0) = \sum_{1\le k\le x}k^{-s-n_0} + \chi(s+n_0)\sum_{1\le m\le y}m^{s+n_0-1} \\
-  + O\bigl(x^{-\sigma-n_0} + t^{1/2-\sigma-n_0}y^{\sigma+n_0-1}\bigr),
-\end{multline*}
-and $\zeta(s+n_0,k_0) = \zeta(s+n_0) - \sum_{k=1}^{k_0-1}k^{-s-n_0}$. Collecting the direct terms gives
-$\sum_{k\le x}F(k)k^{-s}$. For the dual terms, Stirling's formula gives
-$\chi(s) = (2\pi/t)^{s-1/2}e^{i(t+\pi/4)}(1 + O(1/t))$ \cite[(4.12.3)]{Tit86}, so
-$\chi(s+n_0) = \chi(s)(2\pi/t)^{n_0}(1 + O(1/t))$, and for $m \le y$, $X_m = t/(2\pi m) \ge x \ge k_0$ and
-\[
-  F(X_m) = a_{n_0}\Bigl(\frac{2\pi m}{t}\Bigr)^{n_0} + O\Bigl(\Bigl(\frac{2\pi m}{t}\Bigr)^{n_0+1}\Bigr).
-\]
-Hence
-\[
-  a_{n_0}\chi(s+n_0)m^{s+n_0-1} = \chi(s)F(X_m)m^{s-1}
-  + O\Bigl(t^{1/2-\sigma}m^{\sigma-1}\Bigl(\frac mt\Bigr)^{n_0}\Bigl(\frac1t + \frac mt\Bigr)\Bigr),
-\]
-and summing over $m \le y$ the error is $O(t^{1/2-\sigma-n_0}y^{\sigma+n_0-1}\cdot y^2/t)$, which is within the claimed
-bound since $y^2/t = y/(2\pi x) \le 1$.
-\end{proof}
-
-The proof uses only the leading term of $F$ at infinity, and the dual coefficients could equally be taken as
-$a_{n_0}(2\pi m/t)^{n_0}$; with $F(t/2\pi m)$ the formula is natural (the amplitude at the stationary point of the phase
-$-t\log x + 2\pi mx$, as in the van der Corput transformation \cite[Lemma~4.10]{Tit86}), it makes the error terms of
-the two approximate functional equations in Table~\ref{tab:hl} comparable, and we expect it to hold without the
-restriction $y \le x$, with an error $O(x^{-\sigma-n_0} + t^{1/2-\sigma-n_0}y^{\sigma+n_0-1})$.
-
-For $F(k) \sim a_{n_0}k^{-n_0}$ the dual coefficients are $F(t/2\pi m) \approx a_{n_0}(2\pi m/t)^{n_0}$, and since
-$\chi(s+n_0) \approx (t/2\pi)^{-n_0}\chi(s)$ the formula reduces to the classical one for $a_{n_0}\zeta(s+n_0)$ to
-leading order; the higher coefficients of $f$ enter through the values $F(t/2\pi m)$ at the stationary points.
-Table~\ref{tab:hl} compares the error of Proposition~\ref{prop:hl} for Khinchin's $Z$ (with $x = y$) with the
-error of the classical formula for $\zeta(s+2)$; without the dual sum the error would be of the size of the
-dual sum itself.
-
-\begin{table}[t]
-\centering\small
-\caption{Proposition~\ref{prop:hl} for $F(k) = p_k\log 2$ ($n_0 = 2$) with $x = y = \sqrt{t/2\pi}$: absolute values of
-the function, of the dual sum, and of the error, compared with the error of the classical approximate functional
-equation for $\zeta(s+2)$ with the same $x, y$.}
-\label{tab:hl}
-\begin{tabular}{rrrrrr}
-\toprule
-$t$ & $\sigma$ & $|Z(s)\log 2|$ & dual sum & error, $Z$ & error, $\zeta(s+2)$ \\
-\midrule
-$1\,000$ & $-1.5$ & $1.022$ & $0.657$ & $0.098$ & $0.114$ \\
-$1\,000$ & $-1.2$ & $0.355$ & $0.187$ & $0.046$ & $0.053$ \\
-$4\,000$ & $-1.5$ & $0.341$ & $1.338$ & $0.097$ & $0.104$ \\
-$4\,000$ & $-1.2$ & $0.131$ & $0.409$ & $0.037$ & $0.039$ \\
-$16\,000$ & $-1.5$ & $0.459$ & $0.547$ & $0.052$ & $0.054$ \\
-$16\,000$ & $-1.2$ & $0.324$ & $0.137$ & $0.016$ & $0.017$ \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-
-\subsubsection{Zeros}\label{sec:zeros}
-
-\begin{proposition}\label{prop:zerofree}
-\begin{enumerate}
-\item There is $\sigma_1$ such that $\zeta_F(s) \ne 0$ for $\operatorname{Re}s \ge \sigma_1$.
-\item For every $\varepsilon > 0$ and $\sigma_2 < -n_0-\varepsilon$ there is $t_0$ such that $\zeta_F(s) \ne 0$ for
-$\sigma_2 \le \operatorname{Re}s \le -n_0-\varepsilon$, $|\operatorname{Im}s| \ge t_0$.
-\end{enumerate}
-\end{proposition}
-
-\begin{proof}
-(1) If $k_1$ is the least $k$ with $F(k) \ne 0$, then $k_1^s\zeta_F(s) \to F(k_1)$ as $\operatorname{Re}s \to \infty$,
-uniformly in $\operatorname{Im}s$. (2) In the strip, write $\zeta_F$ as in the proof of
-Proposition~\ref{prop:growth}. By the functional equation and Stirling's formula,
-$|\zeta(s+n_0)| \asymp t^{1/2-\sigma-n_0}|\zeta(1-s-n_0)| \gg t^{1/2+\varepsilon}$, since
-$\operatorname{Re}(1-s-n_0) \ge 1+\varepsilon$. Each $\zeta(s+n)$ with $n > n_0$ is
-$O(t^{1/2-\sigma-n_0-1}+t^{\varepsilon/2})$, and everything else is bounded, so $\zeta_F(s) \ne 0$ for large $t$.
-\end{proof}
-
-\begin{theorem}\label{thm:count}
-For $0 < \varepsilon < 1$ let $N_F(T)$ be the number of zeros $\rho$ of $\zeta_F$, counted with multiplicity, with
-$\operatorname{Re}\rho \ge -n_0-\varepsilon$ and $0 < \operatorname{Im}\rho \le T$. Then
-\[
-  N_F(T) = \frac{T}{2\pi}\log\frac{T}{2\pi e k_1} + O(\log T),
-\]
-where $k_1$ is the least $k$ with $F(k) \ne 0$. In particular, if $F(1) \ne 0$, then $N_F(T) - N(T) = O(\log T)$,
-where $N(T)$ counts the zeros of $\zeta$.
-\end{theorem}
-
-\begin{proof}[Proof sketch]
-By Proposition~\ref{prop:zerofree} the zeros counted lie, apart from finitely many, in the rectangle
-$-n_0-\varepsilon \le \sigma \le \sigma_1$, $t_0 \le t \le T$. Apply the argument principle to its boundary. On the
-right side the change of argument is $-T\log k_1 + O(1)$, since $\operatorname{Re}\bigl(k_1^s\zeta_F(s)/F(k_1)\bigr) > \frac12$
-there. On the
-left side, by the proof of Proposition~\ref{prop:zerofree}, $\zeta_F(s) = a_{n_0}\zeta(s+n_0)(1 + o(1))$, so the change
-of argument is that of $\zeta(-\varepsilon+it)$ up to $O(1)$, which by the functional equation is that of
-$\chi(-\varepsilon+it)$ up to $O(1)$, namely $-T\log(T/2\pi e) + O(1)$. On the top side the change of argument is
-$O(\log T)$ by the usual Jensen argument \cite[\S9.4]{Tit86}, using the polynomial growth of $\zeta_F$
-(Proposition~\ref{prop:growth}) and $|\zeta_F(\sigma_1+iT)| \gg 1$.
-\end{proof}
-
-(For $\zeta(s) - 1$, i.e.\ $k_1 = 2$, this is Landau's count of the $1$-points of $\zeta$.) So if $F(1) \ne 0$,
-$\zeta_F$ has as many zeros as $\zeta$, up to $O(\log T)$. Where are they? On the line
-$\operatorname{Re}s = \frac12 - n_0$ we have $\zeta_F(s) = a_{n_0}\zeta(s+n_0) + B(s)$, where
-$B(s) = \zeta_F(s) - a_{n_0}\zeta(s+n_0,k_0) - \sum_{k=1}^{k_0-1}F(k)k^{-s}$ is an absolutely convergent Dirichlet series
-for $\operatorname{Re}s > -n_0$, with coefficients $O(k^{-n_0-1})$. The zeros of $\zeta_F$ are thus the solutions of
-$\zeta(w) = -B(w-n_0)/a_{n_0}$: ``$a$-points'' of $\zeta$ with a variable, bounded, almost periodic $a$. Levinson
-\cite{Lev75} proved that for constant $a$ all but $O(N(T)/\log\log T)$ of the $a$-points with
-$0 < \operatorname{Im}s \le T$ lie in $|\operatorname{Re}s - \frac12| < \varepsilon$. This suggests:
-
-\begin{conjecture}\label{conj:cluster}
-For every $\varepsilon > 0$, all but $o(T\log T)$ of the zeros of $\zeta_F$ with $0 < \operatorname{Im}\rho \le T$ and
-$\operatorname{Re}\rho \ge -n_0 - \varepsilon$ satisfy $|\operatorname{Re}\rho - (\frac12 - n_0)| < \varepsilon$.
-\end{conjecture}
-
-There is no reason to expect a Riemann hypothesis: without an Euler product, and as for the Davenport--Heilbronn
-examples \cite{DH36}, there should be $\gg T$ zeros off the line.
-
-\subsubsection{Numerical experiments}
-For Khinchin's $Z$ ($n_0 = 2$), a search in $-6 \le \sigma \le 3$, $0 < t \le 50$ finds exactly one zero near each
-zero $\frac12 + i\gamma_n$ of $\zeta(s+2)$, i.e.\ near $-\frac32 + i\gamma_n$, but displaced to the right by about
-$0.5$--$0.7$ (Table~\ref{tab:zeros}), and three zeros of small height. To first order, the zero near
-$-\frac32 + i\gamma_n$ is displaced by $-B(-\frac32 + i\gamma_n)/\zeta'(\frac12+i\gamma_n)$, which is small only when
-$|\zeta'|$ is large; at these heights the first-order prediction gives the direction but underestimates the shift.
-Higher up the displacement decreases slowly, in line with Conjecture~\ref{conj:cluster}: near
-$\gamma_{100} = 236.52$, $\gamma_{1000} = 1419.42$ and $\gamma_{3000} = 3533.33$ the zeros of $Z$ have real parts
-$-1.203$, $-1.138$ and $-1.273$.
-
-\begin{table}[t]
-\centering\small
-\caption{The zeros $\rho$ of Khinchin's $Z(s)$ with $5 < \operatorname{Im}\rho \le 50$, next to the ordinates
-$\gamma_n$ of the zeros of $\zeta$.}
-\label{tab:zeros}
-\begin{tabular}{rrr@{\qquad}rrr}
-\toprule
-$\gamma_n$ & $\operatorname{Re}\rho$ & $\operatorname{Im}\rho$ & $\gamma_n$ & $\operatorname{Re}\rho$ & $\operatorname{Im}\rho$ \\
-\midrule
-$14.1347$ & $-0.80962$ & $14.10628$ & $37.5862$ & $-0.97200$ & $37.62163$ \\
-$21.0220$ & $-0.87839$ & $21.04380$ & $40.9187$ & $-0.97864$ & $40.96155$ \\
-$25.0109$ & $-0.90838$ & $24.96595$ & $43.3271$ & $-0.99413$ & $43.22684$ \\
-$30.4249$ & $-0.93768$ & $30.50982$ & $48.0052$ & $-1.00783$ & $48.16616$ \\
-$32.9351$ & $-0.95140$ & $32.84059$ & $49.7738$ & $-1.00367$ & $49.65618$ \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-The three zeros of small height, $-1.5119 + 1.6018i$, $-3.0436 + 2.1068i$ and $-4.5285 + 2.4371i$, start a chain
-continuing to the left between the poles at the negative integers, with real parts spaced by about $1.3$--$1.5$:
-approximately $-5.9950 + 2.6727i$, $-7.4513 + 2.8396i$, \dots, $-11.7643 + 3.0414i$, where the imaginary part is
-largest, and then $-14.5900 + 2.9928i$, $-20.1220 + 2.5933i$, $-26.8343 + 1.6953i$, $-30.7659 + 0.9964i$,
-$-33.3916 + 0.4946i$. After $24$ complex zeros in the upper half-plane (and their conjugates) the chain reaches the real axis, where it
-becomes the pair of real zeros $-34.7863$ and $-34.4495$. Further left, a scan of the real axis down to $-70$ (with step $\frac1{40}$) finds
-one zero in each interval $(-2j, -2j+1)$ with $38 \le 2j \le 70$, close to the even integer, and no others: $-37.7571$, $-39.7968$, $-41.8033$, \dots,
-$-67.8796$, $-69.8831$, with distance to $-2j$ slowly decreasing from $0.24$ to $0.12$. These play the role of the
-trivial zeros $-2j$ of $\zeta(s+2)$. So, numerically, $Z$ has only finitely many non-real zeros of small height, and
-its remaining trivial zeros are real. Heuristically, far to the left the first dual term of Poisson summation
-dominates, and the zeros approach those of $s \mapsto \widehat G_s(1)$, a Mellin transform of $F(x)\cos(2\pi x)$; for
-$F = 1$ these are the zeros of $\sin(\pi s/2)$. Since we cannot exclude other functions $\zeta_F$ with infinitely
-many non-real zeros of bounded height, Theorem~\ref{thm:count} restricts to $\operatorname{Re}\rho \ge -n_0-\varepsilon$.
-
-\subsection{Questions}
-\begin{enumerate}
-\item \emph{Functional equations.} For which $F$ is $\widehat G_s$ again of the form $|\xi|^{s'}F'(|\xi|)$ with
-$F'$ regular, giving a functional equation relating $\zeta_F$ and $\zeta_{F'}$? Besides powers, the inhomogeneous
-Epstein (Chowla--Selberg) sums $\sum_{k=1}^{\infty}(k^2+a^2)^{-s}$, with modified Bessel functions on the dual side
-\cite{CS67,BGMWZ13}, are of this kind, but only as diagonals of two-variable families.
-\item \emph{Zeros.} Prove Conjecture~\ref{conj:cluster}, and determine whether a positive proportion of the zeros
-lie off the line $\operatorname{Re}s = \frac12-n_0$. Does every $\zeta_F$ have only finitely many non-real zeros with $\operatorname{Re}\rho < -n_0-\varepsilon$, as
-Khinchin's $Z$ appears to have?
-\item \emph{Value distribution.} Is $\zeta_F$ universal (in the sense of Voronin) in the strip
-$\frac12 - n_0 < \operatorname{Re}s < 1 - n_0$? Is it hypertranscendental?
-\end{enumerate}
-
-%======================================================================
-% CHECK bibliographic details of DH36, Kat97, Ost20, Zag06, HL23, AdR11, Bor00, Har10, OS88 (added from memory/web search).
+% CHECK bibliographic details of Kat97, Zag06, HL23, AdR11, Bor00, Har10 (added from memory/web search).
 \begin{thebibliography}{99}
 \bibitem{AdR11} J.~Arias de Reyna, High precision computation of Riemann's zeta function by the Riemann--Siegel formula, I, Math.\ Comp.\ 80 (2011), 995--1009.
 \bibitem{AG77} K.~Alladi and C.~Grinstead, On the decomposition of $n!$ into prime powers, J.\ Number Theory 9 (1977), 452--458.
@@ -3493,7 +3157,6 @@ $\frac12 - n_0 < \operatorname{Re}s < 1 - n_0$? Is it hypertranscendental?
 \bibitem{BB15} D.~H.~Bailey and J.~M.~Borwein, Crandall's computation of the incomplete gamma function and the Hurwitz zeta function, with applications to Dirichlet $L$-series, Appl.\ Math.\ Comput.\ 268 (2015), 462--477.
 
 \bibitem{BBC97} D.~H.~Bailey, J.~M.~Borwein and R.~E.~Crandall, On the Khintchine constant, Math.\ Comp.\ 66 (1997), 417--431.
-\bibitem{BGMWZ13} J.~M.~Borwein, M.~L.~Glasser, R.~C.~McPhedran, J.~G.~Wan and I.~J.~Zucker, \emph{Lattice Sums Then and Now}, Cambridge University Press, 2013.
 \bibitem{BM80} R.~P.~Brent and E.~M.~McMillan, Some new algorithms for high-precision computation of Euler's constant, Math.\ Comp.\ 34 (1980), 305--312.
 \bibitem{Bor00} P.~Borwein, An efficient algorithm for the Riemann zeta function, in \emph{Constructive, Experimental, and Nonlinear Analysis}, CMS Conf.\ Proc.\ 27, 2000, 29--34.
 \bibitem{CC90} D.~V.~Chudnovsky and G.~V.~Chudnovsky, Computer algebra in the service of mathematical physics and number theory, in \emph{Computers in Mathematics}, Lecture Notes in Pure and Appl.\ Math.\ 125, Dekker, 1990, 109--232.
@@ -3501,8 +3164,6 @@ $\frac12 - n_0 < \operatorname{Re}s < 1 - n_0$? Is it hypertranscendental?
 \bibitem{Cof14} M.~W.~Coffey, Series representations for the Stieltjes constants, Rocky Mountain J.\ Math.\ 44 (2014), 443--477.
 \bibitem{Cra12} R.~E.~Crandall, Unified algorithms for polylogarithm, $L$-series, and zeta variants, preprint, 2012.
 \bibitem{CRVZ00} H.~Cohen, F.~Rodriguez Villegas and D.~Zagier, Convergence acceleration of alternating series, Experiment.\ Math.\ 9 (2000), 3--12.
-\bibitem{CS67} S.~Chowla and A.~Selberg, On Epstein's zeta-function, J.\ Reine Angew.\ Math.\ 227 (1967), 86--110.
-\bibitem{DH36} H.~Davenport and H.~Heilbronn, On the zeros of certain Dirichlet series, J.\ London Math.\ Soc.\ 11 (1936), 181--185 and 307--312.
 \bibitem{DLMF} F.~W.~J.~Olver et al.\ (eds.), \emph{NIST Digital Library of Mathematical Functions}, \url{https://dlmf.nist.gov/}.
 
 \bibitem{Dok04} T.~Dokchitser, Computing special values of motivic $L$-functions, Experiment.\ Math.\ 13 (2004), 137--149.
@@ -3523,6 +3184,8 @@ $\frac12 - n_0 < \operatorname{Re}s < 1 - n_0$? Is it hypertranscendental?
 \bibitem{IK02} M.~Iosifescu and C.~Kraaikamp, \emph{Metrical Theory of Continued Fractions}, Kluwer, 2002.
 \bibitem{Inc26} E.~L.~Ince, \emph{Ordinary Differential Equations}, Longmans, Green and Co., 1926.
 \bibitem{Joh21} F.~Johansson, Rapid computation of special values of Dirichlet $L$-functions, arXiv:2110.10583, 2021.
+\bibitem{Joh26} F.~Johansson, Analytic properties of Dirichlet series of functions analytic at infinity, companion note
+to this paper, 2026, \url{https://github.com/fredrik-johansson/holonomic-sums}.
 \bibitem{Kal88} S.~Kalpazidou, Khintchine's constant for L\"uroth representation, J.\ Number Theory 29 (1988), 196--205.
 \bibitem{Kat97} M.~Katsurada, An application of Mellin--Barnes' type integrals to the mean square of Lerch zeta-functions, Collect.\ Math.\ 48 (1997), 137--153.
 \bibitem{Khi35} A.~Khintchine, Metrische Kettenbruchprobleme, Compositio Math.\ 1 (1935), 361--382.
@@ -3539,8 +3202,6 @@ Hamburg 27 (1964), 142--144.
 \bibitem{MS22} E.~Masroor and M.~A.~Stremler, On the topology of the atmosphere advected by a periodic array of axisymmetric thin-cored vortex rings, Regul.\ Chaotic Dyn.\ 27 (2022), 183--197.
 \bibitem{OAI26} OpenAI, Integer multiplication below $n\log n$, OpenAI Math Release preprint, September 2026, \url{https://github.com/openai/math/tree/main/preprints/Integer-multiplication-below-n-log-n-September-23-2026}.
 \bibitem{OEIS} OEIS Foundation Inc., The On-Line Encyclopedia of Integer Sequences, \url{https://oeis.org}.
-\bibitem{OS88} A.~M.~Odlyzko and A.~Sch\"onhage, Fast algorithms for multiple evaluations of the Riemann zeta function, Trans.\ Amer.\ Math.\ Soc.\ 309 (1988), 797--809.
-\bibitem{Ost20} A.~Ostrowski, \"Uber Dirichletsche Reihen und algebraische Differentialgleichungen, Math.\ Z.\ 8 (1920), 241--298.
 \bibitem{Pet02} F.~J.~Petriello, Kaluza--Klein effects on Higgs physics in universal extra dimensions, arXiv:hep-ph/0204067, 2002.
 \bibitem{Pet98} M.~Peter, Dirichlet series associated with polynomials, Acta Arith.\ 84 (1998), 245--278.
 \bibitem{Rie59} B.~Riemann, Ueber die Anzahl der Primzahlen unter einer gegebenen Gr\"osse, Monatsber.\ Berliner Akad., 1859.
@@ -3552,7 +3213,6 @@ Hamburg 27 (1964), 142--144.
 J.\ Eur.\ Math.\ Soc.\ 21 (2019), 2751--2792.
 \bibitem{Sta80} R.~P.~Stanley, Differentiably finite power series, European J.\ Combin.\ 1 (1980), 175--188.
 \bibitem{Ste07} J.~Steuding, \emph{Value-Distribution of $L$-Functions}, Lecture Notes in Math.\ 1877, Springer, 2007.
-\bibitem{Tit86} E.~C.~Titchmarsh, \emph{The Theory of the Riemann Zeta-Function}, 2nd ed., revised by D.~R.~Heath-Brown, Oxford University Press, 1986.
 \bibitem{vdH99} J.~van der Hoeven, Fast evaluation of holonomic functions, Theoret.\ Comput.\ Sci.\ 210 (1999), 199--215.
 \bibitem{Wat44} G.~N.~Watson, \emph{A Treatise on the Theory of Bessel Functions}, 2nd ed., Cambridge University Press, 1944.
 \bibitem{Zag06} D.~Zagier, The Mellin transform and related analytic techniques, appendix to E.~Zeidler, \emph{Quantum Field Theory I}, Springer, 2006, 305--323.
