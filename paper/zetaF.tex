@@ -132,6 +132,17 @@ studied since Mellin and Mahler \cite{Mah28,CN81,Sar84,Pet98,Ess97}. The periodi
 and $e^{-\tau k^r}$ are kept separate from $F$ because they are not regular at infinity
 (Section~\ref{sec:defs}).
 
+Each function in \eqref{eq:functions} is, as a function of $s$, a deformation of the corresponding classical function:
+$\zeta_F$ and $L_F$ are meromorphic in $\CC$, and $\Li_F(s,z)$, $\Phi_F$ and $\Lambda_F$ are entire in $s$. We show that the classical
+theta-function method for $\zeta$ extends to all of them, and that holonomy of $F$ is what makes it fast.
+
+\begin{remark}
+The factor $k^{-s}$ could be absorbed into $F$, but $s$ is the parameter intrinsic to the class: multiplying by
+$k^{-s}$ only shifts the exponents at infinity, the poles of $\zeta_F$ record the expansion of $F$ at infinity
+(Proposition~\ref{prop:cont}), and the cost bound of our method is
+uniform in~$s$ (Theorem~\ref{thm:uniform}) specifically for parametrizations of this form.
+\end{remark}
+
 The functions \eqref{eq:functions} cover the familiar ways in which sums of holonomic functions arise:
 \begin{itemize}
 \item a sum $\sum_{k=1}^{\infty} F(k)$ is the value $\zeta_F(0)$, a sum $\sum_{k=1}^{\infty}(\log k)^jF(k)$ is
@@ -145,44 +156,38 @@ functions (Section~\ref{sec:twistshift});
 \item summands with stretched-exponential decay, such as $e^{-\sqrt k}$, are values of damped zeta functions.
 \end{itemize}
 
-The class contains all algebraic functions. An algebraic function satisfies a linear differential equation whose
-singular points are all regular, so every branch that is analytic on an interval $(R,\infty)$ is regular at infinity,
-with a convergent Puiseux expansion in powers of $k^{-1/q}$ (Remark~\ref{rem:puiseux}), and if its minimal polynomial
-has algebraic coefficients, so do its Puiseux expansions. Theorem~B below therefore applies to every convergent sum
-$\sum_kA(k)$ with $A$ algebraic over $\Qbar(k)$, to the zeta-regularized value of every divergent one, and equally to
-$\sum_kA(k)(\log k)^j$, $\sum_kA(k)z^k$ and to products $\prod_kA(k)$ with $A(k) \to 1$: all can be computed to $p$ bits
-in $p^{3/2+o(1)}$ bit operations. For rational $A$, the sum $\sum_kA(k)$ reduces by partial fractions to polygamma
-values, which can be computed in quasilinear time; for algebraic $A$ that are not rational we know of no earlier
-subquadratic algorithm, or indeed of any complexity bound. A classical example is the constant of Theodorus
-$\sum_{k=1}^{\infty}1/((k+1)\sqrt k)$, the slope of Davis's continuous spiral of Theodorus \cite{Dav93,Bri12}, which we
-compute to $10^6$ digits (Section~\ref{sec:theodorus}).
-It appears in Table~\ref{tab:constants} together with Hlawka's related constant \cite{Hla80}, the sum of
-Remark~\ref{rem:puiseux}, whose summand mixes half-integer and integer exponents, and the Epstein--Hurwitz sums
-$\sum_k(k^2+a^2)^{-t}$ of zeta regularization in physics \cite{Eli95,Kir02}.
+The class of summands is large. It contains every algebraic function: an algebraic function satisfies a linear
+differential equation whose singular points are all regular, so every branch that is analytic on an interval
+$(R,\infty)$ is regular at infinity, with a convergent Puiseux expansion in powers of $k^{-1/q}$
+(Remark~\ref{rem:puiseux}), and if its minimal polynomial has algebraic coefficients, so do its Puiseux expansions.
+It also contains the compositions $G(A(k))$ of an algebraic function $A$ with a holonomic function $G$ that is
+analytic, or regular singular, at the limit of $A$ at infinity, such as $\log A(k)$ and $\arctan A(k)$, and it is
+closed under sums and products. Among the constants in the tables of Flajolet and Vardi \cite{FV96} and of Finch
+\cite{Fin03}, this covers the sums $\sum_kG(1/k)$ with $G$ a product of logarithms, polylogarithms or inverse
+trigonometric functions (such as $\sum_k\frac1k\arctan\frac1k$), the sums $\sum_k(\log k)^jR(1/k)$ with $R$ rational,
+and the products $\prod_kG(1/k)$ with $\log G$ holonomic. By Theorem~B below, all of these, and all convergent sums
+$\sum_kA(k)$, $\sum_kA(k)(\log k)^j$, $\sum_kA(k)z^k$ and $\sum_k\log A(k)$ with $A$ algebraic over $\Qbar(k)$, as well
+as the zeta-regularized values of divergent ones, can be computed to $p$ bits in $p^{3/2+o(1)}$ bit operations.
 
 Table~\ref{tab:constants} lists constants from classical analysis, number theory and mathematical physics expressed in
-this way. One of our main findings is that all of them can be computed in time subquadratic in the precision; except
-for the constants of Euler, Stieltjes and Glaisher, which are values of $\zeta$ and its derivatives
-\cite{BM80,Joh21}, we are not aware of earlier subquadratic algorithms for them.
-
-The method applies equally to the many constants in the tables of Flajolet and Vardi \cite{FV96} and of Finch
-\cite{Fin03} that are sums of a regular holonomic function:
-\begin{itemize}
-\item sums $\sum_kG(1/k)$ with $G$ a product of logarithms, polylogarithms or inverse trigonometric functions (such as $\sum_k\frac1k\arctan\frac1k$),
-\item sums $\sum_k(\log k)^jR(1/k)$ with $R$ rational, and
-\item products $\prod_kG(1/k)$ with $\log G$ holonomic.
-\end{itemize}
-
-Not every such sum is new: sums of logarithms or inverse trigonometric or hyperbolic functions of
-a rational function of $k$ reduce to gamma values at algebraic points, as in (A352619, A393668)
+this way. One of our main findings is that all of them can be computed in time subquadratic in the precision. Some
+subclasses were already known to be fast. The constants of Euler, Stieltjes and Glaisher are values of $\zeta$ and
+its derivatives, for which subquadratic algorithms exist \cite{BM80,Joh21}. For rational $A$, the sum $\sum_kA(k)$
+reduces by partial fractions to polygamma values, and sums of logarithms or inverse trigonometric or hyperbolic
+functions of a rational function of $k$ reduce to logarithms of gamma values at algebraic points, as in (A352619,
+A393668)
 \[
-  \sum_{k=1}^{\infty}\Bigl(\frac1k - \arctan\frac1k\Bigr) = \gamma + \arg\Gamma(1+i),
+  \sum_{k=1}^{\infty}\Bigl(\frac1k - \arctan\frac1k\Bigr) = \gamma + \arg\Gamma(1+i), \qquad
+  \sum_{n=2}^{\infty}\arctanh\frac1{n^2} = \frac12\log\frac{\sinh\pi}{\pi};
 \]
-\[
-  \sum_{n=2}^{\infty}\arctanh\frac1{n^2} = \frac12\log\frac{\sinh\pi}{\pi},
-\]
-and can be computed in quasilinear time (in $\sum_k\frac1k\arctan\frac1k$, the extra factor $\frac1k$
-destroys this structure).
+all of these can be computed in quasilinear time. But this structure is fragile: an extra factor $\frac1k$, as in
+$\sum_k\frac1k\arctan\frac1k$, destroys it, and for the other constants of Table~\ref{tab:constants}, and for sums of
+algebraic functions that are not rational, we know of no earlier subquadratic algorithm, or indeed of any complexity
+bound. A classical example is the constant of Theodorus $\sum_{k=1}^{\infty}1/((k+1)\sqrt k)$, the slope of Davis's
+continuous spiral of Theodorus \cite{Dav93,Bri12}, which we compute to $10^6$ digits (Section~\ref{sec:theodorus}).
+Table~\ref{tab:constants} also lists Hlawka's related constant \cite{Hla80}, the sum of Remark~\ref{rem:puiseux},
+whose summand mixes half-integer and integer exponents, and the Epstein--Hurwitz sums $\sum_k(k^2+a^2)^{-t}$ of zeta
+regularization in physics \cite{Eli95,Kir02}.
 
 In physics, sums of the class are usually truncated and the tail estimated by its leading term;
 besides the vortex rings of Table~\ref{tab:constants}, examples are Matsubara-frequency sums of one-loop integrals at
@@ -233,17 +238,6 @@ $\sum_ke^{-\tau k^{1/q}}F(k)$ & $F(k)$ & $\Lambda_F(0;\tau,\frac1q)$ \\
 \bottomrule
 \end{tabular}
 \end{table}
-
-Each function in \eqref{eq:functions} is, as a function of $s$, a deformation of the corresponding classical function:
-$\zeta_F$ and $L_F$ are meromorphic in $\CC$, and $\Li_F(s,z)$, $\Phi_F$ and $\Lambda_F$ are entire in $s$. We show that the classical
-theta-function method for $\zeta$ extends to all of them, and that holonomy of $F$ is what makes it fast.
-
-\begin{remark}
-The factor $k^{-s}$ could be absorbed into $F$, but $s$ is the parameter intrinsic to the class: multiplying by
-$k^{-s}$ only shifts the exponents at infinity, the poles of $\zeta_F$ record the expansion of $F$ at infinity
-(Proposition~\ref{prop:cont}), and the cost bound of our method is
-uniform in~$s$ (Theorem~\ref{thm:uniform}) specifically for parametrizations of this form.
-\end{remark}
 
 \subsection{Results}
 Let $F$ be analytic at infinity, $F(k) = f(1/k)$ for $k \ge k_0$, where
