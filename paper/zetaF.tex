@@ -2660,10 +2660,10 @@ The problem is the divergence of $\phi$, and the threshold is set by the Gaussia
 $1/r$, as it does when another solution of the operator has an exponential factor of degree $r$, the coefficients of
 $E_s$ in \eqref{eq:kernel} grow like $\Gamma(n/r)/\Gamma(n/2)$. For $r > 2$ the kernel is still entire. For $r = 2$
 it has a finite radius of convergence, as in the first of
-\[
-  e^{k^2}\erfc(k) = \frac1\pi\int_0^\infty e^{-k^2u}\frac{u^{-1/2}}{1+u}\dd u, \qquad
+\begin{gather*}
+  e^{k^2}\erfc(k) = \frac1\pi\int_0^\infty e^{-k^2u}\frac{u^{-1/2}}{1+u}\dd u, \\
   e^{-qk} = \frac{q}{2\sqrt\pi}\int_0^\infty e^{-k^2u}u^{-3/2}e^{-q^2/(4u)}\dd u.
-\]
+\end{gather*}
 For $r < 2$ its series diverges, and $h_s$ has an irregular singular point at $u = 0$, where the other exponentials
 reappear: by the second formula, a factor $e^{-qk}$ becomes $e^{-q^2/(4u)}$. The $k$-side needs $h_s$ only on $[u_0,\infty)$, but the dual side integrates it over $(0,u_0]$. The
 starting values \eqref{eq:startvals} integrate the Taylor series of the kernel at $0$ termwise, which now diverges for
