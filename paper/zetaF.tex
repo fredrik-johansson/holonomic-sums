@@ -2646,8 +2646,43 @@ dual recurrences of the vortex sum, which the ball arithmetic revealed at $10^4$
 \item \emph{Beyond regular summands.} The summands in \eqref{eq:functions} are a function regular at infinity times a
 periodic weight, a geometric factor or a stretched exponential. Can sums of holonomic functions with other irregular
 singularities at infinity be computed in subquadratic time? More generally, is there any other natural class of
-summands for which both sides of a splitting are cheap (compare Section~\ref{sec:limits})? Examples from the
-literature include the following.
+summands for which both sides of a splitting are cheap (compare Section~\ref{sec:limits})?
+
+At an irregular singularity at infinity, the formal solutions are $e^{Q(k^{1/q})}k^{\varrho}\phi(k^{-1/q})$, with $Q$ a
+polynomial and $\phi$ a power series (possibly with logarithms) that is in general divergent but multisummable
+\cite{Bal00}. The exponential factors are rarely the problem. If the sum converges, the leading term of $Q$ is either
+damped, which gives a stretched exponential when its degree $r$ is less than $2$ (up to routine extensions, such as
+several terms or complex $\tau$) and is harmless when $r \ge 2$, or purely oscillatory, which gives a twist when
+$r = 1$. Only oscillatory factors with $r \ne 1$, such as $e^{i\sqrt k}$, are excluded; for these, as for $k^{-it}$ at
+large height, the Poisson dual of a chirp is again a chirp, and no splitting shortens both sides.
+
+The problem is the divergence of $\phi$, and the threshold is set by the Gaussian kernel. If $\phi$ has Gevrey order
+$1/r$, as it does when another solution of the operator has an exponential factor of degree $r$, the coefficients of
+$E_s$ in \eqref{eq:kernel} grow like $\Gamma(n/r)/\Gamma(n/2)$. For $r > 2$ the kernel is still entire. For $r = 2$
+it has a finite radius of convergence, as in the first of
+\[
+  e^{k^2}\erfc(k) = \frac1\pi\int_0^\infty e^{-k^2u}\frac{u^{-1/2}}{1+u}\dd u, \qquad
+  e^{-qk} = \frac{q}{2\sqrt\pi}\int_0^\infty e^{-k^2u}u^{-3/2}e^{-q^2/(4u)}\dd u.
+\]
+For $r < 2$ its series diverges, and $h_s$ has an irregular singular point at $u = 0$, where the other exponentials
+reappear: by the second formula, a factor $e^{-qk}$ becomes $e^{-q^2/(4u)}$. The $k$-side needs $h_s$ only on $[u_0,\infty)$, but the dual side integrates it over $(0,u_0]$. The
+starting values \eqref{eq:startvals} integrate the Taylor series of the kernel at $0$ termwise, which now diverges for
+every $u_0$, and condition~(H) is exactly the regularity of the kernel's equation at $u = 0$. For $\Lambda_F$ the
+kernel also has an essential singularity at $u = 0$, but it is a convergent series in $u^{-r/2}$, because the
+exponential is an explicit factor. The other exponentials of an irregular $F$ are present on the positive axis only
+through the divergence of $\phi$ (in the language of resurgence, as the singularities of its Borel transform), and
+cannot be factored out in this way.
+
+We do not think this obstruction is fundamental. Writing $F(k) = \int_0^\infty e^{-kt}\hat\phi(t)\dd t$ as a
+Borel--Laplace integral, with $\hat\phi$ holonomic, gives
+$\zeta_F(s) = \int_0^\infty\hat\phi(t)\Li_s(e^{-t})\dd t$, a superposition of the splittings of
+Theorem~\ref{thm:geometric}; alternatively, the starting values of the dual side could be obtained by effective
+resummation at $u = 0$ \cite{vdH07}. Whether the cost then remains $p^{3/2+o(1)}$ is open. The case $r = 2$ also
+suggests that (H) is stronger than necessary: what the proof of Lemma~\ref{lem:kernelhol} uses is that the operator
+rescaled by $1/\Gamma$ is regular at $u = 0$, which should allow other solutions with exponential factors of degree at
+least $2$.
+
+Examples from the literature include the following.
 \begin{itemize}
 \item Schl\"omilch series $\sum_ka_kJ_\nu(kx)$ \cite{Wat44}, such as $\sum_kJ_0(kx)k^{-s}$, or
 $\sum_ke^{-kz}J_0(kr)$, a solution of Laplace's equation in cylindrical coordinates. By Hankel's expansion,
@@ -3149,11 +3184,12 @@ $L$, with the size of its coefficients and with the degree of $\mathbb K$.
 \end{remark}
 
 %======================================================================
-% CHECK bibliographic details of Kat97, Zag06, HL23, AdR11, Bor00, Har10 (added from memory/web search).
+% CHECK bibliographic details of Kat97, Zag06, HL23, AdR11, Bor00, Har10, Bal00, vdH07 (added from memory/web search).
 \begin{thebibliography}{99}
 \bibitem{AdR11} J.~Arias de Reyna, High precision computation of Riemann's zeta function by the Riemann--Siegel formula, I, Math.\ Comp.\ 80 (2011), 995--1009.
 \bibitem{AG77} K.~Alladi and C.~Grinstead, On the decomposition of $n!$ into prime powers, J.\ Number Theory 9 (1977), 452--458.
 \bibitem{AV84} T.~M.~Apostol and T.~H.~Vu, Dirichlet series related to the Riemann zeta function, J.\ Number Theory 19 (1984), 85--102.
+\bibitem{Bal00} W.~Balser, \emph{Formal Power Series and Linear Systems of Meromorphic Ordinary Differential Equations}, Universitext, Springer, 2000.
 \bibitem{BB15} D.~H.~Bailey and J.~M.~Borwein, Crandall's computation of the incomplete gamma function and the Hurwitz zeta function, with applications to Dirichlet $L$-series, Appl.\ Math.\ Comput.\ 268 (2015), 462--477.
 
 \bibitem{BBC97} D.~H.~Bailey, J.~M.~Borwein and R.~E.~Crandall, On the Khintchine constant, Math.\ Comp.\ 66 (1997), 417--431.
@@ -3214,6 +3250,7 @@ J.\ Eur.\ Math.\ Soc.\ 21 (2019), 2751--2792.
 \bibitem{Sta80} R.~P.~Stanley, Differentiably finite power series, European J.\ Combin.\ 1 (1980), 175--188.
 \bibitem{Ste07} J.~Steuding, \emph{Value-Distribution of $L$-Functions}, Lecture Notes in Math.\ 1877, Springer, 2007.
 \bibitem{vdH99} J.~van der Hoeven, Fast evaluation of holonomic functions, Theoret.\ Comput.\ Sci.\ 210 (1999), 199--215.
+\bibitem{vdH07} J.~van der Hoeven, Efficient accelero-summation of holonomic functions, J.\ Symbolic Comput.\ 42 (2007), 389--428.
 \bibitem{Wat44} G.~N.~Watson, \emph{A Treatise on the Theory of Bessel Functions}, 2nd ed., Cambridge University Press, 1944.
 \bibitem{Zag06} D.~Zagier, The Mellin transform and related analytic techniques, appendix to E.~Zeidler, \emph{Quantum Field Theory I}, Springer, 2006, 305--323.
 \bibitem{Zei90} D.~Zeilberger, A holonomic systems approach to special functions identities, J.\ Comput.\ Appl.\ Math.\ 32 (1990), 321--368.
