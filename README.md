@@ -30,6 +30,7 @@ compare the three representations of Khinchin's constant in the paper with the s
 | `khinchin_Z` | 2.6854520010653064453… | Khinchin's constant from $\log K = -Z'(0)$, $Z(s) = \sum_{k\ge1} \log_2\bigl(1 + 1/(k(k+2))\bigr) k^{-s}$ (the splitting differentiated in $s$) |
 | `khinchin_log` | 2.6854520010653064453… | Khinchin's constant from $\log K \log 2 = -\sum_{k\ge2} \log(1 - 1/k)\log(1 + 1/k)$ |
 | `khinchin_dilog` | 2.6854520010653064453… | Khinchin's constant from $\log K\log 2 = \log^2 2 + \mathrm{Li}_2(-\tfrac12) + \tfrac12\sum_{k\ge2}(-1)^k\mathrm{Li}_2(4/k^2)$ |
+| `theodorus` | 1.8600250792211903071… | the constant of Theodorus $\sum_{k\ge1} 1/((k+1)\sqrt k)$ ([A226317](https://oeis.org/A226317)), a sum of an algebraic function: $\zeta_F(\tfrac12)$ with $F(k) = 1/(k+1)$ |
 
 Two constants take a parameter from the environment: `HOLSUM_VORTEX_S=s` gives the vortex sum at
 $\lambda = 2/s$ (default $s = 2$), and `HOLSUM_HL_X=x` gives $H(x)$ for an integer $x$ (default 1).
@@ -61,6 +62,12 @@ systems of dimension 8. The references are direct summation over prime powers fo
 `expsqrt`. The default split points are $u_0 = 1$ and $u_0 = 1/16$. For the three Khinchin constants they are
 $u_0 = 1/16$ (`khinchin_Z`, `khinchin_dilog`) and $u_0 = 1/64$ (`khinchin_log`), the best of $4^{-1}, \dots, 4^{-4}$ at
 $10^4$ digits.
+
+For `theodorus` the splitting is taken at $s = \tfrac12$, so the kernel involves $\Gamma(m + \tfrac14)$ and
+$\Gamma(m + \tfrac34)$. Because $F$ is rational, the $k$-terms close: each is two incomplete gamma functions
+$\Gamma(\tfrac14, k^2u_0)$, $\Gamma(\tfrac34, k^2u_0)$ and $e^{-k^2u_0}$. The two dual systems (dimensions 3 and 4)
+have quarter-integer $t_0$ and starting values from $\Gamma(\tfrac14, y)$ and $\Gamma(\tfrac34, y)$. The reference is
+Euler–Maclaurin summation; the default split point is $u_0 = 1/16$.
 
 **Zeta-value expansion** (`--method zeta`). Expanding $f$ in its Taylor series,
 $\sum_k f(1/k) = \sum_n a_n \zeta(n)$; the terms $k \le 31$ are taken out (summed in closed form) so that the
@@ -219,6 +226,10 @@ part evaluates one ${}_2F_1$ per term, so `run.py` stops it at $10^4$ digits.
   one binary splitting of the kernel coefficients times the recurrence of $D_a$; `khinchin_Z` also needs moments with
   a weight $\log u$ and $\partial_b\Gamma(b, y)$ at $b = \tfrac12$ and $b = 0$. The reference method (`--method zeta`)
   is FLINT's `arb_const_khinchin`.
+* `src/tsys.c`, `src/tsys.h`: the generic moment systems from $\vartheta$-relations used by `khinchin.c` and
+  `theodorus.c` ($t_0$ a multiple of $\tfrac12$ or of $\tfrac14$), the Kronecker sums for the starting values, and
+  $\partial_b\Gamma(b, y)$.
+* `src/theodorus.c`: `theodorus`.
 * `src/refs.c`: shared code for the reference methods.
 * `src/main.c`: the command-line program.
 * `run.py`: the benchmark script.
