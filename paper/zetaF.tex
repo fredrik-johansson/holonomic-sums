@@ -60,7 +60,8 @@ values and derivatives of $\zeta_F$ at algebraic $s$ can be computed
 to $p$ bits in $p^{3/2+o(1)}$ bit operations.
 These results also hold for polylogarithm-type and Lerch-type sums over $F$.
 As a result, we obtain first known subquadratic algorithms for computing a large class of numbers
-expressible as infinite sums of holonomic functions;
+expressible as infinite sums of holonomic functions,
+including all sums of algebraic functions with algebraic coefficients;
 for example, we obtain the first such algorithm for
 Khinchin's constant, which we compute to $10^7$ digits.
 \end{abstract}
@@ -144,6 +145,20 @@ functions (Section~\ref{sec:twistshift});
 \item summands with stretched-exponential decay, such as $e^{-\sqrt k}$, are values of damped zeta functions.
 \end{itemize}
 
+The class contains all algebraic functions. An algebraic function satisfies a linear differential equation whose
+singular points are all regular, so every branch that is analytic on an interval $(R,\infty)$ is regular at infinity,
+with a convergent Puiseux expansion in powers of $k^{-1/q}$ (Remark~\ref{rem:puiseux}), and if its minimal polynomial
+has algebraic coefficients, so do its Puiseux expansions. Theorem~B below therefore applies to every convergent sum
+$\sum_kA(k)$ with $A$ algebraic over $\Qbar(k)$, to the zeta-regularized value of every divergent one, and equally to
+$\sum_kA(k)(\log k)^j$, $\sum_kA(k)z^k$ and to products $\prod_kA(k)$ with $A(k) \to 1$: all can be computed to $p$ bits
+in $p^{3/2+o(1)}$ bit operations. For rational $A$, the sum $\sum_kA(k)$ reduces by partial fractions to polygamma
+values, which can be computed in quasilinear time; for algebraic $A$ that are not rational we know of no earlier
+subquadratic algorithm, or indeed of any complexity bound. A classical example is the constant of Theodorus
+$\sum_{k=1}^{\infty}1/((k+1)\sqrt k)$, the slope of Davis's continuous spiral of Theodorus \cite{Dav93,Bri12}.
+It appears in Table~\ref{tab:constants} together with Hlawka's related constant \cite{Hla80}, the sum of
+Remark~\ref{rem:puiseux}, whose summand mixes half-integer and integer exponents, and the Epstein--Hurwitz sums
+$\sum_k(k^2+a^2)^{-t}$ of zeta regularization in physics \cite{Eli95,Kir02}.
+
 Table~\ref{tab:constants} lists constants from classical analysis, number theory and mathematical physics expressed in
 this way. One of our main findings is that all of them can be computed in time subquadratic in the precision; except
 for the constants of Euler, Stieltjes and Glaisher, which are values of $\zeta$ and its derivatives
@@ -181,7 +196,7 @@ $\sum_k\log\cos\frac\pi k$, whose summands are analytic at infinity but not holo
 \renewcommand{\arraystretch}{1.2}
 \caption{Constants as special values of the functions \eqref{eq:functions}. The Alladi--Grinstead and Kalpazidou
 constants are $e^{\mathcal C-1}$ and $e^{\mathcal C}$. For the vortex sum $\lambda$ is fixed and $k_0 > 2/\lambda$; for
-Planck--Larkin $x = I/(k_BT)$; for Bose--Einstein and Fermi--Dirac, $j \in \frac12 + \ZZ$. $F_1(k) = \frac1k - \log(1+\frac1k)$, $F_2(k) = \log(1+\frac1k)$ and
+Planck--Larkin $x = I/(k_BT)$; Hlawka's $K = \lim_{n\to\infty}(\sum_{k<n}\arctan k^{-1/2} - 2\sqrt n)$; $E_a(t) = \sum_k(k^2+a^2)^{-t}$, $t > \frac12$; for Bose--Einstein and Fermi--Dirac, $j \in \frac12 + \ZZ$. $F_1(k) = \frac1k - \log(1+\frac1k)$, $F_2(k) = \log(1+\frac1k)$ and
 $F_3(k) = 3k + \frac12 - k(3k+2)\log(1+\frac1k)$.}
 \label{tab:constants}
 \begin{tabular}{lll}
@@ -195,6 +210,10 @@ Khinchin's $K$ & $p_k = \log_2(1+\frac{1}{k(k+2)})$ & $\exp(-Z'(0))$ \\
 H\"older means $K_p$, $p<1$ & $p_k$ & $Z(-p)^{1/p}$ \\
 $\mathcal A = \sum_{k=2}^{\infty}\frac{\log k}{k^2-1}$ & $\frac1{k^2-1}$ ($k\ge2$) & $-\zeta_F'(0)$ \\
 $\mathcal C = \sum_{k=1}^{\infty}\frac{\log k}{k(k+1)}$ & $\frac{1}{k(k+1)}$ & $-\zeta_F'(0)$ \\
+Theodorus $\sum_{k=1}^{\infty}\frac{1}{(k+1)\sqrt k}$ & $\frac1{k+1}$ & $\zeta_F(\frac12)$ \\
+Hlawka's $K$ & $\sqrt k\arctan\frac1{\sqrt k}$ & $\zeta_F(\frac12)$ \\
+$\sum_{k=1}^{\infty}\frac{1}{k^{3/2}+1}$ & $\frac1{k^3-1}$ ($k\ge2$) & $\frac12+\zeta_F(-\frac32)-\zeta_F(0)$ \\
+Epstein--Hurwitz $E_a(t)$ & $(1+\frac{a^2}{k^2})^{-t}$ & $\zeta_F(2t)$ \\
 vortex rings $U(\lambda)$ & ${}_2F_1(\frac32,\frac32;2;-\frac{4}{\lambda^2k^2})$ & $\lambda^{-3}\zeta_F(3)$ \\
 Hardy--Littlewood $H(x)$ & $\sin(x/k)$ & $\zeta_F(1)$ \\
 Planck--Larkin $\sigma(T)$ & $e^{x/k^2} - 1 - x/k^2$ & $\zeta_F(-2)$ \\
@@ -353,7 +372,11 @@ expansion at infinity is classical; it follows from Euler--Maclaurin summation o
 \cite{Zag06,FGD95}, and is used routinely for zeta regularization in physics \cite{Eli95,Kir02}. Dirichlet series
 attached to polynomials and rational functions, in one and several variables, have been studied by Mahler
 \cite{Mah28}, Cassou-Nogu\`es \cite{CN81}, Sargos \cite{Sar84}, Peter \cite{Pet98}, Essouabri \cite{Ess97}
-and others; Apostol and Vu \cite{AV84} treat series such as $\sum_{k=1}^{\infty} k^{-s}(k+1)^{-1}$. Mellin--Barnes integrals
+and others; Apostol and Vu \cite{AV84} treat series such as $\sum_{k=1}^{\infty} k^{-s}(k+1)^{-1}$, whose value at $s = \frac12$
+is the constant of Theodorus; Brink \cite{Bri12} expresses it and related constants as series of zeta values at
+half-integers. For summands with an expansion in powers of $k^{-1/q}$, which include the algebraic functions, a
+general-purpose numerical method is Monien summation as implemented in PARI/GP \cite{BC21}, which evaluates the
+summand at $O(p/\log p)$ points; like Euler--Maclaurin summation it costs $p^{2+o(1)}$. Mellin--Barnes integrals
 give the continuation of hypergeometric cases such as $\sum_{k=1}^{\infty} k^{-s}(k+a)^{-t}$ and their asymptotic
 expansions in parameters \cite{Kat97}. Approximate functional equations go back to Riemann \cite{Rie59} and
 Hardy and Littlewood \cite{HL23}; the theta-function (``smoothed'') form for general $L$-functions is due to
@@ -484,7 +507,7 @@ $F(k) = (k^{3/2}-1)G(k)$ with $G(k) = 1/(k^3-1)$ rational and analytic at infini
   \sum_{k=1}^{\infty}\frac{1}{k^{3/2}+1} = \frac12 + \zeta_G\bigl(-\tfrac32;2\bigr) - \zeta_G(0;2) = 1.9520200662\ldots,
 \]
 where neither $-\frac32$ nor $0$ is a pole of $\zeta_G$, as the poles are at $s = -2, -5, -8, \dots$. In general, a summand
-$R(\sqrt k)$ with $R$ rational splits as $A(k) + \sqrt k\,B(k)$, where $A(y^2)$ and $yB(y^2)$ are the even and odd
+$R(\sqrt k)$ with $R$ rational, such as the summand of the constant of Theodorus in Table~\ref{tab:constants}, splits as $A(k) + \sqrt k\,B(k)$, where $A(y^2)$ and $yB(y^2)$ are the even and odd
 parts of $R(y)$; this is the decomposition into monodromy eigenspaces used in the proof of
 Theorem~\ref{thm:complexity} (Appendix~\ref{app:cost}).
 \end{remark}
@@ -3211,7 +3234,7 @@ $L$, with the size of its coefficients and with the degree of $\mathbb K$.
 \end{remark}
 
 %======================================================================
-% CHECK bibliographic details of Kat97, Zag06, HL23, AdR11, Bor00, Har10, Bal00, vdH07 (added from memory/web search).
+% CHECK bibliographic details of Kat97, Zag06, HL23, AdR11, Bor00, Har10, Bal00, vdH07, BC21, Bri12, Dav93, Hla80 (added from memory/web search).
 \begin{thebibliography}{99}
 \bibitem{AdR11} J.~Arias de Reyna, High precision computation of Riemann's zeta function by the Riemann--Siegel formula, I, Math.\ Comp.\ 80 (2011), 995--1009.
 \bibitem{AG77} K.~Alladi and C.~Grinstead, On the decomposition of $n!$ into prime powers, J.\ Number Theory 9 (1977), 452--458.
@@ -3220,13 +3243,16 @@ $L$, with the size of its coefficients and with the degree of $\mathbb K$.
 \bibitem{BB15} D.~H.~Bailey and J.~M.~Borwein, Crandall's computation of the incomplete gamma function and the Hurwitz zeta function, with applications to Dirichlet $L$-series, Appl.\ Math.\ Comput.\ 268 (2015), 462--477.
 
 \bibitem{BBC97} D.~H.~Bailey, J.~M.~Borwein and R.~E.~Crandall, On the Khintchine constant, Math.\ Comp.\ 66 (1997), 417--431.
+\bibitem{BC21} K.~Belabas and H.~Cohen, \emph{Numerical Algorithms for Number Theory: Using Pari/GP}, Math.\ Surveys Monogr.\ 254, Amer.\ Math.\ Soc., 2021.
 \bibitem{BM80} R.~P.~Brent and E.~M.~McMillan, Some new algorithms for high-precision computation of Euler's constant, Math.\ Comp.\ 34 (1980), 305--312.
 \bibitem{Bor00} P.~Borwein, An efficient algorithm for the Riemann zeta function, in \emph{Constructive, Experimental, and Nonlinear Analysis}, CMS Conf.\ Proc.\ 27, 2000, 29--34.
 \bibitem{CC90} D.~V.~Chudnovsky and G.~V.~Chudnovsky, Computer algebra in the service of mathematical physics and number theory, in \emph{Computers in Mathematics}, Lecture Notes in Pure and Appl.\ Math.\ 125, Dekker, 1990, 109--232.
 \bibitem{CN81} P.~Cassou-Nogu\`es, Applications arithm\'etiques de l'\'etude des valeurs aux entiers n\'egatifs des s\'eries de Dirichlet associ\'ees \`a un polyn\^ome, Ann.\ Inst.\ Fourier 31 (1981), no.~4.
 \bibitem{Cof14} M.~W.~Coffey, Series representations for the Stieltjes constants, Rocky Mountain J.\ Math.\ 44 (2014), 443--477.
+\bibitem{Bri12} D.~Brink, The spiral of Theodorus and sums of zeta-values at the half-integers, Amer.\ Math.\ Monthly 119 (2012), 779--786.
 \bibitem{Cra12} R.~E.~Crandall, Unified algorithms for polylogarithm, $L$-series, and zeta variants, preprint, 2012.
 \bibitem{CRVZ00} H.~Cohen, F.~Rodriguez Villegas and D.~Zagier, Convergence acceleration of alternating series, Experiment.\ Math.\ 9 (2000), 3--12.
+\bibitem{Dav93} P.~J.~Davis, \emph{Spirals: From Theodorus to Chaos}, A K Peters, 1993.
 \bibitem{DLMF} F.~W.~J.~Olver et al.\ (eds.), \emph{NIST Digital Library of Mathematical Functions}, \url{https://dlmf.nist.gov/}.
 
 \bibitem{Dok04} T.~Dokchitser, Computing special values of motivic $L$-functions, Experiment.\ Math.\ 13 (2004), 137--149.
@@ -3240,6 +3266,7 @@ $L$, with the size of its coefficients and with the degree of $\mathbb K$.
 \bibitem{Gha26} R.~K.~Ghazi, khinchin-fast: Khinchin's constant to $2\,000\,000$ certified decimal digits, Zenodo, 2026, \url{https://doi.org/10.5281/zenodo.22134905}.
 \bibitem{Har10} D.~Harvey, A multimodular algorithm for computing Bernoulli numbers, Math.\ Comp.\ 79 (2010), 2361--2370.
 \bibitem{Har14} D.~Harvey, A subquadratic algorithm for computing the $n$-th Bernoulli number, Math.\ Comp.\ 83 (2014), 2471--2477.
+\bibitem{Hla80} E.~Hlawka, Gleichverteilung und Quadratwurzelschnecke, Monatsh.\ Math.\ 89 (1980), 19--44.
 \bibitem{HL23} G.~H.~Hardy and J.~E.~Littlewood, The approximate functional equation in the theory of the zeta-function, with applications to the divisor-problems of Dirichlet and Piltz, Proc.\ London Math.\ Soc.\ (2) 21 (1923), 39--74.
 \bibitem{HLS24} D.~Harnett, S.~Li and T.~G.~Steele, Numerically computing finite temperature loop integrals using pySecDec, Eur.\ Phys.\ J.\ A (2024), arXiv:2401.05258.
 \bibitem{HP98} B.~Haible and T.~Papanikolaou, Fast multiprecision evaluation of series of rational numbers, Proc.\ ANTS-III, LNCS 1423, Springer, 1998, 338--350.
