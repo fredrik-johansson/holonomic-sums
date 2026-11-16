@@ -286,7 +286,7 @@ $a$-points of $\zeta$ \cite{Lev75,Ste07}: there are $(T/2\pi)\log T + O(T)$ of h
 use no holonomy and play no role in the algorithms; they are proved in a companion note \cite{Joh26}, together with a
 Hardy--Littlewood approximate functional equation and numerical experiments on the zeros of Khinchin's $Z$.
 
-\begin{theoremB}[Theorems~\ref{thm:complexity} and~\ref{thm:geometric}, Section~\ref{sec:stretched}]
+\begin{theoremB}[Theorems~\ref{thm:complexity} and~\ref{thm:geometric}, Section~\ref{sec:dampedcost}]
 Let $F$ be a regular sequence defined over $\Qbar$ with algebraic initial values, let $s_0$ be algebraic, and let
 $j \ge 0$ be fixed. Then the $j$-th Taylor (or Laurent) coefficient at $s_0$ of each of
 \begin{enumerate}
@@ -429,8 +429,11 @@ operator. Let $R$ exceed the absolute values of the finite singular points of $L
 \begin{equation}\label{eq:frob}
   F(x) = \sum_{\sigma\in\Sigma}\sum_{j=0}^{J} x^{-\sigma}(\log x)^j f_{\sigma,j}(1/x),
 \end{equation}
-with a finite set $\Sigma$ of exponents, pairwise incongruent modulo $\ZZ$, and power series $f_{\sigma,j}$
-convergent for $|t| < 1/R$.
+with a finite set $\Sigma \subset \CC$ of exponents, pairwise incongruent modulo $\ZZ$, and power series $f_{\sigma,j}$
+convergent for $|t| < 1/R$. The exponents are the roots of the indicial equation and need not be integers, so $F$
+may be ramified at infinity: a convergent Puiseux series in $x^{-1/q}$ is of this form, with
+$\Sigma \subseteq \{0, \frac1q, \dots, \frac{q-1}q\}$ (Remark~\ref{rem:puiseux}). In particular every algebraic function
+is regular at infinity in the sense of the following definition.
 
 \begin{definition}\label{def:regular}
 Let $F$ be a function on $(R,\infty)$.
@@ -879,6 +882,15 @@ on the theta side, as a twist with a complex characteristic, at the price of com
 exponential $e^{-\tau k^r}$ has no such interpretation, but it can be moved into the kernel, whose expansion is then
 at $u = \infty$ instead of $u = 0$ (Sections~\ref{sec:stretched} and~\ref{sec:products}).
 
+At $s = 0$ the polylogarithm $\Li_F(0,z) = \sum_kF(k)z^k$ is the generating function of a regular sequence, and its
+derivatives in $s$ give the weights $(\log k)^j$. Examples in Table~\ref{tab:constants} are Somos's quadratic
+recurrence constant and the generalized Euler-constant function of Sondow and Hadjicostas (Section~\ref{sec:somos});
+polylogarithms and Lerch transcendents of non-integer order inside the unit disk, such as the Bose--Einstein functions
+$g_{3/2} = \Li_{3/2}$ and $g_{5/2} = \Li_{5/2}$ and the Fermi--Dirac integrals $F_j(\eta) = -\Li_{j+1}(-e^\eta)$ with
+half-integer $j$ and $\eta < 0$; the moments $\sum_kq^{k-1}(1-q)(\log k)^j$ of the logarithm of a geometric random
+variable; and the entropy of Fisher's logarithmic series distribution $P(k) = -z^k/(k\log(1-z))$, which involves
+$\sum_kz^k\log(k)/k$. The damped zeta function contains sums such as $\sum_ke^{-\sqrt k}$ (Section~\ref{sec:expsqrt}).
+
 \subsection{The polylogarithm: geometric factors}\label{sec:geometric}
 Let $F$ satisfy \eqref{eq:f} and let $0 < |z| < 1$. Write $z = e^{2\pi i\alpha}$ with $\alpha = \alpha_1 + i\alpha_2$,
 $0 \le \alpha_1 < 1$, $\alpha_2 = \log(1/|z|)/(2\pi) > 0$, and put
@@ -946,35 +958,13 @@ lattice (Section~\ref{sec:twistshift}) it is his formula for the Lerch transcend
 $z = 1$ is his series for the Hurwitz zeta function \cite[(30)]{Cra12}; see also \cite{BB15}. Crandall states it for
 $\operatorname{Re}z \in [0,1)$, as an analytic continuation, without a complexity analysis. What the theorem adds
 is the general regular factor $F$, for which the incomplete gamma functions become the holonomic functions $I_k$ and
-$J^{(\delta)}_w$, and the bound in~(2). The transcendental number $\log z$ enters only through the dual points
-$c_n$, like $\pi^2m^2$ in Theorem~\ref{thm:split}, while $z^{\pm k}$ are algebraic weights. The $k$-terms with $z^{-k}$
-and the dual terms with $\operatorname{Re}c_n < 0$ have size up to $e^{\pi^2\alpha_2^2/u_0} = e^{(\log|z|)^2/(4u_0)}$
-and cancel to $O(1)$; this costs $(\log|z|)^2/(4u_0\log2)$ guard bits, independent of $p$.
+$J^{(\delta)}_w$, and the bound in~(2).
 
 Numerically, with $u_0 = \frac14$, part~(1) reproduces $\sum_{k=2}^{\infty}z^k\log(1+\frac1k)k^{-0.3}$ at
 $z = e^{-1+0.6\pi i}$ to $41$ digits, and, at $z = \frac12$ (where $c_0$ is on the cut) and $s = 0$, the logarithm
-of Somos's quadratic recurrence constant (Section~\ref{sec:geomexamples}),
+of Somos's quadratic recurrence constant (Section~\ref{sec:somos}),
 $\log\sigma = \sum_{k=1}^{\infty}2^{-k}\log(1+\frac1k)$, to $41$ digits. An implementation of the case $F = 1$,
-differentiated in $s$, computes $\sigma$ to $10^6$ digits (Section~\ref{sec:dampedconst}).
-
-\subsection{Examples}\label{sec:geomexamples}
-At $s = 0$, Theorem~\ref{thm:geometric} computes the generating function $\Li_F(0,z) = \sum_kF(k)z^k$ of a regular
-sequence at any algebraic $z$ inside the unit disk, and its derivatives in $s$ give the weights $(\log k)^j$. When $F(k)$ is
-itself P-recursive in $k$ (for example rational), the generating function is holonomic in $z$ and costs
-$\widetilde O(p)$ directly; the gain is for summands such as $k^{-s}$ with $s \notin \ZZ$, $\log k$ or
-$\log(1+\frac1k)$, where direct summation and the expansion in zeta values cost $p^{2+o(1)}$.
-\begin{itemize}
-\item \emph{Somos's quadratic recurrence constant} $\sigma = \sqrt{1\sqrt{2\sqrt{3\cdots}}} = \prod_kk^{1/2^k}$, with
-$\log\sigma = \sum_{k=1}^{\infty}2^{-k}\log k = -\partial_s\Li_s(\frac12)|_{s=0} = \sum_{k=1}^{\infty}2^{-k}\log(1+\frac1k)$
-\cite[\S6.10]{Fin03}, \cite[A112302]{OEIS}; its generalizations $\sigma_t = \prod_kk^{1/t^k}$, $t > 1$, and the
-generalized Euler-constant function
-$\gamma(z) = \sum_{k=1}^{\infty}z^{k-1}(\frac1k - \log(1+\frac1k))$ of Sondow and Hadjicostas \cite{SH07}, with $\gamma(\frac12) = 2\log(2/\sigma)$, at every $|z| < 1$.
-\item Polylogarithms and Lerch transcendents of non-integer order inside the unit disk. Among them are the
-Bose--Einstein functions $g_{3/2} = \Li_{3/2}$ and $g_{5/2} = \Li_{5/2}$, and the Fermi--Dirac integrals
-$F_j(\eta) = -\Li_{j+1}(-e^\eta)$ with half-integer $j$ and $\eta < 0$.
-\item Moments $\sum_kq^{k-1}(1-q)(\log k)^j$ of the logarithm of a geometric random variable, and the entropy of
-Fisher's logarithmic series distribution $P(k) = -z^k/(k\log(1-z))$, which involves $\sum_kz^k\log(k)/k$.
-\end{itemize}
+differentiated in $s$, computes $\sigma$ to $10^6$ digits (Section~\ref{sec:somos}).
 
 \subsection{The damped zeta function of $F = 1$}\label{sec:stretched}
 For $\tau > 0$ and $0 < r < 2$ let
@@ -1021,19 +1011,6 @@ The series for $J_m$ converges geometrically with ratio about $\tau/(2\pi m)$ wh
 With $s = 0.3$, $\tau = 1$ and $u_0 = \frac14$, the proposition, with every piece summed as a series, reproduces
 $\Li_{0.3}(e^{-1})$ to $50$ digits ($k \le 39$, $m \le 5$), and $\Lambda(0.3;1,\frac12)$ to the $31$ digits of a
 reference value obtained by summing $20\,000$ terms.
-
-For rational $r$, the exponents $a_j$ fall into finitely many classes modulo $\ZZ$, the terms of the series for $I_k$,
-for $J_m$ at a rational $c_0$, and for $T_w$ are P-recursive in $j$ within each class (using
-$Q(a+1,x) = Q(a,x) + x^ae^{-x}/\Gamma(a+1)$ and \eqref{eq:Drec}), and $h_s$ is holonomic in $u$, so that the moments
-are holonomic in $c$ (as in Proposition~\ref{prop:dual}). The analysis of Appendix~\ref{app:cost} therefore applies:
-\emph{for algebraic $s$ and $\tau$ and rational $0 < r < 2$, $\Lambda(s;\tau,r)$ can be computed to $p$ bits in
-$p^{3/2+o(1)}$ bit operations}, against $p^{1+1/r+o(1)}$ for direct summation. The classical alternative is the
-expansion $\Lambda(s;\tau,r) = M_\tau(1-s) + \sum_{n=0}^{\infty}\zeta(s-rn)(-\tau)^n/n!$ in zeta values (from a
-Mellin--Barnes integral \cite{Joh26}), which converges for $r < 1$, and for $r = 1$ when $\tau < 2\pi$; it
-costs $p^{2+o(1)}$, like \eqref{eq:zetavalue}; the details of the cost analysis are in Appendix~\ref{app:stretched}.
-An implementation for $r = \frac12$ computes $\sum_ke^{-\sqrt k}$ to $10^6$ digits (Section~\ref{sec:dampedconst}).
-For $r = 1$ the proposition is an alternative to Theorem~\ref{thm:geometric} with real dual points, but $\tau = \log(1/z)$
-then enters the kernel, so that for algebraic $z$ Theorem~\ref{thm:geometric} is the better choice.
 
 \subsection{The damped zeta function of a regular $F$}\label{sec:products}
 Now let $F$ satisfy \eqref{eq:f}, let $r = 1/q$ with an integer $q \ge 1$, and consider the damped zeta function
@@ -1088,15 +1065,6 @@ Numerically, with $F(k) = \log(1+\frac1k)$, $k_0 = 2$, $s = 0.3$, $\tau = 1$ and
 reproduces $\sum_{k=2}^{\infty}e^{-k}\log(1+\frac1k)k^{-0.3}$ to $45$ digits, and with $q = 2$ the sum
 $\sum_{k=2}^{\infty}e^{-\sqrt k}\log(1+\frac1k)k^{-0.3}$ to the $33$ digits of the working precision.
 
-The coefficients $b_\ell$ are themselves infinite series, but every piece of the proposition is a double series
-over $n$ and $j$, with terms $a_n(-\tau)^j/j!$ times incomplete gamma values or moments, P-recursive in both indices. Summed over $j$, the inner
-sums are P-recursive in $n$ (by creative telescoping), so the outer sum can be computed by binary splitting from
-finitely many initial values, each a series summed by binary splitting, with $O(p)$ guard bits against the growth of
-unwanted solutions of the recurrence. The kernel $h_s$ is holonomic in $u$, so the dual moments are holonomic in $c$
-and the bit-burst applies. So we expect the bound $p^{3/2+o(1)}$ for $\Lambda_F$ as well, for algebraic $s$ and $\tau$ and
-$F$ regular and analytic at infinity and defined over~$\Qbar$. For $q = 1$ this is $\Li_F(s, e^{-\tau})$, which
-Theorem~\ref{thm:geometric} already covers; the new cases are $q \ge 2$.
-
 \subsection{Twists, shifts and the Lerch transcendent}\label{sec:twistshift}
 A periodic weight $\chi(k)$ acts only on the theta side (Remark~\ref{rem:twist}) and combines with both mechanisms:
 the kernels are unchanged, the odd part uses the kernel of the summand divided by $x$, and the dual points are shifted
@@ -1112,44 +1080,8 @@ $|n+a| < k_0$ are treated like the terms $k < k_0$ in Theorem~\ref{thm:split}. T
 \cite[\S2.4]{Cra12}. For $F = 1$ it gives the Lerch transcendent $\Phi(z,s,a) = \sum_{k=0}^{\infty}z^k(k+a)^{-s}$;
 with $z = e^{-1}$ (in the kernel route), $s = 0.3$ and $a = 0.3$ we reproduced it to $41$ digits.
 
-For Taylor coefficients at a fixed point $s_0$ the shift can also be removed. For $k \ge 1$,
-$(k+a)^{-s} = k^{-s}(1+\frac ak)^{-s}$, and $G_i(k) = F(k)\,(-\log(1+\frac ak))^i(1+\frac ak)^{-s_0}/i!$ is regular at
-infinity, and defined over $\Qbar$ when $F$ is and $a$, $s_0$ are algebraic. Multiplying the expansions in $s - s_0$,
-the $j$-th Taylor coefficient of $\Phi_F(z,s,a)$ at $s_0$ is $F(0)$ times that of $a^{-s}$ plus
-$\sum_{i\le j}$ of the $(j-i)$-th Taylor coefficient of $\Li_{G_i}(s,z)$ at $s_0$. With
-Theorem~\ref{thm:geometric}(2) this proves Theorem~B(2) for $\Phi_F$, and with Theorem~\ref{thm:complexity} the same
-reduction applies to the Hurwitz-type sums $\sum_{k\ge1}F(k)(k+a)^{-s}$.
-
-Table~\ref{tab:expclass} summarizes.
-
-\begin{table}[ht]
-\centering\small
-\caption{Sums with exponential factors, to $p$ bits at algebraic parameters ($F$ regular at infinity and not
-P-recursive, $s \notin \ZZ$). The last column says whether the bound $p^{3/2+o(1)}$ is proved or whether the identity
-is proved and the cost analysis sketched.}
-\label{tab:expclass}
-\begin{tabular}{lllll}
-\toprule
-sum & direct & zeta values & splitting & \\
-\midrule
-$\sum_k\chi(k)z^kF(k)k^{-s}$, $|z| < 1$ & $p^{2}$ & $p^{2}$ & $p^{3/2}$ & Thm.~\ref{thm:geometric} \\
-\quad e.g.\ $\Li_s(z)$, $\log\sigma$, $\gamma(z)$ & & & & \\
-$\Phi(z,s,a) = \sum_{k\ge0}z^k(k+a)^{-s}$ & $p^{2}$ & $p^{2}$ & $p^{3/2}$ & Thm.~\ref{thm:geometric} \\
-$\sum_ke^{-\tau k^r}k^{-s}$, $r \in \QQ$, $0 < r < 2$ & $p^{1+1/r}$ & $p^{2}$ ($r < 1$) & $p^{3/2}$ & sketched \\
-$\sum_ke^{-\tau k^{1/q}}F(k)k^{-s}$ & $p^{1+q}$ & $p^{2}$ & $p^{3/2}$ & sketched \\
-\bottomrule
-\end{tabular}
-\end{table}
-
 \subsection{Limits}\label{sec:limits}
-\emph{Balancing.} The numbers of terms in \eqref{eq:counts} satisfy $k_{\max}m_{\max} \approx qp\log2/\pi$ ($q$ the
-period of a twist), independently of $u_0$, and by Hardy's uncertainty principle no other smoothing weight does
-better than the Gaussian (compare Remark~\ref{rem:whyk2}). If a $k$-term costs $C_I$ and a dual term $C_J$ bit
-operations, the total is of order $\sqrt{p/u_0}\,C_I + \sqrt{pu_0}\,C_J \ge 2\sqrt{p\,C_IC_J}$, with equality at
-$u_0 = C_I/C_J$. So the method is subquadratic as soon as $C_IC_J = O(p^{3-\delta})$: the two sides need not be of
-the same kind, and one of them may cost up to $p^{2-\delta}$ per term if the other costs $\widetilde O(p)$.
-
-\emph{Two-dimensional kernels.} When the kernel is itself a theta series, each $k$-term is a rapidly convergent sum
+The splitting gains nothing when the kernel is itself a theta series: then each $k$-term is a rapidly convergent sum
 and the method sees a two-dimensional lattice. For instance, $\operatorname{sech}(\pi x)$ has the kernel
 $\pi^{-1}\sum_n(-1)^n(2n+1)e^{-(n+1/2)^2u}$ (by its partial fraction expansion), and the Lambert series
 $\sum_kk^{-s}/(e^{\tau k}-1) = \sum_{j\ge1}\Lambda(s;j\tau,1)$ needs $p/\tau$ polylogarithms. Then about $p$ terms
@@ -1179,6 +1111,13 @@ $p$ bits in $O(p^{1/2}\Mul(p)\log^2 p)$ bit operations.
 \end{theorem}
 
 The proof, a cost analysis of each piece of Theorem~\ref{thm:split}, is in Appendix~\ref{app:cost}.
+
+\emph{Balancing.} The numbers of $k$-terms and dual terms needed for $p$ bits, $k_{\max}$ and $m_{\max}$ in
+\eqref{eq:counts}, satisfy $k_{\max}m_{\max} \approx qp\log2/\pi$ ($q$ the period of a twist), independently of $u_0$, and by Hardy's uncertainty principle no other smoothing weight does
+better than the Gaussian (compare Remark~\ref{rem:whyk2}). If a $k$-term costs $C_I$ and a dual term $C_J$ bit
+operations, the total is of order $\sqrt{p/u_0}\,C_I + \sqrt{pu_0}\,C_J \ge 2\sqrt{p\,C_IC_J}$, with equality at
+$u_0 = C_I/C_J$. So the method is subquadratic as soon as $C_IC_J = O(p^{3-\delta})$: the two sides need not be of
+the same kind, and one of them may cost up to $p^{2-\delta}$ per term if the other costs $\widetilde O(p)$.
 
 \emph{Uniformity.} In Theorem~\ref{thm:complexity} everything is fixed except $p$. The proof only uses that the
 recurrences have coefficients of $O(\log p)$ bits, that the intermediate quantities are bounded by $2^{O(p)}$, and
@@ -1540,10 +1479,72 @@ Remark~\ref{rem:whyk2}: the generating function is the Stieltjes transform of $B
 logarithmic change of variable. On the unit circle the values $G_F(e^{2\pi i\alpha})$ are the twisted values
 $L_F(0,e^{2\pi i\alpha k})$ of Remark~\ref{rem:twist}, so the theta splitting applies. Inside the disk the series
 converges geometrically, and Theorem~\ref{thm:geometric} improves direct summation from $p^{2+o(1)}$ to
-$p^{3/2+o(1)}$ at algebraic $z$ (Section~\ref{sec:geomexamples}). The
+$p^{3/2+o(1)}$ at algebraic $z$ (Section~\ref{sec:dampedcost}). The
 Lambert series $\sum_kF(k)z^k/(1-z^k)$ is the generating function of $\sum_{d\mid n}F(d)$, with Dirichlet series
 $\zeta(s)\zeta_F(s)$, and its expansion at $z = 1$ starts with $\zeta_F(1)/t$; for the Gauss--Kuzmin probabilities,
 $\sum_{d\mid n}p_d$ is the probability that $a_1$ divides $n$, whose mean over $n$ is $Z(1) = 1/K_{-1}$.
+
+\subsection{Damped functions}\label{sec:dampedcost}
+For the polylogarithm, Theorem~\ref{thm:geometric}(2) gives the same bound as Theorem~\ref{thm:complexity}. At
+$s = 0$ it computes the generating function $\Li_F(0,z)$ of a regular sequence at any algebraic $z$ inside the unit
+disk. When $F(k)$ is itself P-recursive in $k$ (for example rational), the generating function is holonomic in $z$ and
+costs $\widetilde O(p)$ directly; the gain is for summands such as $k^{-s}$ with $s \notin \ZZ$, $\log k$ or
+$\log(1+\frac1k)$, where direct summation and the expansion in zeta values cost $p^{2+o(1)}$. The transcendental number $\log z$ enters only through the dual points
+$c_n$, like $\pi^2m^2$ in Theorem~\ref{thm:split}, while $z^{\pm k}$ are algebraic weights. The $k$-terms with $z^{-k}$
+and the dual terms with $\operatorname{Re}c_n < 0$ have size up to $e^{\pi^2\alpha_2^2/u_0} = e^{(\log|z|)^2/(4u_0)}$
+and cancel to $O(1)$; this costs $(\log|z|)^2/(4u_0\log2)$ guard bits, independent of $p$.
+
+For the Lerch transcendent, the shift of the power (Section~\ref{sec:twistshift}) can be removed when computing
+Taylor coefficients at a fixed point $s_0$. For $k \ge 1$,
+$(k+a)^{-s} = k^{-s}(1+\frac ak)^{-s}$, and $G_i(k) = F(k)\,(-\log(1+\frac ak))^i(1+\frac ak)^{-s_0}/i!$ is regular at
+infinity, and defined over $\Qbar$ when $F$ is and $a$, $s_0$ are algebraic. Multiplying the expansions in $s - s_0$,
+the $j$-th Taylor coefficient of $\Phi_F(z,s,a)$ at $s_0$ is $F(0)$ times that of $a^{-s}$ plus
+$\sum_{i\le j}$ of the $(j-i)$-th Taylor coefficient of $\Li_{G_i}(s,z)$ at $s_0$. With
+Theorem~\ref{thm:geometric}(2) this proves Theorem~B(2) for $\Phi_F$, and with Theorem~\ref{thm:complexity} the same
+reduction applies to the Hurwitz-type sums $\sum_{k\ge1}F(k)(k+a)^{-s}$.
+
+For the damped zeta function of $F = 1$ (Proposition~\ref{prop:expsplit}) with rational $r$, the exponents $a_j$ fall into finitely many classes modulo $\ZZ$, the terms of the series for $I_k$,
+for $J_m$ at a rational $c_0$, and for $T_w$ are P-recursive in $j$ within each class (using
+$Q(a+1,x) = Q(a,x) + x^ae^{-x}/\Gamma(a+1)$ and \eqref{eq:Drec}), and $h_s$ is holonomic in $u$, so that the moments
+are holonomic in $c$ (as in Proposition~\ref{prop:dual}). The analysis of Appendix~\ref{app:cost} therefore applies:
+\emph{for algebraic $s$ and $\tau$ and rational $0 < r < 2$, $\Lambda(s;\tau,r)$ can be computed to $p$ bits in
+$p^{3/2+o(1)}$ bit operations}, against $p^{1+1/r+o(1)}$ for direct summation. The classical alternative is the
+expansion $\Lambda(s;\tau,r) = M_\tau(1-s) + \sum_{n=0}^{\infty}\zeta(s-rn)(-\tau)^n/n!$ in zeta values (from a
+Mellin--Barnes integral \cite{Joh26}), which converges for $r < 1$, and for $r = 1$ when $\tau < 2\pi$; it
+costs $p^{2+o(1)}$, like \eqref{eq:zetavalue}; the details of the cost analysis are in Appendix~\ref{app:stretched}.
+An implementation for $r = \frac12$ computes $\sum_ke^{-\sqrt k}$ to $10^6$ digits (Section~\ref{sec:expsqrt}).
+For $r = 1$ Proposition~\ref{prop:expsplit} is an alternative to Theorem~\ref{thm:geometric} with real dual points, but $\tau = \log(1/z)$
+then enters the kernel, so that for algebraic $z$ Theorem~\ref{thm:geometric} is the better choice.
+
+For $\Lambda_F$ (Proposition~\ref{prop:prodsplit}) the coefficients $b_\ell$ are themselves infinite series, but every piece of the proposition is a double series
+over $n$ and $j$, with terms $a_n(-\tau)^j/j!$ times incomplete gamma values or moments, P-recursive in both indices. Summed over $j$, the inner
+sums are P-recursive in $n$ (by creative telescoping), so the outer sum can be computed by binary splitting from
+finitely many initial values, each a series summed by binary splitting, with $O(p)$ guard bits against the growth of
+unwanted solutions of the recurrence. The kernel $h_s$ is holonomic in $u$, so the dual moments are holonomic in $c$
+and the bit-burst applies. So we expect the bound $p^{3/2+o(1)}$ for $\Lambda_F$ as well, for algebraic $s$ and $\tau$ and
+$F$ regular and analytic at infinity and defined over~$\Qbar$. For $q = 1$ this is $\Li_F(s, e^{-\tau})$, which
+Theorem~\ref{thm:geometric} already covers; the new cases are $q \ge 2$.
+
+Table~\ref{tab:expclass} summarizes the costs for the damped functions.
+
+\begin{table}[ht]
+\centering\small
+\caption{Sums with exponential factors, to $p$ bits at algebraic parameters ($F$ regular at infinity and not
+P-recursive, $s \notin \ZZ$). The last column says whether the bound $p^{3/2+o(1)}$ is proved or whether the identity
+is proved and the cost analysis sketched.}
+\label{tab:expclass}
+\begin{tabular}{lllll}
+\toprule
+sum & direct & zeta values & splitting & \\
+\midrule
+$\sum_k\chi(k)z^kF(k)k^{-s}$, $|z| < 1$ & $p^{2}$ & $p^{2}$ & $p^{3/2}$ & Thm.~\ref{thm:geometric} \\
+\quad e.g.\ $\Li_s(z)$, $\log\sigma$, $\gamma(z)$ & & & & \\
+$\Phi(z,s,a) = \sum_{k\ge0}z^k(k+a)^{-s}$ & $p^{2}$ & $p^{2}$ & $p^{3/2}$ & Thm.~\ref{thm:geometric} \\
+$\sum_ke^{-\tau k^r}k^{-s}$, $r \in \QQ$, $0 < r < 2$ & $p^{1+1/r}$ & $p^{2}$ ($r < 1$) & $p^{3/2}$ & sketched \\
+$\sum_ke^{-\tau k^{1/q}}F(k)k^{-s}$ & $p^{1+q}$ & $p^{2}$ & $p^{3/2}$ & sketched \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \begin{table}[t]
 \centering\small
@@ -2208,7 +2209,7 @@ This section treats the other constants of Table~\ref{tab:constants}. For the co
 Glaisher (Section~\ref{sec:stieltjes}) we only compare the splitting with the classical formulas. For
 $\mathcal A$, $\mathcal C$, $K_{-1}$, the constant of Theodorus, the Hardy--Littlewood function and the vortex sum
 (Sections~\ref{sec:AG}--\ref{sec:vortex}), and for two values of damped functions, Somos's constant and
-$\sum_ke^{-\sqrt k}$ (Section~\ref{sec:dampedconst}), we give the kernels and the recurrences of both sides.
+$\sum_ke^{-\sqrt k}$ (Sections~\ref{sec:somos} and~\ref{sec:expsqrt}), we give the kernels and the recurrences of both sides.
 Section~\ref{sec:appcomp} reports computations of all of them to $10^6$ digits with a generic program.
 
 \subsection{The constants of Euler, Stieltjes and Glaisher}\label{sec:stieltjes}
@@ -2540,8 +2541,19 @@ becomes more expensive: there are about $2.8/\lambda$ terms $n < k_0$, and the p
 enter the main term and the starting values, have terms of size up to $e^{\beta u_0}$, so that about $5.8\,u_0/\lambda^2$ guard
 bits are needed. For $\lambda \ge p^{-1/2}$ these costs stay within the bound of Theorem~\ref{thm:complexity}.
 
-\subsection{Two damped constants}\label{sec:dampedconst}
-\emph{Somos's constant.} We compute $\log\sigma = -\partial_s\Li_s(\frac12)|_{s=0}$ from Theorem~\ref{thm:geometric}
+\subsection{Somos's quadratic recurrence constant}\label{sec:somos}
+Somos's quadratic recurrence constant is
+\[
+  \sigma = \sqrt{1\sqrt{2\sqrt{3\cdots}}} = \prod_{k=1}^{\infty}k^{1/2^k} = 1.6616879496\ldots,
+\]
+named after the recurrence $g_n = ng_{n-1}^2$, $g_0 = 1$, whose solutions grow like $\sigma^{2^n}/(n + 2 + O(1/n))$
+\cite[\S6.10]{Fin03}, \cite[A112302]{OEIS}. Its logarithm is
+$\log\sigma = \sum_{k=1}^{\infty}2^{-k}\log k = -\partial_s\Li_s(\frac12)|_{s=0} = \sum_{k=1}^{\infty}2^{-k}\log(1+\frac1k)$.
+The same method applies to the generalizations $\sigma_t = \prod_kk^{1/t^k}$, $t > 1$, and to the generalized
+Euler-constant function $\gamma(z) = \sum_{k=1}^{\infty}z^{k-1}(\frac1k - \log(1+\frac1k))$ of Sondow and Hadjicostas
+\cite{SH07}, with $\gamma(\frac12) = 2\log(2/\sigma)$, at every $|z| < 1$.
+
+We compute $\log\sigma = -\partial_s\Li_s(\frac12)|_{s=0}$ from Theorem~\ref{thm:geometric}
 with $F = 1$ and $k_0 = 1$ (Crandall's formula), differentiated in $s$. With $z = \frac12 = e^{2\pi i\alpha}$,
 $\alpha = i\log2/(2\pi)$, $x = k^2u_0$, $y_n = \pi^2(n-\alpha)^2/u_0$, $L_0 = \log u_0 - \psi(\frac12)$ and
 $V_a(y) = e^yy^{-a}\Gamma(a,y)$,
@@ -2564,7 +2576,8 @@ argument, to $y_n$. We use $u_0 = 1$. The reference is the sum over prime powers
 $\log\sigma = \sum_p\log p\sum_{e\ge1}1/(2^{p^e}-1)$, with the logarithms of all primes up to $p$ (the precision)
 from $\log q = \operatorname{artanh}(1/(2q^2-1)) + \frac12\log\frac{q^2-1}{4} + \log 2$.
 
-\emph{A damped sum.} For $S = \sum_{k=1}^{\infty}e^{-\sqrt k} = \Lambda(0;1,\frac12)$, Proposition~\ref{prop:expsplit}
+\subsection{A stretched-exponential sum}\label{sec:expsqrt}
+For $S = \sum_{k=1}^{\infty}e^{-\sqrt k} = \Lambda(0;1,\frac12)$, Proposition~\ref{prop:expsplit}
 with $r = \frac12$, $\tau = 1$, $s = 0$ has $a_j = -j/4$, and the class $j \equiv 0 \pmod 4$ drops out at $s = 0$. For
 $j = 4m+\varrho$, $\varrho \in \{1,2,3\}$, the kernel is $\kappa_\varrho w^{1+\varrho/4}H_\varrho(w)$ with $w = 1/u$,
 $\kappa_\varrho = 1/\Gamma(-\varrho/4)$ and $H_\varrho(w) = \sum_mg_mw^m$, $g_0 = (-1)^\varrho/\varrho!$,
@@ -2597,18 +2610,18 @@ summation, with the Taylor coefficients of $e^{-\sqrt x}$ at the cutoff from $4x
 $\int_M^\infty e^{-\sqrt x}\dd x = 2(\sqrt M+1)e^{-\sqrt M}$.
 
 \subsection{Computations}\label{sec:appcomp}
-We computed the constants of Sections~\ref{sec:AG}--\ref{sec:dampedconst} with a generic implementation of
+We computed the constants of Sections~\ref{sec:AG}--\ref{sec:expsqrt} with a generic implementation of
 Theorem~\ref{thm:complexity} at $s = 0$ (at $s = \frac12$ for $\mathcal T$), the program \texttt{holsum}
 (\url{https://github.com/fredrik-johansson/holonomic-sums}). It is much less optimized than the implementation of
 Section~\ref{sec:khimpl}: ball arithmetic
 throughout, FLINT's default matrix products, no fixed-point levels, heuristic (but conservative) truncation of the
 series, the same growth factor $4$, and split point $u_0 = \frac1{16}$ for the constants of
 Sections~\ref{sec:AG}--\ref{sec:theodorus}, $u_0 = \frac14$ for the Hardy--Littlewood function and the vortex sum, and
-the split points of Section~\ref{sec:dampedconst} for the damped constants. (The program adds a margin of two terms
+the split points of Sections~\ref{sec:somos} and~\ref{sec:expsqrt} for the damped constants. (The program adds a margin of two terms
 to the counts \eqref{eq:counts}.) Tables~\ref{tab:apps} and~\ref{tab:appsref} show its timings with $8$ threads (on
 the machine of Section~\ref{sec:khresults}) for $\mathcal A$, $\mathcal C$, $T$ (for $K_{-1}$), $\mathcal T$, the vortex sum at
 $\lambda = 1$ ($\beta = 4$, $k_0 = 3$), $H(1)$, $\sigma$ and $S = \sum_ke^{-\sqrt k}$. Besides the theta splitting, the
-program implements the reference methods of Section~\ref{sec:dampedconst} for $\sigma$ and $S$, Euler--Maclaurin
+program implements the reference methods of Sections~\ref{sec:somos} and~\ref{sec:expsqrt} for $\sigma$ and $S$, Euler--Maclaurin
 summation for $\mathcal T$, and two reference methods for the others. The
 zeta-value expansion \eqref{eq:zetavalue} is applied after taking out the terms $k \le 31$, so that it converges
 like $32^{-n}$, except for
