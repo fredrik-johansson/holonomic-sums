@@ -75,3 +75,10 @@
 | khinchin_dilog | zeta | 10000 |  |  |  |  | 0.13 / 0.13 | 24 | ok | agrees with 3 other runs |
 | khinchin_dilog | theta | 100000 | 38 | 1917 | 121 / 15.46 | 113 / 14.09 | 234 / 30.68 | 303 | ok | agrees with 3 other runs |
 | khinchin_dilog | zeta | 100000 |  |  |  |  | 12.94 / 12.94 | 25 | ok | agrees with 3 other runs |
+| theodorus | theta | 1000 | 3 | 193 | 0.04 / 0.02 | 0.12 / 0.01 | 0.17 / 0.04 | 14 | ok | agrees with 6 other runs |
+| theodorus | em | 1000 |  |  |  |  | 0.01 / 0.01 | 17 | ok | agrees with 6 other runs |
+| theodorus | theta | 10000 | 12 | 606 | 2.78 / 0.48 | 4.32 / 0.54 | 7.17 / 1.09 | 64 | ok | agrees with 6 other runs |
+| theodorus | em | 10000 |  |  |  |  | 0.98 / 0.50 | 30 | ok | agrees with 6 other runs |
+| theodorus | theta | 100000 | 38 | 1918 | 167 / 21.59 | 308 / 38.55 | 476 / 60.39 | 277 | ok | agrees with 6 other runs |
+| theodorus | em | 100000 |  |  |  |  | 181 / 115 | 318 | ok | agrees with 6 other runs |
+| theodorus | theta | 1000000 | 120 | 6068 | 10505 / 1316 | 17295 / 2163 | 27804 / 3482 | 1693 | ok | agrees with 6 other runs |
