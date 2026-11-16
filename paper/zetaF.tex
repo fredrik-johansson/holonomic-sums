@@ -150,17 +150,26 @@ for the constants of Euler, Stieltjes and Glaisher, which are values of $\zeta$ 
 \cite{BM80,Joh21}, we are not aware of earlier subquadratic algorithms for them.
 
 The method applies equally to the many constants in the tables of Flajolet and Vardi \cite{FV96} and of Finch
-\cite{Fin03} that are sums of a regular holonomic function: the H\"older means $K_{-n}$, sums
-$\sum_kG(1/k)$ with $G$ a product of logarithms, polylogarithms or inverse trigonometric functions (such as
-$\sum_k\frac1k\arctan\frac1k$), sums $\sum_k(\log k)^jR(1/k)$ with $R$ rational, and products $\prod_kG(1/k)$ with
-$\log G$ holonomic. Not every such sum is new: sums of logarithms or inverse trigonometric or hyperbolic functions of
+\cite{Fin03} that are sums of a regular holonomic function:
+\begin{itemize}
+\item the H\"older means $K_{-n}$,
+\item sums $\sum_kG(1/k)$ with $G$ a product of logarithms, polylogarithms or inverse trigonometric functions (such as $\sum_k\frac1k\arctan\frac1k$),
+\item sums $\sum_k(\log k)^jR(1/k)$ with $R$ rational, and
+\item products $\prod_kG(1/k)$ with $\log G$ holonomic.
+\end{itemize}
+
+Not every such sum is new: sums of logarithms or inverse trigonometric or hyperbolic functions of
 a rational function of $k$ reduce to gamma values at algebraic points, as in (A352619, A393668)
 \[
-  \sum_{k=1}^{\infty}\Bigl(\frac1k - \arctan\frac1k\Bigr) = \gamma + \arg\Gamma(1+i), \qquad
+  \sum_{k=1}^{\infty}\Bigl(\frac1k - \arctan\frac1k\Bigr) = \gamma + \arg\Gamma(1+i),
+\]
+\[
   \sum_{n=2}^{\infty}\arctanh\frac1{n^2} = \frac12\log\frac{\sinh\pi}{\pi},
 \]
-and can be computed in quasilinear time; in $\sum_k\frac1k\arctan\frac1k$, the extra factor $\frac1k$ already
-destroys this structure. In physics, sums of the class are usually truncated and the tail estimated by its leading term;
+and can be computed in quasilinear time (in $\sum_k\frac1k\arctan\frac1k$, the extra factor $\frac1k$
+destroys this structure).
+
+In physics, sums of the class are usually truncated and the tail estimated by its leading term;
 besides the vortex rings of Table~\ref{tab:constants}, examples are Matsubara-frequency sums of one-loop integrals at
 finite temperature \cite{HLS24}, with arctangents of algebraic functions of the frequency index, and sums over
 Kaluza--Klein towers \cite{Pet02}, with $\arcsin^2$ of algebraic functions of the mode number. Classical sums such as
@@ -213,8 +222,8 @@ theta-function method for $\zeta$ extends to all of them, and that holonomy of $
 \begin{remark}
 The factor $k^{-s}$ could be absorbed into $F$, but $s$ is the parameter intrinsic to the class: multiplying by
 $k^{-s}$ only shifts the exponents at infinity, the poles of $\zeta_F$ record the expansion of $F$ at infinity
-(Proposition~\ref{prop:cont}), and $s$ enters the splitting only through $1/\Gamma(\frac{s+n}2)$, so that the cost is
-uniform in $s$ (Theorem~\ref{thm:uniform}).
+(Proposition~\ref{prop:cont}), and the cost bound of our method is
+uniform in~$s$ (Theorem~\ref{thm:uniform}) specifically for parametrizations of this form.
 \end{remark}
 
 \subsection{Results}
