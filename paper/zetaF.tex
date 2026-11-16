@@ -471,6 +471,24 @@ continuation.
 The same reduction, with the same proof, holds for $L_F$, $\Li_F$ and $\Lambda_F$, since the factors $\chi(k)$, $z^k$
 and $e^{-\tau k^r}$ are not affected.
 
+\begin{remark}[Puiseux expansions]\label{rem:puiseux}
+Regularity at infinity in Definition~\ref{def:regular} is a condition on the operator $L$, namely that $x = \infty$ is
+an ordinary or regular singular point in the sense of Fuchs, and not on the solution $F$ itself: $F$ need not be
+single-valued or analytic at infinity. In particular, a convergent Puiseux series $\sum_{n=0}^{\infty}a_nx^{-n/q}$
+annihilated by such an operator is of the form \eqref{eq:frob}, with $\Sigma \subseteq \{0, \frac1q, \dots,
+\frac{q-1}q\}$, by grouping the terms according to $n \bmod q$, and Lemma~\ref{lem:reduction} reduces it to $q$
+functions that are analytic at infinity. For example, $F(k) = 1/(k^{3/2}+1) = \sum_{n=0}^{\infty}(-1)^nk^{-3(n+1)/2}$
+involves both classes of exponents modulo $\ZZ$. Multiplying by the conjugate $k^{3/2}-1$ separates them,
+$F(k) = (k^{3/2}-1)G(k)$ with $G(k) = 1/(k^3-1)$ rational and analytic at infinity, so that
+\[
+  \sum_{k=1}^{\infty}\frac{1}{k^{3/2}+1} = \frac12 + \zeta_G\bigl(-\tfrac32;2\bigr) - \zeta_G(0;2) = 1.9520200662\ldots,
+\]
+where neither $-\frac32$ nor $0$ is a pole of $\zeta_G$, as the poles are at $s = -2, -5, -8, \dots$. In general, a summand
+$R(\sqrt k)$ with $R$ rational splits as $A(k) + \sqrt k\,B(k)$, where $A(y^2)$ and $yB(y^2)$ are the even and odd
+parts of $R(y)$; this is the decomposition into monodromy eigenspaces used in the proof of
+Theorem~\ref{thm:complexity} (Appendix~\ref{app:cost}).
+\end{remark}
+
 \subsection{Standing assumptions}\label{sec:scope}
 We assume that $F$ is analytic at infinity:
 \begin{equation}\label{eq:f}
