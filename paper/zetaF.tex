@@ -2266,23 +2266,51 @@ $K e^{\pm2\sigma/\sqrt n}$ (left) and $\pm2\sigma$ (right), with $\sigma = 1.10$
 %======================================================================
 \section{Other constants}\label{sec:other}
 
-This section treats the other constants of Table~\ref{tab:constants}. For the constants of Euler, Stieltjes and
+This section treats the other constants of Table~\ref{tab:constants}. For the constants of Euler, Stieltjes, Stirling and
 Glaisher (Section~\ref{sec:stieltjes}) we only compare the splitting with the classical formulas. For
 $\mathcal A$, $\mathcal C$, $K_{-1}$, the constant of Theodorus, the Hardy--Littlewood function and the vortex sum
 (Sections~\ref{sec:AG}--\ref{sec:vortex}), and for two values of damped functions, Somos's constant and
 $\sum_ke^{-\sqrt k}$ (Sections~\ref{sec:somos} and~\ref{sec:expsqrt}), we give the kernels and the recurrences of both sides.
 Section~\ref{sec:appcomp} reports computations of all of them to $10^6$ digits with a generic program.
 
-\subsection{The constants of Euler, Stieltjes and Glaisher}\label{sec:stieltjes}
-The Stieltjes constants are the Laurent coefficients $\zeta(s) = \frac1{s-1} + \sum_{n=0}^{\infty}\frac{(-1)^n}{n!}\gamma_n(s-1)^n$,
-and there are two ways to reach them with Theorem~\ref{thm:split}. Expanding Riemann's formula
+\subsection{The constants of Euler, Stieltjes, Stirling and Glaisher}\label{sec:stieltjes}
+Several classical constants are the constant terms in the asymptotic expansions of partial sums. Euler's constant is
+that of the harmonic numbers, $\sum_{k\le n}\frac1k = \log n + \gamma + o(1)$, and the Stieltjes constants are, by
+Stieltjes's definition, those of the sums of $(\log k)^m/k$,
+\[
+  \sum_{k=1}^{n}\frac{(\log k)^m}k = \frac{(\log n)^{m+1}}{m+1} + \gamma_m + o(1),
+\]
+with $\gamma_0 = \gamma$. Stirling's formula is the analogous statement for $\log n! = \sum_{k\le n}\log k$, with the
+constant $\log\sqrt{2\pi}$, and Glaisher's constant plays the same role for the hyperfactorials:
+\[
+  \sum_{k=1}^{n}k\log k = \Bigl(\frac{n^2}2 + \frac n2 + \frac1{12}\Bigr)\log n - \frac{n^2}4 + \log A + o(1),
+\]
+with $A = 1.2824271291\ldots$.
+In general, for $F$ regular at infinity the Euler--Maclaurin formula expands $\sum_{k\le n}F(k)$ in powers of $n$ and
+$\log n$, and, with the antiderivative of $F$ normalized to have no constant term, the constant term of this
+expansion is the regularized value $\zeta_F(0)$ (the constant term at $s = 0$ if $0$ is a pole) plus the constant terms
+of $\frac12F(n)$ and of the corrections $B_{2j}F^{(2j-1)}(n)/(2j)!$, which are elementary (compare \cite{Zag06}). For the examples above,
+$\gamma_m = (-1)^m\CT_{s=1}\zeta^{(m)}(s)$, $\log\sqrt{2\pi} = -\zeta'(0)$ and $\log A = \frac1{12} - \zeta'(-1)$, and the generalized Glaisher constants of the products
+$\prod_{k\le n}k^{k^m}$ involve $\zeta'(-m)$. Infinite products are covered in the same way: Wallis's product
+\[
+  \frac\pi2 = \prod_{k=1}^{\infty}\frac{4k^2}{4k^2-1}, \qquad \log\frac\pi2 = \zeta_G(0), \quad
+  G(k) = -\log\Bigl(1-\frac1{4k^2}\Bigr),
+\]
+is a value of the class, although computing $\pi$ this way would be circular, as $\pi$ enters the splitting through
+the dual points $\pi^2m^2$. Constants of this kind with $F \ne 1$ include Hlawka's constant of Table~\ref{tab:constants},
+the constant term of $\sum_{k<n}\arctan(1/\sqrt k) = 2\sqrt n + K + o(1)$ (Section~\ref{sec:theodorus}).
+
+For $F = 1$ all of these are values of $\zeta$ and its derivatives: $\gamma$ can be computed in quasilinear time
+\cite{BM80}, and the $\gamma_m$ and $\zeta'(-m)$ in time $p^{3/2+o(1)}$ by Theorem~\ref{thm:complexity} with $F = 1$
+(see also \cite{Joh21}). The splitting gives two further kinds of formulas for them. Expanding Riemann's formula
 (Example~\ref{ex:riemann}) at $s = 1$ gives the classical series in which every term is a single incomplete gamma
 function, for example
 \[
   \gamma = 2\sum_{k=1}^{\infty}\Bigl(\frac{\erfc(k\sqrt\pi)}{k} + E_1(\pi k^2)\Bigr) - 2 + \log(4\pi)
 \]
-(Coffey \cite[Proposition~9]{Cof14}), and similar series for $\gamma_n$ \cite{Cof14}. Alternatively, the $\gamma_n$ are
-values at $s = 0$ of functions $\zeta_F$ and their derivatives: by telescoping,
+(Coffey \cite[Proposition~9]{Cof14}), and similar series for $\gamma_m$ \cite{Cof14}. Alternatively, the limits above
+can be written as convergent sums of holonomic functions and hence as values at $s = 0$ of functions $\zeta_F$ and
+their derivatives. Telescoping the main term of Stieltjes's definition gives
 \[
   \gamma_n = \sum_{k=1}^{\infty}\Bigl(\frac{(\log k)^n}k - \frac{(\log(k+1))^{n+1} - (\log k)^{n+1}}{n+1}\Bigr),
 \]
@@ -2295,29 +2323,23 @@ where
   \Phi_n(k) = \frac1k - \log\Bigl(1+\frac1k\Bigr), \\
   \Phi_j(k) = -\frac{1}{n+1}\binom{n+1}{j}\log^{n+1-j}\Bigl(1+\frac1k\Bigr) \quad (0 \le j < n).
 \end{gather*}
-For $n = 0$ this is $\gamma = \zeta_{\Phi_0}(0)$. Theorem~\ref{thm:split} applied to these functions gives different
-series: for $\gamma$, $f(x) = x - \log(1+x)$ has radius $1$, so $k_0 = 2$, and the kernel at $s = 0$ is
+For $n = 0$ this is $\gamma = \zeta_{\Phi_0}(0)$, the series \eqref{eq:twoconstants}. In the same way,
+\[
+  \sum_{k=1}^{\infty}\Bigl(\Bigl(k + \frac12\Bigr)\log\Bigl(1+\frac1k\Bigr) - 1\Bigr) = 1 - \log\sqrt{2\pi},
+\]
+\[
+  \sum_{k=1}^{\infty}\Bigl(3k + \frac12 - k(3k+2)\log\Bigl(1+\frac1k\Bigr)\Bigr) = 6\log A - \frac12 - \log\sqrt{2\pi}.
+\]
+Theorem~\ref{thm:split} applied to these functions gives different series from the classical ones: for $\gamma$,
+$f(x) = x - \log(1+x)$ has radius $1$, so $k_0 = 2$, and the kernel at $s = 0$ is
 \[
   h_0(u) = \frac{e^u-1}{2u} - \sum_{m=1}^{\infty}\frac{u^{m-1/2}}{(2m+1)\Gamma(m+\frac12)},
 \]
 so that every $k$-term and dual term is a series rather than a single incomplete gamma function (the method is linear
 in $f$, and the contributions of the terms $x^1$ of $x$ and $\log(1+x)$ cancel). The classical formulas are the
 special case of the monomial kernel at the self-dual point $u_0 = \pi$; the new ones exist because the $\gamma_n$ are
-also sums of holonomic functions. They are not meant to be competitive: $\gamma$ can be computed in quasilinear time
-\cite{BM80}, and the $\gamma_n$ in time $p^{3/2+o(1)}$ by Theorem~\ref{thm:complexity} with $F = 1$ (see also
-\cite{Joh21}). In the same way Glaisher's constant is a value at
-$s = 0$,
-\[
-  \sum_{k=1}^{\infty}\Bigl(3k + \frac12 - k(3k+2)\log\Bigl(1+\frac1k\Bigr)\Bigr) = 6\log A - \frac12 - \frac12\log(2\pi),
-\]
-besides being given by $\zeta'(-1)$.
-
-Glaisher's constant is the analogous limit constant for hyperfactorials
-\[
-A = \lim_{n \to \infty} \frac{1 \cdot 2^2 \cdot 3^3 \cdots n^n}{n^{\frac{n^2}{2}+\frac{n}{2}+\frac{1}{12}}e^{-n^2/4-n/4}} = 1.2824271291\ldots,
-\]
+also sums of holonomic functions. They are not meant to be competitive with the computation of the values of $\zeta$.
 %  \frac{\pi^2} 6  \left( 12 \ln A - \gamma-\ln 2\pi \right) &= \sum_{k=2}^\infty \frac{\log k}{k^2}, \\
-
 
 \subsection{The Alladi--Grinstead and L\"uroth constants}\label{sec:AG}
 The constants $\mathcal A$ and $\mathcal C$ are the values $-\zeta_F'(0)$ for the rational functions
