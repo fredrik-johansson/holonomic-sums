@@ -53,9 +53,9 @@
 \begin{abstract}
 For a holonomic function $F$ that is regular at infinity we study the zeta function
 $\zeta_F(s) = \sum_{k}F(k)k^{-s}$.
-Using Riemann's theta-function splitting, we write
-$\zeta_F$ as two superexponentially convergent sums of values of
-holonomic functions.
+%Using Riemann's theta-function splitting, we write
+%$\zeta_F$ as two superexponentially convergent sums of values of
+%holonomic functions.
 We show that when the expansion of $F$ at infinity has algebraic coefficients, the
 values and derivatives of $\zeta_F$ at algebraic $s$ can be computed
 to $p$ bits in $p^{3/2+o(1)}$ bit operations.
@@ -75,15 +75,15 @@ Khinchin's constant which we compute to $10^7$ digits.
 
 \subsection{Two constants}
 
-Consider the strikingly similar series
+Two strikingly similar series
 \begin{equation}
 \label{eq:twoconstants}
 \begin{aligned}
   \gamma &= \sum_{k=1}^{\infty}\Bigl(\frac1k - \log\Bigl(1+\frac1k\Bigr)\Bigr), \\
-  \log K\,\log 2 &= -\sum_{k=2}^{\infty}\log\Bigl(1-\frac1k\Bigr)\log\Bigl(1+\frac1k\Bigr).
+  \log K\,\log 2 &= -\sum_{k=2}^{\infty}\log\Bigl(1-\frac1k\Bigr)\log\Bigl(1+\frac1k\Bigr)
 \end{aligned}
 \end{equation}
-for two seemingly unrelated numbers: Euler's constant, the regularized limit of the harmonic numbers
+express two seemingly unrelated numbers: Euler's constant, the regularized limit of the harmonic numbers
 \[
 \gamma = \lim_{n \to \infty} ( ( \tfrac{1}{1} + \tfrac{1}{2} + \ldots + \tfrac{1}{n} ) - \log n) = 0.5772156649\ldots,
 \]
@@ -2275,15 +2275,18 @@ Stieltjes's definition, those of the sums of $(\log k)^m/k$,
   \sum_{k=1}^{n}\frac{(\log k)^m}k = \frac{(\log n)^{m+1}}{m+1} + \gamma_m + o(1),
 \]
 with $\gamma_0 = \gamma$. Stirling's formula is the analogous statement for $\log n! = \sum_{k\le n}\log k$, with the
-constant $\log\sqrt{2\pi}$, and Glaisher's constant plays the same role for the hyperfactorials:
+constant $\log\sqrt{2\pi}$, and Glaisher's constant plays the same role for the hyperfactorials $1 \cdot 2^2 \cdots n^n$:
 \[
   \sum_{k=1}^{n}k\log k = \Bigl(\frac{n^2}2 + \frac n2 + \frac1{12}\Bigr)\log n - \frac{n^2}4 + \log A + o(1),
 \]
 with $A = 1.2824271291\ldots$.
+
 In general, for $F$ regular at infinity the Euler--Maclaurin formula expands $\sum_{k\le n}F(k)$ in powers of $n$ and
 $\log n$, and, with the antiderivative of $F$ normalized to have no constant term, the constant term of this
 expansion is the regularized value $\zeta_F(0)$ (the constant term at $s = 0$ if $0$ is a pole) plus the constant terms
-of $\frac12F(n)$ and of the corrections $B_{2j}F^{(2j-1)}(n)/(2j)!$, which are elementary (compare \cite{Zag06}). For the examples above,
+of $\frac12F(n)$ and of the corrections $B_{2j}F^{(2j-1)}(n)/(2j)!$, which are elementary (compare \cite{Zag06}).
+
+For the examples above,
 $\gamma_m = (-1)^m\CT_{s=1}\zeta^{(m)}(s)$, $\log\sqrt{2\pi} = -\zeta'(0)$ and $\log A = \frac1{12} - \zeta'(-1)$, and the generalized Glaisher constants of the products
 $\prod_{k\le n}k^{k^m}$ involve $\zeta'(-m)$. Infinite products are covered in the same way: Wallis's product
 \[
@@ -2692,7 +2695,7 @@ at a Gaussian dyadic point satisfy a two-term recurrence, which we sum by binary
 the bit-burst goes from the real point $\operatorname{Re}y_n$, where $V_a$ is an incomplete gamma value at a dyadic
 argument, to $y_n$. We use $u_0 = 1$. The reference is the sum over prime powers
 $\log\sigma = \sum_p\log p\sum_{e\ge1}1/(2^{p^e}-1)$, with the logarithms of all primes up to $p$ (the precision)
-from $\log q = \operatorname{artanh}(1/(2q^2-1)) + \frac12\log\frac{q^2-1}{4} + \log 2$.
+from $\log q = \operatorname{arctanh}(1/(2q^2-1)) + \frac12\log\frac{q^2-1}{4} + \log 2$.
 
 \subsection{A stretched-exponential sum}\label{sec:expsqrt}
 For $S = \sum_{k=1}^{\infty}e^{-\sqrt k} = \Lambda(0;1,\frac12)$, Proposition~\ref{prop:expsplit}
