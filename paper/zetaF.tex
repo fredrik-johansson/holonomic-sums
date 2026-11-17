@@ -199,8 +199,8 @@ families of algebraic curves depending algebraically on $k$ such as $\log A(k)$ 
 and more generally complete elliptic, hyperelliptic and abelian integrals.
 
 Table~\ref{tab:constants} lists constants from classical analysis, number theory and mathematical physics expressed in
-this way, including examples from the tables of Flajolet and Vardi~\cite{FV96} and of Finch~\cite{Fin03}
-and other sources.
+this way, including examples from the tables of Flajolet and Vardi~\cite{FV96} and of Finch~\cite{Fin03},
+Sloane's OEIS~\cite{OEIS}, and other sources.
 
 By Theorem~B below, all convergent sums of this form,
 as well as the zeta-regularized values of divergent ones (analytically continued with respect to~$s$),
@@ -238,23 +238,24 @@ H\"older means $K_p$, $p<1$ & $p_k$ & $Z(-p)^{1/p}$ \\
 $\mathcal A = \sum_{k=2}^{\infty}\frac{\log k}{k^2-1}$ & $\frac1{k^2-1}$ ($k\ge2$) & $-\zeta_F'(0)$ \\
 $\mathcal C = \sum_{k=1}^{\infty}\frac{\log k}{k(k+1)}$ & $\frac{1}{k(k+1)}$ & $-\zeta_F'(0)$ \\
 \midrule
-\multicolumn{3}{@{}p{\textwidth}@{}}{\emph{Algebraic summands} (Section~\ref{sec:theodorus}, Remarks~\ref{rem:puiseux} and~\ref{rem:algebraic}):
-Hlawka's constant is $\lim_{n\to\infty}(\sum_{k<n}\arctan k^{-1/2} - 2\sqrt n)$;
-$E_a(t) = \sum_k(k^2+a^2)^{-t}$, $t > \frac12$.} \\
+\multicolumn{3}{@{}p{\textwidth}@{}}{\emph{Analysis and geometry} (Sections~\ref{sec:theodorus} and~\ref{sec:HL},
+Remark~\ref{rem:puiseux}): the spiral of Theodorus, with Hlawka's constant
+$\lim_{n\to\infty}(\sum_{k<n}\arctan k^{-1/2} - 2\sqrt n)$; an algebraic example.} \\
 \midrule
 Theodorus $\sum_{k=1}^{\infty}\frac{1}{(k+1)\sqrt k}$ & $\frac1{k+1}$ & $\zeta_F(\frac12)$ \\
-Hlawka's constant & $\sqrt k\arctan\frac1{\sqrt k}$ & $\zeta_F(\frac12)$ \\
+Hlawka's constant & $\arctan\frac1{\sqrt k}$ & $\zeta_F(0)$ (regularized) \\
+Hardy--Littlewood $H(x)$ & $\sin(x/k)$ & $\zeta_F(1)$ \\
 $\sum_{k=1}^{\infty}\frac{1}{k^{3/2}+1}$ & $\frac1{k^3-1}$ ($k\ge2$) & $\frac12+\zeta_F(-\frac32)-\zeta_F(0)$ \\
-Epstein--Hurwitz $E_a(t)$ & $(1+\frac{a^2}{k^2})^{-t}$ & $\zeta_F(2t)$ \\
 \midrule
-\multicolumn{3}{@{}p{\textwidth}@{}}{\emph{Analysis and mathematical physics} (Sections~\ref{sec:HL} and~\ref{sec:vortex}): coaxial rings of unit radius
-spaced $\lambda$ apart ($k_0 > 2/\lambda$, $\theta/2\pi \in \QQ$); hydrogen partition function, $x = I/(k_BT)$;
+\multicolumn{3}{@{}p{\textwidth}@{}}{\emph{Mathematical physics} (Section~\ref{sec:vortex}, Remark~\ref{rem:algebraic}):
+coaxial rings of unit radius spaced $\lambda$ apart ($k_0 > 2/\lambda$, $\theta/2\pi \in \QQ$);
+$E_a(t) = \sum_k(k^2+a^2)^{-t}$, $t > \frac12$; hydrogen partition function, $\xi = I/(k_BT)$;
 Casimir-type sums \cite{Eli95,Kir02}.} \\
 \midrule
-Hardy--Littlewood $H(x)$ & $\sin(x/k)$ & $\zeta_F(1)$ \\
 vortex rings $U(\lambda)$ & ${}_2F_1(\frac32,\frac32;2;-\frac{4}{\lambda^2k^2})$ & $\lambda^{-3}\zeta_F(3)$ \\
 ring resonators $S_\lambda(\theta)$ & ${}_2F_1(\frac32,\frac32;3;-\frac{4}{\lambda^2k^2})$ & $\frac{\pi}{2\lambda^3}L_F(3,\cos k\theta)$ \\
-Planck--Larkin $\sigma(T)$ & $e^{x/k^2} - 1 - x/k^2$ & $\zeta_F(-2)$ \\
+Epstein--Hurwitz $E_a(t)$ & $(1+\frac{a^2}{k^2})^{-t}$ & $\zeta_F(2t)$ \\
+Planck--Larkin $\sigma(T)$ & $e^{\xi/k^2} - 1 - \xi/k^2$ & $\zeta_F(-2)$ \\
 Casimir-type sums & $F(k)$ & $\zeta_F(-m)$ (regularized) \\
 \midrule
 \multicolumn{3}{@{}p{\textwidth}@{}}{\emph{Geometric factors: polylogarithms and Lerch transcendents} (Sections~\ref{sec:geometric},
@@ -2438,7 +2439,7 @@ and $1$, placed one after the other around a common vertex, so that the $k$-th v
 it; it is named after Theodorus of Cyrene, who according to Plato proved that $\sqrt3, \dots, \sqrt{17}$ are
 irrational. The angles of the triangles are $\arctan(1/\sqrt k)$, and Hlawka \cite{Hla80} showed that the angle swept
 by the first $n-1$ triangles is $2\sqrt n + K + o(1)$. Hlawka's constant $K = -2.1577829966\ldots$ is
-$\zeta_G(\frac12)$ with $G(k) = \sqrt k\arctan(1/\sqrt k)$ (Table~\ref{tab:constants}). Davis \cite{Dav93} interpolated the vertices by a smooth spiral, and its slope at the
+the regularized value $\zeta_G(0)$ of $G(k) = \arctan(1/\sqrt k)$ (Table~\ref{tab:constants}). Davis \cite{Dav93} interpolated the vertices by a smooth spiral, and its slope at the
 point $(1,0)$ is given by the \emph{constant of Theodorus}
 \[
   \mathcal T = \sum_{k=1}^{\infty}\frac{1}{(k+1)\sqrt k} = 1.8600250792\ldots
