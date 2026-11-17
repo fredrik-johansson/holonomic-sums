@@ -53,17 +53,18 @@
 For a holonomic function $F$ that is regular at infinity we study the zeta function
 $\zeta_F(s) = \sum_{k}F(k)k^{-s}$.
 Using Riemann's theta-function splitting, we write
-$\zeta_F$ as two rapidly convergent sums of values of
+$\zeta_F$ as two superexponentially convergent sums of values of
 holonomic functions.
 We show that when the expansion of $F$ at infinity has algebraic coefficients, the
 values and derivatives of $\zeta_F$ at algebraic $s$ can be computed
-to $p$ bits in $p^{3/2+o(1)}$ bit operations; similar results hold
-for polylogarithm-type generalizations of $\zeta_F$.
-As a result, we obtain a subquadratic algorithm for a large class of numbers,
+to $p$ bits in $p^{3/2+o(1)}$ bit operations.
+%The same holds for polylogarithm-type generalizations of $\zeta_F$.
+This gives subquadratic algorithms for a large class of numbers,
 including every sum $\sum_k A(k)$ or $\sum_k \log A(k)$ where $A$ is an
-algebraic function with algebraic coefficients, most of which had no previously known subquadratic algorithm.
-For example, we obtain the first subquadratic algorithm for
-Khinchin's constant, which we compute to $10^7$ digits.
+algebraic function with algebraic coefficients, most of which had no previously known algorithm with better than
+quadratic complexity.
+We give several examples, including the first subquadratic algorithm for
+Khinchin's constant which we compute to $10^7$ digits.
 \end{abstract}
 
 \maketitle
@@ -72,82 +73,107 @@ Khinchin's constant, which we compute to $10^7$ digits.
 \section{Introduction}
 
 \subsection{Two constants}
-Euler's constant and Khinchin's constant have strikingly similar series,
-\begin{align*}
-  \gamma &= \sum_{k=1}^{\infty}\Bigl(\frac1k - \log\Bigl(1+\frac1k\Bigr)\Bigr), \\
-  \log K\,\log 2 &= -\sum_{k=2}^{\infty}\log\Bigl(1-\frac1k\Bigr)\log\Bigl(1+\frac1k\Bigr),
-\end{align*}
-both of the form $\sum_{k=k_0}^{\infty} F(k)$ with $F$ holonomic and analytic at infinity.
 
-Euler's constant $\gamma$ is the regularized limit of the harmonic numbers,
+Consider the strikingly similar series
+\begin{equation}
+\label{eq:twoconstants}
+\begin{aligned}
+  \gamma &= \sum_{k=1}^{\infty}\Bigl(\frac1k - \log\Bigl(1+\frac1k\Bigr)\Bigr), \\
+  \log K\,\log 2 &= -\sum_{k=2}^{\infty}\log\Bigl(1-\frac1k\Bigr)\log\Bigl(1+\frac1k\Bigr).
+\end{aligned}
+\end{equation}
+for two seemingly unrelated numbers: Euler's constant, the regularized limit of the harmonic numbers
 \[
-\gamma = \lim_{n \to \infty} ( ( \tfrac{1}{1} + \tfrac{1}{2} + \ldots + \tfrac{1}{n} ) - \log n) = 0.5772156649\ldots
+\gamma = \lim_{n \to \infty} ( ( \tfrac{1}{1} + \tfrac{1}{2} + \ldots + \tfrac{1}{n} ) - \log n) = 0.5772156649\ldots,
 \]
-while Khinchin's constant is the limit
+and Khinchin's constant, the limit
 \[
   K = \lim_{n\to\infty}(a_1a_2\cdots a_n)^{1/n} = 2.6854520010\ldots
 \]
 of the geometric means of the partial quotients of the continued fraction $x = [a_0; a_1, a_2, \dots]$ of almost
-every real number $x$ \cite{Khi35,Khi64}; see \cite[\S\S1.5, 1.8]{Fin03} for both constants.
+every real number $x$ \cite{Khi35,Khi64}.
+%both of the form $\sum_{k=k_0}^{\infty} F(k)$ with $F$ holonomic and analytic at infinity.
 
-Euler's constant also has a second life as a particular value (in the regularized sense)
-of a Dirichlet series, $\zeta(s) = \sum_{k=1}^{\infty} k^{-s} = \tfrac{1}{s-1} + \gamma + O(s-1)$.
-The same is true for Khinchin's constant.
-For almost every $x$, the proportion of partial quotients equal to $k$ is the
-Gauss--Kuzmin probability $p_k = \log_2(1 + 1/(k(k+2)))$ \cite{Khi64,IK02};
-if we define a ``Khinchin zeta function''
-\begin{equation}\label{eq:Z}
-  Z(s) = \sum_{k=1}^{\infty} p_k\,k^{-s} = \mathbb{E}\bigl[a_1^{-s}\bigr],
-\end{equation}
-then $Z(0) = 1$
-(the product $\prod_k (k+1)^2/(k(k+2))$ telescopes to $2$),
-\[
-K = \prod_k k^{p_k} = \exp(-Z'(0)),
-\]
-and more generally the
-H\"older means of the partial quotients are $K_p = Z(-p)^{1/p}$ for $p < 1$, $p \ne 0$ \cite{BBC97}; in particular the
-harmonic mean is $K_{-1} = 1/Z(1)$. The function $Z$ is meromorphic in $\CC$, with simple poles at
-$s = -1, -2, -3, \dots$ (Section~\ref{sec:khinchinzeta}).
+Euler's constant is known to be rapidly computable: along with many other classical constants
+like $e$, $\pi$, $\log 2$, $\zeta(3)$, Catalan's constant and $\Gamma(\frac14)$,
+it can expressed finitely in terms of holonomic functions (solutions
+of linear ordinary differential equations with polynomial
+coefficients)
+which can be evaluated in time quasilinear in the precision~\cite{BB87,HP98,BM80,BZ10,CC90,vdH99}.
+Khinchin's constant is not known to have this property,
+and all known algorithms for $K$ until the present take at least quadratic time.
+In the words of Weisstein \cite{MWKdigits}, ``the numerical value of $K$ is
+notoriously difficult to calculate to high precision''.
 
-\subsection{Sums as special function values}
-The point of view of this paper is that an infinite sum of values of a holonomic function might be understood, and
-computed, as a value of a special function attached to the summand. Let $F$ be a sequence that agrees for large
-$k$ with a holonomic function regular at infinity (Definition~\ref{def:regular}), such as $\log(1+\frac1k)$, $p_k$,
-$\sin(x/k)$, a rational function or ${}_2F_1(\dots;-1/k^2)$. We attach to $F$ the following functions:
+In this work, we show that both sums \eqref{eq:twoconstants} and many others
+belong to a common class which can be computed in subquadratic time.
+The method is practical for computing millions of digits,
+as verified by implementing several examples.
+
+\subsection{Zeta functions of holonomic functions}
+
+The starting point is the familiar device of viewing any infinite sum
+as a Dirichlet series.
+In general, let $F$ be a holonomic function regular at infinity (Definition~\ref{def:regular}); we attach to $F$ the following functions:
 \begin{equation}\label{eq:functions}
 \begin{aligned}
   \zeta_F(s) &= \sum_{k=1}^{\infty}F(k)\,k^{-s} &&\text{(zeta function)}, \\
   L_F(s,\chi) &= \sum_{k=1}^{\infty}\chi(k)F(k)\,k^{-s} &&\text{(twisted zeta function)}, \\
-  \Li_F(s,z) &= \sum_{k=1}^{\infty}F(k)\,z^kk^{-s} &&\text{(polylogarithm, $|z| < 1$)}, \\
+  \Li_F(s,z) &= \sum_{k=1}^{\infty}F(k)\,z^kk^{-s} &&\text{(polylogarithm)}, \\
   \Phi_F(z,s,a) &= \sum_{k=0}^{\infty}F(k)\,z^k(k+a)^{-s} &&\text{(Lerch transcendent)}, \\
   \Lambda_F(s;\tau,r) &= \sum_{k=1}^{\infty}e^{-\tau k^r}F(k)\,k^{-s} &&\text{(damped zeta function)},
 \end{aligned}
 \end{equation}
-with $\chi$ periodic, $\tau > 0$ and $0 < r < 2$ in the last. For $F = 1$ these are the classical
-Riemann zeta function, Dirichlet $L$-functions (when $\chi$ is a Dirichlet character), polylogarithm $\Li_s(z)$, Lerch
+with $\chi$ periodic, $|z| < 1$, $\tau > 0$ and $0 < r < 2$ in the last.
+
+For $F = 1$ these are the classical
+Riemann zeta function $\zeta(s)$, Dirichlet $L$-functions (when $\chi$ is a Dirichlet character), polylogarithm $\Li_s(z)$, Lerch
 transcendent $\Phi(z,s,a)$, and sums $\sum_ke^{-\tau k^r}k^{-s}$ of stretched exponentials, with
 $\Lambda(s;\tau,1) = \Li_s(e^{-\tau})$, where $\Lambda = \Lambda_1$.
 Rational $F$ give the Dirichlet series attached to rational functions
-studied since Mellin and Mahler \cite{Mah28,CN81,Sar84,Pet98,Ess97}. The periodic weight $\chi$ and the factors $z^k$
+studied since Mellin and Mahler \cite{Mah28,CN81,Sar84,Pet98,Ess97}.
+The periodic weight $\chi$ and the factors $z^k$
 and $e^{-\tau k^r}$ are kept separate from $F$ because they are not regular at infinity
 (Section~\ref{sec:defs}).
 
 Each function in \eqref{eq:functions} is, as a function of $s$, a deformation of the corresponding classical function:
-$\zeta_F$ and $L_F$ are meromorphic in $\CC$, and $\Li_F(s,z)$, $\Phi_F$ and $\Lambda_F$ are entire in $s$. We show that the classical
-theta-function method for $\zeta$ extends to all of them, and that holonomy of $F$ is what makes it fast.
+$\zeta_F$ and $L_F$ are meromorphic in $\CC$, and $\Li_F(s,z)$, $\Phi_F$ and $\Lambda_F$ are entire in $s$.
+We show that Riemann's classical theta-function method for computing
+the analytic continuation of $\zeta$ extends to all of them
+and that holonomy of $F$ makes this fast (Theorem~B below).
 
-\begin{remark}
-The factor $k^{-s}$ could be absorbed into $F$, but $s$ is the parameter intrinsic to the class: multiplying by
-$k^{-s}$ only shifts the exponents at infinity, the poles of $\zeta_F$ record the expansion of $F$ at infinity
-(Proposition~\ref{prop:cont}), and the cost bound of our method is
-uniform in~$s$ (Theorem~\ref{thm:uniform}) specifically for parametrizations of this form.
-\end{remark}
+Euler's constant is of course the constant term
+of $\zeta(s)$ at its pole $s = 1$, and by
+\eqref{eq:twoconstants} also expressible as $\zeta_{F_1}(0)$ with $F_1(k) = \tfrac{1}{k} - \log(1+\tfrac{1}{k})$.
+We will similarly show several ways to
+express Khinchin's constant $K$ (and many other constants) as a particular value of $\zeta_F$
+for various $F$.
+
+%: by , all of these functions
+%can be computed to $p$ bits in $p^{3/2+o(1)}$ bit operations at special points.
+
+%and all convergent sums
+%as the zeta-regularized values of divergent ones, can be computed to $p$ bits in $p^{3/2+o(1)}$ bit operations.
+
+
+% $\sum_kA(k)$, $\sum_kA(k)(\log k)^j$, $\sum_kA(k)z^k$ and $\sum_k\log A(k)$ with $A$ algebraic over $\Qbar(k)$, as well
+
+%\begin{remark}
+%The factor $k^{-s}$ could be absorbed into $F$, but $s$ is the parameter intrinsic to the class: multiplying by
+%$k^{-s}$ only shifts the exponents at infinity, the poles of $\zeta_F$ record the expansion of $F$ at infinity
+%(Proposition~\ref{prop:cont}), and the cost bound of our method is
+%uniform in~$s$ (Theorem~\ref{thm:uniform}) specifically for parametrizations of this form.
+%\end{remark}
+
+\subsection{Sums in the class}
 
 The functions \eqref{eq:functions} cover the familiar ways in which sums of holonomic functions arise:
 \begin{itemize}
-\item a sum $\sum_{k=1}^{\infty} F(k)$ is the value $\zeta_F(0)$, a sum $\sum_{k=1}^{\infty}(\log k)^jF(k)$ is
-$(-1)^j\zeta_F^{(j)}(0)$, a product $\prod_kk^{F(k)}$ is $\exp(-\zeta_F'(0))$, and a divergent sum
-$\sum_{k=1}^{\infty} k^m F(k)$ has the zeta-regularized value $\zeta_F(-m)$;
+\item a sum $\sum_{k=1}^{\infty} F(k)$ is the value $\zeta_F(0)$;
+\item a sum $\sum_{k=1}^{\infty}(\log k)^jF(k)$ is $(-1)^j\zeta_F^{(j)}(0)$;
+\item a product $\prod_k \exp(F(k))$ is $\exp(\zeta_F(0))$;
+\item a product $\prod_k k^{F(k)}$ is $\exp(-\zeta_F'(0))$;
+\item a divergent sum $\sum_{k=1}^{\infty} k^m F(k)$ has the zeta-regularized value $\zeta_F(-m)$;
 \item the Dirichlet generating function of a regular sequence $F(k)$ is $\zeta_F(s)$, and its ordinary generating
 function $\sum_kF(k)z^k$ is $\Li_F(0,z)$; weights $(\log k)^j$ and powers $k^{-s}$ in a generating function are
 derivatives and values in $s$;
@@ -156,53 +182,39 @@ functions (Section~\ref{sec:twistshift});
 \item summands with stretched-exponential decay, such as $e^{-\sqrt k}$, are values of damped zeta functions.
 \end{itemize}
 
-The class of summands is large. It contains every algebraic function: an algebraic function satisfies a linear
-differential equation whose singular points are all regular, so every branch that is analytic on an interval
-$(R,\infty)$ is regular at infinity, with a convergent Puiseux expansion in powers of $k^{-1/q}$
-(Remark~\ref{rem:puiseux}), and if its minimal polynomial has algebraic coefficients, so do its Puiseux expansions.
-It also contains the compositions $G(A(k))$ of an algebraic function $A$ with a holonomic function $G$ that is
-analytic, or regular singular, at the limit of $A$ at infinity, such as $\log A(k)$ and $\arctan A(k)$, and it is
-closed under sums and products. Among the constants in the tables of Flajolet and Vardi \cite{FV96} and of Finch
-\cite{Fin03}, this covers the sums $\sum_kG(1/k)$ with $G$ a product of logarithms, polylogarithms or inverse
-trigonometric functions (such as $\sum_k\frac1k\arctan\frac1k$), the sums $\sum_k(\log k)^jR(1/k)$ with $R$ rational,
-and the products $\prod_kG(1/k)$ with $\log G$ holonomic. By Theorem~B below, all of these, and all convergent sums
-$\sum_kA(k)$, $\sum_kA(k)(\log k)^j$, $\sum_kA(k)z^k$ and $\sum_k\log A(k)$ with $A$ algebraic over $\Qbar(k)$, as well
-as the zeta-regularized values of divergent ones, can be computed to $p$ bits in $p^{3/2+o(1)}$ bit operations.
+%an algebraic function $A(k)$
+%5satisfies a linear
+%differential equation in $k$ whose singular points are all regular, so every branch that is analytic on an interval
+%$(R,\infty)$ is regular at infinity, with a convergent Puiseux expansion in powers of $k^{-1/q}$
+%(Remark~\ref{rem:puiseux}), and if its minimal polynomial has algebraic coefficients, so do its Puiseux expansions.
+
+The class of summands is large. It is closed under sums and products, and
+contains every algebraic function $A(k)$ and
+the compositions $G(A(k))$ of an algebraic function $A$ with a holonomic function $G$ that is
+analytic or regular singular at the limit of $A$ at infinity
+such as the generalized hypergeometric function $G(z) = {}_pF_{p-1}(\ldots; z)$.
+The class is also closed under integration, and contains the periods of
+families of algebraic curves depending algebraically on $k$ such as $\log A(k)$ and $\arctan A(k)$
+and more generally complete elliptic, hyperelliptic and abelian integrals.
 
 Table~\ref{tab:constants} lists constants from classical analysis, number theory and mathematical physics expressed in
-this way. One of our main findings is that all of them can be computed in time subquadratic in the precision. Some
-subclasses were already known to be fast. The constants of Euler, Stieltjes and Glaisher are values of $\zeta$ and
-its derivatives, for which subquadratic algorithms exist \cite{BM80,Joh21}. For rational $A$, the sum $\sum_kA(k)$
-reduces by partial fractions to polygamma values, and sums of logarithms or inverse trigonometric or hyperbolic
-functions of a rational function of $k$ reduce to logarithms of gamma values at algebraic points, as in (A352619,
-A393668)
-\[
-  \sum_{k=1}^{\infty}\Bigl(\frac1k - \arctan\frac1k\Bigr) = \gamma + \arg\Gamma(1+i), \qquad
-  \sum_{n=2}^{\infty}\arctanh\frac1{n^2} = \frac12\log\frac{\sinh\pi}{\pi};
-\]
-all of these can be computed in quasilinear time. But this structure is fragile: an extra factor $\frac1k$, as in
-$\sum_k\frac1k\arctan\frac1k$, destroys it, and for the other constants of Table~\ref{tab:constants}, and for sums of
-algebraic functions that are not rational, we know of no earlier subquadratic algorithm, or indeed of any complexity
-bound. A classical example is the constant of Theodorus $\sum_{k=1}^{\infty}1/((k+1)\sqrt k)$, the slope of Davis's
-continuous spiral of Theodorus \cite{Dav93,Bri12}, which we compute to $10^6$ digits (Section~\ref{sec:theodorus}).
-Table~\ref{tab:constants} also lists Hlawka's related constant \cite{Hla80}, the sum of Remark~\ref{rem:puiseux},
-whose summand mixes half-integer and integer exponents, and the Epstein--Hurwitz sums $\sum_k(k^2+a^2)^{-t}$ of zeta
-regularization in physics \cite{Eli95,Kir02}.
+this way, including examples from the tables of Flajolet and Vardi~\cite{FV96} and of Finch~\cite{Fin03}
+and other sources.
 
-In physics, sums of the class are usually truncated and the tail estimated by its leading term;
-besides the vortex rings of Table~\ref{tab:constants}, examples are Matsubara-frequency sums of one-loop integrals at
-finite temperature \cite{HLS24}, with arctangents of algebraic functions of the frequency index, and sums over
-Kaluza--Klein towers \cite{Pet02}, with $\arcsin^2$ of algebraic functions of the mode number. Classical sums such as
-$\sum_k\log\cos\frac\pi k$, whose summands are analytic at infinity but not holonomic, are outside the class
-(Section~\ref{sec:open}).
+By Theorem~B below, all convergent sums of this form,
+as well as the zeta-regularized values of divergent ones (analytically continued with respect to~$s$),
+can be computed to $p$ bits in $p^{3/2+o(1)}$ bit operations when $s$ is algebraic
+and the expansion of $F$ at infinity has coefficients in $\Qbar$.
+
+%$\sum_k A(k)$, $\sum_kA(k)(\log k)^j$, $\sum_kA(k)z^k$ and $\sum_k\log A(k)$ with $A$ algebraic over $\Qbar(k)$, as well
 
 \begin{table}[t]
 \centering\footnotesize
 \renewcommand{\arraystretch}{1.2}
-\caption{Constants as special values of the functions \eqref{eq:functions}. The Alladi--Grinstead and Kalpazidou
+\caption{Constants and families of constants as special values of the functions \eqref{eq:functions}. The Alladi--Grinstead and Kalpazidou
 constants are $e^{\mathcal C-1}$ and $e^{\mathcal C}$. For the vortex sum $\lambda$ is fixed and $k_0 > 2/\lambda$; for
 Planck--Larkin $x = I/(k_BT)$; Hlawka's $K = \lim_{n\to\infty}(\sum_{k<n}\arctan k^{-1/2} - 2\sqrt n)$; $E_a(t) = \sum_k(k^2+a^2)^{-t}$, $t > \frac12$; for Bose--Einstein and Fermi--Dirac, $j \in \frac12 + \ZZ$. $F_1(k) = \frac1k - \log(1+\frac1k)$, $F_2(k) = \log(1+\frac1k)$ and
-$F_3(k) = 3k + \frac12 - k(3k+2)\log(1+\frac1k)$.}
+$F_3(k) = 3k + \frac12 - k(3k+2)\log(1+\frac1k)$. $Z(s)$ is the Khinchin zeta function defined in section~\ref{sec:khinchin}.}
 \label{tab:constants}
 \begin{tabular}{lll}
 \toprule
@@ -238,6 +250,26 @@ $\sum_ke^{-\tau k^{1/q}}F(k)$ & $F(k)$ & $\Lambda_F(0;\tau,\frac1q)$ \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+Some subclasses were already known to be efficiently computable.
+Euler's constant $\gamma$ has quasilinear algorithms~\cite{BM80}, as do integer zeta values like $\zeta(3)$.
+For rational $A$, the sum $\sum_k A(k)$
+reduces by partial fractions to polygamma values, and sums of logarithms or inverse trigonometric or hyperbolic
+functions of a rational function of $k$ reduce to logarithms of gamma values at algebraic points, as in (A352619,
+A393668)
+\[
+  \sum_{k=1}^{\infty}\Bigl(\frac1k - \arctan\frac1k\Bigr) = \gamma + \arg\Gamma(1+i),
+\]
+\[
+  \sum_{k=2}^{\infty}\arctanh\frac1{k^2} = \frac12\log\frac{\sinh\pi}{\pi};
+\]
+can be computed in quasilinear time. But this structure is fragile: an extra factor $\frac1k$, as in
+$\sum_k\frac1k\arctan\frac1k$, destroys it.
+
+The constants of Stieltjes and Glaisher are values of $\zeta$ and
+its derivatives, for which subquadratic algorithms exist \cite{Joh21}.
+For the other constants of Table~\ref{tab:constants}, and for sums of
+algebraic functions that are not rational, we know of no earlier subquadratic algorithm.
 
 \subsection{Results}
 Let $F$ be analytic at infinity, $F(k) = f(1/k)$ for $k \ge k_0$, where
@@ -356,9 +388,8 @@ dilogarithm series of Bailey, Borwein
 and Crandall, a value of the twisted zeta function $L_G$ of the non-elementary function $G(k) = \Li_2(4/k^2)$. With the
 same machinery, the third is about $5$ times faster than the second and $19$ times faster than the first, because its
 coefficients are hypergeometric, and we discuss to what extent such rewritings generalize. With an implementation of
-the dilogarithm series in FLINT we computed $K$ to $10^7$ digits, and with a generic program the other constants of
-Table~\ref{tab:constants} to $10^6$ digits, among them Somos's constant and $\sum_ke^{-\sqrt k}$
-(Section~\ref{sec:other}).
+the dilogarithm series in FLINT we computed $K$ to $10^7$ digits, and with a generic program several other constants of
+Table~\ref{tab:constants} to $10^6$ digits (Section~\ref{sec:other}).
 
 \subsection{Related work}
 The meromorphic continuation of a Dirichlet series $\sum_{k=1}^{\infty} F(k)k^{-s}$ whose coefficients have an asymptotic
@@ -375,17 +406,29 @@ give the continuation of hypergeometric cases such as $\sum_{k=1}^{\infty} k^{-s
 expansions in parameters \cite{Kat97}. Approximate functional equations go back to Riemann \cite{Rie59} and
 Hardy and Littlewood \cite{HL23}; the theta-function (``smoothed'') form for general $L$-functions is due to
 Lavrik \cite{Lav68} and is the basis of the algorithms of Rubinstein \cite{Rub05} and Dokchitser \cite{Dok04}.
-For $F = 1$ every term of the theta splitting is a single incomplete gamma value, and that the splitting then gives
-$p^{3/2+o(1)}$ at algebraic points, by fast evaluation of the incomplete gamma function \cite{CC90,vdH99}, is
-folklore. To our knowledge it was first stated explicitly, for Dirichlet $L$-functions and with applications to
+
+For $F = 1$ every term of the theta splitting is a single incomplete gamma value, and the method then
+gives $p^{3/2+o(1)}$ at algebraic $s$ by fast evaluation of the incomplete gamma function \cite{CC90,vdH99}.
+This result is folklore. Borwein and Borwein~\cite{BB88} claimed this bound for computing $\zeta(s)$ but without stating the algorithm
+and without the important qualification that $s$ needs to be algebraic (they likely had the same method and mind,
+but there is no subquadratic complexity bound for transcendental $s$).
+To our knowledge it was first stated explicitly, for Dirichlet $L$-functions and with applications to
 Stieltjes constants and Bernoulli and Euler numbers, in the author's preprint \cite{Joh21}. That preprint is
 preliminary work, subsumed by the present paper, which generalizes it substantially: Theorem~B extends it from
 $F = 1$ to all regular $F$ and to the damped functions, and Theorem~\ref{thm:uniform} proves the uniformity in $s$
 that \cite{Joh21} argued only briefly.
+
 Crandall \cite{Cra12} developed the splitting systematically for polylogarithms, Lerch transcendents and
 related functions (see also \cite{BB15}), without a complexity analysis. To our knowledge the class of holonomic $F$
 has not been studied as such. What holonomy adds is that every piece of the splitting is again holonomic, which is
 what makes the fast evaluation possible.
+
+%In physics, sums of the class are usually truncated and the tail estimated by its leading term;
+%besides the vortex rings of Table~\ref{tab:constants}, examples are Matsubara-frequency sums of one-loop integrals at
+%finite temperature \cite{HLS24}, with arctangents of algebraic functions of the frequency index, and sums over
+%Kaluza--Klein towers \cite{Pet02}, with $\arcsin^2$ of algebraic functions of the mode number. Classical sums such as
+%$\sum_k\log\cos\frac\pi k$, whose summands are analytic at infinity but not holonomic, are outside the class
+%(Section~\ref{sec:open}).
 
 \subsection{Outline}
 Section~\ref{sec:defs} defines the classes of $F$ (analytic and regular at infinity) and the functions
@@ -1559,6 +1602,23 @@ theta splitting (Theorem~\ref{thm:split}) & $p^{3/2+o(1)}$ & yes \\
 %======================================================================
 \section{Khinchin's constant}\label{sec:khinchin}
 
+For almost every $x$, the proportion of partial quotients equal to $k$ is the
+Gauss--Kuzmin probability $p_k = \log_2(1 + 1/(k(k+2)))$ \cite{Khi64,IK02};
+if we define a ``Khinchin zeta function''
+\begin{equation}\label{eq:Z}
+  Z(s) = \sum_{k=1}^{\infty} p_k\,k^{-s} = \mathbb{E}\bigl[a_1^{-s}\bigr],
+\end{equation}
+then $Z(0) = 1$
+(the product $\prod_k (k+1)^2/(k(k+2))$ telescopes to $2$),
+\[
+K = \prod_k k^{p_k} = \exp(-Z'(0)),
+\]
+and more generally the
+H\"older means of the partial quotients are $K_p = Z(-p)^{1/p}$ for $p < 1$, $p \ne 0$ \cite{BBC97}; in particular the
+harmonic mean is $K_{-1} = 1/Z(1)$. The function $Z$ is meromorphic in $\CC$, with simple poles at
+$s = -1, -2, -3, \dots$ (Section~\ref{sec:khinchinzeta}).
+
+
 Khinchin's constant is a special value of several different functions of our class:
 \begin{align}
   \log K &= -Z'(0), \label{eq:K1}\\
@@ -2243,6 +2303,13 @@ $s = 0$,
   \sum_{k=1}^{\infty}\Bigl(3k + \frac12 - k(3k+2)\log\Bigl(1+\frac1k\Bigr)\Bigr) = 6\log A - \frac12 - \frac12\log(2\pi),
 \]
 besides being given by $\zeta'(-1)$.
+
+Glaisher's constant is the analogous limit constant for hyperfactorials
+\[
+A = \lim_{n \to \infty} \frac{1 \cdot 2^2 \cdot 3^3 \cdots n^n}{n^{\frac{n^2}{2}+\frac{n}{2}+\frac{1}{12}}e^{-n^2/4-n/4}} = 1.2824271291\ldots,
+\]
+%  \frac{\pi^2} 6  \left( 12 \ln A - \gamma-\ln 2\pi \right) &= \sum_{k=2}^\infty \frac{\log k}{k^2}, \\
+
 
 \subsection{The Alladi--Grinstead and L\"uroth constants}\label{sec:AG}
 The constants $\mathcal A$ and $\mathcal C$ are the values $-\zeta_F'(0)$ for the rational functions
@@ -3329,11 +3396,13 @@ $L$, with the size of its coefficients and with the degree of $\mathbb K$.
 \bibitem{AV84} T.~M.~Apostol and T.~H.~Vu, Dirichlet series related to the Riemann zeta function, J.\ Number Theory 19 (1984), 85--102.
 \bibitem{Bal00} W.~Balser, \emph{Formal Power Series and Linear Systems of Meromorphic Ordinary Differential Equations}, Universitext, Springer, 2000.
 \bibitem{BB15} D.~H.~Bailey and J.~M.~Borwein, Crandall's computation of the incomplete gamma function and the Hurwitz zeta function, with applications to Dirichlet $L$-series, Appl.\ Math.\ Comput.\ 268 (2015), 462--477.
-
+\bibitem{BB87} J.~M.~Borwein and P.~B.~Borwein, \emph{Pi and the AGM}, Wiley, 1987.
+\bibitem{BB88} J.~M.~Borwein and P.~B.~Borwein, On the complexity of familiar functions and numbers, SIAM Review 30, 1988, 589--601.
 \bibitem{BBC97} D.~H.~Bailey, J.~M.~Borwein and R.~E.~Crandall, On the Khintchine constant, Math.\ Comp.\ 66 (1997), 417--431.
 \bibitem{BC21} K.~Belabas and H.~Cohen, \emph{Numerical Algorithms for Number Theory: Using Pari/GP}, Math.\ Surveys Monogr.\ 254, Amer.\ Math.\ Soc., 2021.
 \bibitem{BM80} R.~P.~Brent and E.~M.~McMillan, Some new algorithms for high-precision computation of Euler's constant, Math.\ Comp.\ 34 (1980), 305--312.
 \bibitem{Bor00} P.~Borwein, An efficient algorithm for the Riemann zeta function, in \emph{Constructive, Experimental, and Nonlinear Analysis}, CMS Conf.\ Proc.\ 27, 2000, 29--34.
+\bibitem{BZ10} R.~P.~Brent and P.~Zimmermann, \emph{Modern Computer Arithmetic}, Cambridge University Press, 2010.
 \bibitem{CC90} D.~V.~Chudnovsky and G.~V.~Chudnovsky, Computer algebra in the service of mathematical physics and number theory, in \emph{Computers in Mathematics}, Lecture Notes in Pure and Appl.\ Math.\ 125, Dekker, 1990, 109--232.
 \bibitem{CN81} P.~Cassou-Nogu\`es, Applications arithm\'etiques de l'\'etude des valeurs aux entiers n\'egatifs des s\'eries de Dirichlet associ\'ees \`a un polyn\^ome, Ann.\ Inst.\ Fourier 31 (1981), no.~4.
 \bibitem{Cof14} M.~W.~Coffey, Series representations for the Stieltjes constants, Rocky Mountain J.\ Math.\ 44 (2014), 443--477.
@@ -3395,6 +3464,7 @@ J.\ Eur.\ Math.\ Soc.\ 21 (2019), 2751--2792.
 \bibitem{vdH99} J.~van der Hoeven, Fast evaluation of holonomic functions, Theoret.\ Comput.\ Sci.\ 210 (1999), 199--215.
 \bibitem{vdH07} J.~van der Hoeven, Efficient accelero-summation of holonomic functions, J.\ Symbolic Comput.\ 42 (2007), 389--428.
 \bibitem{Wat44} G.~N.~Watson, \emph{A Treatise on the Theory of Bessel Functions}, 2nd ed., Cambridge University Press, 1944.
+\bibitem{MWKdigits} E.~W.~Weisstein, Khinchin's constant digits, MathWorld, \url{https://mathworld.wolfram.com/KhinchinsConstantDigits.html}, accessed November 2026.
 \bibitem{Zag06} D.~Zagier, The Mellin transform and related analytic techniques, appendix to E.~Zeidler, \emph{Quantum Field Theory I}, Springer, 2006, 305--323.
 \bibitem{Zei90} D.~Zeilberger, A holonomic systems approach to special functions identities, J.\ Comput.\ Appl.\ Math.\ 32 (1990), 321--368.
 
