@@ -211,37 +211,57 @@ and the expansion of $F$ at infinity has coefficients in $\Qbar$.
 
 \begin{table}[p]
 \centering\footnotesize
-\renewcommand{\arraystretch}{1.2}
-\caption{Constants and families of constants as special values of the functions \eqref{eq:functions}. The Alladi--Grinstead and Kalpazidou
-constants are $e^{\mathcal C-1}$ and $e^{\mathcal C}$. For the vortex sum $\lambda$ is fixed and $k_0 > 2/\lambda$; for
-Planck--Larkin $x = I/(k_BT)$; Hlawka's $K = \lim_{n\to\infty}(\sum_{k<n}\arctan k^{-1/2} - 2\sqrt n)$; $E_a(t) = \sum_k(k^2+a^2)^{-t}$, $t > \frac12$; $S_\lambda(\theta)$ is the magnetoinductive coupling sum of Section~\ref{sec:vortex}, $\theta/2\pi \in \QQ$; for Bose--Einstein and Fermi--Dirac, $j \in \frac12 + \ZZ$. $F_1(k) = \frac1k - \log(1+\frac1k)$, $F_2(k) = \log(1+\frac1k)$ and
-$F_3(k) = 3k + \frac12 - k(3k+2)\log(1+\frac1k)$ and $F_4(k) = (k+\frac12)\log(1+\frac1k) - 1$. $Z(s)$ is the Khinchin zeta function defined in section~\ref{sec:khinchin}.}
+\renewcommand{\arraystretch}{1.1}
+\setlength{\aboverulesep}{0.3ex}\setlength{\belowrulesep}{0.4ex}
+\caption{Constants and families of constants as special values of the functions \eqref{eq:functions}.}
 \label{tab:constants}
-\begin{tabular}{lll}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lll@{}}
 \toprule
 constant & $F(k)$ & expression \\
+\midrule
+\multicolumn{3}{@{}p{\textwidth}@{}}{\emph{Limiting constants of partial sums and products} (Section~\ref{sec:stieltjes}), with
+$F_1(k) = \frac1k - \log(1+\frac1k)$, $F_2(k) = \log(1+\frac1k)$, $F_3(k) = 3k + \frac12 - k(3k+2)\log(1+\frac1k)$ and
+$F_4(k) = (k+\frac12)\log(1+\frac1k) - 1$.} \\
 \midrule
 Euler's $\gamma$ & $1$; or $F_1$ & $\CT_{s=1}\zeta(s)$; or $\zeta_{F_1}(0)$ \\
 Stieltjes $\gamma_1$ & $F_1$; $F_2^2$ & $-\zeta_{F_1}'(0) - \frac12\zeta_{F_2^2}(0)$ \\
 Stirling's $\sqrt{2\pi}$ & $1$; or $F_4$ & $e^{-\zeta'(0)}$; or $e^{1-\zeta_{F_4}(0)}$ \\
 Wallis's $\frac\pi2 = \prod_k\frac{4k^2}{4k^2-1}$ & $-\log(1-\frac1{4k^2})$ & $e^{\zeta_F(0)}$ \\
 Glaisher's $A$ & $1$; or $F_3$ & $e^{1/12-\zeta'(-1)}$; or $(2\pi e)^{\frac1{12}}e^{\zeta_{F_3}(0)/6}$ \\
+\midrule
+\multicolumn{3}{@{}p{\textwidth}@{}}{\emph{Continued fractions and L\"uroth expansions} (Sections~\ref{sec:khinchin}, \ref{sec:AG}, \ref{sec:KH}):
+Gauss--Kuzmin probabilities $p_k$, Khinchin zeta function $Z$; Alladi--Grinstead and Kalpazidou constants
+$e^{\mathcal C-1}$, $e^{\mathcal C}$.} \\
+\midrule
 Khinchin's $K$ & $p_k = \log_2(1+\frac{1}{k(k+2)})$ & $\exp(-Z'(0))$ \\
 H\"older means $K_p$, $p<1$ & $p_k$ & $Z(-p)^{1/p}$ \\
 $\mathcal A = \sum_{k=2}^{\infty}\frac{\log k}{k^2-1}$ & $\frac1{k^2-1}$ ($k\ge2$) & $-\zeta_F'(0)$ \\
 $\mathcal C = \sum_{k=1}^{\infty}\frac{\log k}{k(k+1)}$ & $\frac{1}{k(k+1)}$ & $-\zeta_F'(0)$ \\
+\midrule
+\multicolumn{3}{@{}p{\textwidth}@{}}{\emph{Algebraic summands} (Section~\ref{sec:theodorus}, Remarks~\ref{rem:puiseux} and~\ref{rem:algebraic}):
+Hlawka's constant is $\lim_{n\to\infty}(\sum_{k<n}\arctan k^{-1/2} - 2\sqrt n)$;
+$E_a(t) = \sum_k(k^2+a^2)^{-t}$, $t > \frac12$.} \\
+\midrule
 Theodorus $\sum_{k=1}^{\infty}\frac{1}{(k+1)\sqrt k}$ & $\frac1{k+1}$ & $\zeta_F(\frac12)$ \\
-Hlawka's $K$ & $\sqrt k\arctan\frac1{\sqrt k}$ & $\zeta_F(\frac12)$ \\
+Hlawka's constant & $\sqrt k\arctan\frac1{\sqrt k}$ & $\zeta_F(\frac12)$ \\
 $\sum_{k=1}^{\infty}\frac{1}{k^{3/2}+1}$ & $\frac1{k^3-1}$ ($k\ge2$) & $\frac12+\zeta_F(-\frac32)-\zeta_F(0)$ \\
 Epstein--Hurwitz $E_a(t)$ & $(1+\frac{a^2}{k^2})^{-t}$ & $\zeta_F(2t)$ \\
+\midrule
+\multicolumn{3}{@{}p{\textwidth}@{}}{\emph{Analysis and mathematical physics} (Sections~\ref{sec:HL} and~\ref{sec:vortex}): coaxial rings of unit radius
+spaced $\lambda$ apart ($k_0 > 2/\lambda$, $\theta/2\pi \in \QQ$); hydrogen partition function, $x = I/(k_BT)$;
+Casimir-type sums \cite{Eli95,Kir02}.} \\
+\midrule
+Hardy--Littlewood $H(x)$ & $\sin(x/k)$ & $\zeta_F(1)$ \\
 vortex rings $U(\lambda)$ & ${}_2F_1(\frac32,\frac32;2;-\frac{4}{\lambda^2k^2})$ & $\lambda^{-3}\zeta_F(3)$ \\
 ring resonators $S_\lambda(\theta)$ & ${}_2F_1(\frac32,\frac32;3;-\frac{4}{\lambda^2k^2})$ & $\frac{\pi}{2\lambda^3}L_F(3,\cos k\theta)$ \\
-Hardy--Littlewood $H(x)$ & $\sin(x/k)$ & $\zeta_F(1)$ \\
 Planck--Larkin $\sigma(T)$ & $e^{x/k^2} - 1 - x/k^2$ & $\zeta_F(-2)$ \\
 Casimir-type sums & $F(k)$ & $\zeta_F(-m)$ (regularized) \\
 \midrule
-Somos's $\sigma = \prod_kk^{2^{-k}}$ & $1$ & $\exp(-\partial_s\Li_s(\frac12)|_{s=0})$ \\
- & $F_2$ & $\exp\Li_{F_2}(0,\frac12)$ \\
+\multicolumn{3}{@{}p{\textwidth}@{}}{\emph{Geometric factors: polylogarithms and Lerch transcendents} (Sections~\ref{sec:geometric},
+\ref{sec:somos}); $F_1$, $F_2$ as above;
+$j \in \frac12 + \ZZ$ for Bose--Einstein and Fermi--Dirac; Fisher's log-series distribution.} \\
+\midrule
+Somos's $\sigma = \prod_kk^{2^{-k}}$ & $1$; or $F_2$ & $e^{-\partial_s\Li_s(\frac12)|_{s=0}}$; or $e^{\Li_{F_2}(0,\frac12)}$ \\
 $\sigma_t = \prod_kk^{t^{-k}}$, $t > 1$ & $1$ & $\exp(-\partial_s\Li_s(\frac1t)|_{s=0})$ \\
 Sondow--Hadjicostas $\gamma(z)$ & $F_1$ & $z^{-1}\Li_{F_1}(0,z)$ \\
 Bose--Einstein $g_{j}(z)$ & $1$ & $\Li_j(z)$ \\
@@ -249,10 +269,13 @@ Fermi--Dirac $F_{j-1}(\eta)$, $\eta < 0$ & $1$ & $-\Li_j(-e^\eta)$ \\
 log-series entropy & $1$ & $\partial_s\Li_s(z)|_{s=1}$ \\
 Hurwitz--Lerch sums & $F(k)$ & $\Phi_F(z,s,a)$ \\
 \midrule
+\multicolumn{3}{@{}p{\textwidth}@{}}{\emph{Stretched exponentials: damped zeta functions} (Sections~\ref{sec:stretched}, \ref{sec:products}
+and~\ref{sec:expsqrt}).} \\
+\midrule
 $\sum_{k=1}^{\infty}e^{-\sqrt k}$ & $1$ & $\Lambda(0;1,\frac12)$ \\
 $\sum_ke^{-\tau k^{1/q}}F(k)$ & $F(k)$ & $\Lambda_F(0;\tau,\frac1q)$ \\
 \bottomrule
-\end{tabular}
+\end{tabular*}
 \end{table}
 
 Some subclasses were already known to be efficiently computable. Among the constants of Table~\ref{tab:constants},
