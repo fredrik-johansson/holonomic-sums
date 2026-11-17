@@ -1651,10 +1651,17 @@ quotients follow the Gauss--Kuzmin law: the proportion of the $a_i$ equal to $k$
 \[
   p_k = \log_2\Bigl(1 + \frac1{k(k+2)}\Bigr),
 \]
-the probability that $a_1 = k$ when $x$ is drawn from the Gauss measure $\frac{\dd x}{(1+x)\log2}$ on $(0,1)$, which
+the probability that $a_1 = k$ when $x$ is drawn from the Gauss measure
+\[\frac{\dd x}{(1+x)\log2}\]
+on $(0,1)$, which
 is invariant under the continued fraction map \cite{Khi64,IK02}. By the ergodic theorem the geometric means
 $(a_1\cdots a_n)^{1/n}$ therefore tend to Khinchin's constant $K = \prod_kk^{p_k}$ \cite{Khi35}, and the H\"older means
-$(\frac1n\sum_{i\le n}a_i^p)^{1/p}$ tend to $K_p = (\sum_kk^pp_k)^{1/p}$ for $p < 1$, $p \ne 0$ \cite{BBC97}. All of
+\[
+\Bigl(\frac1n\sum_{i\le n}a_i^p\Bigr)^{1/p}
+\]
+tend to $K_p = (\sum_kk^pp_k)^{1/p}$ for $p < 1$, $p \ne 0$ \cite{BBC97}.
+
+All of
 these are values of the \emph{Khinchin zeta function}
 \begin{equation}\label{eq:Z}
   Z(s) = \sum_{k=1}^{\infty} p_k\,k^{-s} = \mathbb{E}\bigl[a_1^{-s}\bigr],
@@ -1678,7 +1685,10 @@ special value of a function of the class \eqref{eq:functions}:
 \end{align}
 where
 \[
-  F(k) = -\log\Bigl(1-\frac1k\Bigr)\log\Bigl(1+\frac1k\Bigr), \qquad G(k) = \Li_2\Bigl(\frac{4}{k^2}\Bigr), \qquad
+  F(k) = -\log\Bigl(1-\frac1k\Bigr)\log\Bigl(1+\frac1k\Bigr),
+\]
+\[
+\qquad G(k) = \Li_2\Bigl(\frac{4}{k^2}\Bigr), \qquad
   \chi(k) = (-1)^k
 \]
 for $k \ge 2$, and $F(1) = G(1) = 0$. The second is the series of \eqref{eq:twoconstants}.
@@ -1690,7 +1700,7 @@ of Theorem~\ref{thm:complexity}, by a different route. \eqref{eq:K1} is a deriva
 splitting must be differentiated in $s$; \eqref{eq:K2} is a value of $\zeta_F$; and \eqref{eq:K3} is a value of the
 twisted zeta function of the non-elementary $G$.
 
-The constant factors differ widely. Table~\ref{tab:khstates} lists the sizes of what each algorithm evaluates: the
+The constant-factor overheads of these algorithms differ widely. Table~\ref{tab:khstates} lists the sizes of what each algorithm evaluates: the
 series of each $k$-term, the moment systems of the dual terms (Proposition~\ref{prop:dual}), and the incomplete gamma
 values. In \eqref{eq:K1} the kernel is elementary, but the derivative in $s$ brings in digamma values, that is,
 harmonic numbers, and log-weighted moments, which double the states, and the coefficients mix two exponential
@@ -1736,9 +1746,10 @@ meromorphic with simple poles at $s = -1, -2, -3, \dots$ of residues $1/\log 2$,
 and is analytic in $\operatorname{Re}s > -1$.
 
 \begin{proposition}\label{prop:Z}
+We have:
 \begin{enumerate}
 \item $Z(0) = 1$, $Z'(0) = -\log K$, and $K_p = Z(-p)^{1/p}$ for $p < 1$, $p \ne 0$.
-\item $Z(s) = \dfrac{1}{(s+1)\log2} - \dfrac{1}{\log2} + O(s+1)$ as $s \to -1$. Equivalently, the H\"older means
+\item $Z(s) = \dfrac{1}{(s+1)\log2} - \dfrac{1}{\log2} + O(s+1)$ as $s \to -1$. \\ Equivalently, the H\"older means
 satisfy $\log 2\,(K_p)^p = (1-p)^{-1} - 1 + O(1-p)$ as $p \to 1^-$.
 \end{enumerate}
 \end{proposition}
@@ -1749,18 +1760,19 @@ satisfy $\log 2\,(K_p)^p = (1-p)^{-1} - 1 + O(1-p)$ as $p \to 1^-$.
   K_p = \lim_{n\to\infty}\Bigl(\frac1n\sum_{i=1}^{n}a_i^p\Bigr)^{1/p},
 \]
 which for almost all real numbers equal $(\sum_{k=1}^{\infty}k^pp_k)^{1/p}$ by the ergodic theorem \cite{Khi35}. (2) By summation by parts
-$\sum_{k=1}^{N}k\,(2\log(k+1) - \log k - \log(k+2)) = \log(N+1) - N\log\frac{N+2}{N+1} = \log N - 1 + o(1)$,
-so $\sum_{k=1}^{\infty}(kp_k - \frac{1}{k\log2})$ converges to $-(1+\gamma)/\log 2$. Since $Z(s) - \zeta(s+2)/\log 2$ is analytic at
-$s = -1$ with value $\sum_{k=1}^{\infty}(kp_k - \frac1{k\log 2})$, and $\zeta(s+2) = 1/(s+1) + \gamma + O(s+1)$, the constant term
+\begin{multline*}
+\sum_{k=1}^{N}k\,(2\log(k+1) - \log k - \log(k+2)) \\ = \log(N+1) - N\log\frac{N+2}{N+1} = \log N - 1 + o(1),
+\end{multline*}
+so $\sum_{k=1}^{\infty}(kp_k - \frac{1}{k\log2})$ converges to $-(1+\gamma)/\log 2$.
+Since $Z(s) - \zeta(s+2)/\log 2$ is analytic at
+$s = -1$ with value $\sum_{k=1}^{\infty}(kp_k - \frac1{k\log 2})$, and $\zeta(s+2) = \tfrac{1}{s+1} + \gamma + O(s+1)$, the constant term
 is $-1/\log 2$.
 \end{proof}
 
 So the value at $0$ and the constant term at the first pole are elementary (both by telescoping), while the
 derivative at $0$ is Khinchin's constant and the value at $1$ is the reciprocal of the harmonic mean. By
 Theorem~\ref{thm:complexity} all H\"older means $K_p$ with rational $p < 1$, not only the $K_{-n}$, can be computed
-to $N$ bits in time $\widetilde O(N^{3/2})$. Some values, computed as an illustration with the zeta-value expansion
-for two different splitting points ($k_0 = 30$ and $k_0 = 2000$, which agree; $K_{-2}$ and $K_{-3}$ also agree with
-Euler--Maclaurin summation):
+to $N$ bits in time $\widetilde O(N^{3/2})$. Some values for illustration:
 \begin{align*}
   K_{1/2} &= 4.5330951149778199744\ldots, & K_{-1/2} &= 2.0548408683571442932\ldots, \\
   K_{1/3} &= 3.6217632159994293888\ldots, & K_{-1/3} &= 2.2119276176511428815\ldots, \\
@@ -1780,7 +1792,7 @@ $-\partial_t\Psi(s,0) = Z(s)\log 2$, and
 \[
   \gamma = \CT_{s=1}\Psi(s,0), \qquad \log K\log 2 = \partial_s\partial_t\Psi(0,0).
 \]
-So Euler's and Khinchin's constants are coefficients of the same function at the points $(1,0)$ and $(0,0)$, and
+Euler's and Khinchin's constants are thus coefficients of the same function at the points $(1,0)$ and $(0,0)$;
 the splitting of $\Psi$ is a one-parameter deformation of Riemann's formula (Example~\ref{ex:riemann}), to which it
 reduces at $t = 0$.
 
