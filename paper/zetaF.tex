@@ -1155,7 +1155,9 @@ and the method sees a two-dimensional lattice. For instance, $\operatorname{sech
 $\pi^{-1}\sum_n(-1)^n(2n+1)e^{-(n+1/2)^2u}$ (by its partial fraction expansion), and the Lambert series
 $\sum_kk^{-s}/(e^{\tau k}-1) = \sum_{j\ge1}\Lambda(s;j\tau,1)$ needs $p/\tau$ polylogarithms. Then about $p$ terms
 are needed, and nothing is gained over direct summation. The same happens for $L$-functions of degree $d \ge 2$, whose
-dual kernels decay like $e^{-c(n/\sqrt N)^{2/d}}$. Functions with AGM-type algorithms (theta, elliptic and modular
+dual kernels decay like $e^{-c(n/\sqrt N)^{2/d}}$, and for lattice sums $\sum_{k\in\ZZ^d}F(Q(k))$ with a positive definite
+quadratic form $Q$: replacing $e^{-k^2u}$ by $e^{-Q(k)u}$ and using Ewald's theta transformation gives a splitting, but
+with $O(p^{d/2})$ terms. Functions with AGM-type algorithms (theta, elliptic and modular
 functions) enter the splitting only through truncated Laplace transforms and Gaussian moments of the kernel, not
 through point values; complete Laplace transforms of theta functions are elementary (Mittag-Leffler), but truncated
 ones lead back to the two-dimensional sums. We know no class of summands, beyond periodic twists and the
@@ -1187,6 +1189,15 @@ better than the Gaussian (compare Remark~\ref{rem:whyk2}). If a $k$-term costs $
 operations, the total is of order $\sqrt{p/u_0}\,C_I + \sqrt{pu_0}\,C_J \ge 2\sqrt{p\,C_IC_J}$, with equality at
 $u_0 = C_I/C_J$. So the method is subquadratic as soon as $C_IC_J = O(p^{3-\delta})$: the two sides need not be of
 the same kind, and one of them may cost up to $p^{2-\delta}$ per term if the other costs $\widetilde O(p)$.
+
+\begin{remark}[Practical points]\label{rem:practical}
+(1) The terms are independent, so the algorithm parallelizes trivially, with $O(p)$ memory per term. (2) The
+$k$-terms need only relative precision $p - (k^2u_0)\log_2 e$ and the dual terms $p - (c/u_0)\log_2e$, which also
+shortens the series. (3) For $u_0 = 4^{-a}$ the arguments $k\sqrt{u_0}$ and $c_0/u_0$ are short dyadic numbers, so the
+incomplete gamma values are cheap binary splitting series. (4) A dual term is typically several dozen times as
+expensive as a $k$-term, so by the balancing argument above the optimal $u_0$ is below $1$ (in most of our applications
+$u_0 = \frac1{16}$; for Somos's constant, whose $k$-terms are single incomplete gamma values, $u_0 = 1$).
+\end{remark}
 
 \emph{Uniformity.} In Theorem~\ref{thm:complexity} everything is fixed except $p$. The proof only uses that the
 recurrences have coefficients of $O(\log p)$ bits, that the intermediate quantities are bounded by $2^{O(p)}$, and
@@ -1875,8 +1886,9 @@ $e^{-(k^2-1)u_0}$ and the dual terms like $e^{-\pi^2m^2/u_0}$, and $O(\sqrt p)$ 
 \end{lemma}
 
 In \cite{BBC97} this is attributed to Zagier and derived from an integral representation of $\log K$ via the Euler
-product for $\sin z/z$. We give a proof from \eqref{eq:K2} that uses only the two operations discussed in
-Section~\ref{sec:generalize}.
+product for $\sin z/z$. We give a proof from \eqref{eq:K2} that uses only the three kinds of operations of
+Section~\ref{sec:generalize}: a dilation, functional equations of the dilogarithm (the duplication formula and
+Landen's identity), and telescoping.
 
 \begin{proof}
 \emph{Dilation.} With $G(k) = \Li_2(4/k^2)$, $\sum_{k=2}^{\infty}(-1)^kG(k) = -\sum_{k=2}^{\infty}G(k) + 2\sum_{j=1}^{\infty}G(2j)$ and
@@ -2416,7 +2428,10 @@ starting values involve $E_1(c_0/u_0)$. The $k$-terms are, by \eqref{eq:Ik},
 One run computes $S_A$ and $\mathcal O$ together.
 
 \subsection{Khinchin's harmonic mean}\label{sec:KH}
-By Proposition~\ref{prop:Z}, the harmonic mean is $K_{-1} = 1/Z(1)$. With $j = k+1$,
+For almost every $x$, the harmonic means $n/(a_1^{-1} + \dots + a_n^{-1})$ of the partial quotients of the continued
+fraction of $x$ tend to Khinchin's harmonic mean $K_{-1} = 1.7454056624\ldots$, the H\"older mean with $p = -1$
+(Section~\ref{sec:khinchin}); Bailey, Borwein and Crandall computed it to $7\,350$ digits \cite{BBC97}. By
+Proposition~\ref{prop:Z}, $K_{-1} = 1/Z(1)$. With $j = k+1$,
 \[
   K_{-1} = \frac{\log 2}{T}, \qquad T = \sum_{j=2}^{\infty}\frac{-\log(1-1/j^2)}{j-1},
 \]
@@ -2464,17 +2479,28 @@ Since $f$ has a single simple pole, the kernel parts \eqref{eq:kernelparts} are 
   \vartheta\widehat G_0 &= (u + \tfrac34)\widehat G_0 + \tfrac14u,
 \end{align*}
 with $\widehat G_1 = \Gamma(\frac34)G_1$ and $\widehat G_0 = -\Gamma(\frac54)G_0$, which have rational Taylor
-coefficients ($P$ and $Q$ continued analytically in the first argument); in all,
-$h_s(u) = e^u(Q(\frac14,u) - Q(-\frac14,u))$. On the $k$-side the series over $n$ closes: by
-$Q(b+m,x) = Q(b,x) + e^{-x}\sum_{i<m}x^{b+i}/\Gamma(b+i+1)$, the double sums are geometric in $1/k^2$ with ratios
-$x/k^2 = u_0$, and
+coefficients ($P$ and $Q$ continued analytically in the first argument). In all,
+\[
+  h_s(u) = e^u\bigl(Q(\tfrac14,u) - Q(-\tfrac14,u)\bigr).
+\]
+
+\emph{The $k$-terms.} On the $k$-side the series over $n$ closes. By
+\[
+  Q(b+m,x) = Q(b,x) + e^{-x}\sum_{i=0}^{m-1}\frac{x^{b+i}}{\Gamma(b+i+1)},
+\]
+the double sums are geometric in $1/k^2$ with ratio $x/k^2 = u_0$, and
 \begin{gather*}
   I_k = \frac{1}{k^2-1}\Bigl(k^{1/2}Q(\tfrac34, k^2u_0) - k^{-1/2}Q(\tfrac14, k^2u_0) + C_0e^{-k^2u_0}\Bigr), \\
   C_0 = \frac{u_0^{3/4}\Phi_{3/4}}{\Gamma(\frac74)} - \frac{u_0^{1/4}\Phi_{1/4}}{\Gamma(\frac54)},
 \end{gather*}
 with $\Phi_b = \sum_{i=0}^{\infty}u_0^i/(b+1)_i$. So each $k$-term costs two incomplete gamma functions and no series.
-The dual terms are $J_m = Z_{3/4}[G_1](c) + Z_{5/4}[G_0](c)$ at $c = \pi^2m^2$. With $D = Z_t[1]$, the states are
-$(Z_t[\widehat G_1], Z_{t-1}[\widehat G_1], D_t)$ and $(Z_t[\widehat G_0], Z_{t-1}[\widehat G_0], D_t, D_{t-1})$,
+
+\emph{The dual terms.} They are $J_m = Z_{3/4}[G_1](c) + Z_{5/4}[G_0](c)$ at $c = \pi^2m^2$. With $D_t = Z_t[1]$,
+the states are
+\[
+  \bigl(Z_t[\widehat G_1], Z_{t-1}[\widehat G_1], D_t\bigr), \qquad
+  \bigl(Z_t[\widehat G_0], Z_{t-1}[\widehat G_0], D_t, D_{t-1}\bigr),
+\]
 of dimensions $3$ and $4$, at $t_0 = \frac34$ and $t_0 = \frac54$; the starting values need $\Gamma(\frac34,y)$ and
 $\Gamma(\frac14,y)$. The main term and $C_0$ are eight hypergeometric series in $u_0$.
 
@@ -2506,13 +2532,14 @@ The function
   H(x) = \sum_{k=1}^{\infty}\frac1k\sin\frac xk,
 \]
 studied by Hardy and Littlewood, is a standard test case for the summation of slowly convergent series
-\cite{Gau05,Mon10}. It is the value at $s = 1$ of
+\cite{Gau05,Mon10}. In our notation $H(x) = \zeta_F(1)$ with $F(k) = \sin(x/k)$, and by \eqref{eq:zetavalue}
 \[
-  \sum_{k=1}^{\infty}\sin\Bigl(\frac xk\Bigr)k^{-s} = \sum_{m=0}^{\infty}\frac{(-1)^mx^{2m+1}}{(2m+1)!}\,\zeta(s+2m+1),
+  \zeta_F(s) = \sum_{m=0}^{\infty}\frac{(-1)^mx^{2m+1}}{(2m+1)!}\,\zeta(s+2m+1),
 \]
 which is meromorphic with poles at $s = 0, -2, -4, \dots$, the pole at $s = -2m$ having residue
-$(-1)^mx^{2m+1}/(2m+1)!$. At $s = 0$ we use $f(t) = t\sin(xt)$, which is entire, so $k_0 = 1$, and the
-summand $f(1/k)$ has an essential singularity at $k = 0$. For integer $x$ the kernel is
+$(-1)^mx^{2m+1}/(2m+1)!$. Equivalently $H(x) = \zeta_G(0)$ with $G(k) = \frac1k\sin\frac xk$, and we split $\zeta_G$ at
+$s = 0$: here $g(t) = t\sin(xt)$ is entire, so $k_0 = 1$ (the summand $G$ has an essential singularity at $k = 0$, which
+does not matter). For integer $x$ the kernel is
 \[
   h(u) = \sum_{j=0}^{\infty}\frac{(-1)^jx^{2j+1}u^j}{(2j+1)!\,j!} = x\,{}_0F_2\Bigl(;\frac32,1;-\frac{x^2u}4\Bigr),
 \]
@@ -2559,9 +2586,9 @@ and the identity extends to all $a > 0$ by analytic continuation. By contiguity,
 combination of the complete elliptic integrals $K$ and $E$ with coefficients rational in $z$. Hence, with
 $\beta = 4/\lambda^2$,
 \[
-  U(\lambda) = \lambda^{-3}\sum_{n=1}^{\infty} n^{-3}\,F\Bigl(-\frac{\beta}{n^2}\Bigr), \qquad F(z) = {}_2F_1\Bigl(\frac32,\frac32;2;z\Bigr).
+  U(\lambda) = \lambda^{-3}\zeta_F(3), \qquad F(k) = {}_2F_1\Bigl(\frac32,\frac32;2;-\frac{\beta}{k^2}\Bigr),
 \]
-This is $\sum_{n=1}^{\infty} f(1/n)$ with $f(x) = \lambda^{-3}x^3F(-\beta x^2)$, a holonomic function with radius of convergence
+where $F(k) = f(1/k)$ with $f(x) = {}_2F_1(\frac32,\frac32;2;-\beta x^2)$, a holonomic function with radius of convergence
 $\rho = \lambda/2$. Theorem~\ref{thm:complexity} applies with $k_0 > 2/\lambda$, the terms $n \le 2/\lambda$ being added
 separately, so $U(\lambda)$ can be computed to $p$ bits in time $\widetilde O(p^{3/2})$ for every rational $\lambda$ (and,
 with algebraic $\beta$, for every algebraic $\lambda$). The leading term gives $U(\lambda) \sim \zeta(3)\lambda^{-3}$ as
@@ -2612,7 +2639,7 @@ The kernel has a closed form. Let
 \]
 Termwise integration gives
 \[
-  n^{-3}F\Bigl(-\frac\beta{n^2}\Bigr) = \frac{2}{\sqrt\pi}\int_0^\infty u^{1/2}y(u)e^{-n^2u}\dd u.
+  n^{-3}F(n) = \frac{2}{\sqrt\pi}\int_0^\infty u^{1/2}y(u)e^{-n^2u}\dd u.
 \]
 Since
 $y(u) \sim (\beta u)^{-3/2}/\sqrt\pi$ as $u \to +\infty$, the kernel $u^{1/2}y(u)$ is bounded on $(0,\infty)$, and this
@@ -2628,7 +2655,7 @@ gives
 where, with $K = n^2$ and $x = Ku_0$,
 \begin{align*}
   I_n &= \int_{u_0}^\infty u^{1/2}y\,e^{-Ku}\dd u
-       = \frac{1}{2K^{3/2}}\Bigl(\Gamma(\tfrac12, x)\,F\bigl(-\tfrac\beta K\bigr)
+       = \frac{1}{2K^{3/2}}\Bigl(\Gamma(\tfrac12, x)\,F(n)
          + 2e^{-x}\sqrt x\sum_{j=0}^{\infty}A_jR_j\Bigr), \\
   &\qquad A_j = \frac{(3/2)_j^2}{(2)_j\,j!}\Bigl(-\frac\beta K\Bigr)^j, \quad R_j = \sum_{i=0}^{j}\frac{\Gamma(\frac32)\,x^i}{\Gamma(i+\frac32)}, \\
   T_n &= \int_0^\infty u^{1/2}y\,e^{-Ku}\dd u = \frac{\sqrt\pi}{2}(K+\beta)^{-3/2}\,{}_2F_1\Bigl(\frac32,\frac12;2;\frac{\beta}{\beta+K}\Bigr), \\
@@ -2638,7 +2665,7 @@ where, with $K = n^2$ and $x = Ku_0$,
 \end{align*}
 The $k$-side series converge like $(\beta/K)^j$, so we take $k_0$ minimal with $k_0^2 > 2\beta$; the finitely many terms
 $n < k_0$ are the full integral $T_n$ (by Pfaff's transformation) minus $L_n$, whose integrand $u^{1/2}y(u)e^{-Ku}$ has an
-entire power series factor with coefficients satisfying a three-term recurrence. $F(-\beta/K) = \sum_{j=0}^{\infty}A_j$ is summed in the
+entire power series factor with coefficients satisfying a three-term recurrence. $F(n) = \sum_{j=0}^{\infty}A_j$ is summed in the
 same binary splitting as $\sum_{j=0}^{\infty}A_jR_j$, with the state $(A_jR_j, A_jx^j/\Gamma(j+\frac32), A_j)$.
 
 \subsubsection{Dual side} With $\vartheta y = w$, the equation of $y$ is $\vartheta w = -w - \beta u(w + \frac32 y)$. For
@@ -2657,7 +2684,7 @@ Section~\ref{sec:splitting},
 \end{align*}
 all summed by one binary splitting with a three-term state.
 
-For small $\lambda$ the sum samples the function $a \mapsto a^{-3}F(-4/a^2)$ at the fine grid $a = n\lambda$, and the method
+For small $\lambda$ the sum samples the function $a \mapsto a^{-3}\,{}_2F_1(\frac32,\frac32;2;-4/a^2)$ at the fine grid $a = n\lambda$, and the method
 becomes more expensive: there are about $2.8/\lambda$ terms $n < k_0$, and the power series of $y$ at $u_0$, which
 enter the main term and the starting values, have terms of size up to $e^{\beta u_0}$, so that about $5.8\,u_0/\lambda^2$ guard
 bits are needed. For $\lambda \ge p^{-1/2}$ these costs stay within the bound of Theorem~\ref{thm:complexity}.
@@ -2669,66 +2696,104 @@ Somos's quadratic recurrence constant is
 \]
 named after the recurrence $g_n = ng_{n-1}^2$, $g_0 = 1$, whose solutions grow like $\sigma^{2^n}/(n + 2 + O(1/n))$
 \cite[\S6.10]{Fin03}, \cite[A112302]{OEIS}. Its logarithm is
-$\log\sigma = \sum_{k=1}^{\infty}2^{-k}\log k = -\partial_s\Li_s(\frac12)|_{s=0} = \sum_{k=1}^{\infty}2^{-k}\log(1+\frac1k)$.
+\[
+  \log\sigma = \sum_{k=1}^{\infty}2^{-k}\log k = -\partial_s\Li_s(\tfrac12)\big|_{s=0}
+  = \sum_{k=1}^{\infty}2^{-k}\log\Bigl(1+\frac1k\Bigr).
+\]
 The same method applies to the generalizations $\sigma_t = \prod_kk^{1/t^k}$, $t > 1$, and to the generalized
-Euler-constant function $\gamma(z) = \sum_{k=1}^{\infty}z^{k-1}(\frac1k - \log(1+\frac1k))$ of Sondow and Hadjicostas
-\cite{SH07}, with $\gamma(\frac12) = 2\log(2/\sigma)$, at every $|z| < 1$.
+Euler-constant function of Sondow and Hadjicostas \cite{SH07},
+\[
+  \gamma(z) = \sum_{k=1}^{\infty}z^{k-1}\Bigl(\frac1k - \log\Bigl(1+\frac1k\Bigr)\Bigr) \quad (|z| < 1),
+  \qquad \gamma(\tfrac12) = 2\log\frac2\sigma.
+\]
 
-We compute $\log\sigma = -\partial_s\Li_s(\frac12)|_{s=0}$ from Theorem~\ref{thm:geometric}
-with $F = 1$ and $k_0 = 1$ (Crandall's formula), differentiated in $s$. With $z = \frac12 = e^{2\pi i\alpha}$,
-$\alpha = i\log2/(2\pi)$, $x = k^2u_0$, $y_n = \pi^2(n-\alpha)^2/u_0$, $L_0 = \log u_0 - \psi(\frac12)$ and
-$V_a(y) = e^yy^{-a}\Gamma(a,y)$,
-\begin{multline*}
-  -\log\sigma = \sum_{k=1}^{\infty}\Bigl(C_k\frac{E_1(x)}2 + S_kB_k\Bigr) + \frac{\sqrt\pi}2\operatorname{Re}T_0
-  + \sqrt\pi\sum_{n=1}^{\infty}\operatorname{Re}T_n - \frac{\log u_0 + \gamma}4, \\
-  B_k = \frac12Q\Bigl(\frac12,x\Bigr)\bigl(\partial_a\log\Gamma(a,x)|_{a=1/2} - \psi(\tfrac12) - 2\log k\bigr), \\
-  T_n = \frac{e^{-y_n}}{2\sqrt{u_0}}\Bigl(V_{1/2}(y_n) - i\sqrt{\frac{u_0}\pi}\,\frac{L_0 - V_0(y_n)}{\pi(n-\alpha)}\Bigr)
-  \quad (n \ge 1),
-\end{multline*}
-with $C_k = (2^{-k}+2^k)/2$ and $S_k = (2^{-k}-2^k)/2$. The point $c_0 = -\frac14\log^22$ lies on the cut, but only
-$\operatorname{Re}T_0$ is needed, which is the same from both sides and is elementary in $\erfi(\log2/(2\sqrt{u_0}))$
-and $\operatorname{Ei}(\log^22/(4u_0))$. The pieces of size $2^k$ in the $k$-terms cancel to $O(2^ke^{-x})$, which costs
-$k$ guard bits. For large $x$ the $k$-terms use Legendre's continued fraction for $\Gamma(0,x)$ and for $\Gamma(a,x)$,
-differentiated in $a$ by forward differentiation of the matrix product; for small $x$ the lower series, with $\log k$
-assembled from logarithms of primes. In the dual terms $V_a$ satisfies $yV_a' = (y-a)V_a - 1$; its Taylor coefficients
-at a Gaussian dyadic point satisfy a two-term recurrence, which we sum by binary splitting with Gaussian integers, and
-the bit-burst goes from the real point $\operatorname{Re}y_n$, where $V_a$ is an incomplete gamma value at a dyadic
-argument, to $y_n$. We use $u_0 = 1$. The reference is the sum over prime powers
-$\log\sigma = \sum_p\log p\sum_{e\ge1}1/(2^{p^e}-1)$, with the logarithms of all primes up to $p$ (the precision)
-from $\log q = \operatorname{arctanh}(1/(2q^2-1)) + \frac12\log\frac{q^2-1}{4} + \log 2$.
+\emph{The splitting.} We compute $\log\sigma$ from Theorem~\ref{thm:geometric} with $F = 1$ and $k_0 = 1$ (Crandall's
+formula), differentiated in $s$. Write $z = \frac12 = e^{2\pi i\alpha}$ with $\alpha = i\log2/(2\pi)$, and put
+\begin{gather*}
+  x_k = k^2u_0, \qquad y_n = \frac{\pi^2(n-\alpha)^2}{u_0}, \qquad C_k = \frac{2^{-k}+2^k}2, \qquad S_k = \frac{2^{-k}-2^k}2, \\
+  L_0 = \log u_0 - \psi(\tfrac12), \qquad V_a(y) = e^yy^{-a}\Gamma(a,y).
+\end{gather*}
+Then
+\[
+  -\log\sigma = \sum_{k=1}^{\infty}\Bigl(C_k\frac{E_1(x_k)}2 + S_kB_k\Bigr) + \frac{\sqrt\pi}2\operatorname{Re}T_0
+  + \sqrt\pi\sum_{n=1}^{\infty}\operatorname{Re}T_n - \frac{\log u_0 + \gamma}4,
+\]
+where
+\begin{gather*}
+  B_k = \frac12Q\Bigl(\frac12,x_k\Bigr)\Bigl(\partial_a\log\Gamma(a,x_k)\big|_{a=1/2} - \psi(\tfrac12) - 2\log k\Bigr), \\
+  T_n = \frac{e^{-y_n}}{2\sqrt{u_0}}\Bigl(V_{1/2}(y_n) - i\sqrt{\frac{u_0}\pi}\,\frac{L_0 - V_0(y_n)}{\pi(n-\alpha)}\Bigr).
+\end{gather*}
+The point $c_0 = -\frac14\log^22$ lies on the cut, but only $\operatorname{Re}T_0$ is needed, which is the same from both
+sides and is elementary in $\erfi(\log2/(2\sqrt{u_0}))$ and $\operatorname{Ei}(\log^22/(4u_0))$. The pieces of size $2^k$
+in the $k$-terms cancel to $O(2^ke^{-x_k})$, which costs $k$ guard bits.
+
+\emph{Evaluation.} For large $x_k$ the $k$-terms use Legendre's continued fraction for $\Gamma(0,x_k)$ and
+$\Gamma(a,x_k)$, differentiated in $a$ by forward differentiation of the matrix product; for small $x_k$ they use the
+lower series, with $\log k$ assembled from logarithms of primes. In the dual terms, $V_a$ satisfies
+$yV_a' = (y-a)V_a - 1$. Its Taylor coefficients at a Gaussian dyadic point satisfy a two-term recurrence, which we sum
+by binary splitting with Gaussian integers, and the bit-burst goes from the real point $\operatorname{Re}y_n$, where
+$V_a$ is an incomplete gamma value at a dyadic argument, to $y_n$. We use $u_0 = 1$.
+
+\emph{Reference.} The reference is the sum over prime powers
+\[
+  \log\sigma = \sum_p\log p\sum_{e\ge1}\frac1{2^{p^e}-1},
+\]
+with the logarithms of all primes up to $p$ (the precision) computed from
+$\log q = \operatorname{arctanh}\frac1{2q^2-1} + \frac12\log\frac{q^2-1}{4} + \log 2$.
 
 \subsection{A stretched-exponential sum}\label{sec:expsqrt}
-For $S = \sum_{k=1}^{\infty}e^{-\sqrt k} = \Lambda(0;1,\frac12)$, Proposition~\ref{prop:expsplit}
-with $r = \frac12$, $\tau = 1$, $s = 0$ has $a_j = -j/4$, and the class $j \equiv 0 \pmod 4$ drops out at $s = 0$. For
-$j = 4m+\varrho$, $\varrho \in \{1,2,3\}$, the kernel is $\kappa_\varrho w^{1+\varrho/4}H_\varrho(w)$ with $w = 1/u$,
-$\kappa_\varrho = 1/\Gamma(-\varrho/4)$ and $H_\varrho(w) = \sum_mg_mw^m$, $g_0 = (-1)^\varrho/\varrho!$,
-\[
+For $S = \sum_{k=1}^{\infty}e^{-\sqrt k} = \Lambda(0;1,\frac12)$ we use Proposition~\ref{prop:expsplit} with $r = \frac12$,
+$\tau = 1$ and $s = 0$. Then $a_j = -j/4$, and the class $j \equiv 0 \pmod 4$ drops out at $s = 0$.
+
+\emph{The kernel.} For $j = 4m+\varrho$, $\varrho \in \{1,2,3\}$, the kernel is $\kappa_\varrho w^{1+\varrho/4}H_\varrho(w)$
+with $w = 1/u$ and $\kappa_\varrho = 1/\Gamma(-\varrho/4)$, where
+\begin{gather*}
+  H_\varrho(w) = \sum_{m=0}^{\infty}g_mw^m, \qquad g_0 = \frac{(-1)^\varrho}{\varrho!}, \\
   \frac{g_{m+1}}{g_m} = -\frac{m+1+\varrho/4}{(4m+\varrho+1)(4m+\varrho+2)(4m+\varrho+3)(4m+\varrho+4)},
+\end{gather*}
+and
+\[
+  \prod_{i=0}^{3}(4\vartheta+\varrho-i)\,H_\varrho = -w\Bigl(\vartheta+1+\frac\varrho4\Bigr)H_\varrho.
 \]
-and $H_\varrho$ satisfies $\prod_{i=0}^{3}(4\vartheta+\varrho-i)H = -w(\vartheta+1+\frac\varrho4)H$. The $k$-term is
+
+\emph{The $k$-terms.} With $x = k^2u_0$, the relation $Q(a,x) = Q(a+1,x) - x^ae^{-x}/\Gamma(a+1)$ gives
 \[
   I_k = \sum_{\varrho=1}^{3}(-1)^\varrho\Bigl(k^{\varrho/2}Q\bigl(1-\tfrac\varrho4,x\bigr)\sum_{m\ge0}\frac{k^{2m}}{(4m+\varrho)!}
   - \frac{e^{-x}u_0^{-\varrho/4}}{\Gamma(1-\frac\varrho4)}\sum_{m\ge0}\frac{k^{2m}G_m}{(4m+\varrho)!}\Bigr),
 \]
-$G_m = \sum_{i\le m}\prod_{l=1}^{i}(1-\frac\varrho4-l)/x$, from $Q(a,x) = Q(a+1,x) - x^ae^{-x}/\Gamma(a+1)$: three
-incomplete gamma values and two rational series per class. The dual term is $\sum_\varrho\kappa_\varrho Z_\varrho(\pi^2m^2)$
-with $Z_\varrho(c) = \sum_mg_mD_{-1/2-\varrho/4-m}(c)$. The vector $Z = (Z[\vartheta^iH_\varrho])_{i<4}$ and
-$\Phi = e^{-c/u_0}u_0^{1-t}((\vartheta^iH_\varrho)(1/u_0))_{i<4}$, $t = \frac32 + \frac\varrho4$, satisfy
+where
+\[
+  G_m = \sum_{i=0}^{m}\prod_{l=1}^{i}\frac{1-\frac\varrho4-l}{x}:
+\]
+three incomplete gamma values and two rational series per class.
+
+\emph{The dual terms.} The dual term is $\sum_\varrho\kappa_\varrho Z_\varrho(\pi^2m^2)$ with
+$Z_\varrho(c) = \sum_mg_mD_{-1/2-\varrho/4-m}(c)$. Let $t = \frac32 + \frac\varrho4$ and
+\[
+  Z = \bigl(Z_t[\vartheta^iH_\varrho]\bigr)_{i<4}, \qquad
+  \Phi = e^{-c/u_0}u_0^{1-t}\bigl((\vartheta^iH_\varrho)(1/u_0)\bigr)_{i<4}.
+\]
+Then
 \[
   c^2Z' = -(A_1A_0' + cA_0')Z - (A_1 + c)\Phi, \qquad \Phi' = -\Phi/u_0,
 \]
-where $A_0$ is the companion matrix of $\prod_{i=0}^{3}(\vartheta + \frac{\varrho-i}4)$, $A_0' = A_0 + (t-1)I$, and $A_1$ has
-the single nonzero row $(-(1+\frac\varrho4)/256, -\frac1{256}, 0, 0)$. Unlike in \eqref{eq:fuchsys}, the singular point
-$c = 0$ is irregular, since the kernel is now an expansion at $u = \infty$. The starting values at a dyadic
-$c_0$ with $\min(\max(64, p/256), 1024)$ bits come from the series for $Z_\varrho$ via \eqref{eq:Drec}, with one
-incomplete gamma value $\Gamma(\frac12+\frac\varrho4, c_0/u_0)$. For the Taylor steps we do not use the system above,
-whose recurrence has three terms, but the moment shift $-\partial_cZ_t = Z_{t+1}$: by \eqref{eq:ibp} and the equation
-of $H_\varrho$, $(cI - A_1)Z_{t+1} = (A_0 + (t-1)I)Z_t + e^{-c/u_0}u_0^{1-t}((\vartheta^iH_\varrho)(1/u_0))_i$ with
-$A_1^2 = 0$, so that $(cI - A_1)^{-1} = (I + A_1/c)/c$ and the Taylor coefficients satisfy a first-order recurrence with
-state of dimension $8$ (like Proposition~\ref{prop:dual}), summed by binary splitting. The main term is
-$M = 2 - \frac{\sqrt\pi}2T_{1/2} - \frac12(1 - T_1)$. We use $u_0 = \frac1{16}$. The reference is Euler--Maclaurin
-summation, with the Taylor coefficients of $e^{-\sqrt x}$ at the cutoff from $4xF'' + 2F' - F = 0$ and
-$\int_M^\infty e^{-\sqrt x}\dd x = 2(\sqrt M+1)e^{-\sqrt M}$.
+where $A_0$ is the companion matrix of $\prod_{i=0}^{3}(\vartheta + \frac{\varrho-i}4)$, $A_0' = A_0 + (t-1)I$, and
+$A_1$ has the single nonzero row $(-(1+\frac\varrho4)/256, -\frac1{256}, 0, 0)$. Unlike in \eqref{eq:fuchsys}, the
+singular point $c = 0$ is irregular, since the kernel is now an expansion at $u = \infty$. The starting values at a
+dyadic $c_0$ with $\min(\max(64, p/256), 1024)$ bits come from the series for $Z_\varrho$ via \eqref{eq:Drec}, with one
+incomplete gamma value $\Gamma(\frac12+\frac\varrho4, c_0/u_0)$.
+
+For the Taylor steps we do not use the system above, whose recurrence has three terms, but the moment shift
+$-\partial_cZ_t = Z_{t+1}$. By \eqref{eq:ibp} and the equation of $H_\varrho$,
+\[
+  (cI - A_1)Z_{t+1} = (A_0 + (t-1)I)Z_t + \Phi,
+\]
+and $A_1^2 = 0$, so that $(cI - A_1)^{-1} = (I + A_1/c)/c$. The Taylor coefficients then satisfy a first-order
+recurrence with a state of dimension $8$ (as in Proposition~\ref{prop:dual}), which we sum by binary splitting.
+
+\emph{Main term and reference.} The main term is $M = 2 - \frac{\sqrt\pi}2T_{1/2} - \frac12(1 - T_1)$, and we use
+$u_0 = \frac1{16}$. The reference is Euler--Maclaurin summation, with the Taylor coefficients of $F(x) = e^{-\sqrt x}$
+at the cutoff from $4xF'' + 2F' - F = 0$, and $\int_M^\infty e^{-\sqrt x}\dd x = 2(\sqrt M+1)e^{-\sqrt M}$.
 
 \subsection{Computations}\label{sec:appcomp}
 We computed the constants of Sections~\ref{sec:AG}--\ref{sec:expsqrt} with a generic implementation of
@@ -3094,7 +3159,7 @@ and we know of no conditional proof. The conjecture says nothing about sequences
 these functions, for example through compositions with other functions or products of values. We make no claim
 about those. Rational values of $L$-functions of higher degree do occur, for instance the Hurwitz numbers, from
 Eisenstein series of the Gaussian lattice. They are two-dimensional lattice sums, which need about $p$ terms
-(Remark~\ref{rem:practical}(5)), so they are outside the subquadratic class anyway.
+(Section~\ref{sec:limits}), so they are outside the subquadratic class anyway.
 
 %======================================================================
 \appendix
@@ -3474,17 +3539,6 @@ finitely many initial values. Unwanted solutions of the recurrence grow at most 
 guard bits suffice, which again gives $p^{3/2+o(1)}$. We have not written out the order and degree of these
 recurrences.
 
-\begin{remark}[Practical points]\label{rem:practical}
-(1) The terms are independent, so the algorithm parallelizes trivially, with $O(p)$ memory per term. (2) The
-$k$-terms need only relative precision $p - (k^2u_0)\log_2 e$ and the dual terms $p - (c/u_0)\log_2e$, which also
-shortens the series. (3) For $u_0 = 4^{-a}$ the arguments $k\sqrt{u_0}$ and $c_0/u_0$ are short dyadic numbers, so the
-incomplete gamma values are cheap binary splitting series. (4) A dual term is typically several dozen times as
-expensive as a $k$-term, which pushes the optimal $u_0$ below $1$ (in most of our applications $u_0 = \frac1{16}$; for
-Somos's constant, whose $k$-terms are single incomplete gamma values, $u_0 = 1$).
-(5) The weights $e^{-k^2u}$ can be replaced by $e^{-Q(k)u}$ for a positive definite quadratic form $Q$ in several
-variables, which gives the corresponding statement for lattice sums $\sum_{k \in \ZZ^d}F(Q(k))$ (with Ewald's theta
-transformation), at the price of $O(p^{d/2})$ terms.
-\end{remark}
 
 \begin{remark}[Uniformity]\label{rem:uniform}
 For $f = 1$ the kernel is a monomial and every term is a single incomplete gamma function. This is the approximate
