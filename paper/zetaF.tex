@@ -249,7 +249,7 @@ Hardy--Littlewood $H(x)$ & $\sin(x/k)$ & $\zeta_F(1)$ \\
 $\sum_{k=1}^{\infty}\frac{1}{k^{3/2}+1}$ & $\frac1{k^3-1}$ ($k\ge2$) & $\frac12+\zeta_F(-\frac32)-\zeta_F(0)$ \\
 \midrule
 \multicolumn{3}{@{}p{\textwidth}@{}}{\emph{Mathematical physics} (Section~\ref{sec:vortex}, Remark~\ref{rem:algebraic}):
-coaxial rings of unit radius spaced $\lambda$ apart ($k_0 > 2/\lambda$, $\theta/2\pi \in \QQ$);
+coaxial rings of unit radius spaced $\lambda$ apart ($\theta/2\pi \in \QQ$);
 $E_a(t) = \sum_k(k^2+a^2)^{-t}$, $t > \frac12$; hydrogen partition function, $\xi = I/(k_BT)$;
 Casimir-type sums \cite{Eli95,Kir02}.} \\
 \midrule
@@ -345,7 +345,7 @@ use no holonomy and play no role in the algorithms; they are proved in a compani
 Hardy--Littlewood approximate functional equation and numerical experiments on the zeros of Khinchin's $Z$.
 
 \begin{theoremB}[Theorems~\ref{thm:complexity} and~\ref{thm:geometric}, Section~\ref{sec:dampedcost}]
-Let $F$ be a regular sequence defined over $\Qbar$ with algebraic initial values, let $s_0$ be algebraic, and let
+Let $F$ be a regular sequence defined over $\Qbar$, let $s_0$ be algebraic, and let
 $j \ge 0$ be fixed. Then the $j$-th Taylor (or Laurent) coefficient at $s_0$ of each of
 \begin{enumerate}
 \item $\zeta_F(s)$, and $L_F(s,\chi)$ for $\chi$ periodic with algebraic values,
@@ -515,9 +515,15 @@ equation is assumed.
 \item $F$ is \emph{defined over $\Qbar$} if $L$ can be chosen with $p_i \in \Qbar[x]$ and the coefficients of the
 power series $f_{\sigma,j}$ in \eqref{eq:frob} are algebraic numbers.
 \end{enumerate}
-A sequence $(F(k))_{k\ge1}$ is \emph{analytic}, respectively \emph{regular}, if it agrees for $k \ge k_0$ with a
-function analytic, respectively regular, at infinity, for some integer $k_0 > R$.
+A sequence $(F(k))_{k\ge1}$ is \emph{analytic}, respectively \emph{regular}, if for some integer $k_1 \ge 1$ it
+vanishes for $k < k_1$ and agrees for $k \ge k_1$ with a function $G$ analytic, respectively regular, at infinity
+that continues analytically to the real interval $[k_1,\infty)$. We write this as $F(k) = G(k)$ $(k \ge k_1)$, or
+simply $F(k) = G(k)$ when $k_1 = 1$, and where it does not matter we do not distinguish $F$ from $G$.
 \end{definition}
+
+So the initial values of a sequence are always $0$; other initial values can be added outside the functions
+\eqref{eq:functions}. For example, the summand $-\log(1-\frac1k)\log(1+\frac1k)$ of \eqref{eq:twoconstants} is not
+defined at $k = 1$, and we write $F(k) = -\log(1-\frac1k)\log(1+\frac1k)$ $(k \ge 2)$.
 
 A function that is both regular and analytic at infinity is $F(x) = f(1/x)$ with $f$ analytic at $0$ and annihilated
 by an operator with an ordinary or regular singular point at $0$. Holonomy of $f$ alone does not suffice for this:
@@ -535,18 +541,19 @@ behaviour at infinity, such as $z^k$ with $|z| \ne 1$ or $e^{ik^2}$.
 For a sequence $F$ that is analytic or regular, a periodic $\chi\colon\ZZ \to \CC$, $0 < |z| < 1$, $a > 0$,
 $\tau > 0$ and $0 < r < 2$, the \emph{zeta function} $\zeta_F(s)$, the \emph{twisted zeta function} $L_F(s,\chi)$, the
 \emph{polylogarithm} $\Li_F(s,z)$, the \emph{Lerch transcendent} $\Phi_F(z,s,a)$ and the \emph{damped zeta function}
-$\Lambda_F(s;\tau,r)$ of $F$ are the series \eqref{eq:functions}; we write $\Lambda = \Lambda_1$. The tails
-are denoted by an extra argument, as in
+$\Lambda_F(s;\tau,r)$ of $F$ are the series \eqref{eq:functions}, summed from $k = 1$ (from $k = 0$ for
+$\Phi_F$); we write $\Lambda = \Lambda_1$. For internal use we also write the tails as
 \[
-  \zeta_F(s;k_0) = \sum_{k=k_0}^{\infty}F(k)\,k^{-s}.
+  \zeta_F^{\ge k_0}(s) = \sum_{k=k_0}^{\infty}F(k)\,k^{-s},
 \]
+and similarly $L_F^{\ge k_0}$, $\Li_F^{\ge k_0}$ and $\Lambda_F^{\ge k_0}$.
 \end{definition}
 
 The series for $\zeta_F$ and $L_F$ converge absolutely for $\operatorname{Re}s > 1 - \beta$, where
 $\beta = \min\operatorname{Re}\sigma$ over the exponents that occur; those for $\Li_F$, $\Phi_F$ and $\Lambda_F$
-converge for all $s$ and define entire functions. The first $k_0 - 1$ terms are entire functions of $s$, so all
-analytic questions concern the tails. (The notation $\zeta_F(s;k_0)$ shifts the index, not the argument; it is not a
-Hurwitz zeta function.) We call $\Li_F$ and $\Lambda_F$ \emph{damped}, as opposed to $\zeta_F$ and $L_F$: the
+converge for all $s$ and define entire functions. Finitely many terms are entire functions of $s$, so all
+analytic questions concern the tails; the splittings below are applied to a tail $\zeta_F^{\ge k_0}$ with $k_0$ large
+enough for the expansion of $F$ at infinity to converge at $k_0$, and the terms with $k < k_0$ are added directly. We call $\Li_F$ and $\Lambda_F$ \emph{damped}, as opposed to $\zeta_F$ and $L_F$: the
 factors $z^k$ and $e^{-\tau k^r}$ make the series converge, but, not being regular at infinity, they cannot be
 absorbed into $F$ (for $r = 1$ the two coincide: $\Lambda_F(s;\tau,1) = \Li_F(s,e^{-\tau})$). The name
 \emph{damped zeta function} is ours; for $F = 1$ and $r = 1$ these are polylogarithms, and for $r = \frac12$, $\tau$
@@ -556,7 +563,7 @@ real, sums of Boltzmann factors over energy levels $E_k \propto \sqrt k$.
 If $F$ is given for $x \ge k_0$ by \eqref{eq:frob} (with any power series $f_{\sigma,j}$ convergent for
 $|t| < 1/R$), and $F_{\sigma,j}(x) = f_{\sigma,j}(1/x)$, then
 \[
-  \zeta_F(s;k_0) = \sum_{\sigma\in\Sigma}\sum_{j=0}^{J}(-\partial_s)^j\,\zeta_{F_{\sigma,j}}(s+\sigma;k_0).
+  \zeta_F^{\ge k_0}(s) = \sum_{\sigma\in\Sigma}\sum_{j=0}^{J}(-\partial_s)^j\,\zeta_{F_{\sigma,j}}^{\ge k_0}(s+\sigma).
 \]
 \end{lemma}
 
@@ -576,9 +583,9 @@ annihilated by such an operator is of the form \eqref{eq:frob}, with $\Sigma \su
 \frac{q-1}q\}$, by grouping the terms according to $n \bmod q$, and Lemma~\ref{lem:reduction} reduces it to $q$
 functions that are analytic at infinity. For example, $F(k) = 1/(k^{3/2}+1) = \sum_{n=0}^{\infty}(-1)^nk^{-3(n+1)/2}$
 involves both classes of exponents modulo $\ZZ$. Multiplying by the conjugate $k^{3/2}-1$ separates them,
-$F(k) = (k^{3/2}-1)G(k)$ with $G(k) = 1/(k^3-1)$ rational and analytic at infinity, so that
+$F(k) = (k^{3/2}-1)G(k)$ for $k \ge 2$, with $G(k) = 1/(k^3-1)$ $(k \ge 2)$ rational and analytic at infinity, so that
 \[
-  \sum_{k=1}^{\infty}\frac{1}{k^{3/2}+1} = \frac12 + \zeta_G\bigl(-\tfrac32;2\bigr) - \zeta_G(0;2) = 1.9520200662\ldots,
+  \sum_{k=1}^{\infty}\frac{1}{k^{3/2}+1} = \frac12 + \zeta_G\bigl(-\tfrac32\bigr) - \zeta_G(0) = 1.9520200662\ldots,
 \]
 where neither $-\frac32$ nor $0$ is a pole of $\zeta_G$, as the poles are at $s = -2, -5, -8, \dots$. In general, a summand
 $R(\sqrt k)$ with $R$ rational, such as the summand of the constant of Theodorus in Table~\ref{tab:constants}, splits as $A(k) + \sqrt k\,B(k)$, where $A(y^2)$ and $yB(y^2)$ are the even and odd
@@ -754,7 +761,7 @@ incomplete gamma functions; for fixed $x > 0$ both are entire in $a$.
 \begin{theorem}\label{thm:split}
 Assume \eqref{eq:f} ($F$ need not be holonomic) and let $u_0 > 0$. For $s \in \CC$ not a pole,
 \[
-  \zeta_F(s;k_0) = \sum_{k=k_0}^{\infty}I_k(s) + \sqrt\pi\sum_{m=1}^{\infty}J_m(s) + M(s),
+  \zeta_F^{\ge k_0}(s) = \sum_{k=k_0}^{\infty}I_k(s) + \sqrt\pi\sum_{m=1}^{\infty}J_m(s) + M(s),
 \]
 where
 \begin{align*}
@@ -770,7 +777,7 @@ and the only singularities of $M$ are the simple poles of its first term at $s =
 \end{theorem}
 
 \begin{proof}
-First let $\operatorname{Re}s > 1$. By \eqref{eq:laplace}, $\zeta_F(s;k_0) = \int_0^\infty h_s(u)\Theta(u)\dd u$
+First let $\operatorname{Re}s > 1$. By \eqref{eq:laplace}, $\zeta_F^{\ge k_0}(s) = \int_0^\infty h_s(u)\Theta(u)\dd u$
 with $\Theta(u) = \sum_{k=k_0}^{\infty}e^{-k^2u}$, the interchange being justified by Tonelli on $[u_0,\infty)$ and,
 on $(0,u_0]$, by $\Theta(u) \le \sqrt{\pi/u}$ and $|h_s(u)| \ll u^{\operatorname{Re}s/2-1}$. Split the integral at $u_0$.
 On $[u_0,\infty)$ integrate termwise in $k$, which gives the $I_k$, and termwise in $n$, which gives the series for
@@ -987,13 +994,13 @@ $0 < z < 1$; there $J^{(\delta)}_w(c_0)$ denotes the boundary value from $\opera
 \begin{enumerate}
 \item For all $s \in \CC$,
 \begin{multline*}
-  \Li_F(s,z;k_0) = \sum_{k=k_0}^{\infty}\bigl(C_kI_k(s) + kS_kI_k(s+1)\bigr) \\
+  \Li_F^{\ge k_0}(s,z) = \sum_{k=k_0}^{\infty}\bigl(C_kI_k(s) + kS_kI_k(s+1)\bigr) \\
   + \frac{\sqrt\pi}2\sum_{n\in\ZZ}\bigl(J^{(0)}_s(c_n) - i\pi(n-\alpha)J^{(1)}_{s+1}(c_n)\bigr) \\
   - \frac12H(s) - \sum_{k=1}^{k_0-1}\bigl(C_kL_k(s) + kS_kL_k(s+1)\bigr),
 \end{multline*}
 where the $k$-terms are $O(|z|^{-k}e^{-(k^2-R^2)u_0})$ and the dual terms are $O(e^{-\operatorname{Re}c_n/u_0})$,
 with $\operatorname{Re}c_n = \pi^2((n-\alpha_1)^2 - \alpha_2^2)$.
-\item If $F$ is a regular sequence defined over $\Qbar$ with algebraic initial values, $\chi$ is periodic with
+\item If $F$ is a regular sequence defined over $\Qbar$, $\chi$ is periodic with
 algebraic values, $z$ and $s_0$ are algebraic, and $j \ge 0$ is fixed, then the $j$-th Taylor coefficient at
 $s_0$ of $\sum_{k=1}^{\infty}\chi(k)z^kF(k)k^{-s}$, for $\chi = 1$ of $\Li_F(s,z)$, can be computed to $p$ bits in
 $O(p^{1/2}\Mul(p)\log^2p)$ bit operations.
@@ -1084,9 +1091,9 @@ reference value obtained by summing $20\,000$ terms.
 
 \subsection{The damped zeta function of a regular $F$}\label{sec:products}
 Now let $F$ satisfy \eqref{eq:f}, let $r = 1/q$ with an integer $q \ge 1$, and consider the damped zeta function
-$\Lambda_F(s;\tau,r)$ of \eqref{eq:functions}, without its first $k_0 - 1$ terms (which are entire in $s$),
+$\Lambda_F(s;\tau,r)$ of \eqref{eq:functions}, or rather its tail (the first $k_0 - 1$ terms are entire in $s$),
 \[
-  \Lambda_F(s;\tau,r;k_0) = \sum_{k=k_0}^{\infty}e^{-\tau k^r}F(k)\,k^{-s}.
+  \Lambda_F^{\ge k_0}(s;\tau,r) = \sum_{k=k_0}^{\infty}e^{-\tau k^r}F(k)\,k^{-s}.
 \]
 Expanding $F(x) = \sum_na_nx^{-n}$ and using the kernels of $e^{-\tau x^r}x^{-s-n}$, the kernel of the summand is
 \[
@@ -1110,7 +1117,7 @@ continued meromorphically by the same series.
 \begin{proposition}\label{prop:prodsplit}
 For $u_0 > 0$ and $s$ outside a discrete set,
 \[
-  \Lambda_F(s;\tau,r;k_0) = \sum_{k=k_0}^{\infty}I_k + \sqrt\pi\sum_{m=1}^{\infty}J_m + M_+ + M_-,
+  \Lambda_F^{\ge k_0}(s;\tau,r) = \sum_{k=k_0}^{\infty}I_k + \sqrt\pi\sum_{m=1}^{\infty}J_m + M_+ + M_-,
 \]
 where, with $I^-_k$ the part of $I_k$ with $\ell < 0$, and the restriction of $h_-$ to $u \ge u_0$ integrated termwise,
 \begin{gather*}
@@ -1176,13 +1183,15 @@ discussed in this section.
 
 \subsection{Theta splitting}
 \begin{theorem}\label{thm:complexity}
-Let $F$ be a regular sequence whose function part is defined over $\Qbar$ and whose initial values
-$F(1), \dots, F(k_0-1)$ are algebraic, let $\chi$ be periodic with algebraic values, let $s_0 \in \Qbar$, and let
+Let $F$ be a regular sequence defined over $\Qbar$, let $\chi$ be periodic with algebraic values, let $s_0 \in \Qbar$, and let
 $j \ge 0$ be fixed. Then the $j$-th coefficient of the Laurent expansion of $L_F(s,\chi)$ at $s_0$ can be computed to
 $p$ bits in $O(p^{1/2}\Mul(p)\log^2 p)$ bit operations.
 \end{theorem}
 
-The proof, a cost analysis of each piece of Theorem~\ref{thm:split}, is in Appendix~\ref{app:cost}.
+The proof, a cost analysis of each piece of Theorem~\ref{thm:split}, is in Appendix~\ref{app:cost}. The splitting
+is applied to the tail $L_F^{\ge k_0}$ with $k_0 > R$. If $F(k) = G(k)$ $(k \ge k_1)$ with $k_1 < k_0$, the finitely many
+values $G(k)$, $k_1 \le k < k_0$, are obtained from the expansion of $G$ at $x = k_0$ by analytic continuation along
+the real axis, in quasilinear time \cite{CC90,vdH99}, so they do not affect the bound.
 
 \emph{Balancing.} The numbers of $k$-terms and dual terms needed for $p$ bits, $k_{\max}$ and $m_{\max}$ in
 \eqref{eq:counts}, satisfy $k_{\max}m_{\max} \approx qp\log2/\pi$ ($q$ the period of a twist), independently of $u_0$, and by Hardy's uncertainty principle no other smoothing weight does
@@ -1217,11 +1226,10 @@ $y_1, \dots, y_r$ of $L$ at $\infty$ whose power series have coefficients in $\m
 $q \ge 1$ and $j \ge 0$, and a constant $c > 0$. For $p \ge 2$ let
 \begin{itemize}
 \item $s_0 \in \mathbb K$ with $H(s_0) \le p^c$ and $|s_0| \le cp/\log p$;
-\item $F(k) = \sum_{i=1}^r\lambda_iy_i(k)$ for $k \ge k_0$, with $\lambda_i \in \mathbb K$, and $F(1), \dots, F(k_0-1)
-\in \mathbb K$;
+\item $F(k) = \sum_{i=1}^r\lambda_iy_i(k)$ $(k \ge k_0)$, with $\lambda_i \in \mathbb K$;
 \item $\chi\colon\ZZ \to \mathbb K$ periodic with period $q$;
 \end{itemize}
-where $h(\lambda_i)$, $h(F(k))$ and $h(\chi(k))$ are at most $cp$. Then the $j$-th Laurent coefficient of
+where $h(\lambda_i)$ and $h(\chi(k))$ are at most $cp$. Then the $j$-th Laurent coefficient of
 $L_F(s,\chi)$ at $s_0$ can be computed with absolute error at most $2^{-p}$ in $O(p^{1/2}\Mul(p)\log^2p)$ bit
 operations and $O(p)$ bits of memory, with implied constants depending only on the fixed data. If only
 $|s_0| \le cp$ is assumed, the bounds become $O(p^{1/2}\Mul(p)\log^{7/2}p)$ bit operations and $O(p\log p)$ bits.
@@ -1239,8 +1247,8 @@ with real $u_0$: for $|\operatorname{Im}s_0| \gg p$ the cancellation $e^{\pi|\op
 $2^{O(p)}$ (Remark~\ref{rem:complexu0}), and for $s_0 \to -\infty$ the value itself may have more than $p$ bits
 before the point. For rational $s_0$, and for $s_0$ in an imaginary quadratic field, $|s_0| \le H(s_0)$, so the
 hypothesis of the second case is just $H(s_0) \le cp$. In a general number field a bound on $H(s_0)$ does not bound
-$|s_0|$ by $H(s_0)$ (consider the units of a real quadratic field). The coefficients $\lambda_i$, the initial values
-and the values of $\chi$ enter linearly, which is why heights $e^{O(p)}$ are allowed for them.
+$|s_0|$ by $H(s_0)$ (consider the units of a real quadratic field). The coefficients $\lambda_i$ and the values of $\chi$ enter
+linearly, which is why heights $e^{O(p)}$ are allowed for them.
 
 The theorem applies at $s_0 = 1 - n$, where the values are rational and their size is known in advance. Let
 $B_n(x)$ and $E_n(x)$ be the Bernoulli and Euler polynomials, $B_n = B_n(0)$ and $E_n = 2^nE_n(\frac12)$, and, for a
@@ -1347,7 +1355,7 @@ The classical starting point is the expansion in Hurwitz zeta values \cite{FV96}
 \begin{proposition}\label{prop:cont}
 Under \eqref{eq:f},
 \begin{equation}\label{eq:zetavalue}
-  \zeta_F(s;k_0) = \sum_{n=0}^{\infty}a_n\,\zeta(s+n,k_0), \qquad \zeta(w,k_0) = \sum_{k=k_0}^{\infty}k^{-w},
+  \zeta_F^{\ge k_0}(s) = \sum_{n=0}^{\infty}a_n\,\zeta(s+n,k_0), \qquad \zeta(w,k_0) = \sum_{k=k_0}^{\infty}k^{-w},
 \end{equation}
 where the series converges locally uniformly on $\CC \setminus \{1, 0, -1, \dots\}$. Hence $\zeta_F$ is meromorphic
 in $\CC$, with at most simple poles at $s = 1-n$, $n \ge n_0$, of residue $a_n$. For a general regular $F$
@@ -1409,7 +1417,7 @@ two summations is what turns $p^{2+o(1)}$ into $p^{3/2+o(1)}$.
 \emph{The cells of the double sum.} Both methods can be pictured as ways of covering the cells $(k, n)$,
 $k \ge k_0$, $n \ge 0$, of the double series
 \[
-  \zeta_F(s;k_0) = \sum_{k=k_0}^{\infty}\sum_{n=0}^{\infty}a_nk^{-s-n},
+  \zeta_F^{\ge k_0}(s) = \sum_{k=k_0}^{\infty}\sum_{n=0}^{\infty}a_nk^{-s-n},
 \]
 of which only those with $|a_n|k^{-\sigma-n} \gtrsim 2^{-p}$ matter. A refined zeta-value expansion covers
 them in three ways (Figure~\ref{fig:cells}, left):
@@ -1488,7 +1496,7 @@ the dual terms.}
 \subsection{Euler--Maclaurin summation}\label{sec:em}
 For $N \ge k_0$ and $J \ge 1$, with $g(x) = F(x)x^{-s}$,
 \[
-  \zeta_F(s;k_0) = \sum_{k=k_0}^{N-1}F(k)k^{-s} + \mathcal M_F(s;N) + \frac12g(N)
+  \zeta_F^{\ge k_0}(s) = \sum_{k=k_0}^{N-1}F(k)k^{-s} + \mathcal M_F(s;N) + \frac12g(N)
   - \sum_{j=1}^{J}\frac{B_{2j}}{(2j)!}g^{(2j-1)}(N) + R_J(s),
 \]
 with $|R_J(s)| \le 2\zeta(2J)(2\pi)^{-2J}\int_N^\infty|g^{(2J)}(x)|\dd x$. In our setting all the ingredients are
@@ -1549,10 +1557,10 @@ For $F$ analytic at infinity the ordinary generating function is, by the same ex
 \[
   G_F(z) = \sum_{k=k_0}^{\infty}F(k)z^k = \sum_{n=0}^{\infty}a_n\Bigl(\Li_n(z) - \sum_{k=1}^{k_0-1}\frac{z^k}{k^n}\Bigr),
 \]
-an expansion in polylogarithms. The function $G_F(e^{-t})$ has Mellin transform $\Gamma(s)\zeta_F(s;k_0)$. Hence the
+an expansion in polylogarithms. The function $G_F(e^{-t})$ has Mellin transform $\Gamma(s)\zeta_F^{\ge k_0}(s)$. Hence the
 expansion of $G_F$ at $z = e^{-t} = 1$ has the regular part
 \[
-  \sum_{m=0}^{\infty}\zeta_F(-m;k_0)\frac{(-t)^m}{m!}
+  \sum_{m=0}^{\infty}\zeta_F^{\ge k_0}(-m)\frac{(-t)^m}{m!}
 \]
 (Abel summation of the divergent sums $\sum_kk^mF(k)$), plus logarithmic terms from the poles. Across $[1,\infty)$ each $\Li_n$ jumps by
 $2\pi i(\log x)^{n-1}/(n-1)!$, so $G_F$ jumps by $2\pi i\,B(\log x)$, with the Borel transform $B$ of
@@ -1686,13 +1694,10 @@ special value of a function of the class \eqref{eq:functions}:
 \end{align}
 where
 \[
-  F(k) = -\log\Bigl(1-\frac1k\Bigr)\log\Bigl(1+\frac1k\Bigr),
+  F(k) = -\log\Bigl(1-\frac1k\Bigr)\log\Bigl(1+\frac1k\Bigr) \quad (k \ge 2), \qquad
+  G(k) = \Li_2\Bigl(\frac{4}{k^2}\Bigr) \quad (k \ge 2),
 \]
-\[
-\qquad G(k) = \Li_2\Bigl(\frac{4}{k^2}\Bigr), \qquad
-  \chi(k) = (-1)^k
-\]
-for $k \ge 2$, and $F(1) = G(1) = 0$. The second is the series of \eqref{eq:twoconstants}.
+and $\chi(k) = (-1)^k$. (The sum for $G$ also starts at $k = 2$: at $k = 1$, $\Li_2(4)$ is not real.) The second is the series of \eqref{eq:twoconstants}.
 The three are linked by the operations of Section~\ref{sec:generalize}. Summation by parts turns the weight $\log k$
 in $-Z'(0) = \sum_kp_k\log k$ into the product of logarithms in \eqref{eq:K2}; this holds only at $s = 0$, so $Z$
 and $\zeta_F$ are different functions that share one value. A dilation and a telescoping identity then turn
@@ -2478,11 +2483,11 @@ point $(1,0)$ is given by the \emph{constant of Theodorus}
 (OEIS A226317), which has also been studied by Gautschi \cite{Gau10} and by Brink \cite{Bri12}. It is a classical
 example of a sum of an algebraic function that is not known to reduce to other constants.
 
-Brink's formula
-$\mathcal T = \frac12 + \sum_{n=1}^{\infty}(-1)^{n-1}(\zeta(n+\frac12) - 1)$ is the zeta-value expansion
-\eqref{eq:zetavalue} of $\mathcal T = \frac12 + \zeta_F(\frac12; 2)$ with $F(k) = 1/(k+1)$, $f(x) = x/(1+x)$ and
-$a_n = (-1)^{n-1}$ for $n \ge 1$. We use the splitting at $s = \frac12$, with $k_0 = 2$ (the term $k = 1$ enters the
-main term through $P(\frac{n+1/2}2, u_0)$).
+In our notation $\mathcal T = \zeta_F(\frac12)$ with $F(k) = 1/(k+1)$, so that $f(x) = x/(1+x)$ and
+$a_n = (-1)^{n-1}$ for $n \ge 1$. Since $f$ has radius of convergence $1$, the expansion converges only from $k_0 = 2$
+on, and Brink's formula $\mathcal T = \frac12 + \sum_{n=1}^{\infty}(-1)^{n-1}(\zeta(n+\frac12) - 1)$ is the
+zeta-value expansion \eqref{eq:zetavalue} of the tail $\zeta_F^{\ge2}(\frac12)$. We use the splitting of this tail at
+$s = \frac12$ (the term $k = 1$ enters the main term through $P(\frac{n+1/2}2, u_0)$).
 
 Since $f$ has a single simple pole, the kernel parts \eqref{eq:kernelparts} are incomplete gamma functions:
 \begin{align*}

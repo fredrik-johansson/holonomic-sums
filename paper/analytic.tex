@@ -60,10 +60,10 @@ Throughout, $F$ is analytic at infinity:
   \quad R < k_0,
 \end{equation}
 and $n_0 = \min\{n : a_n \ne 0\}$ (we exclude $f = 0$). We write $\zeta_F(s) = \sum_{k=1}^{\infty}F(k)k^{-s}$ and
-$\zeta_F(s;k_0) = \sum_{k=k_0}^{\infty}F(k)k^{-s}$. Most of what follows is a routine consequence of the expansion in
+$\zeta_F^{\ge k_0}(s) = \sum_{k=k_0}^{\infty}F(k)k^{-s}$. Most of what follows is a routine consequence of the expansion in
 Hurwitz zeta values \cite{FV96}, \cite[Proposition~5.6]{Joh26},
 \begin{equation}\label{eq:zetavalue}
-  \zeta_F(s;k_0) = \sum_{n=0}^{\infty}a_n\,\zeta(s+n,k_0), \qquad \zeta(w,k_0) = \sum_{k=k_0}^{\infty}k^{-w},
+  \zeta_F^{\ge k_0}(s) = \sum_{n=0}^{\infty}a_n\,\zeta(s+n,k_0), \qquad \zeta(w,k_0) = \sum_{k=k_0}^{\infty}k^{-w},
 \end{equation}
 which converges locally uniformly on $\CC \setminus \{1, 0, -1, \dots\}$: for $\operatorname{Re}w = v > 1$,
 $|\zeta(w,k_0)| \le k_0^{-v}(1 + k_0/(v-1))$, so the terms are $O((R/k_0)^n)$ for large $n$. Hence $\zeta_F$ is
@@ -105,14 +105,14 @@ the theta splitting of \cite[Theorem~3.2]{Joh26}, which is exact at a fixed para
 
 
 \section{The Mellin part}
-Let $\mathcal M_F(s;k_0) = \int_{k_0}^\infty F(x)x^{-s}\dd x$, the Mellin transform of $F$ restricted to $[k_0,\infty)$.
+Let $\mathcal M_F^{\ge k_0}(s) = \int_{k_0}^\infty F(x)x^{-s}\dd x$, the Mellin transform of $F$ restricted to $[k_0,\infty)$.
 
 \begin{proposition}\label{prop:mellin}
-Under \eqref{eq:f}, $\mathcal M_F(s;k_0) = \sum_{n=0}^{\infty} a_n k_0^{1-s-n}/(s+n-1)$, and $\zeta_F(s;k_0) - \mathcal M_F(s;k_0)$ is entire.
+Under \eqref{eq:f}, $\mathcal M_F^{\ge k_0}(s) = \sum_{n=0}^{\infty} a_n k_0^{1-s-n}/(s+n-1)$, and $\zeta_F^{\ge k_0}(s) - \mathcal M_F^{\ge k_0}(s)$ is entire.
 If moreover $F$ is holonomic, annihilated by $\sum_{i=-r}^{r} x^ir_i(\vartheta_x)$, $\vartheta_x = x\frac{\mathrm{d}}{\mathrm{d}x}$, then $\mathcal M_F$
 satisfies the inhomogeneous linear recurrence
 \[
-  \sum_{i=-r}^{r} r_i(s-i-1)\,\mathcal M_F(s-i;k_0) = k_0^{1-s}\,P(s),
+  \sum_{i=-r}^{r} r_i(s-i-1)\,\mathcal M_F^{\ge k_0}(s-i) = k_0^{1-s}\,P(s),
 \]
 where $P$ is a polynomial whose coefficients are linear in $F(k_0), F'(k_0), \dots$.
 \end{proposition}
@@ -121,7 +121,7 @@ where $P$ is a polynomial whose coefficients are linear in $F(k_0), F'(k_0), \do
 The first formula is termwise integration. By \eqref{eq:zetavalue}, the difference is
 $\sum_{n=0}^{\infty}a_n(\zeta(s+n,k_0) - k_0^{1-s-n}/(s+n-1))$, a locally uniformly convergent series of entire
 functions (the classical proof is by Euler--Maclaurin summation, see \cite[Section~5.3]{Joh26}).
-For the recurrence, $\int_{k_0}^\infty x^{-s}\vartheta_xF\dd x = -k_0^{1-s}F(k_0) + (s-1)\mathcal M_F(s;k_0)$ and multiplication by
+For the recurrence, $\int_{k_0}^\infty x^{-s}\vartheta_xF\dd x = -k_0^{1-s}F(k_0) + (s-1)\mathcal M_F^{\ge k_0}(s)$ and multiplication by
 $x^i$ shifts $s$ by $-i$; iterate.
 \end{proof}
 
@@ -157,7 +157,7 @@ Let $B_n(x)$ denote the Bernoulli polynomials and $\psi$ the digamma function.
 \begin{proposition}\label{prop:negative}
 Under \eqref{eq:f}, for every integer $m \ge 0$,
 \begin{multline*}
-  \CT_{s=-m}\zeta_F(s;k_0) = -\sum_{n=0}^{m}a_n\frac{B_{m-n+1}(k_0)}{m-n+1} - a_{m+1}\psi(k_0) \\
+  \CT_{s=-m}\zeta_F^{\ge k_0}(s) = -\sum_{n=0}^{m}a_n\frac{B_{m-n+1}(k_0)}{m-n+1} - a_{m+1}\psi(k_0) \\
   + \sum_{k=k_0}^{\infty}k^m\Bigl(f(1/k) - \sum_{n=0}^{m+1}a_nk^{-n}\Bigr),
 \end{multline*}
 where $\CT$ is the constant term of the Laurent expansion (the value, if $a_{m+1} = 0$).
