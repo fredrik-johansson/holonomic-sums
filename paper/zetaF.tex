@@ -47,6 +47,7 @@
 \date{Draft, November 2026}
 
 \raggedbottom
+\setlength{\emergencystretch}{1em}
 \begin{document}
 
 \begin{abstract}
@@ -173,7 +174,7 @@ The functions \eqref{eq:functions} cover the familiar ways in which sums of holo
 \item a sum $\sum_{k=1}^{\infty}(\log k)^jF(k)$ is $(-1)^j\zeta_F^{(j)}(0)$;
 \item a product $\prod_k \exp(F(k))$ is $\exp(\zeta_F(0))$;
 \item a product $\prod_k k^{F(k)}$ is $\exp(-\zeta_F'(0))$;
-\item a divergent sum $\sum_{k=1}^{\infty} k^m F(k)$ has the zeta-regularized value $\zeta_F(-m)$;
+\item a divergent sum $\sum_{k=1}^{\infty} k^m F(k)$ has the regularized value $\zeta_F(-m)$;
 \item the Dirichlet generating function of a regular sequence $F(k)$ is $\zeta_F(s)$, and its ordinary generating
 function $\sum_kF(k)z^k$ is $\Li_F(0,z)$; weights $(\log k)^j$ and powers $k^{-s}$ in a generating function are
 derivatives and values in $s$;
@@ -214,7 +215,7 @@ and the expansion of $F$ at infinity has coefficients in $\Qbar$.
 \caption{Constants and families of constants as special values of the functions \eqref{eq:functions}. The Alladi--Grinstead and Kalpazidou
 constants are $e^{\mathcal C-1}$ and $e^{\mathcal C}$. For the vortex sum $\lambda$ is fixed and $k_0 > 2/\lambda$; for
 Planck--Larkin $x = I/(k_BT)$; Hlawka's $K = \lim_{n\to\infty}(\sum_{k<n}\arctan k^{-1/2} - 2\sqrt n)$; $E_a(t) = \sum_k(k^2+a^2)^{-t}$, $t > \frac12$; $S_\lambda(\theta)$ is the magnetoinductive coupling sum of Section~\ref{sec:vortex}, $\theta/2\pi \in \QQ$; for Bose--Einstein and Fermi--Dirac, $j \in \frac12 + \ZZ$. $F_1(k) = \frac1k - \log(1+\frac1k)$, $F_2(k) = \log(1+\frac1k)$ and
-$F_3(k) = 3k + \frac12 - k(3k+2)\log(1+\frac1k)$. $Z(s)$ is the Khinchin zeta function defined in section~\ref{sec:khinchin}.}
+$F_3(k) = 3k + \frac12 - k(3k+2)\log(1+\frac1k)$ and $F_4(k) = (k+\frac12)\log(1+\frac1k) - 1$. $Z(s)$ is the Khinchin zeta function defined in section~\ref{sec:khinchin}.}
 \label{tab:constants}
 \begin{tabular}{lll}
 \toprule
@@ -222,6 +223,8 @@ constant & $F(k)$ & expression \\
 \midrule
 Euler's $\gamma$ & $1$; or $F_1$ & $\CT_{s=1}\zeta(s)$; or $\zeta_{F_1}(0)$ \\
 Stieltjes $\gamma_1$ & $F_1$; $F_2^2$ & $-\zeta_{F_1}'(0) - \frac12\zeta_{F_2^2}(0)$ \\
+Stirling's $\sqrt{2\pi}$ & $1$; or $F_4$ & $e^{-\zeta'(0)}$; or $e^{1-\zeta_{F_4}(0)}$ \\
+Wallis's $\frac\pi2 = \prod_k\frac{4k^2}{4k^2-1}$ & $-\log(1-\frac1{4k^2})$ & $e^{\zeta_F(0)}$ \\
 Glaisher's $A$ & $1$; or $F_3$ & $e^{1/12-\zeta'(-1)}$; or $(2\pi e)^{\frac1{12}}e^{\zeta_{F_3}(0)/6}$ \\
 Khinchin's $K$ & $p_k = \log_2(1+\frac{1}{k(k+2)})$ & $\exp(-Z'(0))$ \\
 H\"older means $K_p$, $p<1$ & $p_k$ & $Z(-p)^{1/p}$ \\
@@ -252,8 +255,12 @@ $\sum_ke^{-\tau k^{1/q}}F(k)$ & $F(k)$ & $\Lambda_F(0;\tau,\frac1q)$ \\
 \end{tabular}
 \end{table}
 
-Some subclasses were already known to be efficiently computable.
-Euler's constant $\gamma$ has quasilinear algorithms~\cite{BM80}, as do integer zeta values like $\zeta(3)$.
+Some subclasses were already known to be efficiently computable. Among the constants of Table~\ref{tab:constants},
+Euler's constant $\gamma$ \cite{BM80}, Stirling's constant $\sqrt{2\pi}$ and Wallis's product $\frac\pi2$ can be computed
+in quasilinear time. More generally, so can every number that is the value at an algebraic point of a holonomic function
+with algebraic coefficients and initial values \cite{CC90,vdH99}, such as the integer zeta values $\zeta(3), \zeta(5),
+\dots$, polylogarithms at algebraic points, Catalan's constant and $\Gamma(\frac14)$; this includes many periods and
+exponential periods in the sense of Kontsevich and Zagier \cite{KZ01}.
 For rational $A$, the sum $\sum_k A(k)$
 reduces by partial fractions to polygamma values, and sums of logarithms or inverse trigonometric or hyperbolic
 functions of a rational function of $k$ reduce to logarithms of gamma values at algebraic points, as in (A352619,
@@ -439,8 +446,9 @@ function, and discusses the limits of the method. Section~\ref{sec:complexity} p
 uniform bounds and their consequences for integer sequences, and compares the theta splitting with the classical
 methods. Section~\ref{sec:khinchin} defines the Khinchin zeta function and gives three algorithms for Khinchin's
 constant, with an implementation and a computation to $10^7$ digits. Section~\ref{sec:other} treats the other
-constants of Table~\ref{tab:constants}, and Section~\ref{sec:open} lists open problems. The appendix contains the cost
-analysis; the analytic properties of $\zeta_F$ are in a companion note \cite{Joh26}.
+constants of Table~\ref{tab:constants}, and Section~\ref{sec:open} lists open problems. Appendix~\ref{app:cost} contains the
+cost analysis and Appendix~\ref{sec:khpseudo} pseudocode for Khinchin's constant; the analytic properties of $\zeta_F$
+are in a companion note \cite{Joh26}.
 
 %======================================================================
 \section{Definitions and examples}\label{sec:defs}
@@ -1654,8 +1662,8 @@ harmonic numbers, and log-weighted moments, which double the states, and the coe
 scales, which doubles them again. In \eqref{eq:K2} the coefficients are alternating harmonic numbers, so the
 kernel has order $4$. In \eqref{eq:K3} they are hypergeometric. After a closer look at $Z$
 (Section~\ref{sec:khinchinzeta}), we work out the three algorithms (Sections~\ref{sec:Zprime},
-\ref{sec:logform} and~\ref{sec:dilog}), compare implementations that share all their machinery
-(Section~\ref{sec:khcompare}), and ask to what extent such rewritings generalize (Section~\ref{sec:generalize}). The
+\ref{sec:logform} and~\ref{sec:dilog}), and compare implementations that share all their machinery
+(Section~\ref{sec:khcompare}); to what extent such rewritings generalize is discussed in Section~\ref{sec:generalize}. The
 dilogarithm series is also the basis of an optimized implementation in FLINT, with which we computed $K$ to $10^7$
 digits (Sections~\ref{sec:khimpl}--\ref{sec:khcf}).
 
@@ -2056,49 +2064,13 @@ identity removes it. The second identity of
 from Abel's dilogarithm identity, gives yet another representation, with a kernel $-e^u\Ein(u)/u$ of type $1$ but a
 five-dimensional dual state.
 
-\subsection{Does this generalize?}\label{sec:generalize}
-A sum $\sum_{k=1}^{\infty}F(k) = \zeta_F(0)$ can be rewritten without changing its value (up to explicit constants) by three
-kinds of operations, which generate an equivalence relation on summands:
-\begin{enumerate}
-\item \emph{Dilations and twists} (Section~\ref{sec:twists}). These hold for all $s$, so they relate whole
-functions. The first step of the proof of Lemma~\ref{lem:dilog} is of this kind:
-$\sum_{k=2}^{\infty}(-1)^kG(k) = -\sum_{k=2}^{\infty}G(k) + 2\sum_{k=1}^{\infty}G(2k)$. Shifts to residue classes also preserve the value at a fixed $s$.
-\item \emph{Telescoping}: $F(k)$ and $F(k) + H(k+1) - H(k)$ have the same sum (up to $H(k_0)$ and the limit at
-infinity) for any $H$ regular at infinity. This holds only at $s = 0$, since $k^{-s}$ does not commute with the shift.
-Summation by parts, which turns \eqref{eq:K1} into \eqref{eq:K2}, is of this kind.
-\item \emph{Functional equations} of the special functions in $F$, such as the duplication and Landen identities used
-above.
-\end{enumerate}
-The cost of Theorem~\ref{thm:complexity}, on the other hand, depends on the representative: on the order and degree of
-the recurrence of the coefficients $a_n$ (which determine the $k$-side recurrences), on the dimension and degree of
-the dual system, and on the exponential type of the kernel. For Khinchin's constant the best known representative has
-hypergeometric coefficients. Other examples point the same way:
-\begin{itemize}
-\item For $\mathcal A$ and $\mathcal C$, summation by parts gives
-\[
-  \mathcal A = \frac12\log 2 + \sum_{k=2}^{\infty}\frac1k\arctanh\frac1k, \qquad
-  \mathcal C = -\sum_{k=2}^{\infty}\frac1k\log\Bigl(1-\frac1k\Bigr),
-\]
-with hypergeometric coefficients $1/(2m-1)$ and $1/n$ and elementary (or $\operatorname{erfi}$-type) kernels.
-\item For the harmonic mean, $1/K_{-1} = Z(1)$, and the choice of the variable matters: in $1/k$ the summand
-$p_k/k = x\log_2((1+x)^2/(1+2x))$ has coefficients that are a sum of two hypergeometric terms, while after the shift
-$j = k+1$, as in $\log 2/K_{-1} = \sum_{j=2}^{\infty}-\log(1-j^{-2})/(j-1)$, the coefficients are harmonic numbers
-$H_{\lfloor (n-1)/2\rfloor}$. Section~\ref{sec:KH} uses the second form. The first form trades the harmonic
-numbers for two exponential scales: it splits into the pieces $x\log(1+x)$ and $x\log(1+2x)$, with kernels of
-types $1$ and $4$, each with dual states like those of $\mathcal A$ and $\mathcal C$. The total dimension of the dual
-states is about the same as for the second form, so it is not clear which is faster in practice.
-\end{itemize}
-This suggests the question whether every constant $\sum_{k=k_0}^{\infty}\log k\cdot\log R(k)$ with $R$ rational (``weight two'') can be
-brought, by these operations, to a combination of sums $\sum_{k=k_0}^{\infty}\chi(k)\Li_2(c/k^d)$ with hypergeometric coefficients
-plus classical constants, and more generally whether sums of products of $w$ logarithms of rational functions can be
-reduced to single polylogarithms $\Li_w$, as functional equations of polylogarithms would suggest. A systematic
-search would amount to creative telescoping for functions regular at infinity, modulo dilations.
 
 \subsection{Implementation in FLINT}\label{sec:khimpl}
 Our implementation is part of FLINT \cite{FLINT}, as the function
 \texttt{mp\_real\_const\_khinchin} of the \texttt{mp\_real} module. It uses the theta splitting above
 $5\cdot10^6$ bits (about $1.5\cdot10^6$ digits) and an optimized zeta-value expansion \eqref{eq:zetavalue} below.
-We only sketch it.
+We only sketch it; Appendix~\ref{sec:khpseudo} gives pseudocode for the algorithm at the level of a direct
+implementation.
 \begin{itemize}
 \item All linear recurrences (the $k$-terms, the Taylor stages and starting values of the dual terms,
 $\Gamma(\frac12, y)$) are evaluated by exact binary splitting of products of small integer matrices over chunks of
@@ -2120,8 +2092,6 @@ largest first, with at most half of the threads on dual terms while $k$-chunks r
 exactly in fixed point, so that no term is kept and the result does not depend on the scheduling. The memory is linear
 in the precision times the number of threads, mostly for FFT transforms.
 \end{itemize}
-
-\input{khinchin_pseudocode}
 
 \subsection{Timings and a record computation}\label{sec:khresults}
 Table~\ref{tab:khinchin} compares the theta splitting (with $u_0 = \frac1{16}$) with the zeta-value expansion in FLINT,
@@ -2911,14 +2881,16 @@ dual recurrences of the vortex sum, which the ball arithmetic revealed at $10^4$
 %======================================================================
 \section{Open problems}\label{sec:open}
 
-\begin{enumerate}
-\item \emph{Beyond regular summands.} The summands in \eqref{eq:functions} are a function regular at infinity times a
-periodic weight, a geometric factor or a stretched exponential. Can sums of holonomic functions with other irregular
-singularities at infinity be computed in subquadratic time? More generally, is there any other natural class of
-summands for which both sides of a splitting are cheap (compare Section~\ref{sec:limits})?
+\subsection{Irregular singularities at infinity}\label{sec:openirreg}
+The summands in \eqref{eq:functions} are a function regular at infinity times a periodic weight, a geometric factor or a
+stretched exponential. Can sums of holonomic functions with other irregular singularities at infinity be computed in
+subquadratic time?
 
-At an irregular singularity at infinity, the formal solutions are $e^{Q(k^{1/q})}k^{\varrho}\phi(k^{-1/q})$, with $Q$ a
-polynomial and $\phi$ a power series (possibly with logarithms) that is in general divergent but multisummable
+At an irregular singularity at infinity, the formal solutions are
+\[
+  e^{Q(k^{1/q})}k^{\varrho}\phi(k^{-1/q}),
+\]
+with $Q$ a polynomial and $\phi$ a power series (possibly with logarithms) that is in general divergent but multisummable
 \cite{Bal00}. The exponential factors are rarely the problem. If the sum converges, the leading term of $Q$ is either
 damped, which gives a stretched exponential when its degree $r$ is less than $2$ (up to routine extensions, such as
 several terms or complex $\tau$) and is harmless when $r \ge 2$, or purely oscillatory, which gives a twist when
@@ -2967,6 +2939,12 @@ finite-size and finite-temperature corrections for massive fields, and with divi
 Chowla--Selberg formula for Epstein zeta functions \cite{Eli95,Kir02}. Since
 $K_0(y) = \int_1^\infty e^{-yt}(t^2-1)^{-1/2}\dd t$, a sum of values $K_0(kx)$ is an integral over $z = e^{-xt}$ of
 sums covered by Theorem~\ref{thm:geometric}; we do not know whether this leads to a fast algorithm.
+\end{itemize}
+
+\subsection{Other summands}\label{sec:openother}
+Is there any other natural class of summands, not holonomic or not regular at infinity in any of the senses above,
+for which both sides of a splitting are cheap (compare Section~\ref{sec:limits})? Candidates include the following.
+\begin{itemize}
 \item Summands that are P-recursive in $k$ but not holonomic as functions of a continuous variable, such as $k^n/k!$
 in Dobinski's formula $B_n = e^{-1}\sum_kk^n/k!$ for the Bell numbers, which Corollary~\ref{cor:egf} does not
 cover.
@@ -2983,21 +2961,57 @@ hydrogen atom.
 \item Kernels that are themselves theta series (Section~\ref{sec:limits}), as for the Lambert series
 $\sum_kk^{-s}/(e^{\tau k}-1)$, for which the splitting needs about $p$ terms.
 \end{itemize}
-\item \emph{Damped zeta functions.} For $\Lambda_F$ with general regular $F$ (Appendix~\ref{app:stretched}),
-make the cost analysis explicit, with the orders and degrees of the recurrences, and treat irrational $r$ and $r$
-not of the form $1/q$.
-\item \emph{Large height.} Give an exact, smoothed Riemann--Siegel formula for $\zeta_F$ with $O(\sqrt t)$ terms, and
-an algorithm uniform in $\operatorname{Im}s$.
-\item \emph{Good representatives.} Given a constant $\sum_{k=1}^{\infty}F(k)$, find, by dilations, twists, telescoping and
-functional equations (Section~\ref{sec:generalize}), a representative minimizing the cost of
-Theorem~\ref{thm:complexity}. In particular, can all ``weight two'' sums $\sum_{k=k_0}^{\infty}\log k\cdot\log R(k)$ be reduced to
-dilogarithm sums with hypergeometric coefficients?
-\item \emph{Closed forms.} Are there identities relating $Z'(0)$, i.e.\ $\log K$, to other periods or special
-values? The derivatives $Z^{(j)}(0)$, $j \ge 1$, are the moments of $\log a_1$ under the Gauss measure.
-\item \emph{Algebraic values.} Every sequence in Table~\ref{tab:sequences} comes from $F = 1$, with a periodic weight
-or a geometric factor. Is there an integer sequence of this kind for a nontrivial $F$? We expect not
-(Conjecture~\ref{conj:algebraic} below).
+
+\subsection{Damped zeta functions and large height}
+For $\Lambda_F$ with general regular $F$ (Appendix~\ref{app:stretched}), make the cost analysis explicit, with the orders
+and degrees of the recurrences, and treat irrational $r$ and $r$ not of the form $1/q$. At large height, give an exact,
+smoothed Riemann--Siegel formula for $\zeta_F$ with $O(\sqrt t)$ terms (Remark~\ref{rem:complexu0}), and an algorithm
+uniform in $\operatorname{Im}s$.
+
+\subsection{Good representatives}\label{sec:generalize}
+Given a constant $\sum_{k=1}^{\infty}F(k)$, find a representative that minimizes the cost of
+Theorem~\ref{thm:complexity}. A sum $\sum_{k=1}^{\infty}F(k) = \zeta_F(0)$ can be rewritten without changing its value (up to explicit constants) by three
+kinds of operations, which generate an equivalence relation on summands:
+\begin{enumerate}
+\item \emph{Dilations and twists} (Section~\ref{sec:twists}). These hold for all $s$, so they relate whole
+functions. The first step of the proof of Lemma~\ref{lem:dilog} is of this kind:
+$\sum_{k=2}^{\infty}(-1)^kG(k) = -\sum_{k=2}^{\infty}G(k) + 2\sum_{k=1}^{\infty}G(2k)$. Shifts to residue classes also preserve the value at a fixed $s$.
+\item \emph{Telescoping}: $F(k)$ and $F(k) + H(k+1) - H(k)$ have the same sum (up to $H(k_0)$ and the limit at
+infinity) for any $H$ regular at infinity. This holds only at $s = 0$, since $k^{-s}$ does not commute with the shift.
+Summation by parts, which turns \eqref{eq:K1} into \eqref{eq:K2}, is of this kind.
+\item \emph{Functional equations} of the special functions in $F$, such as the duplication and Landen identities used in Section~\ref{sec:dilog}.
 \end{enumerate}
+The cost of Theorem~\ref{thm:complexity}, on the other hand, depends on the representative: on the order and degree of
+the recurrence of the coefficients $a_n$ (which determine the $k$-side recurrences), on the dimension and degree of
+the dual system, and on the exponential type of the kernel. For Khinchin's constant the best known representative has
+hypergeometric coefficients. Other examples point the same way:
+\begin{itemize}
+\item For $\mathcal A$ and $\mathcal C$, summation by parts gives
+\[
+  \mathcal A = \frac12\log 2 + \sum_{k=2}^{\infty}\frac1k\arctanh\frac1k, \qquad
+  \mathcal C = -\sum_{k=2}^{\infty}\frac1k\log\Bigl(1-\frac1k\Bigr),
+\]
+with hypergeometric coefficients $1/(2m-1)$ and $1/n$ and elementary (or $\operatorname{erfi}$-type) kernels.
+\item For the harmonic mean, $1/K_{-1} = Z(1)$, and the choice of the variable matters: in $1/k$ the summand
+$p_k/k = x\log_2((1+x)^2/(1+2x))$ has coefficients that are a sum of two hypergeometric terms, while after the shift
+$j = k+1$, as in $\log 2/K_{-1} = \sum_{j=2}^{\infty}-\log(1-j^{-2})/(j-1)$, the coefficients are harmonic numbers
+$H_{\lfloor (n-1)/2\rfloor}$. Section~\ref{sec:KH} uses the second form. The first form trades the harmonic
+numbers for two exponential scales: it splits into the pieces $x\log(1+x)$ and $x\log(1+2x)$, with kernels of
+types $1$ and $4$, each with dual states like those of $\mathcal A$ and $\mathcal C$. The total dimension of the dual
+states is about the same as for the second form, so it is not clear which is faster in practice.
+\end{itemize}
+This suggests the question whether every constant $\sum_{k=k_0}^{\infty}\log k\cdot\log R(k)$ with $R$ rational (``weight two'') can be
+brought, by these operations, to a combination of sums $\sum_{k=k_0}^{\infty}\chi(k)\Li_2(c/k^d)$ with hypergeometric coefficients
+plus classical constants, and more generally whether sums of products of $w$ logarithms of rational functions can be
+reduced to single polylogarithms $\Li_w$, as functional equations of polylogarithms would suggest. A systematic
+search would amount to creative telescoping for functions regular at infinity, modulo dilations.
+
+\subsection{Closed forms and algebraic values}
+Are there identities relating $Z'(0)$, i.e.\ $\log K$, to other periods or special values? The derivatives
+$Z^{(j)}(0)$, $j \ge 1$, are the moments of $\log a_1$ under the Gauss measure.
+
+Every sequence in Table~\ref{tab:sequences} comes from $F = 1$, with a periodic weight or a geometric factor. Is there
+an integer sequence of this kind for a nontrivial $F$? We expect not (Conjecture~\ref{conj:algebraic} below).
 
 \emph{Algebraic values.} Let $F$ be analytic and regular at infinity and defined over $\Qbar$, and let $z \in \Qbar$
 with $0 < |z| < 1$, or $z = 1$. Let $V_F(z)$ be the $\Qbar$-vector space spanned by $1$ and the values
@@ -3452,8 +3466,10 @@ $s_0$ and in the coordinates of $F$, but not in the operator $L$. The constants 
 $L$, with the size of its coefficients and with the degree of $\mathbb K$.
 \end{remark}
 
+\input{khinchin_pseudocode}
+
 %======================================================================
-% CHECK bibliographic details of Kat97, Zag06, HL23, AdR11, Bor00, Har10, Bal00, vdH07, BC21, Bri12, Dav93, Hla80, Gau10, RG12, SKRS02 (added from memory/web search).
+% CHECK bibliographic details of Kat97, Zag06, HL23, AdR11, Bor00, Har10, Bal00, vdH07, BC21, Bri12, Dav93, Hla80, Gau10, RG12, SKRS02, KZ01 (added from memory/web search).
 \begin{thebibliography}{99}
 \bibitem{AdR11} J.~Arias de Reyna, High precision computation of Riemann's zeta function by the Riemann--Siegel formula, I, Math.\ Comp.\ 80 (2011), 995--1009.
 \bibitem{AG77} K.~Alladi and C.~Grinstead, On the decomposition of $n!$ into prime powers, J.\ Number Theory 9 (1977), 452--458.
@@ -3503,6 +3519,7 @@ to this paper, 2026, \url{https://github.com/fredrik-johansson/holonomic-sums}.
 \bibitem{Khi35} A.~Khintchine, Metrische Kettenbruchprobleme, Compositio Math.\ 1 (1935), 361--382.
 \bibitem{Khi64} A.~Ya.~Khinchin, \emph{Continued Fractions}, University of Chicago Press, 1964.
 \bibitem{Kir02} K.~Kirsten, \emph{Spectral Functions in Mathematics and Physics}, Chapman \& Hall/CRC, 2002.
+\bibitem{KZ01} M.~Kontsevich and D.~Zagier, Periods, in \emph{Mathematics Unlimited---2001 and Beyond}, Springer, 2001, 771--808.
 \bibitem{Lav68} A.~F.~Lavrik, Approximate functional equations of Dirichlet functions, Izv.\ Akad.\ Nauk SSSR Ser.\ Mat.\ 32 (1968), 134--185.
 \bibitem{Lev36} P.~L\'evy, Sur le d\'eveloppement en fraction continue d'un nombre choisi au hasard, Compositio
 Math.\ 3 (1936), 286--303.
