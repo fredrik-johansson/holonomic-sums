@@ -213,7 +213,7 @@ and the expansion of $F$ at infinity has coefficients in $\Qbar$.
 \renewcommand{\arraystretch}{1.2}
 \caption{Constants and families of constants as special values of the functions \eqref{eq:functions}. The Alladi--Grinstead and Kalpazidou
 constants are $e^{\mathcal C-1}$ and $e^{\mathcal C}$. For the vortex sum $\lambda$ is fixed and $k_0 > 2/\lambda$; for
-Planck--Larkin $x = I/(k_BT)$; Hlawka's $K = \lim_{n\to\infty}(\sum_{k<n}\arctan k^{-1/2} - 2\sqrt n)$; $E_a(t) = \sum_k(k^2+a^2)^{-t}$, $t > \frac12$; for Bose--Einstein and Fermi--Dirac, $j \in \frac12 + \ZZ$. $F_1(k) = \frac1k - \log(1+\frac1k)$, $F_2(k) = \log(1+\frac1k)$ and
+Planck--Larkin $x = I/(k_BT)$; Hlawka's $K = \lim_{n\to\infty}(\sum_{k<n}\arctan k^{-1/2} - 2\sqrt n)$; $E_a(t) = \sum_k(k^2+a^2)^{-t}$, $t > \frac12$; $S_\lambda(\theta)$ is the magnetoinductive coupling sum of Section~\ref{sec:vortex}, $\theta/2\pi \in \QQ$; for Bose--Einstein and Fermi--Dirac, $j \in \frac12 + \ZZ$. $F_1(k) = \frac1k - \log(1+\frac1k)$, $F_2(k) = \log(1+\frac1k)$ and
 $F_3(k) = 3k + \frac12 - k(3k+2)\log(1+\frac1k)$. $Z(s)$ is the Khinchin zeta function defined in section~\ref{sec:khinchin}.}
 \label{tab:constants}
 \begin{tabular}{lll}
@@ -232,6 +232,7 @@ Hlawka's $K$ & $\sqrt k\arctan\frac1{\sqrt k}$ & $\zeta_F(\frac12)$ \\
 $\sum_{k=1}^{\infty}\frac{1}{k^{3/2}+1}$ & $\frac1{k^3-1}$ ($k\ge2$) & $\frac12+\zeta_F(-\frac32)-\zeta_F(0)$ \\
 Epstein--Hurwitz $E_a(t)$ & $(1+\frac{a^2}{k^2})^{-t}$ & $\zeta_F(2t)$ \\
 vortex rings $U(\lambda)$ & ${}_2F_1(\frac32,\frac32;2;-\frac{4}{\lambda^2k^2})$ & $\lambda^{-3}\zeta_F(3)$ \\
+ring resonators $S_\lambda(\theta)$ & ${}_2F_1(\frac32,\frac32;3;-\frac{4}{\lambda^2k^2})$ & $\frac{\pi}{2\lambda^3}L_F(3,\cos k\theta)$ \\
 Hardy--Littlewood $H(x)$ & $\sin(x/k)$ & $\zeta_F(1)$ \\
 Planck--Larkin $\sigma(T)$ & $e^{x/k^2} - 1 - x/k^2$ & $\zeta_F(-2)$ \\
 Casimir-type sums & $F(k)$ & $\zeta_F(-m)$ (regularized) \\
@@ -436,10 +437,10 @@ Section~\ref{sec:defs} defines the classes of $F$ (analytic and regular at infin
 holonomic. Section~\ref{sec:beyond} gives the splittings of the polylogarithm, the Lerch transcendent and the damped zeta
 function, and discusses the limits of the method. Section~\ref{sec:complexity} proves Theorem~B, states the
 uniform bounds and their consequences for integer sequences, and compares the theta splitting with the classical
-methods. Section~\ref{sec:khinchin} studies the Khinchin zeta function and gives two algorithms for Khinchin's
+methods. Section~\ref{sec:khinchin} defines the Khinchin zeta function and gives three algorithms for Khinchin's
 constant, with an implementation and a computation to $10^7$ digits. Section~\ref{sec:other} treats the other
-constants of Table~\ref{tab:constants}, and Section~\ref{sec:open} lists open problems. The appendices contain the cost
-analysis and the analytic properties of $\zeta_F$.
+constants of Table~\ref{tab:constants}, and Section~\ref{sec:open} lists open problems. The appendix contains the cost
+analysis; the analytic properties of $\zeta_F$ are in a companion note \cite{Joh26}.
 
 %======================================================================
 \section{Definitions and examples}\label{sec:defs}
@@ -1602,35 +1603,42 @@ theta splitting (Theorem~\ref{thm:split}) & $p^{3/2+o(1)}$ & yes \\
 %======================================================================
 \section{Khinchin's constant}\label{sec:khinchin}
 
-For almost every $x$, the proportion of partial quotients equal to $k$ is the
-Gauss--Kuzmin probability $p_k = \log_2(1 + 1/(k(k+2)))$ \cite{Khi64,IK02};
-if we define a ``Khinchin zeta function''
+Let $x = [a_0; a_1, a_2, \dots]$ be the continued fraction of a real number $x$. For almost every $x$, the partial
+quotients follow the Gauss--Kuzmin law: the proportion of the $a_i$ equal to $k$ is
+\[
+  p_k = \log_2\Bigl(1 + \frac1{k(k+2)}\Bigr),
+\]
+the probability that $a_1 = k$ when $x$ is drawn from the Gauss measure $\frac{\dd x}{(1+x)\log2}$ on $(0,1)$, which
+is invariant under the continued fraction map \cite{Khi64,IK02}. By the ergodic theorem the geometric means
+$(a_1\cdots a_n)^{1/n}$ therefore tend to Khinchin's constant $K = \prod_kk^{p_k}$ \cite{Khi35}, and the H\"older means
+$(\frac1n\sum_{i\le n}a_i^p)^{1/p}$ tend to $K_p = (\sum_kk^pp_k)^{1/p}$ for $p < 1$, $p \ne 0$ \cite{BBC97}. All of
+these are values of the \emph{Khinchin zeta function}
 \begin{equation}\label{eq:Z}
   Z(s) = \sum_{k=1}^{\infty} p_k\,k^{-s} = \mathbb{E}\bigl[a_1^{-s}\bigr],
 \end{equation}
-then $Z(0) = 1$
-(the product $\prod_k (k+1)^2/(k(k+2))$ telescopes to $2$),
+the zeta function $\zeta_F$ of $F(k) = p_k$, which is analytic at infinity. Indeed $Z(0) = 1$ (the product
+$\prod_k(k+1)^2/(k(k+2))$ telescopes to $2$),
 \[
-K = \prod_k k^{p_k} = \exp(-Z'(0)),
+  K = \exp(-Z'(0)), \qquad K_p = Z(-p)^{1/p},
 \]
-and more generally the
-H\"older means of the partial quotients are $K_p = Z(-p)^{1/p}$ for $p < 1$, $p \ne 0$ \cite{BBC97}; in particular the
-harmonic mean is $K_{-1} = 1/Z(1)$. The function $Z$ is meromorphic in $\CC$, with simple poles at
-$s = -1, -2, -3, \dots$ (Section~\ref{sec:khinchinzeta}).
+and in particular the harmonic mean is $K_{-1} = 1/Z(1)$. The function $Z$ is meromorphic in $\CC$, with simple poles
+at $s = -1, -2, -3, \dots$ (Section~\ref{sec:khinchinzeta}).
 
-
-Khinchin's constant is a special value of several different functions of our class:
+All earlier high-precision computations of $K$, from Bailey, Borwein and Crandall \cite{BBC97} to the record of Ghazi
+\cite{Gha26}, use expansions in zeta values, which cost $p^{2+o(1)}$ bit operations
+(Section~\ref{sec:zetavalue}). Our method gives three subquadratic algorithms, from three representations of $K$ as a
+special value of a function of the class \eqref{eq:functions}:
 \begin{align}
   \log K &= -Z'(0), \label{eq:K1}\\
   \log K\log 2 &= \zeta_F(0), \label{eq:K2}\\
   \log K\log 2 &= \log^22 + \Li_2(-\tfrac12) + \tfrac12 L_G(0,\chi), \label{eq:K3}
 \end{align}
-where $Z$ is the Khinchin zeta function \eqref{eq:Z},
+where
 \[
   F(k) = -\log\Bigl(1-\frac1k\Bigr)\log\Bigl(1+\frac1k\Bigr), \qquad G(k) = \Li_2\Bigl(\frac{4}{k^2}\Bigr), \qquad
   \chi(k) = (-1)^k
 \]
-for $k \ge 2$, and $F(1) = G(1) = 0$.
+for $k \ge 2$, and $F(1) = G(1) = 0$. The second is the series of \eqref{eq:twoconstants}.
 The three are linked by the operations of Section~\ref{sec:generalize}. Summation by parts turns the weight $\log k$
 in $-Z'(0) = \sum_kp_k\log k$ into the product of logarithms in \eqref{eq:K2}; this holds only at $s = 0$, so $Z$
 and $\zeta_F$ are different functions that share one value. A dilation and a telescoping identity then turn
@@ -2544,6 +2552,40 @@ $\lambda \to \infty$ \cite{MS22}. The zeta-value expansion of the terms $n \ge k
 \]
 converges like $(\beta/k_0^2)^j$.
 
+\subsubsection{A magnetic analogue}
+The same elliptic integrals describe coaxial current loops, since the vector potential of a circular current and the
+stream function of a vortex ring are given by the same function. By Maxwell's formula, two coaxial circular loops of
+radius $r$ at distance $d$ have the mutual inductance
+\[
+  M(d) = \mu_0r\Bigl(\Bigl(\frac2\kappa - \kappa\Bigr)K(\kappa) - \frac2\kappa E(\kappa)\Bigr), \qquad
+  \kappa^2 = \frac{4r^2}{4r^2+d^2}
+\]
+\cite{RG12}. The bracket is $\frac{\pi\kappa^3}{16}\,{}_2F_1(\frac32,\frac32;3;\kappa^2)$, so Pfaff's transformation
+gives, with $\beta = 4/\lambda^2$ as above,
+\[
+  M(n\lambda r) = \frac{\pi\mu_0r}{2\lambda^3n^3}\,{}_2F_1\Bigl(\frac32,\frac32;3;-\frac{\beta}{n^2}\Bigr).
+\]
+A chain of identical ring resonators spaced $\lambda r$ apart carries magnetoinductive waves \cite{SKRS02}; let $L$
+be the self-inductance and $\omega_0$ the resonant frequency of each ring. In the quasistatic circuit model with coupling between all
+rings, Kirchhoff's equations for a current wave $I_n \propto e^{in\theta}$ give
+\[
+  \frac{\omega_0^2}{\omega^2} = 1 + \frac2L\sum_{n=1}^{\infty}M(n\lambda r)\cos n\theta.
+\]
+The coupling sum
+\[
+  S_\lambda(\theta) = \frac1{\mu_0r}\sum_{n=1}^{\infty}M(n\lambda r)\cos n\theta
+  = \frac{\pi}{2\lambda^3}\,L_F(3, \cos k\theta),
+\]
+with $F(k) = {}_2F_1(\frac32,\frac32;3;-\beta/k^2)$,
+differs from \eqref{eq:vortex} only in the third parameter of the ${}_2F_1$ and in the twist; for rational
+$\theta/2\pi$ the weight $\cos k\theta$ is periodic, and Theorem~\ref{thm:complexity} applies. At the band edges
+$\theta = 0$ and $\theta = \pi$ it is a multiple of $\zeta_F(3)$ and of the alternating sum $L_F(3, (-1)^k)$. For rings
+spaced one diameter apart ($\lambda = 2$),
+\begin{align*}
+  S_2(0) &= 0.14792841117146353358\ldots, \\
+  S_2(\pi) &= -0.09695771912060612665\ldots
+\end{align*}
+
 \subsubsection{The splitting}
 The kernel has a closed form. Let
 \[
@@ -3389,7 +3431,7 @@ $L$, with the size of its coefficients and with the degree of $\mathbb K$.
 \end{remark}
 
 %======================================================================
-% CHECK bibliographic details of Kat97, Zag06, HL23, AdR11, Bor00, Har10, Bal00, vdH07, BC21, Bri12, Dav93, Hla80, Gau10 (added from memory/web search).
+% CHECK bibliographic details of Kat97, Zag06, HL23, AdR11, Bor00, Har10, Bal00, vdH07, BC21, Bri12, Dav93, Hla80, Gau10, RG12, SKRS02 (added from memory/web search).
 \begin{thebibliography}{99}
 \bibitem{AdR11} J.~Arias de Reyna, High precision computation of Riemann's zeta function by the Riemann--Siegel formula, I, Math.\ Comp.\ 80 (2011), 995--1009.
 \bibitem{AG77} K.~Alladi and C.~Grinstead, On the decomposition of $n!$ into prime powers, J.\ Number Theory 9 (1977), 452--458.
@@ -3453,10 +3495,12 @@ Hamburg 27 (1964), 142--144.
 \bibitem{Pet02} F.~J.~Petriello, Kaluza--Klein effects on Higgs physics in universal extra dimensions, arXiv:hep-ph/0204067, 2002.
 \bibitem{Pet98} M.~Peter, Dirichlet series associated with polynomials, Acta Arith.\ 84 (1998), 245--278.
 \bibitem{Rie59} B.~Riemann, Ueber die Anzahl der Primzahlen unter einer gegebenen Gr\"osse, Monatsber.\ Berliner Akad., 1859.
+\bibitem{RG12} E.~B.~Rosa and F.~W.~Grover, Formulas and tables for the calculation of mutual and self-inductance, Bull.\ Bureau of Standards 8 (1912), 1--237.
 \bibitem{Rub05} M.~Rubinstein, Computational methods and experiments in analytic number theory, in \emph{Recent Perspectives in Random Matrix Theory and Number Theory}, LMS Lecture Note Ser.\ 322, Cambridge University Press, 2005, 425--506.
 \bibitem{Sar84} P.~Sargos, Prolongement m\'eromorphe des s\'eries de Dirichlet associ\'ees \`a des fractions rationnelles de plusieurs variables, Ann.\ Inst.\ Fourier 34 (1984), no.~3, 83--123.
 \bibitem{SH07} J.~Sondow and P.~Hadjicostas, The generalized-Euler-constant function $\gamma(z)$ and a generalization of Somos's quadratic recurrence constant, J.\ Math.\ Anal.\ Appl.\ 332 (2007), 292--314.
 
+\bibitem{SKRS02} E.~Shamonina, V.~A.~Kalinin, K.~H.~Ringhofer and L.~Solymar, Magnetoinductive waves in one, two, and three dimensions, J.\ Appl.\ Phys.\ 92 (2002), 6252--6261.
 \bibitem{SS19} R.~Sch\"afke and M.~F.~Singer, Consistent systems of linear differential and difference equations,
 J.\ Eur.\ Math.\ Soc.\ 21 (2019), 2751--2792.
 \bibitem{Sta80} R.~P.~Stanley, Differentiably finite power series, European J.\ Combin.\ 1 (1980), 175--188.
