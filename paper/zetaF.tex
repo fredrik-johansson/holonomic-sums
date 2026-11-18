@@ -35,6 +35,8 @@
 \newcommand{\dd}{\,\mathrm{d}}
 \newcommand{\QQ}{\mathbb{Q}}
 \newcommand{\Qbar}{\overline{\mathbb{Q}}}
+\newcommand{\Reg}{\mathcal{R}}
+\newcommand{\RegQ}{\mathcal{R}_{\Qbar}}
 \newcommand{\ZZ}{\mathbb{Z}}
 \newcommand{\CC}{\mathbb{C}}
 \newcommand{\RR}{\mathbb{R}}
@@ -121,8 +123,8 @@ as demonstrated with several examples.
 
 The starting point is the familiar device of viewing any infinite sum
 as a Dirichlet series.
-In general, let $F$ be a sequence that for large indices
-agrees with a holonomic function regular at infinity (Definition~\ref{def:regular}); we attach to $F$ the following functions:
+In general, let $\Reg$ be the class of sequences $F$ that for large indices
+agree with a holonomic function regular at infinity (Definition~\ref{def:regular}). To $F \in \Reg$ we attach the following functions:
 \begin{equation}\label{eq:functions}
 \begin{aligned}
   \zeta_F(s) &= \sum_{k=1}^{\infty}F(k)\,k^{-s} &&\text{(zeta function)}, \\
@@ -182,7 +184,7 @@ The functions \eqref{eq:functions} cover the familiar ways in which sums of holo
 \item a product $\prod_k \exp(F(k))$ is $\exp(\zeta_F(0))$;
 \item a product $\prod_k k^{F(k)}$ is $\exp(-\zeta_F'(0))$;
 \item a divergent sum $\sum_{k=1}^{\infty} k^m F(k)$ has the regularized value $\zeta_F(-m)$;
-\item the Dirichlet generating function of a regular sequence $F(k)$ is $\zeta_F(s)$, and its ordinary generating
+\item the Dirichlet generating function of a sequence $F \in \Reg$ is $\zeta_F(s)$, and its ordinary generating
 function $\sum_kF(k)z^k$ is $\Li_F(0,z)$; weights $(\log k)^j$ and powers $k^{-s}$ in a generating function are
 derivatives and values in $s$;
 \item shifts of the power, $\sum_kF(k)(k+a)^{-s}$, are Lerch transcendents, and at a fixed $s$ reduce to the other
@@ -196,7 +198,7 @@ functions (Section~\ref{sec:twistshift});
 %$(R,\infty)$ is regular at infinity, with a convergent Puiseux expansion in powers of $k^{-1/q}$
 %(Remark~\ref{rem:puiseux}), and if its minimal polynomial has algebraic coefficients, so do its Puiseux expansions.
 
-The class of admissible sequences $F$ is large. It is closed under sums and products, and
+The class $\Reg$ is large. It is closed under sums and products, and
 contains every algebraic function $A(k)$ and
 the compositions $G(A(k))$ of an algebraic function $A$ with a holonomic function $G$ that is
 analytic or regular singular at the limit of $A$ at infinity
@@ -215,7 +217,9 @@ Sloane's OEIS~\cite{OEIS}, and other sources.
 By Theorem~B below, all convergent sums of this form,
 as well as the zeta-regularized values of divergent ones (analytically continued with respect to~$s$),
 can be computed to $p$ bits in $p^{3/2+o(1)}$ bit operations when $s$ is algebraic
-and the expansion of $F$ at infinity has coefficients in $\Qbar$.
+and $F \in \RegQ$, the subclass of $\Reg$ in which the differential equation and the expansion of $F$ at infinity
+have algebraic coefficients. This is a condition on the data describing $F$, not on $F$ itself, which need not be
+algebraic: $\log(1+\frac1k)$ and $\arctan\frac1{\sqrt k}$ are in $\RegQ$, but $e^{\pi/k}$ is not.
 
 %$\sum_k A(k)$, $\sum_kA(k)(\log k)^j$, $\sum_kA(k)z^k$ and $\sum_k\log A(k)$ with $A$ algebraic over $\Qbar(k)$, as well
 
@@ -348,7 +352,7 @@ For every $u_0 > 0$ and every $s \in \CC$ except the poles,
 \]
 where $\mathcal{L}_s(K) = \int_{u_0}^\infty e^{-Ku}h_s(u)\dd u$ and
 $\mathcal{D}_s(c) = \int_0^{u_0}u^{-1/2}e^{-c/u}h_s(u)\dd u$ are entire in $s$ (and holonomic in $K$ and $c$ when
-$F$ is moreover regular at infinity),
+moreover $F \in \Reg$),
 $h_s(u) = \sum_{n=0}^{\infty} a_n u^{(s+n)/2-1}/\Gamma(\frac{s+n}{2})$ is a Borel-type transform of $f$, and $M$ is an
 explicit series of elementary functions and incomplete gamma functions carrying all the poles.
 \end{theoremA}
@@ -376,7 +380,7 @@ use no holonomy and play no role in the algorithms; they are proved in a compani
 Hardy--Littlewood approximate functional equation and numerical experiments on zeros.
 
 \begin{theoremB}[Theorems~\ref{thm:complexity} and~\ref{thm:geometric}, Section~\ref{sec:dampedcost}]
-Let $F$ be a regular sequence defined over $\Qbar$, let $s_0$ be algebraic, and let
+Let $F \in \RegQ$, let $s_0$ be algebraic, and let
 $j \ge 0$ be fixed. Then the $j$-th Taylor (or Laurent) coefficient at $s_0$ of each of
 \begin{enumerate}
 \item $\zeta_F(s)$, and $L_F(s,\chi)$ for $\chi$ periodic with algebraic values,
@@ -484,7 +488,7 @@ but there is no subquadratic complexity bound for transcendental $s$).
 To our knowledge it was first stated explicitly, for Dirichlet $L$-functions and with applications to
 Stieltjes constants and Bernoulli and Euler numbers, in the author's preprint \cite{Joh21}. That preprint is
 preliminary work, subsumed by the present paper, which generalizes it substantially: Theorem~B extends it from
-$F = 1$ to all regular $F$ and to the damped functions, and Theorem~\ref{thm:uniform} proves the uniformity in $s$
+$F = 1$ to all $F \in \RegQ$ and to the damped functions, and Theorem~\ref{thm:uniform} proves the uniformity in $s$
 that \cite{Joh21} argued only briefly.
 
 Crandall \cite{Cra12} developed the splitting systematically for polylogarithms, Lerch transcendents and
@@ -500,7 +504,7 @@ what makes the fast evaluation possible.
 %(Section~\ref{sec:open}).
 
 \subsection{Outline}
-Section~\ref{sec:defs} defines the classes of $F$ (analytic and regular at infinity) and the functions
+Section~\ref{sec:defs} defines the classes $\Reg$ and $\RegQ$ of summands and the functions
 \eqref{eq:functions}, and lists examples. Section~\ref{sec:splitting} proves Theorem~A and shows that both sides are
 holonomic. Section~\ref{sec:beyond} gives the splittings of the polylogarithm, the Lerch transcendent and the damped zeta
 function, and discusses the limits of the method. Section~\ref{sec:complexity} proves Theorem~B, states the
@@ -548,13 +552,14 @@ Let $F$ be a function on $(R,\infty)$.
 equation is assumed.
 \item $F$ is \emph{regular at infinity} if it is annihilated by an operator $L$ as above; then $F$ has the form
 \eqref{eq:frob}.
-\item $F$ is \emph{defined over $\Qbar$} if $L$ can be chosen with $p_i \in \Qbar[x]$ and the coefficients of the
-power series $f_{\sigma,j}$ in \eqref{eq:frob} are algebraic numbers.
 \end{enumerate}
 A sequence $(F(k))_{k\ge1}$ is \emph{analytic}, respectively \emph{regular}, if for some integer $k_1 \ge 1$ it
 vanishes for $k < k_1$ and agrees for $k \ge k_1$ with a function $G$ analytic, respectively regular, at infinity
 that continues analytically to the real interval $[k_1,\infty)$. We write this as $F(k) = G(k)$ $(k \ge k_1)$, or
 simply $F(k) = G(k)$ when $k_1 = 1$, and where it does not matter we do not distinguish $F$ from $G$.
+We write $\Reg$ for the set of regular sequences, and $\RegQ \subset \Reg$ for the set of those for which $L$ can be
+chosen with $p_i \in \Qbar[x]$ and the coefficients of the power series $f_{\sigma,j}$ in \eqref{eq:frob} are
+algebraic numbers.
 \end{definition}
 
 For convenience, the definition allows prepending a finite run of zeros
@@ -563,6 +568,14 @@ while starting the summation at $k = 1$.
 For example, the function $-\log(1-\frac1k)\log(1+\frac1k)$ of \eqref{eq:twoconstants} is not
 defined at $k = 1$; we write the sequence as $F(k) = -\log(1-\frac1k)\log(1+\frac1k)$ $(k \ge 2)$ with
 the understanding that $F(1) = 0$.
+
+Membership in $\RegQ$ is a condition on the data from which $F$ is computed (the operator and the expansion at
+infinity, and hence also the exponents $\sigma$, which are roots of an indicial polynomial with algebraic
+coefficients), not on $F$ itself: ${}_2F_1(\frac32,\frac32;2;-\frac4{k^2})$ is in $\RegQ$, and so is $\sin(x/k)$
+for algebraic $x$, but not for $x = \pi$, when its expansion has the coefficients $\pm\pi^{2n+1}/(2n+1)!$. Both
+conditions are needed: $k^{-\pi}$ has the single expansion coefficient $1$, but its exponent is transcendental.
+Constant factors can be taken outside the sum: the Khinchin probabilities $p_k = \log_2(1+\frac1{k(k+2)})$ are not in
+$\RegQ$, but $p_k\log 2$ is.
 
 A function that is both regular and analytic at infinity is $F(x) = f(1/x)$ with $f$ analytic at $0$ and annihilated
 by an operator with an ordinary or regular singular point at $0$. Holonomy of $f$ alone does not suffice for this:
@@ -577,7 +590,7 @@ $e^{c/x^2}$, whose irregular singularity is at $x = 0$ and is never reached. Wha
 behaviour at infinity, such as $z^k$ with $|z| \ne 1$ or $e^{ik^2}$.
 
 \begin{definition}\label{def:functions}
-For a sequence $F$ that is analytic or regular, a periodic $\chi\colon\ZZ \to \CC$, $0 < |z| < 1$, $a > 0$,
+For a sequence $F$ that is analytic or in $\Reg$, a periodic $\chi\colon\ZZ \to \CC$, $0 < |z| < 1$, $a > 0$,
 $\tau > 0$ and $0 < r < 2$, the \emph{zeta function} $\zeta_F(s)$, the \emph{twisted zeta function} $L_F(s,\chi)$, the
 \emph{polylogarithm} $\Li_F(s,z)$, the \emph{Lerch transcendent} $\Phi_F(z,s,a)$ and the \emph{damped zeta function}
 $\Lambda_F(s;\tau,r)$ of $F$ are the series \eqref{eq:functions}, summed from $k = 1$ (from $k = 0$ for
@@ -643,7 +656,7 @@ nothing more. That its two sides are holonomic (Lemma~\ref{lem:kernelhol}, Propo
 Theorem~\ref{thm:complexity} and the algorithms of Section~\ref{sec:khinchin}, need $F$ regular and analytic at
 infinity; condition~(H) of Section~\ref{sec:splitting} is what gives the dual side a first-order system with
 polynomial coefficients. The cost bounds for the classical methods in Section~\ref{sec:complexity} need only that
-the $a_n$, and the Taylor coefficients of $F$, are P-recursive. General regular $F$ \eqref{eq:frob} reduce to the
+the $a_n$, and the Taylor coefficients of $F$, are P-recursive. General $F \in \Reg$, of the form \eqref{eq:frob}, reduce to the
 analytic case by Lemma~\ref{lem:reduction}, at the price of shifts and derivatives in $s$; this is how
 Theorem~\ref{thm:complexity} is proved in that generality.
 
@@ -685,7 +698,7 @@ $\zeta(s+a)$.
 $\sum_{k=2}^{\infty}k^{-s}/(k^2-1)$ and $\sum_{k=1}^{\infty}k^{-s}/(k(k+1))$, whose derivatives at $0$ are the
 constants $\mathcal A$ and $\mathcal C$ of Table~\ref{tab:constants}.
 \item The Khinchin zeta function \eqref{eq:Z}: $F(k) = p_k$, $f(x) = \log_2\bigl((1+x)^2/(1+2x)\bigr)$, $\rho = \frac12$.
-\item Families: if $G$ is regular and $G(x) \to 1$ as $x \to \infty$, then $F_t(k) = G(k)^t$ is regular for every
+\item Families: if $G \in \Reg$ and $G(x) \to 1$ as $x \to \infty$, then $F_t(k) = G(k)^t$ is in $\Reg$ for every
 $t$, which gives two-variable functions
 \[
   \Psi(s,t) = \sum_{k=1}^{\infty} G(k)^tk^{-s}.
@@ -693,7 +706,7 @@ $t$, which gives two-variable functions
 The Hurwitz zeta function $\sum_{k=1}^{\infty}(k+a)^{-s} = \Psi(s,-s)$ with $G(x) = 1 + a/x$, and the Dirichlet
 series $\sum_{k=1}^{\infty} P(k)^{-s}$ of a polynomial, are diagonals of such families. (The summand depends on $s$,
 so they are not themselves zeta functions $\zeta_F$ in the sense of Definition~\ref{def:functions}.)
-\item Damped: $\Li_F(0,z)$ is the generating function of the regular sequence $F$; for $F = \log(1+\frac1k)$ at
+\item Damped: $\Li_F(0,z)$ is the generating function of the sequence $F$; for $F = \log(1+\frac1k)$ at
 $z = \frac12$ it is the logarithm of Somos's constant, and for $F = \frac1k - \log(1+\frac1k)$ it is
 $z\gamma(z)$, the generalized Euler constant of Sondow and Hadjicostas \cite{SH07}. Shifts $(k+a)^{-s}$ give
 $\Phi_F$, and stretched-exponential factors give $\Lambda_F$, for instance $\sum_ke^{-\sqrt k} = \Lambda(0;1,\frac12)$.
@@ -998,7 +1011,7 @@ on the theta side, as a twist with a complex characteristic, at the price of com
 exponential $e^{-\tau k^r}$ has no such interpretation, but it can be moved into the kernel, whose expansion is then
 at $u = \infty$ instead of $u = 0$ (Sections~\ref{sec:stretched} and~\ref{sec:products}).
 
-At $s = 0$ the polylogarithm $\Li_F(0,z) = \sum_kF(k)z^k$ is the generating function of a regular sequence, and its
+At $s = 0$ the polylogarithm $\Li_F(0,z) = \sum_kF(k)z^k$ is the generating function of a sequence $F \in \Reg$, and its
 derivatives in $s$ give the weights $(\log k)^j$. Examples in Table~\ref{tab:constants} are Somos's quadratic
 recurrence constant and the generalized Euler-constant function of Sondow and Hadjicostas (Section~\ref{sec:somos});
 polylogarithms and Lerch transcendents of non-integer order inside the unit disk, such as the Bose--Einstein functions
@@ -1039,7 +1052,7 @@ $0 < z < 1$; there $J^{(\delta)}_w(c_0)$ denotes the boundary value from $\opera
 \end{multline*}
 where the $k$-terms are $O(|z|^{-k}e^{-(k^2-R^2)u_0})$ and the dual terms are $O(e^{-\operatorname{Re}c_n/u_0})$,
 with $\operatorname{Re}c_n = \pi^2((n-\alpha_1)^2 - \alpha_2^2)$.
-\item If $F$ is a regular sequence defined over $\Qbar$, $\chi$ is periodic with
+\item If $F \in \RegQ$, $\chi$ is periodic with
 algebraic values, $z$ and $s_0$ are algebraic, and $j \ge 0$ is fixed, then the $j$-th Taylor coefficient at
 $s_0$ of $\sum_{k=1}^{\infty}\chi(k)z^kF(k)k^{-s}$, for $\chi = 1$ of $\Li_F(s,z)$, can be computed to $p$ bits in
 $O(p^{1/2}\Mul(p)\log^2p)$ bit operations.
@@ -1221,12 +1234,12 @@ Table~\ref{tab:methods} summarizes the methods.
 
 \begin{table}[ht]
 \centering\small
-\caption{Methods for $\zeta_F(s)$ to $p$ bits at a fixed point: for algebraic $s$ and $F$ defined over $\Qbar$, and
-for generic $s$ or $F$ (given by $p$-bit approximations).}
+\caption{Methods for $\zeta_F(s)$ to $p$ bits at a fixed point, for algebraic data ($s \in \Qbar$ and
+$F \in \RegQ$) and for generic data ($s \in \CC$ or $F \in \Reg$ given by $p$-bit approximations).}
 \label{tab:methods}
 \begin{tabular}{llll}
 \toprule
-method & algebraic $s$, $F$ & generic $s$ or $F$ & continuation \\
+method & algebraic data & generic data & continuation \\
 \midrule
 direct summation & $2^{\Theta(p)}$ & $2^{\Theta(p)}$ & no \\
 zeta-value expansion & $p^{2+o(1)}$ & $p^{2+o(1)}$ & yes \\
@@ -1245,7 +1258,7 @@ $p(\log p)^{1-\kappa}$ for an explicit $\kappa > 0$ \cite{OAI26}.
 
 \subsection{Theta splitting}
 \begin{theorem}\label{thm:complexity}
-Let $F$ be a regular sequence defined over $\Qbar$, let $\chi$ be periodic with algebraic values, let $s_0 \in \Qbar$, and let
+Let $F \in \RegQ$, let $\chi$ be periodic with algebraic values, let $s_0 \in \Qbar$, and let
 $j \ge 0$ be fixed. Then the $j$-th coefficient of the Laurent expansion of $L_F(s,\chi)$ at $s_0$ can be computed to
 $p$ bits in $O(p^{1/2}\Mul(p)\log^2 p)$ bit operations.
 \end{theorem}
@@ -1420,7 +1433,7 @@ Under \eqref{eq:f},
   \zeta_F^{\ge k_0}(s) = \sum_{n=0}^{\infty}a_n\,\zeta(s+n,k_0), \qquad \zeta(w,k_0) = \sum_{k=k_0}^{\infty}k^{-w},
 \end{equation}
 where the series converges locally uniformly on $\CC \setminus \{1, 0, -1, \dots\}$. Hence $\zeta_F$ is meromorphic
-in $\CC$, with at most simple poles at $s = 1-n$, $n \ge n_0$, of residue $a_n$. For a general regular $F$
+in $\CC$, with at most simple poles at $s = 1-n$, $n \ge n_0$, of residue $a_n$. For general $F \in \Reg$
 \eqref{eq:frob}, the poles lie at $s = 1 - \sigma - n$ and have order at most $J+1$, with principal parts given
 by Lemma~\ref{lem:reduction}.
 \end{proposition}
@@ -1572,7 +1585,7 @@ needs $N$ and $J$ proportional to $p$, so the cost is $p^{2+o(1)}$: $\Theta(p)$ 
 $O(\Mul(p)\log^2p)$, and $\Theta(p)$ Bernoulli numbers.
 
 \emph{Many derivatives.} Euler--Maclaurin summation gives many derivatives in $s$ at almost no extra cost, also for
-$s$ given numerically and for $F$ with non-algebraic coefficients. Replace $s$ by $s+t$ and work with power series in
+$s$ given numerically and for $F \in \Reg \setminus \RegQ$. Replace $s$ by $s+t$ and work with power series in
 $t$ truncated at order $n \le p$. The direct terms become $\sum_{k<N}w_ke^{-t\log k}$ with $w_k = F(k)k^{-s}$, that
 is, the power sums $\sum_kw_k(\log k)^i$, $i < n$, which are the coefficients of the rational function
 $\sum_kw_k/(1-t\log k)$ and can be computed by a product tree in $\widetilde O(N + n)$ operations on $p$-bit numbers.
@@ -1587,7 +1600,7 @@ where the $\gamma_i$ are a correlation of two sequences (one multiplication of p
 terms satisfy a first-order recurrence with coefficients linear in $t$, is again a product tree. With $N, J = O(p)$
 this costs $\widetilde O(p^2)$ bit operations for all $n \le p$ derivatives together, the same as for a single value,
 provided the values $F(k)$, $k < N$, and the $F_i$ are available in that time (by multipoint evaluation of the
-expansion of $F$ at infinity, or by binary splitting when $F$ is defined over $\Qbar$). In particular $n$ derivatives
+expansion of $F$ at infinity, or by binary splitting when $F \in \RegQ$). In particular $n$ derivatives
 to $n$ bits cost $\widetilde O(n^2)$, as for the Hurwitz zeta function \cite{Joh15}. The theta splitting, in contrast,
 gains nothing for many derivatives at a generic point.
 
@@ -1656,7 +1669,7 @@ $\zeta(s)\zeta_F(s)$, and its expansion at $z = 1$ starts with $\zeta_F(1)/t$.
 
 \subsection{Damped functions}\label{sec:dampedcost}
 For the polylogarithm, Theorem~\ref{thm:geometric}(2) gives the same bound as Theorem~\ref{thm:complexity}. At
-$s = 0$ it computes the generating function $\Li_F(0,z)$ of a regular sequence at any algebraic $z$ inside the unit
+$s = 0$ it computes the generating function $\Li_F(0,z)$ of a sequence $F \in \RegQ$ at any algebraic $z$ inside the unit
 disk. When $F(k)$ is itself P-recursive in $k$ (for example rational), the generating function is holonomic in $z$ and
 costs $\widetilde O(p)$ directly; the gain is for summands such as $k^{-s}$ with $s \notin \ZZ$, $\log k$ or
 $\log(1+\frac1k)$, where direct summation and the expansion in zeta values cost $p^{2+o(1)}$. The transcendental number $\log z$ enters only through the dual points
@@ -1666,8 +1679,8 @@ and cancel to $O(1)$; this costs $(\log|z|)^2/(4u_0\log2)$ guard bits, independe
 
 For the Lerch transcendent, the shift of the power (Section~\ref{sec:twistshift}) can be removed when computing
 Taylor coefficients at a fixed point $s_0$. For $k \ge 1$,
-$(k+a)^{-s} = k^{-s}(1+\frac ak)^{-s}$, and $G_i(k) = F(k)\,(-\log(1+\frac ak))^i(1+\frac ak)^{-s_0}/i!$ is regular at
-infinity, and defined over $\Qbar$ when $F$ is and $a$, $s_0$ are algebraic. Multiplying the expansions in $s - s_0$,
+$(k+a)^{-s} = k^{-s}(1+\frac ak)^{-s}$, and $G_i(k) = F(k)\,(-\log(1+\frac ak))^i(1+\frac ak)^{-s_0}/i!$ is in
+$\Reg$, and in $\RegQ$ when $F$ is and $a$, $s_0$ are algebraic. Multiplying the expansions in $s - s_0$,
 the $j$-th Taylor coefficient of $\Phi_F(z,s,a)$ at $s_0$ is $F(0)$ times that of $a^{-s}$ plus
 $\sum_{i\le j}$ of the $(j-i)$-th Taylor coefficient of $\Li_{G_i}(s,z)$ at $s_0$. With
 Theorem~\ref{thm:geometric}(2) this proves Theorem~B(2) for $\Phi_F$, and with Theorem~\ref{thm:complexity} the same
@@ -1692,14 +1705,14 @@ sums are P-recursive in $n$ (by creative telescoping), so the outer sum can be c
 finitely many initial values, each a series summed by binary splitting, with $O(p)$ guard bits against the growth of
 unwanted solutions of the recurrence. The kernel $h_s$ is holonomic in $u$, so the dual moments are holonomic in $c$
 and the bit-burst applies. So we expect the bound $p^{3/2+o(1)}$ for $\Lambda_F$ as well, for algebraic $s$ and $\tau$ and
-$F$ regular and analytic at infinity and defined over~$\Qbar$. For $q = 1$ this is $\Li_F(s, e^{-\tau})$, which
+$F \in \RegQ$ analytic at infinity. For $q = 1$ this is $\Li_F(s, e^{-\tau})$, which
 Theorem~\ref{thm:geometric} already covers; the new cases are $q \ge 2$.
 
 Table~\ref{tab:expclass} summarizes the costs for the damped functions.
 
 \begin{table}[ht]
 \centering\small
-\caption{Sums with exponential factors, to $p$ bits at algebraic parameters ($F$ regular at infinity and not
+\caption{Sums with exponential factors, to $p$ bits at algebraic parameters ($F \in \RegQ$ not
 P-recursive, $s \notin \ZZ$). The last column says whether the bound $p^{3/2+o(1)}$ is proved or whether the identity
 is proved and the cost analysis sketched.}
 \label{tab:expclass}
@@ -2378,7 +2391,7 @@ constant $\log\sqrt{2\pi}$, and Glaisher's constant plays the same role for the 
 \]
 with $A = 1.2824271291\ldots$.
 
-In general, for $F$ regular at infinity the Euler--Maclaurin formula expands $\sum_{k\le n}F(k)$ in powers of $n$ and
+In general, for $F \in \Reg$ the Euler--Maclaurin formula expands $\sum_{k\le n}F(k)$ in powers of $n$ and
 $\log n$, and, with the antiderivative of $F$ normalized to have no constant term, the constant term of this
 expansion is the regularized value $\zeta_F(0)$ (the constant term at $s = 0$ if $0$ is a pole) plus the constant terms
 of $\frac12F(n)$ and of the corrections $B_{2j}F^{(2j-1)}(n)/(2j)!$, which are elementary (compare \cite{Zag06}).
@@ -2593,7 +2606,7 @@ $\Gamma(\frac14,y)$. The main term and $C_0$ are eight hypergeometric series in 
 
 \begin{remark}[Algebraic summands]\label{rem:algebraic}
 For algebraic $F$ the pieces of the theta splitting are not of a special type in general: the kernel parts satisfy the
-operators of Lemma~\ref{lem:kernelhol}, whose order is that of the operator of $f$, as for any regular $F$. For
+operators of Lemma~\ref{lem:kernelhol}, whose order is that of the operator of $f$, as for any $F \in \Reg$. For
 $f(x) = (1-bx)^{-\alpha}$, for instance, the even kernel part is $u^{-1}\,{}_2F_2(\frac\alpha2, \frac{\alpha+1}2;
 \frac12, \frac s2; b^2u)/\Gamma(\frac s2)$, and products of such factors give kernels of higher order. What
 simplifies is the case of poles ($\alpha = 1$, where the ${}_2F_2$ reduces to $e^{b^2u}$ times an incomplete gamma
@@ -3026,7 +3039,7 @@ at $10^5$ digits. For $\sigma$ the reference is not: the special structure of $\
 prime powers a very cheap quasi-quadratic method (about $p/\log p$ logarithms of primes, each a short binary splitting
 series), which grows by a factor of about $130$ per decade but is $4.6$ times faster than the theta splitting at
 $10^5$ digits, so that the crossover should be near $10^7$ digits. For the generating function $\sum_kF(k)2^{-k}$ of a
-general regular $F$ there is no such shortcut.
+general $F \in \Reg$ there is no such shortcut.
 
 The values are
 \begin{align*}
@@ -3144,7 +3157,7 @@ $\sum_kk^{-s}/(e^{\tau k}-1)$, for which the splitting needs about $p$ terms.
 \end{itemize}
 
 \subsection{Damped zeta functions and large height}
-For $\Lambda_F$ with general regular $F$ (Appendix~\ref{app:stretched}), make the cost analysis explicit, with the orders
+For $\Lambda_F$ with general $F \in \Reg$ (Appendix~\ref{app:stretched}), make the cost analysis explicit, with the orders
 and degrees of the recurrences, and treat irrational $r$ and $r$ not of the form $1/q$. At large height, give an exact,
 smoothed Riemann--Siegel formula for $\zeta_F$ with $O(\sqrt t)$ terms (Remark~\ref{rem:complexu0}), and an algorithm
 uniform in $\operatorname{Im}s$.
@@ -3194,7 +3207,7 @@ $Z^{(j)}(0)$, $j \ge 1$, are the moments of $\log a_1$ under the Gauss measure.
 Every sequence in Table~\ref{tab:sequences} comes from $F = 1$, with a periodic weight or a geometric factor. Is there
 an integer sequence of this kind for a nontrivial $F$? We expect not (Conjecture~\ref{conj:algebraic} below).
 
-\emph{Algebraic values.} Let $F$ be analytic and regular at infinity and defined over $\Qbar$, and let $z \in \Qbar$
+\emph{Algebraic values.} Let $F \in \RegQ$ be analytic at infinity, and let $z \in \Qbar$
 with $0 < |z| < 1$, or $z = 1$. Let $V_F(z)$ be the $\Qbar$-vector space spanned by $1$ and the values
 $\Li_F(-m, z)$, $m \ge 0$; for $z = 1$ we take instead the constant terms $\CT_{s=-m}\zeta_F(s)$. These are the
 zeta-regularized moments $\sum_kF(k)k^mz^k$. Up to the factors $(-1)^m/m!$, they are the Taylor coefficients of the
@@ -3290,7 +3303,7 @@ By Lemma~\ref{lem:reduction}, Remark~\ref{rem:twist}, and the decomposition of $
 $j$-th Laurent coefficient of $L_F(s,\chi)$ at $s_0$ is a finite combination of Laurent coefficients of order at most
 $j + J$ of functions $\sum_{k\ge k_0}\chi(k)f(1/k)k^{-s}$ at the algebraic points $s_0 + \sigma + \delta$, with $f$
 analytic at $0$ and annihilated by an operator satisfying (H), and of the finitely many entire functions
-$F(k)\chi(k)k^{-s}$, $k < k_0$. Here we use that, for $F$ defined over $\Qbar$, each $f_{\sigma,j}$ in
+$F(k)\chi(k)k^{-s}$, $k < k_0$. Here we use that, for $F \in \RegQ$, each $f_{\sigma,j}$ in
 \eqref{eq:frob} has algebraic coefficients and satisfies (H). Indeed, write
 $B_\sigma = x^{-\sigma}\sum_j(\log x)^jf_{\sigma,j}(1/x)$; each $B_\sigma$ is obtained from $F$ by a polynomial in the
 monodromy operator $\mathcal M$ around $t = 1/x = 0$ (the projection onto the generalized eigenspace for
