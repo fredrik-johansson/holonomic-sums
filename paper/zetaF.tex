@@ -103,7 +103,7 @@ every real number $x$ \cite{Khi35,Khi64}.
 
 Euler's constant is known to be rapidly computable: along with many other classical constants
 like $e$, $\pi$, $\log 2$, $\zeta(3)$, Catalan's constant and $\Gamma(\frac14)$,
-it can expressed finitely in terms of holonomic functions (solutions
+it can be expressed finitely in terms of holonomic functions (solutions
 of linear ordinary differential equations with polynomial
 coefficients)
 which can be evaluated in time quasilinear in the precision~\cite{BB87,HP98,BM80,BZ10,CC90,vdH99}.
@@ -115,7 +115,7 @@ notoriously difficult to calculate to high precision''.
 In this work, we show that both sums \eqref{eq:twoconstants} and many others
 belong to a common class which can be computed in subquadratic time.
 The method is practical for computing millions of digits,
-as demonstrated by implementing several examples.
+as demonstrated with several examples.
 
 \subsection{Zeta functions of holonomic functions}
 
@@ -373,7 +373,7 @@ like every Dirichlet series with infinitely many nonzero coefficients, satisfies
 differential equation in $s$. Its zeros near the line $\operatorname{Re}s = \frac12 - n_0$ behave like
 $a$-points of $\zeta$ \cite{Lev75,Ste07}: there are $(T/2\pi)\log T + O(T)$ of height at most $T$. These facts
 use no holonomy and play no role in the algorithms; they are proved in a companion note \cite{Joh26}, together with a
-Hardy--Littlewood approximate functional equation and numerical experiments on the zeros of Khinchin's $Z$.
+Hardy--Littlewood approximate functional equation and numerical experiments on zeros.
 
 \begin{theoremB}[Theorems~\ref{thm:complexity} and~\ref{thm:geometric}, Section~\ref{sec:dampedcost}]
 Let $F$ be a regular sequence defined over $\Qbar$, let $s_0$ be algebraic, and let
@@ -390,13 +390,13 @@ with an integer $q \ge 1$.
 \end{enumerate}
 \end{theoremB}
 
-Here $\Mul(p)$ is the cost of $p$-bit integer multiplication, so the bound is $\widetilde O(p^{3/2})$, against
+Here $\Mul(p)$ is the cost of $p$-bit integer multiplication, so the bound is $p^{3/2+o(1)}$, against
 $p^{2+o(1)}$ for the classical methods (Euler--Maclaurin summation, the expansion in zeta values, and, for the
 functions with exponential decay, direct summation, which needs $p^{1+1/r+o(1)}$ for $\Lambda_F$). The proofs are by
 class: Theorem~A and its cost analysis for~(1), the twist by a complex characteristic for~(2), and the kernel of the
 damped summand for~(3). We compare these methods in the setting of $\zeta_F$ (Section~\ref{sec:complexity}): the
 zeta-value expansion is Theorem~A with the order of two summations exchanged, and Euler--Maclaurin summation is Poisson
-summation with a sharp instead of a smoothed cutoff. At large height and moderate precision, $\zeta_F$ can be computed
+summation with a sharp instead of a smoothed cutoff. At large height and moderate precision, $\zeta_F(\sigma + i t)$ can be computed
 in $O(t^{1/2})$ operations by combining the zeta-value expansion with the Riemann--Siegel formula.
 
 The algorithms of Theorem~B(1) need only $O(p)$ bits of memory, and their cost is uniform in the data: it stays
@@ -464,11 +464,15 @@ attached to polynomials and rational functions, in one and several variables, ha
 \cite{Mah28}, Cassou-Nogu\`es \cite{CN81}, Sargos \cite{Sar84}, Peter \cite{Pet98}, Essouabri \cite{Ess97}
 and others; Apostol and Vu \cite{AV84} treat series such as $\sum_{k=1}^{\infty} k^{-s}(k+1)^{-1}$, whose value at $s = \frac12$
 is the constant of Theodorus; Brink \cite{Bri12} expresses it and related constants as series of zeta values at
-half-integers. For summands with an expansion in powers of $k^{-1/q}$, which include the algebraic functions, a
-general-purpose numerical method is Monien summation as implemented in PARI/GP \cite{BC21}, which evaluates the
+half-integers.
+
+For summands with an expansion in powers of $k^{-1/q}$, which include the algebraic functions, a
+general-purpose numerical method is Monien summation~\cite{Mon10} as implemented in PARI/GP \cite{BC21}, which evaluates the
 summand at $O(p/\log p)$ points; like Euler--Maclaurin summation it costs $p^{2+o(1)}$. Mellin--Barnes integrals
 give the continuation of hypergeometric cases such as $\sum_{k=1}^{\infty} k^{-s}(k+a)^{-t}$ and their asymptotic
-expansions in parameters \cite{Kat97}. Approximate functional equations go back to Riemann \cite{Rie59} and
+expansions in parameters \cite{Kat97}.
+
+Approximate functional equations go back to Riemann \cite{Rie59} and
 Hardy and Littlewood \cite{HL23}; the theta-function (``smoothed'') form for general $L$-functions is due to
 Lavrik \cite{Lav68} and is the basis of the algorithms of Rubinstein \cite{Rub05} and Dokchitser \cite{Dok04}.
 
@@ -553,9 +557,9 @@ that continues analytically to the real interval $[k_1,\infty)$. We write this a
 simply $F(k) = G(k)$ when $k_1 = 1$, and where it does not matter we do not distinguish $F$ from $G$.
 \end{definition}
 
-The definition allows prepending an arbitrary finite run of zeros
-to start indexing at $k = 1$ for convenience while skipping initial poles or branch
-cuts of the underlying holonomic function.
+For convenience, the definition allows prepending a finite run of zeros
+to skip poles or branch cuts of the underlying holonomic function
+while starting the summation at $k = 1$.
 For example, the function $-\log(1-\frac1k)\log(1+\frac1k)$ of \eqref{eq:twoconstants} is not
 defined at $k = 1$; we write the sequence as $F(k) = -\log(1-\frac1k)\log(1+\frac1k)$ $(k \ge 2)$ with
 the understanding that $F(1) = 0$.
@@ -1215,12 +1219,7 @@ of theta splitting alongside several classical algorithms
 for $\zeta_F$ and its relatives.
 Table~\ref{tab:methods} summarizes the methods.
 
-``Time'' means bit complexity on a multitape Turing machine; $\Mul(p)$ is a bound for the cost of multiplying
-$p$-bit integers satisfying the usual regularity conditions ($\Mul(p)/p$ nondecreasing and
-$\Mul(p\log p) = O(\Mul(p)\log p)$); one can take $\Mul(p) = p\log p$ \cite{HvdH21} or even
-$p(\log p)^{1-\kappa}$ for an explicit $\kappa > 0$ \cite{OAI26}.
-
-\begin{table}[t]
+\begin{table}[ht]
 \centering\small
 \caption{Methods for $\zeta_F(s)$ to $p$ bits at a fixed point: for algebraic $s$ and $F$ defined over $\Qbar$, and
 for generic $s$ or $F$ (given by $p$-bit approximations).}
@@ -1239,6 +1238,10 @@ theta splitting (Theorem~\ref{thm:split}) & $p^{3/2+o(1)}$ & $p^{2+o(1)}$ & yes 
 \end{tabular}
 \end{table}
 
+``Time'' means bit complexity on a multitape Turing machine; $\Mul(p)$ is a bound for the cost of multiplying
+$p$-bit integers satisfying the usual regularity conditions ($\Mul(p)/p$ nondecreasing and
+$\Mul(p\log p) = O(\Mul(p)\log p)$); one can take $\Mul(p) = p\log p$ \cite{HvdH21} or even
+$p(\log p)^{1-\kappa}$ for an explicit $\kappa > 0$ \cite{OAI26}.
 
 \subsection{Theta splitting}
 \begin{theorem}\label{thm:complexity}
