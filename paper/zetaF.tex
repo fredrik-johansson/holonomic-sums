@@ -219,7 +219,7 @@ as well as the zeta-regularized values of divergent ones (analytically continued
 can be computed to $p$ bits in $p^{3/2+o(1)}$ bit operations when $s$ is algebraic
 and $F \in \RegQ$, the subclass of $\Reg$ in which the differential equation and the expansion of $F$ at infinity
 have algebraic coefficients. This is a condition on the data describing $F$, not on $F$ itself, which need not be
-algebraic: $\log(1+\frac1k)$ and $\arctan\frac1{\sqrt k}$ are in $\RegQ$, but $e^{\pi/k}$ is not.
+an algebraic function: $\log(1+\frac1k)$ is in $\RegQ$ (however, $\log(1+\tfrac{\pi}{k})$ is not).
 
 %$\sum_k A(k)$, $\sum_kA(k)(\log k)^j$, $\sum_kA(k)z^k$ and $\sum_k\log A(k)$ with $A$ algebraic over $\Qbar(k)$, as well
 
@@ -293,7 +293,7 @@ $\sum_ke^{-\tau k^{1/q}}F(k)$ & $F(k)$ & $\Lambda_F(0;\tau,\frac1q)$ \\
 \end{tabular*}
 \end{table}
 
-Some subclasses were already known to be efficiently computable. Among the constants of Table~\ref{tab:constants},
+Special cases of such sums were already known to be efficiently computable. Among the constants of Table~\ref{tab:constants},
 Euler's constant $\gamma$ and closed forms involving $\pi$ can be computed
 in quasilinear time. More generally, so can every number that is the value at an algebraic point of a holonomic function
 with algebraic coefficients and initial values \cite{CC90,vdH99}, such as the integer zeta values $\zeta(3), \zeta(5),
@@ -325,18 +325,18 @@ $\sum_k\frac1k\arctan\frac1k$, destroys it.
 For constants of Table~\ref{tab:constants} other than those above, and for sums of
 algebraic functions that are not rational, we know of no quasilinear
 algorithm, and no earlier subquadratic algorithm
-except the restriction of the following method to $F = 1$
+except the restriction of this paper's method to $F = 1$
 which is classical (see comments below in Section~\ref{sec:related}).
 
-The Barnes $G$-function, with
+A Weierstrass product similar to those for $\psi$ and $\log \Gamma$
+leads to the Barnes $G$-function
 \[
   \log G(1+x) = \frac x2\log2\pi - \frac{x + (1+\gamma)x^2}2 + \sum_{k=1}^{\infty}\Bigl(k\log\Bigl(1+\frac xk\Bigr) - x
   + \frac{x^2}{2k}\Bigr),
 \]
-is a value of the class, and Theorem~B below computes it in time $p^{3/2+o(1)}$ for algebraic $x$.
-The above sum derives from a Weierstrass product similar to those
-for $\psi$ and $\log \Gamma$, but we know of
-no quasilinear algorithm for it; one would also give Glaisher's constant $A$, since
+whose summand is in $\Reg$, and Theorem~B below computes it in time $p^{3/2+o(1)}$ for algebraic $x$.
+We know of no quasilinear algorithm in this case, which as a special case
+would give Glaisher's constant $A$ in quasilinear time since
 $G(\frac12) = 2^{1/24}e^{1/8}\pi^{-1/4}A^{-3/2}$.
 
 \subsection{Results}
