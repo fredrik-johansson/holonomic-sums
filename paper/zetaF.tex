@@ -151,10 +151,9 @@ The periodic weight $\chi$ and the factors $z^k$
 and $e^{-\tau k^r}$ are kept separate from $F$ because they are not regular at infinity
 (Section~\ref{sec:defs}).
 
-Sums of holonomic functions are values and derivatives of these functions; for instance $\sum_kF(k) = \zeta_F(0)$
-and $\sum_k(\log k)F(k) = -\zeta_F'(0)$ (Section~\ref{sec:sums}). We show that they can be computed in subquadratic
-time, by an extension of Riemann's theta splitting of $\zeta(s)$, the formula behind his second proof of the
-functional equation.
+Sums of holonomic functions are values and derivatives of these functions (Section~\ref{sec:sums}). We compute them
+in subquadratic time by an extension of Riemann's theta splitting of $\zeta(s)$, the formula behind his second proof
+of the functional equation.
 
 \subsection{Main results}
 Let $F$ be analytic at infinity, $F(k) = f(1/k)$ for $k \ge k_0$, where
@@ -205,8 +204,7 @@ $\Lambda_F(s;\tau,r)$ at $s_0$ can be computed to $p$ bits in $p^{3/2+o(1)}$ bit
 
 Here $\Mul(p)$ is the cost of $p$-bit integer multiplication, so the bound is $p^{3/2+o(1)}$, against
 $p^{2+o(1)}$ for the classical methods (Euler--Maclaurin summation, the expansion in zeta values, and, for the
-functions with exponential decay, direct summation, which needs $p^{1+1/r+o(1)}$ for $\Lambda_F$). The proofs are by class: Theorem~A and its cost analysis for~(1), and the twist by a complex characteristic for~(2); for Claim~C the
-factor $e^{-\tau k^r}$ is moved into the kernel.
+functions with exponential decay, direct summation, which needs $p^{1+1/r+o(1)}$ for $\Lambda_F$).
 
 The expansion $\zeta_F(s) = \sum_{k<k_0}F(k)k^{-s} + \sum_{n=0}^{\infty}a_n\zeta(s+n,k_0)$ in Hurwitz zeta values
 \cite{FV96} gives the meromorphic continuation, with simple poles at $s = 1-n$ of residue $a_n$ and the
@@ -245,9 +243,8 @@ families of algebraic curves depending algebraically on $k$ such as complete ell
 
 Table~\ref{tab:constants} lists constants from classical analysis, number theory and mathematical physics expressed in
 this way, including examples from the tables of Flajolet and Vardi~\cite{FV96} and of Finch~\cite{Fin03},
-Sloane's OEIS~\cite{OEIS}, and other sources. By Theorem~B, all of them, and in general all convergent sums of this form and the
-zeta-regularized values of divergent ones, can be computed to $p$ bits in $p^{3/2+o(1)}$ bit operations when $s$ is
-algebraic and $F \in \RegQ$.
+Sloane's OEIS~\cite{OEIS}, and other sources; by Theorem~B all of them can be computed in $p^{3/2+o(1)}$ bit
+operations.
 
 \begin{table}[p]
 \centering\footnotesize
@@ -447,15 +444,14 @@ what makes the fast evaluation possible.
 
 \subsection{Outline}
 Section~\ref{sec:defs} defines the classes $\Reg$ and $\RegQ$ of summands and the functions
-\eqref{eq:functions}, and lists examples. Section~\ref{sec:splitting} proves Theorem~A and shows that both sides are
+\eqref{eq:functions}, and works out one example in full. Section~\ref{sec:splitting} proves Theorem~A and shows that both sides are
 holonomic. Section~\ref{sec:beyond} gives the splittings of the polylogarithm, the Lerch transcendent and the damped zeta
 function, and discusses the limits of the method. Section~\ref{sec:complexity} proves Theorem~B, states the
 uniform bounds and their consequences for integer sequences, and compares the theta splitting with the classical
 methods. Section~\ref{sec:khinchin} defines the Khinchin zeta function and gives three algorithms for Khinchin's
 constant, with an implementation and a computation to $10^7$ digits. Section~\ref{sec:other} treats the other
 constants of Table~\ref{tab:constants}, and Section~\ref{sec:open} lists open problems. Appendix~\ref{app:cost} contains the
-cost analysis and Appendix~\ref{sec:khpseudo} pseudocode for Khinchin's constant; the analytic properties of $\zeta_F$
-are in a companion note \cite{Joh26}.
+cost analysis and Appendix~\ref{sec:khpseudo} pseudocode for Khinchin's constant.
 
 %======================================================================
 \section{Definitions and examples}\label{sec:defs}
@@ -483,8 +479,7 @@ operator. Let $R$ exceed the absolute values of the finite singular points of $L
 \end{equation}
 with a finite set $\Sigma \subset \CC$ of exponents, pairwise incongruent modulo $\ZZ$, and power series $f_{\sigma,j}$
 convergent for $|t| < 1/R$. The exponents are the roots of the indicial equation and need not be integers, so $F$
-may be ramified at infinity: a convergent Puiseux series in $x^{-1/q}$ is of this form, with
-$\Sigma \subseteq \{0, \frac1q, \dots, \frac{q-1}q\}$ (Remark~\ref{rem:puiseux}). In particular every algebraic function
+may be ramified at infinity (Remark~\ref{rem:puiseux}). In particular every algebraic function
 is regular at infinity in the sense of the following definition.
 
 \begin{definition}\label{def:regular}
@@ -511,9 +506,8 @@ For example, the function $-\log(1-\frac1k)\log(1+\frac1k)$ of \eqref{eq:twocons
 defined at $k = 1$; we write the sequence as $F(k) = -\log(1-\frac1k)\log(1+\frac1k)$ $(k \ge 2)$ with
 the understanding that $F(1) = 0$.
 
-Membership in $\RegQ$ is a condition on the data from which $F$ is computed (the operator and the expansion at
-infinity, and hence also the exponents $\sigma$, which are roots of an indicial polynomial with algebraic
-coefficients), not on $F$ itself: ${}_2F_1(\frac32,\frac32;2;-\frac4{k^2})$ is in $\RegQ$, and so is $\sin(x/k)$
+Membership in $\RegQ$ concerns the operator and the expansion at infinity, and hence also the exponents $\sigma$,
+which are roots of an indicial polynomial with algebraic coefficients: ${}_2F_1(\frac32,\frac32;2;-\frac4{k^2})$ is in $\RegQ$, and so is $\sin(x/k)$
 for algebraic $x$, but not for $x = \pi$, when its expansion has the coefficients $\pm\pi^{2n+1}/(2n+1)!$. Both
 conditions are needed: $k^{-\pi}$ has the single expansion coefficient $1$, but its exponent is transcendental.
 Constant factors can be taken outside the sum: the Khinchin probabilities $p_k = \log_2(1+\frac1{k(k+2)})$ are not in
@@ -525,11 +519,13 @@ the Stieltjes transform $f(t) = \int_1^\infty(e^{1/v}-1)\,v^{-1}(v-t)^{-1}\dd v$
 $t = 0$, but its jump across $(1,\infty)$ is $2\pi i(e^{1/t}-1)/t$, which every operator annihilating $f$ also
 annihilates, so every such operator has an irregular singularity at $t = 0$, and $F(x) = f(1/x)$ is not regular at infinity.
 
-Regularity at infinity is preserved by sums, products, $F(x) \mapsto F(qx+a)$, multiplication by $x^{-\sigma}$ and
-by $(\log x)^j$, differentiation and integration. It holds for all G-functions of $1/x$ (algebraic functions,
+Besides the closure properties listed in Section~\ref{sec:sums}, regularity at infinity is preserved by
+$F(x) \mapsto F(qx+a)$, by multiplication by $x^{-\sigma}$ and $(\log x)^j$, and by differentiation. It holds for all G-functions of $1/x$ (algebraic functions,
 logarithms, polylogarithms, ${}_{q+1}F_q$ with rational parameters) and for entire functions of $1/x$ such as
 $e^{c/x^2}$, whose irregular singularity is at $x = 0$ and is never reached. What it excludes is exponential
-behaviour at infinity, such as $z^k$ with $|z| \ne 1$ or $e^{ik^2}$.
+behaviour at infinity, such as $z^k$ with $|z| \ne 1$, $e^{-\tau k^r}$ or $e^{ik^2}$, and nonconstant periodic
+functions, which have an irregular singularity there. This is why the periodic weight $\chi$ and the factors $z^k$
+and $e^{-\tau k^r}$ are kept separate from $F$ in \eqref{eq:functions}.
 
 \begin{definition}\label{def:functions}
 For a sequence $F$ that is analytic or in $\Reg$, a periodic $\chi\colon\ZZ \to \CC$, $0 < |z| < 1$, $a > 0$,
@@ -547,11 +543,10 @@ The series for $\zeta_F$ and $L_F$ converge absolutely for $\operatorname{Re}s >
 $\beta = \min\operatorname{Re}\sigma$ over the exponents that occur; those for $\Li_F$, $\Phi_F$ and $\Lambda_F$
 converge for all $s$ and define entire functions. Finitely many terms are entire functions of $s$, so all
 analytic questions concern the tails; the splittings below are applied to a tail $\zeta_F^{\ge k_0}$ with $k_0$ large
-enough for the expansion of $F$ at infinity to converge at $k_0$, and the terms with $k < k_0$ are added directly. We call $\Li_F$ and $\Lambda_F$ \emph{damped}, as opposed to $\zeta_F$ and $L_F$: the
-factors $z^k$ and $e^{-\tau k^r}$ make the series converge, but, not being regular at infinity, they cannot be
-absorbed into $F$ (for $r = 1$ the two coincide: $\Lambda_F(s;\tau,1) = \Li_F(s,e^{-\tau})$). The name
-\emph{damped zeta function} is ours; for $F = 1$ and $r = 1$ these are polylogarithms, and for $r = \frac12$, $\tau$
-real, sums of Boltzmann factors over energy levels $E_k \propto \sqrt k$.
+enough for the expansion of $F$ at infinity to converge at $k_0$, and the terms with $k < k_0$ are added directly. We call $\Li_F$ and $\Lambda_F$ \emph{damped}, as opposed to
+$\zeta_F$ and $L_F$, since the factors $z^k$ and $e^{-\tau k^r}$ make the series converge; for $r = 1$ the two
+coincide, $\Lambda_F(s;\tau,1) = \Li_F(s,e^{-\tau})$. The name \emph{damped zeta function} is ours; for
+$r = \frac12$ and real $\tau$ these are sums of Boltzmann factors over energy levels $E_k \propto \sqrt k$.
 
 \begin{lemma}\label{lem:reduction}
 If $F$ is given for $x \ge k_0$ by \eqref{eq:frob} (with any power series $f_{\sigma,j}$ convergent for
@@ -603,8 +598,7 @@ analytic case by Lemma~\ref{lem:reduction}, at the price of shifts and derivativ
 Theorem~\ref{thm:complexity} is proved in that generality.
 
 \subsection{Twists, dilations and shifts}\label{sec:twists}
-A nonconstant periodic function is not regular at infinity (it has an irregular singularity there), which is why
-periodic weights are kept as a separate factor $\chi$. Three operations relate the functions $L_F(s,\chi)$.
+Three operations relate the functions $L_F(s,\chi)$.
 
 \emph{Dilations.} For an integer $m \ge 1$ let $F_m(k) = F(mk)$, again analytic, respectively regular. Then
 \[
@@ -628,17 +622,13 @@ characters cannot be removed.
 and $F(qx+a)$ is regular at infinity; but now $s$ enters the summand through $(j+a/q)^{-s} = j^{-s}(1+\frac{a}{qj})^{-s}$,
 as in the Hurwitz zeta function. So at a \emph{fixed} point $s_0$ the left-hand side is, up to the term $j = 0$, a value
 $\zeta_{F'}(s_0)$ with $F'(j) = q^{-s_0}F(qj+a)(1+\frac a{qj})^{-s_0}$, which suffices for computing it, but as a function of $s$ it is
-a diagonal of a two-variable family (Example~(4) below), not a function $\zeta_{F'}$. When only the value at a fixed point matters, as for the sums of Table~\ref{tab:constants}, periodic weights can
+a diagonal of a two-variable family (Example~(2) below), not a function $\zeta_{F'}$. When only the value at a fixed point matters, as for the sums of Table~\ref{tab:constants}, periodic weights can
 therefore be removed; here we keep them, and
 Theorem~\ref{thm:split} handles them directly (Remark~\ref{rem:twist}).
 
 \subsection{Examples}
+Besides $F = 1$, rational $F$ and the constants of Table~\ref{tab:constants}:
 \begin{enumerate}
-\item $F = 1$ gives $\zeta(s)$, $L_1(s,\chi) = L(s,\chi)$ for a Dirichlet character $\chi$, and $F(k) = k^{-a}$ gives
-$\zeta(s+a)$.
-\item $F$ rational gives the Dirichlet series attached to rational functions; for instance
-$\sum_{k=2}^{\infty}k^{-s}/(k^2-1)$ and $\sum_{k=1}^{\infty}k^{-s}/(k(k+1))$, whose derivatives at $0$ are the
-constants $\mathcal A$ and $\mathcal C$ of Table~\ref{tab:constants}.
 \item The Khinchin zeta function \eqref{eq:Z}: $F(k) = p_k$, $f(x) = \log_2\bigl((1+x)^2/(1+2x)\bigr)$, $\rho = \frac12$.
 \item Families: if $G \in \Reg$ and $G(x) \to 1$ as $x \to \infty$, then $F_t(k) = G(k)^t$ is in $\Reg$ for every
 $t$, which gives two-variable functions
@@ -648,10 +638,6 @@ $t$, which gives two-variable functions
 The Hurwitz zeta function $\sum_{k=1}^{\infty}(k+a)^{-s} = \Psi(s,-s)$ with $G(x) = 1 + a/x$, and the Dirichlet
 series $\sum_{k=1}^{\infty} P(k)^{-s}$ of a polynomial, are diagonals of such families. (The summand depends on $s$,
 so they are not themselves zeta functions $\zeta_F$ in the sense of Definition~\ref{def:functions}.)
-\item Damped: $\Li_F(0,z)$ is the generating function of the sequence $F$; for $F = \log(1+\frac1k)$ at
-$z = \frac12$ it is the logarithm of Somos's constant, and for $F = \frac1k - \log(1+\frac1k)$ it is
-$z\gamma(z)$, the generalized Euler constant of Sondow and Hadjicostas \cite{SH07}. Shifts $(k+a)^{-s}$ give
-$\Phi_F$, and stretched-exponential factors give $\Lambda_F$, for instance $\sum_ke^{-\sqrt k} = \Lambda(0;1,\frac12)$.
 \item Not regular and not of this form: summands such as $e^{ik^2}$ or $1/k!$, with a stronger singularity at
 infinity than an exponential factor; and the Lerch-type series $\sum_{k=1}^{\infty} e^{2\pi i\alpha k}k^{-s}$ with
 irrational real $\alpha$, which is the limit $|z| \to 1$ of $\Li_1(s,z)$ and can be treated as a twist
@@ -981,10 +967,6 @@ $D_{-1/2} = \sqrt{\pi/c}\erfc\sqrt{c/u_0}$, and for $a \in \ZZ$ in terms of $E_1
 incomplete gamma value per class of $a$ modulo $\ZZ$ is needed. The bit-burst algorithm then steps from $c_0$ to
 $c = \pi^2m^2$ (Theorem~\ref{thm:complexity}).
 
-Thus Theorem~\ref{thm:split} expresses $\zeta_F(s)$ as a sum of values of a holonomic function at the squares
-$k^2$, plus a sum of values of another holonomic function at the points $\pi^2m^2$, plus an explicit term; with
-$u_0$ fixed, $O(\sqrt p)$ terms of each sum suffice for $p$ bits.
-
 \begin{remark}[Periodic weights and twists]\label{rem:twist}
 Let $\chi$ have period $q$. Splitting $\chi$ into its even and odd parts, it suffices to treat $\chi$ of parity
 $\delta \in \{0,1\}$, i.e.\ $\chi(-k) = (-1)^\delta\chi(k)$. Then $w(k) = \chi(k)k^\delta$ is even and
@@ -1113,7 +1095,7 @@ $J^{(1)}_{s+1}(c) = c^{s/2-1}\Gamma(1-\frac s2,\frac c{u_0})/\Gamma(\frac{s+1}2)
 part~(1) is Crandall's formula for $\Li_s(z)$ \cite[(34)]{Cra12} with $\lambda = u_0$, and with a shift of the
 lattice (Section~\ref{sec:twistshift}) it is his formula for the Lerch transcendent \cite[(14)]{Cra12}, which at
 $z = 1$ is his series for the Hurwitz zeta function \cite[(30)]{Cra12}; see also \cite{BB15}. Crandall states it for
-$\operatorname{Re}z \in [0,1)$, as an analytic continuation, without a complexity analysis. What the theorem adds
+$\operatorname{Re}z \in [0,1)$, as an analytic continuation. What the theorem adds
 is the general regular factor $F$, for which the incomplete gamma functions become the holonomic functions $I_k$ and
 $J^{(\delta)}_w$, and the bound in~(2).
 
@@ -1279,7 +1261,7 @@ theta splitting (Theorem~\ref{thm:split}) & $p^{3/2+o(1)}$ & $p^{2+o(1)}$ & yes 
 \end{tabular}
 \end{table}
 
-``Time'' means bit complexity on a multitape Turing machine; $\Mul(p)$ is a bound for the cost of multiplying
+Costs are bit complexities on a multitape Turing machine; $\Mul(p)$ is a bound for the cost of multiplying
 $p$-bit integers satisfying the usual regularity conditions ($\Mul(p)/p$ nondecreasing and
 $\Mul(p\log p) = O(\Mul(p)\log p)$); one can take $\Mul(p) = p\log p$ \cite{HvdH21} or even
 $p(\log p)^{1-\kappa}$ for an explicit $\kappa > 0$ \cite{OAI26}.
@@ -1381,7 +1363,7 @@ The memory bounds assume that $p$-bit integers can be multiplied in time $\Mul(p
 FFT-based algorithms. Without the blocking of the binary splitting described in the proof, the memory is
 $O(p\log p)$ bits in the first case. The proof is in Appendix~\ref{app:uniform}. The hypotheses on $s_0$ are of two
 kinds. The bound $H(s_0) \le p^{O(1)}$ means that $s_0$ has $O(\log p)$ bits, which is what binary splitting needs;
-an $s_0$ of $p$ bits is in effect an arbitrary real number (Remark~\ref{rem:complexity}(1)). The bound on $|s_0|$
+an $s_0$ of $p$ bits is in effect an arbitrary real number (\emph{Generic data} above). The bound on $|s_0|$
 keeps the intermediate quantities below $2^{O(p)}$, or $2^{O(p\log p)}$ in the second case. Some such bound is needed
 with real $u_0$: for $|\operatorname{Im}s_0| \gg p$ the cancellation $e^{\pi|\operatorname{Im}s_0|/4}$ exceeds
 $2^{O(p)}$ (Remark~\ref{rem:complexu0}), and for $s_0 \to -\infty$ the value itself may have more than $p$ bits
@@ -1518,16 +1500,10 @@ either. Their denominator is an exponential polynomial with frequencies $e^{2\pi
 multiples of a single $\lambda$.
 
 \begin{remark}\label{rem:complexity}
-\begin{enumerate}
-\item For $s_0$ given only by approximations the series can no longer be summed by binary splitting and the cost
-is $p^{2+o(1)}$; the same is true if the coefficients of $f$ are not algebraic.
-\item The bound of Theorem~\ref{thm:complexity} does not depend on $s_0$ as long as $H(s_0) = p^{O(1)}$ and
-$|s_0| = O(p/\log p)$ (Theorem~\ref{thm:uniform}). Beyond that, with real $u_0$, the cost grows exponentially with
-$|\operatorname{Im}s_0|$ (Remark~\ref{rem:complexu0}). The dependence on $L$ (order, degree and size of the
-coefficients) is not uniform.
-\item In floating-point evaluation of $M$, the functions $P(a,x)$ for $k < k_0$ must be computed directly from the
-lower series and not as $1 - Q(a,x)$, since they are multiplied by $a_nk^{-n}$, which may be exponentially large.
-\end{enumerate}
+Theorem~\ref{thm:uniform} gives uniformity in $s_0$ and in the coordinates of $F$, but not in the operator $L$: the
+constants grow with its order and degree, with the size of its coefficients and with the degree of $\mathbb K$. In
+floating-point evaluation of $M$, the functions $P(a,x)$ for $k < k_0$ must be computed directly from the lower
+series and not as $1 - Q(a,x)$, since they are multiplied by $a_nk^{-n}$, which may be exponentially large.
 \end{remark}
 
 \subsection{The zeta-value expansion}\label{sec:zetavalue}
@@ -1584,8 +1560,8 @@ form a single convolution with the sequence $\Gamma(s+m)$. This needs only $p$-b
 
 So the zeta-value expansion costs $\widetilde O(p^2)$ bit operations at any $s$, provided that the $a_n$ are available
 (for holonomic $F$ they are P-recursive, and $a_0, \dots, a_N$ to $p$ bits cost $\widetilde O(p^2)$ as well). This is optimal for the method since
-the $\Theta(p)$ values to $p$ bits have total size $\Theta(p^2)$. It also gives the meromorphic continuation, and it is
-the natural reference method for checking other algorithms.
+the $\Theta(p)$ values to $p$ bits have total size $\Theta(p^2)$. It is the natural reference method for checking
+other algorithms.
 
 The zeta-value expansion and Theorem~\ref{thm:split} are closely related. Apply Theorem~\ref{thm:split} with
 $f(x) = x^n$, i.e.\ Riemann's splitting of the tail $\zeta(s+n,k_0)$, with the same $u_0$ for every $n$, and sum over
@@ -1770,9 +1746,8 @@ expansion of $G_F$ at $z = e^{-t} = 1$ has the regular part
 $2\pi i(\log x)^{n-1}/(n-1)!$, so $G_F$ jumps by $2\pi i\,B(\log x)$, with the Borel transform $B$ of
 Remark~\ref{rem:whyk2}: the generating function is the Stieltjes transform of $B\circ\log$, holonomic only up to this
 logarithmic change of variable. On the unit circle the values $G_F(e^{2\pi i\alpha})$ are the twisted values
-$L_F(0,e^{2\pi i\alpha k})$ of Remark~\ref{rem:twist}, so the theta splitting applies. Inside the disk the series
-converges geometrically, and Theorem~\ref{thm:geometric} improves direct summation from $p^{2+o(1)}$ to
-$p^{3/2+o(1)}$ at algebraic $z$ (Section~\ref{sec:dampedcost}). The
+$L_F(0,e^{2\pi i\alpha k})$ of Remark~\ref{rem:twist}, so the theta splitting applies; inside the disk see
+Section~\ref{sec:dampedcost}. The
 Lambert series $\sum_kF(k)z^k/(1-z^k)$ is the generating function of $\sum_{d\mid n}F(d)$, with Dirichlet series
 $\zeta(s)\zeta_F(s)$, and its expansion at $z = 1$ starts with $\zeta_F(1)/t$.
 
@@ -1795,28 +1770,20 @@ $\sum_{i\le j}$ of the $(j-i)$-th Taylor coefficient of $\Li_{G_i}(s,z)$ at $s_0
 Theorem~\ref{thm:geometric}(2) this proves Theorem~B(2) for $\Phi_F$, and with Theorem~\ref{thm:complexity} the same
 reduction applies to the Hurwitz-type sums $\sum_{k\ge1}F(k)(k+a)^{-s}$.
 
-For the damped zeta function of $F = 1$ (Proposition~\ref{prop:expsplit}) with rational $r$, the exponents $a_j$ fall into finitely many classes modulo $\ZZ$, the terms of the series for $I_k$,
-for $J_m$ at a rational $c_0$, and for $T_w$ are P-recursive in $j$ within each class (using
-$Q(a+1,x) = Q(a,x) + x^ae^{-x}/\Gamma(a+1)$ and \eqref{eq:Drec}), and $h_s$ is holonomic in $u$, so that the moments
-are holonomic in $c$ (as in Proposition~\ref{prop:dual}). So the analysis of Appendix~\ref{app:cost} should apply,
-which is Claim~C for $F = 1$: $p^{3/2+o(1)}$ at algebraic $s$ and $\tau$ and rational $0 < r < 2$, against
-$p^{1+1/r+o(1)}$ for direct summation. We have checked the ingredients but not written out the bounds on the orders
-of the recurrences, the guard bits and the starting values (Appendix~\ref{app:stretched}). The classical alternative is the
-expansion $\Lambda(s;\tau,r) = M_\tau(1-s) + \sum_{n=0}^{\infty}\zeta(s-rn)(-\tau)^n/n!$ in zeta values (from a
-Mellin--Barnes integral \cite{Joh26}), which converges for $r < 1$, and for $r = 1$ when $\tau < 2\pi$; it
-costs $p^{2+o(1)}$, like \eqref{eq:zetavalue}; the details of the cost analysis are in Appendix~\ref{app:stretched}.
-An implementation for $r = \frac12$ computes $\sum_ke^{-\sqrt k}$ to $10^6$ digits (Section~\ref{sec:expsqrt}).
-For $r = 1$ Proposition~\ref{prop:expsplit} is an alternative to Theorem~\ref{thm:geometric} with real dual points, but $\tau = \log(1/z)$
-then enters the kernel, so that for algebraic $z$ Theorem~\ref{thm:geometric} is the better choice.
-
-For $\Lambda_F$ (Proposition~\ref{prop:prodsplit}) the coefficients $b_\ell$ are themselves infinite series, but every piece of the proposition is a double series
-over $n$ and $j$, with terms $a_n(-\tau)^j/j!$ times incomplete gamma values or moments, P-recursive in both indices. Summed over $j$, the inner
-sums are P-recursive in $n$ (by creative telescoping), so the outer sum can be computed by binary splitting from
-finitely many initial values, each a series summed by binary splitting, with $O(p)$ guard bits against the growth of
-unwanted solutions of the recurrence. The kernel $h_s$ is holonomic in $u$, so the dual moments are holonomic in $c$
-and the bit-burst applies. This is the basis of Claim~C for $\Lambda_F$, for algebraic $s$ and $\tau$ and
-$F \in \RegQ$ analytic at infinity. For $q = 1$ this is $\Li_F(s, e^{-\tau})$, which
-Theorem~\ref{thm:geometric} already covers; the new cases are $q \ge 2$.
+For the damped zeta functions, Appendix~\ref{app:stretched} sketches why the analysis of Appendix~\ref{app:cost}
+carries over (Claim~C). For $F = 1$ and rational $r$ the exponents $a_j$ of the kernel fall into finitely many classes
+modulo $\ZZ$, within which all series of Proposition~\ref{prop:expsplit} have P-recursive terms, and the kernel is
+holonomic, so that the dual moments are again values of a holonomic system. For $\Lambda_F$
+(Proposition~\ref{prop:prodsplit}) the pieces are double series over $n$ and $j$ whose inner sums are P-recursive in
+$n$. For $q = 1$ this is $\Li_F(s,e^{-\tau})$, which Theorem~\ref{thm:geometric} already covers; the new cases are
+$q \ge 2$. We have not written out the orders of the recurrences, the guard bits or the starting values in full.
+The classical alternatives are direct summation, with $p^{1+1/r+o(1)}$ bit operations, and the expansion
+$\Lambda(s;\tau,r) = M_\tau(1-s) + \sum_{n=0}^{\infty}\zeta(s-rn)(-\tau)^n/n!$ in zeta values (from a
+Mellin--Barnes integral; see \cite{Joh26}), which converges for $r < 1$, and for $r = 1$ when $\tau < 2\pi$, and costs
+$p^{2+o(1)}$ like \eqref{eq:zetavalue}. An implementation for $r = \frac12$ computes $\sum_ke^{-\sqrt k}$ to $10^6$
+digits (Section~\ref{sec:expsqrt}). For $r = 1$ Proposition~\ref{prop:expsplit} is an alternative to
+Theorem~\ref{thm:geometric} with real dual points, but $\tau = \log(1/z)$ then enters the kernel, so that for algebraic
+$z$ Theorem~\ref{thm:geometric} is the better choice.
 
 Table~\ref{tab:expclass} summarizes the costs for the damped functions.
 
@@ -1867,8 +1834,7 @@ $\prod_k(k+1)^2/(k(k+2))$ telescopes to $2$),
 \[
   K = \exp(-Z'(0)), \qquad K_p = Z(-p)^{1/p},
 \]
-and in particular the harmonic mean is $K_{-1} = 1/Z(1)$. The function $Z$ is meromorphic in $\CC$, with simple poles
-at $s = -1, -2, -3, \dots$ (Section~\ref{sec:khinchinzeta}).
+and in particular the harmonic mean is $K_{-1} = 1/Z(1)$.
 
 All earlier high-precision computations of $K$, from Bailey, Borwein and Crandall \cite{BBC97} to the record of Ghazi
 \cite{Gha26}, use expansions in zeta values, which cost $p^{2+o(1)}$ bit operations
@@ -1895,10 +1861,7 @@ twisted zeta function of the non-elementary $G$.
 
 The constant-factor overheads of these algorithms differ widely. Table~\ref{tab:khstates} lists the sizes of what each algorithm evaluates: the
 series of each $k$-term, the moment systems of the dual terms (Proposition~\ref{prop:dual}), and the incomplete gamma
-values. In \eqref{eq:K1} the kernel is elementary, but the derivative in $s$ brings in digamma values, that is,
-harmonic numbers, and log-weighted moments, which double the states, and the coefficients mix two exponential
-scales, which doubles them again. In \eqref{eq:K2} the coefficients are alternating harmonic numbers, so the
-kernel has order $4$. In \eqref{eq:K3} they are hypergeometric. After a closer look at $Z$
+values; Section~\ref{sec:khcompare} explains the differences. After a closer look at $Z$
 (Section~\ref{sec:khinchinzeta}), we work out the three algorithms (Sections~\ref{sec:Zprime},
 \ref{sec:logform} and~\ref{sec:dilog}), and compare implementations that share all their machinery
 (Section~\ref{sec:khcompare}); to what extent such rewritings generalize is discussed in Section~\ref{sec:generalize}. The
@@ -1939,20 +1902,12 @@ meromorphic with simple poles at $s = -1, -2, -3, \dots$ of residues $1/\log 2$,
 and is analytic in $\operatorname{Re}s > -1$.
 
 \begin{proposition}\label{prop:Z}
-We have:
-\begin{enumerate}
-\item $Z(0) = 1$, $Z'(0) = -\log K$, and $K_p = Z(-p)^{1/p}$ for $p < 1$, $p \ne 0$.
-\item $Z(s) = \dfrac{1}{(s+1)\log2} - \dfrac{1}{\log2} + O(s+1)$ as $s \to -1$. \\ Equivalently, the H\"older means
+$Z(s) = \dfrac{1}{(s+1)\log2} - \dfrac{1}{\log2} + O(s+1)$ as $s \to -1$. Equivalently, the H\"older means
 satisfy $\log 2\,(K_p)^p = (1-p)^{-1} - 1 + O(1-p)$ as $p \to 1^-$.
-\end{enumerate}
 \end{proposition}
 
 \begin{proof}
-(1) is the definition of $K$ and of the H\"older means
-\[
-  K_p = \lim_{n\to\infty}\Bigl(\frac1n\sum_{i=1}^{n}a_i^p\Bigr)^{1/p},
-\]
-which for almost all real numbers equal $(\sum_{k=1}^{\infty}k^pp_k)^{1/p}$ by the ergodic theorem \cite{Khi35}. (2) By summation by parts
+By summation by parts
 \begin{multline*}
 \sum_{k=1}^{N}k\,(2\log(k+1) - \log k - \log(k+2)) \\ = \log(N+1) - N\log\frac{N+2}{N+1} = \log N - 1 + o(1),
 \end{multline*}
@@ -1979,7 +1934,7 @@ Bailey, Borwein and Crandall \cite{BBC97} computed the $K_{-n}$ for small $n$ to
 \]
 Here $f_t(x) = ((1+2x)/(1+x)^2)^t$ is algebraic, analytic for $|x| < \frac12$, with coefficients
 $a_0(t) = 1$, $a_1(t) = 0$, $a_2(t) = -t$, $a_3(t) = 2t$, \dots\ polynomial in $t$. By Theorem~\ref{thm:split}
-(Remark on two variables), $\Psi$ is meromorphic in $\CC^2$ with polar divisor
+(Remark~\ref{rem:twovar}), $\Psi$ is meromorphic in $\CC^2$ with polar divisor
 $\{s=1\}\cup\bigcup_{n\ge2}\{s = 1-n\}$; there is no pole along $s = 0$. Moreover $\Psi(s,0) = \zeta(s)$,
 $-\partial_t\Psi(s,0) = Z(s)\log 2$, and
 \[
@@ -2020,8 +1975,7 @@ its first member. For even $n = 2m$, with $e_m(x) = \sum_{i<m}x^i/i!$ and $H_i$ 
 and the odd terms are similar, with $x^i/\Gamma(i+\frac32)$, the partial sums $O_i = \sum_{j<i}1/(2j+1)$, and the
 values $\Gamma(\frac12,x)$ and $\partial_a\Gamma(a,x)|_{a=1/2}$. Since $a_{2m} = \frac12\cdot4^m/m - 1/m$ and
 $a_{2m+1} = 2(1 - 4^m)/(2m+1)$ combine two exponential scales, each $k$-term costs four series with states of
-dimension $4$ (the harmonic numbers double the states), and three incomplete gamma values, against one series of
-dimension $2$ for \eqref{eq:K3}.
+dimension $4$ (the harmonic numbers double the states), and three incomplete gamma values.
 
 \emph{Dual terms.} Writing $Z^{\log}_t[g] = \int_0^{u_0}u^{-t}\log u\,e^{-c/u}g(u)\dd u = -\partial_tZ_t[g]$,
 \[
@@ -2615,10 +2569,9 @@ starting values involve $E_1(c_0/u_0)$. The $k$-terms are, by \eqref{eq:Ik},
 One run computes $S_A$ and $\mathcal O$ together.
 
 \subsection{Khinchin's harmonic mean}\label{sec:KH}
-For almost every $x$, the harmonic means $n/(a_1^{-1} + \dots + a_n^{-1})$ of the partial quotients of the continued
-fraction of $x$ tend to Khinchin's harmonic mean $K_{-1} = 1.7454056624\ldots$, the H\"older mean with $p = -1$
-(Section~\ref{sec:khinchin}); Bailey, Borwein and Crandall computed it to $7\,350$ digits \cite{BBC97}. By
-Proposition~\ref{prop:Z}, $K_{-1} = 1/Z(1)$. With $j = k+1$,
+Khinchin's harmonic mean $K_{-1} = 1/Z(1) = 1.7454056624\ldots$ is the limit of the harmonic means
+$n/(a_1^{-1} + \dots + a_n^{-1})$ of the partial quotients of almost every $x$ (Section~\ref{sec:khinchin}). With
+$j = k+1$,
 \[
   K_{-1} = \frac{\log 2}{T}, \qquad T = \sum_{j=2}^{\infty}\frac{-\log(1-1/j^2)}{j-1},
 \]
@@ -3220,8 +3173,6 @@ A336405),
 (the derivative of $\log\cos$ is $-\tan$, which has infinitely many poles), sums of Clausen functions
 $\operatorname{Cl}_2(2\pi/n)$, and sums involving $(1 - \frac2{n+1})^{2n}$, such as the oscillator strengths of the
 hydrogen atom.
-\item Kernels that are themselves theta series (Section~\ref{sec:limits}), as for the Lambert series
-$\sum_kk^{-s}/(e^{\tau k}-1)$, for which the splitting needs about $p$ terms.
 \end{itemize}
 
 \subsection{Damped zeta functions and large height}
@@ -3248,12 +3199,9 @@ the recurrence of the coefficients $a_n$ (which determine the $k$-side recurrenc
 the dual system, and on the exponential type of the kernel. For Khinchin's constant the best known representative has
 hypergeometric coefficients. Other examples point the same way:
 \begin{itemize}
-\item For $\mathcal A$ and $\mathcal C$, summation by parts gives
-\[
-  \mathcal A = \frac12\log 2 + \sum_{k=2}^{\infty}\frac1k\arctanh\frac1k, \qquad
-  \mathcal C = -\sum_{k=2}^{\infty}\frac1k\log\Bigl(1-\frac1k\Bigr),
-\]
-with hypergeometric coefficients $1/(2m-1)$ and $1/n$ and elementary (or $\operatorname{erfi}$-type) kernels.
+\item For $\mathcal A$ and $\mathcal C$, summation by parts gives the representations of Section~\ref{sec:AG}, with
+hypergeometric coefficients $1/(2m-1)$ and $1/n$ and elementary or $\operatorname{erfi}$-type kernels
+(Section~\ref{sec:workedexample}).
 \item For the harmonic mean, $1/K_{-1} = Z(1)$, and the choice of the variable matters: in $1/k$ the summand
 $p_k/k = x\log_2((1+x)^2/(1+2x))$ has coefficients that are a sum of two hypergeometric terms, while after the shift
 $j = k+1$, as in $\log 2/K_{-1} = \sum_{j=2}^{\infty}-\log(1-j^{-2})/(j-1)$, the coefficients are harmonic numbers
@@ -3712,12 +3660,6 @@ guard bits suffice, which again gives $p^{3/2+o(1)}$. We have not written out th
 recurrences.
 
 
-\begin{remark}[Uniformity]\label{rem:uniform}
-For $f = 1$ the kernel is a monomial and every term is a single incomplete gamma function. This is the approximate
-functional equation for $L(s,\chi)$, the case treated in \cite{Joh21}. Theorem~\ref{thm:uniform} gives uniformity in
-$s_0$ and in the coordinates of $F$, but not in the operator $L$. The constants grow with the order and degree of
-$L$, with the size of its coefficients and with the degree of $\mathbb K$.
-\end{remark}
 
 \input{khinchin_pseudocode}
 
