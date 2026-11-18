@@ -27,6 +27,7 @@
 \newcommand{\erfi}{\operatorname{erfi}}
 \newcommand{\erf}{\operatorname{erf}}
 \newcommand{\Ci}{\operatorname{Ci}}
+\newcommand{\sinc}{\operatorname{sinc}}
 \newcommand{\Ein}{\operatorname{Ein}}
 \newcommand{\Eip}{\mathcal{E}}
 \newcommand{\Li}{\operatorname{Li}}
@@ -281,22 +282,25 @@ $\sum_ke^{-\tau k^{1/q}}F(k)$ & $F(k)$ & $\Lambda_F(0;\tau,\frac1q)$ \\
 \end{table}
 
 Some subclasses were already known to be efficiently computable. Among the constants of Table~\ref{tab:constants},
-Euler's constant $\gamma$ \cite{BM80}, Stirling's constant $\sqrt{2\pi}$ and Wallis's product $\frac\pi2$ can be computed
+Euler's constant $\gamma$ and closed forms involving $\pi$ can be computed
 in quasilinear time. More generally, so can every number that is the value at an algebraic point of a holonomic function
 with algebraic coefficients and initial values \cite{CC90,vdH99}, such as the integer zeta values $\zeta(3), \zeta(5),
 \dots$, polylogarithms at algebraic points, Catalan's constant and $\Gamma(\frac14)$; this includes many periods and
 exponential periods in the sense of Kontsevich and Zagier \cite{KZ01}.
 For rational $A$, the sum $\sum_k A(k)$
 reduces by partial fractions to polygamma values, and sums of logarithms or inverse trigonometric or hyperbolic
-functions of a rational function of $k$ reduce to logarithms of gamma values at algebraic points, as in (A352619,
-A393668)
-\[
-  \sum_{k=1}^{\infty}\Bigl(\frac1k - \arctan\frac1k\Bigr) = \gamma + \arg\Gamma(1+i),
-\]
-\[
-  \sum_{k=2}^{\infty}\arctanh\frac1{k^2} = \frac12\log\frac{\sinh\pi}{\pi};
-\]
-can be computed in quasilinear time. But this structure is fragile: an extra factor $\frac1k$, as in
+functions of a rational function of $k$ reduce to logarithms of gamma values at algebraic points, as in (A352619)
+%\[
+%  \sum_{k=1}^{\infty}\Bigl(\frac1k - \arctan\frac1k\Bigr) = \gamma + \arg\Gamma(1+i),
+%\]
+%\[
+%  \sum_{k=2}^{\infty}\arctanh\frac1{k^2} = \frac12\log\frac{\sinh\pi}{\pi};
+%\]
+$\sum_{k=1}^{\infty} (\frac1k - \arctan(\frac1k)) = \gamma + \arg\Gamma(1+i)$ and
+(A393668)
+$\sum_{k=2}^{\infty}\arctanh(1/k^2) = \tfrac{1}{2} \log(\sinh(\pi)/\pi)$,
+all computable in quasilinear time.
+But this structure is fragile: an extra factor $\frac1k$, as in
 $\sum_k\frac1k\arctan\frac1k$, destroys it.
 
 The constants of Stieltjes and Glaisher are values of $\zeta$ and
@@ -521,9 +525,12 @@ that continues analytically to the real interval $[k_1,\infty)$. We write this a
 simply $F(k) = G(k)$ when $k_1 = 1$, and where it does not matter we do not distinguish $F$ from $G$.
 \end{definition}
 
-So the initial values of a sequence are always $0$; other initial values can be added outside the functions
-\eqref{eq:functions}. For example, the summand $-\log(1-\frac1k)\log(1+\frac1k)$ of \eqref{eq:twoconstants} is not
-defined at $k = 1$, and we write $F(k) = -\log(1-\frac1k)\log(1+\frac1k)$ $(k \ge 2)$.
+The definition allows prepending an arbitrary finite run of zeros
+to start indexing at $k = 1$ for convenience while skipping initial poles or branch
+cuts of the underlying holonomic function.
+For example, the function $-\log(1-\frac1k)\log(1+\frac1k)$ of \eqref{eq:twoconstants} is not
+defined at $k = 1$; we write the sequence as $F(k) = -\log(1-\frac1k)\log(1+\frac1k)$ $(k \ge 2)$ with
+the understanding that $F(1) = 0$.
 
 A function that is both regular and analytic at infinity is $F(x) = f(1/x)$ with $f$ analytic at $0$ and annihilated
 by an operator with an ordinary or regular singular point at $0$. Holonomy of $f$ alone does not suffice for this:
@@ -1175,11 +1182,33 @@ cheap; Section~\ref{sec:open} lists some candidates.
 %======================================================================
 \section{Computation}\label{sec:complexity}
 
+In this section we study the computational complexity and practical costs
+of theta splitting alongside several classical algorithms
+for $\zeta_F$ and its relatives.
+Table~\ref{tab:methods} summarizes the methods.
+
 ``Time'' means bit complexity on a multitape Turing machine; $\Mul(p)$ is a bound for the cost of multiplying
 $p$-bit integers satisfying the usual regularity conditions ($\Mul(p)/p$ nondecreasing and
 $\Mul(p\log p) = O(\Mul(p)\log p)$); one can take $\Mul(p) = p\log p$ \cite{HvdH21} or even
-$p(\log p)^{1-\kappa}$ for an explicit $\kappa > 0$ \cite{OAI26}. Table~\ref{tab:methods} summarizes the methods
-discussed in this section.
+$p(\log p)^{1-\kappa}$ for an explicit $\kappa > 0$ \cite{OAI26}.
+
+\begin{table}[t]
+\centering\small
+\caption{Methods for $\zeta_F(s)$ at a fixed algebraic point, for $F$ defined over $\Qbar$.}
+\label{tab:methods}
+\begin{tabular}{lll}
+\toprule
+method & $p$ bits, algebraic $s$ & continuation \\
+\midrule
+direct summation & $2^{\Theta(p)}$ & no \\
+zeta-value expansion & $p^{2+o(1)}$ & yes \\
+Euler--Maclaurin & $p^{2+o(1)}$ & in half-planes \\
+alternating series acceleration & $p^{2+o(1)}$ (twisted series only) & no \\
+theta splitting (Theorem~\ref{thm:split}) & $p^{3/2+o(1)}$ & yes \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 
 \subsection{Theta splitting}
 \begin{theorem}\label{thm:complexity}
@@ -1635,23 +1664,6 @@ $\sum_ke^{-\tau k^{1/q}}F(k)k^{-s}$ & $p^{1+q}$ & $p^{2}$ & $p^{3/2}$ & sketched
 \end{tabular}
 \end{table}
 
-\begin{table}[t]
-\centering\small
-\caption{Methods for $\zeta_F(s)$ at a fixed algebraic point, for $F$ defined over $\Qbar$.}
-\label{tab:methods}
-\begin{tabular}{lll}
-\toprule
-method & $p$ bits, algebraic $s$ & continuation \\
-\midrule
-direct summation & $2^{\Theta(p)}$ & no \\
-zeta-value expansion & $p^{2+o(1)}$ & yes \\
-Euler--Maclaurin & $p^{2+o(1)}$ & in half-planes \\
-alternating series acceleration & $p^{2+o(1)}$ (twisted series only) & no \\
-theta splitting (Theorem~\ref{thm:split}) & $p^{3/2+o(1)}$ & yes \\
-\bottomrule
-\end{tabular}
-\end{table}
-
 %======================================================================
 \section{Khinchin's constant}\label{sec:khinchin}
 
@@ -1904,7 +1916,7 @@ $e^{-(k^2-1)u_0}$ and the dual terms like $e^{-\pi^2m^2/u_0}$, and $O(\sqrt p)$ 
 \end{lemma}
 
 In \cite{BBC97} this is attributed to Zagier and derived from an integral representation of $\log K$ via the Euler
-product for $\sin z/z$. We give a proof from \eqref{eq:K2} that uses only the three kinds of operations of
+product for $\sinc z$. We give a proof from \eqref{eq:K2} that uses only the three kinds of operations of
 Section~\ref{sec:generalize}: a dilation, functional equations of the dilogarithm (the duplication formula and
 Landen's identity), and telescoping.
 
@@ -3178,6 +3190,14 @@ these functions, for example through compositions with other functions or produc
 about those. Rational values of $L$-functions of higher degree do occur, for instance the Hurwitz numbers, from
 Eisenstein series of the Gaussian lattice. They are two-dimensional lattice sums, which need about $p$ terms
 (Section~\ref{sec:limits}), so they are outside the subquadratic class anyway.
+
+\section{Acknowledgements}
+
+This research was done in collaboration with Claude Opus 5.5.
+The author thanks Drew Sutherland for his extremely generous donation of a
+Claude subscription which enabled this work.
+We thank Vincent Neiger for running an additional
+verification computation of Khinchin's constant.
 
 %======================================================================
 \appendix
