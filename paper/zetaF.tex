@@ -17,6 +17,7 @@
 \newtheorem{conjecture}[theorem]{Conjecture}
 \newtheorem*{theoremA}{Theorem A}
 \newtheorem*{theoremB}{Theorem B}
+\newtheorem*{claimC}{Claim C}
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
 \theoremstyle{remark}
@@ -368,17 +369,11 @@ $\pi^2(n-\alpha)^2$, complex numbers, and for $F = 1$ the formula is Crandall's 
 (Theorem~\ref{thm:geometric}). For $\Lambda_F$ the factor $e^{-\tau k^r}$ is moved into the kernel $h_s$, which
 becomes an entire function of $u^{-r/2}$ (Propositions~\ref{prop:expsplit} and~\ref{prop:prodsplit}).
 
-As a function of $s$, $\zeta_F$ is a deformed Riemann zeta function with the usual properties of Dirichlet series
-whose coefficients have a convergent expansion at infinity. The expansion
-$\zeta_F(s) = \sum_{k<k_0}F(k)k^{-s} + \sum_{n=0}^{\infty}a_n\zeta(s+n,k_0)$ in Hurwitz zeta values
-\cite{FV96} converges in all of $\CC$ and gives the meromorphic continuation, with simple poles at $s = 1-n$ of residue
-$a_n$, the zeta-regularized values of divergent sums $\sum_kk^mF(k)$ at $s = -m$ \cite{Eli95,Kir02}, and growth
-like that of $\zeta(s+n_0)$ in vertical strips, $n_0$ being the order of vanishing of $f$ at $0$; and $\zeta_F$,
-like every Dirichlet series with infinitely many nonzero coefficients, satisfies no linear difference or
-differential equation in $s$. Its zeros near the line $\operatorname{Re}s = \frac12 - n_0$ behave like
-$a$-points of $\zeta$ \cite{Lev75,Ste07}: there are $(T/2\pi)\log T + O(T)$ of height at most $T$. These facts
-use no holonomy and play no role in the algorithms; they are proved in a companion note \cite{Joh26}, together with a
-Hardy--Littlewood approximate functional equation and numerical experiments on zeros.
+The expansion $\zeta_F(s) = \sum_{k<k_0}F(k)k^{-s} + \sum_{n=0}^{\infty}a_n\zeta(s+n,k_0)$ in Hurwitz zeta values
+\cite{FV96} gives the meromorphic continuation, with simple poles at $s = 1-n$ of residue $a_n$ and the
+zeta-regularized values of divergent sums $\sum_kk^mF(k)$ at $s = -m$ \cite{Eli95,Kir02}
+(Proposition~\ref{prop:cont}). Other analytic properties of $\zeta_F$, such as its growth and zeros, play no role in the
+algorithms and are treated in a companion note \cite{Joh26}.
 
 \begin{theoremB}[Theorems~\ref{thm:complexity} and~\ref{thm:geometric}, Section~\ref{sec:dampedcost}]
 Let $F \in \RegQ$, let $s_0$ be algebraic, and let
@@ -387,19 +382,23 @@ $j \ge 0$ be fixed. Then the $j$-th Taylor (or Laurent) coefficient at $s_0$ of 
 \item $\zeta_F(s)$, and $L_F(s,\chi)$ for $\chi$ periodic with algebraic values,
 \item $\Li_F(s,z)$ and $\Phi_F(z,s,a)$, for algebraic $z$ with $0 < |z| < 1$ and algebraic $a > 0$,
 \end{enumerate}
-can be computed to $p$ bits in $O(p^{1/2}\Mul(p)\log^2 p)$ bit operations. The same holds, with the cost analysis
-only sketched and the bound $p^{3/2+o(1)}$, for
-\begin{enumerate}\setcounter{enumi}{2}
-\item $\Lambda_F(s;\tau,r)$ for algebraic $\tau > 0$, when $F = 1$ and $r \in \QQ$, $0 < r < 2$, or when $r = 1/q$
-with an integer $q \ge 1$.
-\end{enumerate}
+can be computed to $p$ bits in $O(p^{1/2}\Mul(p)\log^2 p)$ bit operations.
 \end{theoremB}
+
+For the damped zeta functions the splitting identities are proved (Propositions~\ref{prop:expsplit}
+and~\ref{prop:prodsplit}), but we only sketch the cost analysis, so we state the bound separately.
+
+\begin{claimC}[Section~\ref{sec:dampedcost}, Appendix~\ref{app:stretched}]
+Let $\tau > 0$ and $s_0$ be algebraic and $j \ge 0$ fixed. When $F = 1$ and $r \in \QQ$, $0 < r < 2$, or when
+$F \in \RegQ$ is analytic at infinity and $r = 1/q$ with an integer $q \ge 2$, the $j$-th Taylor coefficient of
+$\Lambda_F(s;\tau,r)$ at $s_0$ can be computed to $p$ bits in $p^{3/2+o(1)}$ bit operations.
+\end{claimC}
 
 Here $\Mul(p)$ is the cost of $p$-bit integer multiplication, so the bound is $p^{3/2+o(1)}$, against
 $p^{2+o(1)}$ for the classical methods (Euler--Maclaurin summation, the expansion in zeta values, and, for the
 functions with exponential decay, direct summation, which needs $p^{1+1/r+o(1)}$ for $\Lambda_F$). The proofs are by
-class: Theorem~A and its cost analysis for~(1), the twist by a complex characteristic for~(2), and the kernel of the
-damped summand for~(3). We compare these methods in the setting of $\zeta_F$ (Section~\ref{sec:complexity}): the
+class: Theorem~A and its cost analysis for~(1), and the twist by a complex characteristic for~(2); for Claim~C the
+factor $e^{-\tau k^r}$ is moved into the kernel. We compare these methods in the setting of $\zeta_F$ (Section~\ref{sec:complexity}): the
 zeta-value expansion is Theorem~A with the order of two summations exchanged, and Euler--Maclaurin summation is Poisson
 summation with a sharp instead of a smoothed cutoff. At large height and moderate precision, $\zeta_F(\sigma + i t)$ can be computed
 in $O(t^{1/2})$ operations by combining the zeta-value expansion with the Riemann--Siegel formula.
@@ -500,7 +499,7 @@ but there is no subquadratic complexity bound for transcendental $s$).
 To our knowledge it was first stated explicitly, for Dirichlet $L$-functions and with applications to
 Stieltjes constants and Bernoulli and Euler numbers, in the author's preprint \cite{Joh21}. That preprint is
 preliminary work, subsumed by the present paper, which generalizes it substantially: Theorem~B extends it from
-$F = 1$ to all $F \in \RegQ$ and to the damped functions, and Theorem~\ref{thm:uniform} proves the uniformity in $s$
+$F = 1$ to all $F \in \RegQ$ and to polylogarithms and Lerch transcendents (Claim~C adds the damped zeta functions), and Theorem~\ref{thm:uniform} proves the uniformity in $s$
 that \cite{Joh21} argued only briefly.
 
 Crandall \cite{Cra12} developed the splitting systematically for polylogarithms, Lerch transcendents and
@@ -1293,8 +1292,9 @@ values $G(k)$, $k_1 \le k < k_0$, are obtained from the expansion of $G$ at $x =
 the real axis, in quasilinear time \cite{CC90,vdH99}, so they do not affect the bound.
 
 \emph{Balancing.} The numbers of $k$-terms and dual terms needed for $p$ bits, $k_{\max}$ and $m_{\max}$ in
-\eqref{eq:counts}, satisfy $k_{\max}m_{\max} \approx qp\log2/\pi$ ($q$ the period of a twist), independently of $u_0$, and by Hardy's uncertainty principle no other smoothing weight does
-better than the Gaussian (compare Remark~\ref{rem:whyk2}). If a $k$-term costs $C_I$ and a dual term $C_J$ bit
+\eqref{eq:counts}, satisfy $k_{\max}m_{\max} \approx qp\log2/\pi$ ($q$ the period of a twist), independently of $u_0$. Hardy's uncertainty principle (a function and its Fourier transform cannot both decay
+faster than Gaussians) suggests that no other smoothing weight does essentially better than the Gaussian; we do not
+make this precise (compare Remark~\ref{rem:whyk2}). If a $k$-term costs $C_I$ and a dual term $C_J$ bit
 operations, the total is of order $\sqrt{p/u_0}\,C_I + \sqrt{pu_0}\,C_J \ge 2\sqrt{p\,C_IC_J}$, with equality at
 $u_0 = C_I/C_J$. So the method is subquadratic as soon as $C_IC_J = O(p^{3-\delta})$: the two sides need not be of
 the same kind, and one of them may cost up to $p^{2-\delta}$ per term if the other costs $\widetilde O(p)$.
@@ -1389,9 +1389,14 @@ time--space tradeoff: with a parameter $\frac13 \le \alpha \le \frac12$ it uses 
 bit operations and $O(n^{2-2\alpha}\log^{1+2\alpha}n)$ bits of memory. At $\alpha = \frac13$ it is faster than
 Corollary~\ref{cor:bernoulli}, $n^{4/3+o(1)}$, but needs $n^{4/3+o(1)}$ bits of memory. At $\alpha = \frac12$ its memory
 is quasilinear, $O(n\log^2n)$, and its time is $n^{3/2}\log^{7/2+o(1)}n$, comparable to the
-$O(n^{3/2}\log^{9/2}n)$ that Corollary~\ref{cor:bernoulli} gives with $\Mul(n) = O(n\log n)$. Harvey's algorithm is
-specific to $B_n$, computing it modulo many primes. We know of no other published subquadratic algorithm for $E_n$,
-$B_n(x)$ or $B_{n,\chi}$. With $F \ne 1$ the theorem gives, in the same way, the constant terms of $\zeta_F$ at
+$O(n^{3/2}\log^{9/2}n)$ that Corollary~\ref{cor:bernoulli} gives with $\Mul(n) = O(n\log n)$. Harvey's algorithm, which computes $B_n$ modulo many primes, has only been stated for $B_n$, although it may well
+extend to $E_n$ and $B_{n,\chi}$. We know of no other published subquadratic algorithm for $E_n$, $B_n(x)$ or
+$B_{n,\chi}$.
+
+Corollaries~\ref{cor:bernoulli} and~\ref{cor:egf} are of theoretical interest. For $B_n$ the case $F = 1$ was
+implemented in \cite{Joh21}: the subquadratic scaling is visible, barely, over the range tested, but the method was
+about $100$ times slower than the quadratic algorithms there. The regime $s_0 = 1 - n$, with $p \approx n\log_2n$ and
+large cancellation, is where the constants of the method are least favourable. With $F \ne 1$ the theorem gives, in the same way, the constant terms of $\zeta_F$ at
 $s = 1-n$, the zeta-regularized values of the divergent sums $\sum_kk^{n-1}F(k)$, at uniform cost for
 $n = O(p/\log p)$. These are convergent sums of the same type plus Bernoulli corrections \cite{Joh26}, and in general transcendental.
 
@@ -1716,9 +1721,10 @@ reduction applies to the Hurwitz-type sums $\sum_{k\ge1}F(k)(k+a)^{-s}$.
 For the damped zeta function of $F = 1$ (Proposition~\ref{prop:expsplit}) with rational $r$, the exponents $a_j$ fall into finitely many classes modulo $\ZZ$, the terms of the series for $I_k$,
 for $J_m$ at a rational $c_0$, and for $T_w$ are P-recursive in $j$ within each class (using
 $Q(a+1,x) = Q(a,x) + x^ae^{-x}/\Gamma(a+1)$ and \eqref{eq:Drec}), and $h_s$ is holonomic in $u$, so that the moments
-are holonomic in $c$ (as in Proposition~\ref{prop:dual}). The analysis of Appendix~\ref{app:cost} therefore applies:
-\emph{for algebraic $s$ and $\tau$ and rational $0 < r < 2$, $\Lambda(s;\tau,r)$ can be computed to $p$ bits in
-$p^{3/2+o(1)}$ bit operations}, against $p^{1+1/r+o(1)}$ for direct summation. The classical alternative is the
+are holonomic in $c$ (as in Proposition~\ref{prop:dual}). So the analysis of Appendix~\ref{app:cost} should apply,
+which is Claim~C for $F = 1$: $p^{3/2+o(1)}$ at algebraic $s$ and $\tau$ and rational $0 < r < 2$, against
+$p^{1+1/r+o(1)}$ for direct summation. We have checked the ingredients but not written out the bounds on the orders
+of the recurrences, the guard bits and the starting values (Appendix~\ref{app:stretched}). The classical alternative is the
 expansion $\Lambda(s;\tau,r) = M_\tau(1-s) + \sum_{n=0}^{\infty}\zeta(s-rn)(-\tau)^n/n!$ in zeta values (from a
 Mellin--Barnes integral \cite{Joh26}), which converges for $r < 1$, and for $r = 1$ when $\tau < 2\pi$; it
 costs $p^{2+o(1)}$, like \eqref{eq:zetavalue}; the details of the cost analysis are in Appendix~\ref{app:stretched}.
@@ -1731,7 +1737,7 @@ over $n$ and $j$, with terms $a_n(-\tau)^j/j!$ times incomplete gamma values or 
 sums are P-recursive in $n$ (by creative telescoping), so the outer sum can be computed by binary splitting from
 finitely many initial values, each a series summed by binary splitting, with $O(p)$ guard bits against the growth of
 unwanted solutions of the recurrence. The kernel $h_s$ is holonomic in $u$, so the dual moments are holonomic in $c$
-and the bit-burst applies. So we expect the bound $p^{3/2+o(1)}$ for $\Lambda_F$ as well, for algebraic $s$ and $\tau$ and
+and the bit-burst applies. This is the basis of Claim~C for $\Lambda_F$, for algebraic $s$ and $\tau$ and
 $F \in \RegQ$ analytic at infinity. For $q = 1$ this is $\Li_F(s, e^{-\tau})$, which
 Theorem~\ref{thm:geometric} already covers; the new cases are $q \ge 2$.
 
@@ -2279,7 +2285,12 @@ $10^7$ & $19\,194$/$382$ & $327\,183$\,s & $40\,921$\,s & $10.5$\,GB & $1\,852\,
 
 Per decade the theta splitting grows by a factor $61$ from $10^5$ to $10^6$ digits and $60$ from $10^6$ to $10^7$ (about
 $p^{1.78}$, consistent with $p^{3/2}$ times logarithmic factors), the zeta-value expansion by $227$ and $437$ (about
-$p^{2.36}$ and $p^{2.64}$; the exponent of this power-sum based implementation keeps growing with $p$). The crossover
+$p^{2.36}$ and $p^{2.64}$). The zeta-value code is not the $\widetilde O(p^2)$ variant of Section~\ref{sec:zetavalue}:
+it computes the zeta values from power sums, which is roughly cubic in $p$ but has much smaller constants, and the
+quadratic variant would only become competitive at unreasonably high precision. Part of the speedup at $10^7$ digits
+therefore reflects the growth of the baseline rather than the factor $\sqrt p$. This is itself a point in favour of
+the theta splitting: it is visibly subquadratic at the precisions actually reached, where the practical alternative is
+not even quadratic. The crossover
 lies between $10^6$ and $2\cdot10^6$ digits, as reflected in the cutoff of \texttt{arb\_const\_khinchin}. At $10^7$
 digits the theta splitting is $5.7$ times faster ($11.4$ hours of wall time against $65.4$) and needs less memory
 ($10.5$ GB against $15.3$ GB). Both methods parallelize almost perfectly: the ratio of CPU to wall time is $7.9$--$8.0$ on
@@ -2309,10 +2320,10 @@ here $N/D = 0.969914$ and $\frac1N\log q_N = 1.187005$. The proportions of the p
 $0.414921$, $0.169996$ and $0.093136$, against the Gauss--Kuzmin probabilities $\log_2\frac43 = 0.415037$, $0.169925$
 and $0.093109$.
 
-\begin{theorem}\label{thm:khrat}
-If $K = p/q$ with integers $p$ and $q > 0$, then $q \ge 10q_N + q_{N-1} > 2.587\cdot10^{5\,000\,000}$, and
-$p > 6.94\cdot10^{5\,000\,000}$.
-\end{theorem}
+\begin{proposition}\label{thm:khrat}
+Assume that $K \in I$, i.e.\ that the $10^7$ digits of Section~\ref{sec:khresults} are correct. If $K = p/q$ with
+integers $p$ and $q > 0$, then $q \ge 10q_N + q_{N-1} > 2.587\cdot10^{5\,000\,000}$, and $p > 6.94\cdot10^{5\,000\,000}$.
+\end{proposition}
 
 \begin{proof}
 Let
@@ -2331,8 +2342,9 @@ $x_{10}, \ldots, x_{26}$ or has denominator at least $q(x_9) + q(x_{10})$; in bo
 $q(x_{10}) = 10q_N + q_{N-1}$. The bound for $p$ follows from $K > 2.685$.
 \end{proof}
 
-The theorem depends, of course, on the correctness of the computed digits, which rests on the rigorous error bounds
-of Section~\ref{sec:khbounds} and on the agreement with the zeta-value computation.
+The hypothesis rests on the rigorous error bounds of Section~\ref{sec:khbounds} and on the agreement of two
+independent computations.
+% TODO(author): add commit hash of the code used and the location of the archived digits.
 
 By Khinchin's theorem \cite{Khi35}, the geometric means
 \[
@@ -2608,7 +2620,7 @@ Since $f$ has a single simple pole, the kernel parts \eqref{eq:kernelparts} are 
   \vartheta\widehat G_0 &= (u + \tfrac34)\widehat G_0 + \tfrac14u,
 \end{align*}
 with $\widehat G_1 = \Gamma(\frac34)G_1$ and $\widehat G_0 = -\Gamma(\frac54)G_0$, which have rational Taylor
-coefficients ($P$ and $Q$ continued analytically in the first argument). In all,
+coefficients ($P$ and $Q$ continued analytically in the first argument). In all, at $s = \frac12$,
 \[
   h_s(u) = e^u\bigl(Q(\tfrac14,u) - Q(-\tfrac14,u)\bigr).
 \]
@@ -3725,7 +3737,6 @@ $L$, with the size of its coefficients and with the degree of $\mathbb K$.
 \bibitem{Har10} D.~Harvey, A multimodular algorithm for computing Bernoulli numbers, Math.\ Comp.\ 79 (2010), 2361--2370.
 \bibitem{Har14} D.~Harvey, A subquadratic algorithm for computing the $n$-th Bernoulli number, Math.\ Comp.\ 83 (2014), 2471--2477.
 \bibitem{HL23} G.~H.~Hardy and J.~E.~Littlewood, The approximate functional equation in the theory of the zeta-function, with applications to the divisor-problems of Dirichlet and Piltz, Proc.\ London Math.\ Soc.\ (2) 21 (1923), 39--74.
-\bibitem{HLS24} D.~Harnett, S.~Li and T.~G.~Steele, Numerically computing finite temperature loop integrals using pySecDec, Eur.\ Phys.\ J.\ A (2024), arXiv:2401.05258.
 \bibitem{HP98} B.~Haible and T.~Papanikolaou, Fast multiprecision evaluation of series of rational numbers, Proc.\ ANTS-III, LNCS 1423, Springer, 1998, 338--350.
 \bibitem{HvdH21} D.~Harvey and J.~van der Hoeven, Integer multiplication in time $O(n\log n)$, Ann.\ of Math.\ 193 (2021), 563--617.
 \bibitem{Hla80} E.~Hlawka, Gleichverteilung und Quadratwurzelschnecke, Monatsh.\ Math.\ 89 (1980), 19--44.
@@ -3745,7 +3756,6 @@ to this paper, 2026, \url{https://github.com/fredrik-johansson/holonomic-sums}.
 \bibitem{Lav68} A.~F.~Lavrik, Approximate functional equations of Dirichlet functions, Izv.\ Akad.\ Nauk SSSR Ser.\ Mat.\ 32 (1968), 134--185.
 \bibitem{Lev36} P.~L\'evy, Sur le d\'eveloppement en fraction continue d'un nombre choisi au hasard, Compositio
 Math.\ 3 (1936), 286--303.
-\bibitem{Lev75} N.~Levinson, Almost all roots of $\zeta(s) = a$ are arbitrarily close to $\sigma = 1/2$, Proc.\ Nat.\ Acad.\ Sci.\ USA 72 (1975), 1322--1324.
 \bibitem{Loc64} G.~Lochs, Vergleich der Genauigkeit von Dezimalbruch und Kettenbruch, Abh.\ Math.\ Sem.\ Univ.\
 Hamburg 27 (1964), 142--144.
 \bibitem{Mah28} K.~Mahler, \"Uber einen Satz von Mellin, Math.\ Ann.\ 100 (1928).
@@ -3753,7 +3763,6 @@ Hamburg 27 (1964), 142--144.
 \bibitem{MS22} E.~Masroor and M.~A.~Stremler, On the topology of the atmosphere advected by a periodic array of axisymmetric thin-cored vortex rings, Regul.\ Chaotic Dyn.\ 27 (2022), 183--197.
 \bibitem{OAI26} OpenAI, Integer multiplication below $n\log n$, OpenAI Math Release preprint, September 2026, \url{https://github.com/openai/math/tree/main/preprints/Integer-multiplication-below-n-log-n-September-23-2026}.
 \bibitem{OEIS} OEIS Foundation Inc., The On-Line Encyclopedia of Integer Sequences, \url{https://oeis.org}.
-\bibitem{Pet02} F.~J.~Petriello, Kaluza--Klein effects on Higgs physics in universal extra dimensions, arXiv:hep-ph/0204067, 2002.
 \bibitem{Pet98} M.~Peter, Dirichlet series associated with polynomials, Acta Arith.\ 84 (1998), 245--278.
 \bibitem{Rie59} B.~Riemann, Ueber die Anzahl der Primzahlen unter einer gegebenen Gr\"osse, Monatsber.\ Berliner Akad., 1859.
 \bibitem{RG12} E.~B.~Rosa and F.~W.~Grover, Formulas and tables for the calculation of mutual and self-inductance, Bull.\ Bureau of Standards 8 (1912), 1--237.
@@ -3765,7 +3774,6 @@ Hamburg 27 (1964), 142--144.
 \bibitem{SS19} R.~Sch\"afke and M.~F.~Singer, Consistent systems of linear differential and difference equations,
 J.\ Eur.\ Math.\ Soc.\ 21 (2019), 2751--2792.
 \bibitem{Sta80} R.~P.~Stanley, Differentiably finite power series, European J.\ Combin.\ 1 (1980), 175--188.
-\bibitem{Ste07} J.~Steuding, \emph{Value-Distribution of $L$-Functions}, Lecture Notes in Math.\ 1877, Springer, 2007.
 \bibitem{vdH99} J.~van der Hoeven, Fast evaluation of holonomic functions, Theoret.\ Comput.\ Sci.\ 210 (1999), 199--215.
 \bibitem{vdH07} J.~van der Hoeven, Efficient accelero-summation of holonomic functions, J.\ Symbolic Comput.\ 42 (2007), 389--428.
 \bibitem{Wat44} G.~N.~Watson, \emph{A Treatise on the Theory of Bessel Functions}, 2nd ed., Cambridge University Press, 1944.
