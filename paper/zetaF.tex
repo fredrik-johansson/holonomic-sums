@@ -479,6 +479,16 @@ expansions in parameters \cite{Kat97}.
 Approximate functional equations go back to Riemann \cite{Rie59} and
 Hardy and Littlewood \cite{HL23}; the theta-function (``smoothed'') form for general $L$-functions is due to
 Lavrik \cite{Lav68} and is the basis of the algorithms of Rubinstein \cite{Rub05} and Dokchitser \cite{Dok04}.
+For $\Lambda(s) = N^{s/2}\gamma(s)L(s)$ with $\gamma$ a product of $d$ factors
+$\Gamma_{\RR}(s+\mu_j) = \pi^{-(s+\mu_j)/2}\Gamma(\frac{s+\mu_j}2)$, its weights are incomplete Mellin transforms of
+the inverse Mellin transform of $\gamma$, a Meijer $G$-function, and are therefore holonomic: incomplete gamma
+functions in degree $d = 1$ and for $\Gamma_{\RR}(s)\Gamma_{\RR}(s+1)$, and Bessel and Meijer $G$-functions in
+general. These methods are analysed by the number of terms, about $\sqrt N$ at fixed precision. As a function of
+$p$, the weights decay like $\exp(-cx^{2/d})$, so that about $\sqrt N\,p^{d/2}$ terms are needed. In degree~$1$ this
+gives $p^{3/2+o(1)}$ at algebraic $s$ (see below); from degree~$2$ on, for instance for elliptic curves, it gives
+$p^{2+o(1)}$ or more, and the coefficients $a_n$ offer nothing like the exchange of summations in Theorem~A.
+Products of functions of degree~$1$, such as Dedekind zeta functions of abelian fields, can be computed factor
+by factor.
 
 For $F = 1$ every term of the theta splitting is a single incomplete gamma value, and the method then
 gives $p^{3/2+o(1)}$ at algebraic $s$ by fast evaluation of the incomplete gamma function \cite{CC90,vdH99}.
