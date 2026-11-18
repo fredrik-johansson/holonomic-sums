@@ -727,6 +727,92 @@ irrational real $\alpha$, which is the limit $|z| \to 1$ of $\Li_1(s,z)$ and can
 (Remark~\ref{rem:twist}).
 \end{enumerate}
 
+\subsection{A worked example}\label{sec:workedexample}
+Before the general construction, here is Theorem~A for one sum, with every piece explicit. Let
+\[
+  S_A = \sum_{k=2}^{\infty}\frac2k\arctanh\frac1k = 1.35313027229593328165\ldots,
+\]
+which gives the constant $\mathcal A = \frac12\log2 + \frac12S_A$ of Table~\ref{tab:constants}
+(Section~\ref{sec:AG}). Here $S_A = \zeta_F(0)$ with $F(k) = f(1/k)$ $(k \ge 2)$ and
+$f(x) = 2x\arctanh x = \sum_{m=1}^{\infty}\frac{2}{2m-1}x^{2m}$, so $R = 1$ and $k_0 = 2$. At $s = 0$ the kernel of
+Theorem~A is an error function,
+\[
+  h(u) = \sum_{m=1}^{\infty}\frac{2}{2m-1}\,\frac{u^{m-1}}{\Gamma(m)} = \sqrt{\frac\pi u}\,\erfi\sqrt u, \qquad
+  u\,h'(u) = e^u - \tfrac12h(u),
+\]
+and termwise integration gives $\int_0^\infty e^{-k^2u}h(u)\dd u = \frac2k\arctanh\frac1k$ for $k \ge 2$. For any
+$u_0 > 0$, Theorem~A reads
+\[
+  S_A = \sum_{k=2}^{\infty}I_k + \sqrt\pi\sum_{m=1}^{\infty}J_m + M,
+\]
+with
+\begin{align*}
+  I_k &= \int_{u_0}^\infty e^{-k^2u}h(u)\dd u, &
+  J_m &= \int_0^{u_0}u^{-1/2}e^{-\pi^2m^2/u}h(u)\dd u, \\
+  M &= \int_0^{u_0}\Bigl(\frac12\sqrt{\frac\pi u} - \frac12 - e^{-u}\Bigr)h(u)\dd u .
+\end{align*}
+
+\emph{The $k$-terms.} Expanding $h$ termwise, with $x = k^2u_0$ and $Q(m,x) = e^{-x}\sum_{i<m}x^i/i!$,
+\[
+  I_k = \sum_{m=1}^{\infty}\frac{2}{2m-1}\,k^{-2m}Q(m,x) = e^{-x}\sum_{m=1}^{\infty}\frac{2}{(2m-1)k^{2m}}\sum_{i=0}^{m-1}\frac{x^i}{i!},
+\]
+a double sum whose terms satisfy first-order recurrences with small rational coefficients, so binary splitting
+computes $I_k$ to $p$ bits in quasilinear time. Equivalently, $I_k = \mathcal L(k^2)$, where the Laplace transform
+$\mathcal L(K) = \int_{u_0}^\infty e^{-Ku}h(u)\dd u$ satisfies the first-order equation
+$K\mathcal L' = -\frac12\mathcal L - u_0e^{-Ku_0}h(u_0) - e^{-(K-1)u_0}/(K-1)$.
+
+\emph{The dual terms.} Let
+\[
+  \nu_t(c) = \int_0^{u_0}u^{-t}e^{-c/u}h(u)\dd u, \qquad Y_t(c) = \int_0^{u_0}u^{-t}e^{-c/u}e^u\dd u,
+\]
+so that $J_m = \nu_{1/2}(\pi^2m^2)$. Integrating by parts and using the equation of $h$ gives, with
+$E = e^{-c/u_0}$,
+\begin{align*}
+  c\,\nu_{t+1} &= Eu_0^{1-t}h(u_0) - (\tfrac12 - t)\nu_t - Y_t, \\
+  c\,Y_{t+1} &= Eu_0^{1-t}e^{u_0} - (1-t)Y_t - Y_{t-1},
+\end{align*}
+and $\partial_c\nu_t = -\nu_{t+1}$, $\partial_cY_t = -Y_{t+1}$. So $(\nu_{1/2}, Y_{1/2}, Y_{-1/2})$ satisfies a linear
+differential system in $c$ with coefficients linear in $c$, forced by $E$, and $J_m$ is the value of a holonomic
+function at $c = \pi^2m^2$. The bit-burst algorithm computes it from starting values at a nearby rational point,
+which are series in $\erfc$ and $E$.
+
+\emph{Cost.} The $k$-terms decay like $e^{-k^2u_0}$ and the dual terms like $e^{-\pi^2m^2/u_0}$. With $u_0 = 1$, the
+eight $k$-terms $k \le 9$ and three dual terms give more than $30$ digits; for $p$ bits one needs
+$O(\sqrt p)$ terms on each side, each costing $\widetilde O(p)$, and $M$ is a single hypergeometric series in $u_0$.
+This gives $p^{3/2+o(1)}$, against $\Theta(p)$ zeta values for the classical expansion
+$S_A = \sum_{m=1}^{\infty}2(\zeta(2m)-1)/(2m-1)$. Sections~\ref{sec:splitting} and~\ref{sec:complexity} carry out
+the same steps for general $F$.
+
+\subsection{Notation}\label{sec:notation}
+Table~\ref{tab:notation} lists the notation used throughout. Symbols that occur only in one example (in
+Sections~\ref{sec:khinchin} and~\ref{sec:other}) are defined where they occur.
+
+\begin{table}[ht]
+\centering\small
+\caption{Principal notation.}
+\label{tab:notation}
+\begin{tabular}{@{}lp{0.62\textwidth}@{}}
+\toprule
+$F$, $f$, $a_n$ & summand, $F(k) = f(1/k)$ for $k \ge k_0$, $f(x) = \sum_na_nx^n$ \\
+$R$, $\rho$ & $|a_n| \le CR^n$; radius of convergence of $f$ \\
+$k_0$, $k_1$ & start of the convergent expansion; $F(k) = 0$ for $k < k_1$ (Definition~\ref{def:regular}) \\
+$\Reg$, $\RegQ$ & admissible summands; those with algebraic data (Definition~\ref{def:regular}) \\
+$\zeta_F$, $L_F$, $\Li_F$, $\Phi_F$, $\Lambda_F$ & the functions \eqref{eq:functions} \\
+$\chi$, $q$ & periodic weight and its period \\
+$s$, $s_0$ & complex variable; evaluation point \\
+$p$, $\Mul(p)$ & precision in bits; cost of $p$-bit multiplication \\
+$u_0$ & split point of the theta splitting \\
+$h_s$, $g_0$, $g_1$, $G_0$, $G_1$ & kernel and its even and odd parts \eqref{eq:kernel}, \eqref{eq:kernelparts} \\
+$I_k$, $J_m$, $M$ & $k$-terms, dual terms and main term (Theorem~\ref{thm:split}) \\
+$Q(a,x)$, $P(a,x)$ & regularized upper and lower incomplete gamma functions \\
+$\vartheta$ & Euler operator $x\,\mathrm d/\mathrm dx$ or $u\,\mathrm d/\mathrm du$ \\
+$Z_t[g](c)$, $E$, $D_a$ & dual moments, $E = e^{-c/u_0}$, starting values \eqref{eq:startvals} \\
+$k_{\max}$, $m_{\max}$ & numbers of $k$-terms and dual terms \eqref{eq:counts} \\
+$K$, $p_k$, $Z$ & Khinchin's constant, Gauss--Kuzmin probabilities, Khinchin zeta function \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 %======================================================================
 \section{Theta splitting}\label{sec:splitting}
 
@@ -779,8 +865,8 @@ $\sum_{j=0}^{r}q_j(n-j)a_{n-j} = 0$ for large $n$, with the coefficient $q_0$ of
 \begin{lemma}\label{lem:kernelhol}
 Let $f$ be annihilated by an operator satisfying (H), with coefficients in a field $\mathbb K \subset \CC$, and fix
 $s$. Then each of $G_0 = u\,g_0(u)$ and $G_1 = g_1(u)$ is annihilated by an operator with coefficients in
-$\mathbb K(s)[u]$, and for $G = G_0, G_1$ there are $r \ge 1$, $A \in \mathbb K(s)[u]^{r\times r}$ and
-$b \in \mathbb K(s)[u]^r$ such that $\mathbf G = (G, \vartheta G, \dots, \vartheta^{r-1}G)^T$ satisfies
+$\mathbb K(s)[u]$, and for $G = G_0, G_1$ there are $\ell \ge 1$, $A \in \mathbb K(s)[u]^{\ell\times\ell}$ and
+$b \in \mathbb K(s)[u]^\ell$ such that $\mathbf G = (G, \vartheta G, \dots, \vartheta^{\ell-1}G)^T$ satisfies
 \begin{equation}\label{eq:Gsys}
   \vartheta\mathbf G = A(u)\,\mathbf G + b(u).
 \end{equation}
@@ -813,7 +899,7 @@ with $\deg\widetilde Q_0 = d+r$ and $\deg\widetilde Q_j \le d+r-j$. Hence $\sum_
 polynomial, and in this operator the coefficient of the highest power $\vartheta^{d+r}$ is the constant leading
 coefficient of $\widetilde Q_0$. Dividing by it expresses $\vartheta^{d+r}G$ as a combination of
 $G, \dots, \vartheta^{d+r-1}G$ with polynomial coefficients, plus a polynomial: this is \eqref{eq:Gsys}, with a
-companion matrix. Taking $B = A_0$, $\sigma_0 = \frac s2$ gives $G_0$, and $B = A_1$, $\sigma_0 = \frac{s+1}2$ gives
+companion matrix of size $\ell = d + r$, where $r$ is the degree in $y$ of the operator of $B$ and $d$ its order. Taking $B = A_0$, $\sigma_0 = \frac s2$ gives $G_0$, and $B = A_1$, $\sigma_0 = \frac{s+1}2$ gives
 $G_1$.
 \end{proof}
 
@@ -923,7 +1009,7 @@ Write $C_t = Z_t[1]$; by \eqref{eq:ibp}, $c\,C_{t+1} = Eu_0^{1-t} - (1-t)C_t$.
 \begin{proposition}\label{prop:dual}
 Let $\mathbf G$ satisfy \eqref{eq:Gsys} with $A = \sum_{i=0}^{d}A_iu^i$ and $b = \sum_{i=0}^{e}b_iu^i$, and fix $t$.
 Let $Y(c)$ be the vector formed by $W_{t-i} = Z_{t-i}[\mathbf G](c)$ for $0 \le i \le d$, by $C_{t-i}(c)$ for
-$0 \le i \le e$, by $E(c)$, and by the $r$ numbers $E(c)\,\mathbf G(u_0)_j$. Then
+$0 \le i \le e$, by $E(c)$, and by the $\ell$ numbers $E(c)\,\mathbf G(u_0)_j$. Then
 \begin{equation}\label{eq:fuchsys}
   c\,Y'(c) = (B_0 + cB_1)\,Y(c),
 \end{equation}
@@ -2517,21 +2603,10 @@ $-\sum_{i=1}^{\infty}\zeta'(2i)$ and also
   \mathcal A = \tfrac12\log2 + \tfrac12 S_A, \qquad
   S_A = \sum_{k=2}^{\infty}\frac{2}{k}\arctanh\frac1k = \sum_{m=1}^{\infty}\frac{2(\zeta(2m)-1)}{2m-1}
 \]
-(the second form by summation by parts, Section~\ref{sec:generalize}, or from the zeta-value expansion). For $S_A$, we have
-$f(x) = 2x\arctanh x$ and $a_{2m} = \frac{2}{2m-1}$, so that
-\[
-  h_0(u) = \sum_{j=0}^{\infty}\frac{2u^j}{(2j+1)\,j!} = \sqrt{\pi/u}\,\erfi\sqrt u, \qquad \vartheta h_0 = e^u - \tfrac12h_0 .
-\]
-The dual moments $\nu_t = Z_t[h_0]$, $Y_t = Z_t[e^u]$ satisfy
-\begin{align*}
-  c\,\nu_{t+1} &= Eu_0^{1-t}h_0(u_0) - (\tfrac12 - t)\nu_t - Y_t, \\
-  c\,Y_{t+1} &= Eu_0^{1-t}e^{u_0} - (1-t)Y_t - Y_{t-1},
-\end{align*}
-a state of dimension $3$ ($\nu_t, Y_t, Y_{t-1}$) with two forcing constants, $t_0 = \frac12$. The $k$-terms are
-\[
-  I_k = e^{-x}\sum_{m=1}^{\infty} \frac{2}{2m-1}\,\frac{e_m(x)}{K^m},
-\]
-a $2\times2$ recurrence as for Khinchin's constant.
+(the second form by summation by parts, Section~\ref{sec:generalize}, or from the zeta-value expansion). The
+splitting of $S_A$ is the worked example of Section~\ref{sec:workedexample}: the kernel is
+$h_0 = \sqrt{\pi/u}\,\erfi\sqrt u$, the dual state $(\nu_t, Y_t, Y_{t-1})$ has dimension $3$ with two forcing
+constants and $t_0 = \frac12$, and the $k$-terms are a $2\times2$ recurrence as for Khinchin's constant.
 
 Next, let
 \begin{align*}
@@ -2597,7 +2672,7 @@ The spiral of Theodorus, or \emph{Quadrat\-wurzel\-schnecke}, is the polygon for
 and $1$, placed one after the other around a common vertex, so that the $k$-th vertex lies at distance $\sqrt k$ from
 it; it is named after Theodorus of Cyrene, who according to Plato proved that $\sqrt3, \dots, \sqrt{17}$ are
 irrational. The angles of the triangles are $\arctan(1/\sqrt k)$, and Hlawka \cite{Hla80} showed that the angle swept
-by the first $n-1$ triangles is $2\sqrt n + K + o(1)$. Hlawka's constant $K = -2.1577829966\ldots$ is
+by the first $n-1$ triangles is $2\sqrt n + C_{\mathrm H} + o(1)$. Hlawka's constant $C_{\mathrm H} = -2.1577829966\ldots$ is
 the regularized value $\zeta_G(0)$ of $G(k) = \arctan(1/\sqrt k)$ (Table~\ref{tab:constants}). Davis \cite{Dav93} interpolated the vertices by a smooth spiral, and its slope at the
 point $(1,0)$ is given by the \emph{constant of Theodorus}
 \[
