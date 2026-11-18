@@ -179,7 +179,7 @@ for various $F$.
 
 The functions \eqref{eq:functions} cover the familiar ways in which sums of holonomic functions arise:
 \begin{itemize}
-\item a sum $\sum_{k=1}^{\infty} F(k)$ is the value $\zeta_F(0)$;
+\item a sum $\sum_{k=1}^{\infty} F(k)$ is the value $\zeta_F(0)$, and an alternating sum $\sum_{k=1}^{\infty} (-1)^k F(k)$ is the value $L_F(0, \chi)$ where $\chi(k) = (-1)^k$;
 \item a sum $\sum_{k=1}^{\infty}(\log k)^jF(k)$ is $(-1)^j\zeta_F^{(j)}(0)$;
 \item a product $\prod_k \exp(F(k))$ is $\exp(\zeta_F(0))$;
 \item a product $\prod_k k^{F(k)}$ is $\exp(-\zeta_F'(0))$;
@@ -199,13 +199,14 @@ functions (Section~\ref{sec:twistshift});
 %(Remark~\ref{rem:puiseux}), and if its minimal polynomial has algebraic coefficients, so do its Puiseux expansions.
 
 The class $\Reg$ is large. It is closed under sums and products, and
-contains every algebraic function $A(k)$ and
-the compositions $G(A(k))$ of an algebraic function $A$ with a holonomic function $G$ that is
+contains every algebraic function $A(k)$,
+the compositions $\log A(k)$ and $\arctan A(k)$,
+and more generally $G(A(k))$ where $G$ is any holonomic function that is
 analytic or regular singular at the limit of $A$ at infinity
 such as the generalized hypergeometric function $G(z) = {}_pF_{p-1}(\ldots; z)$.
-The class is also closed under integration, and contains the periods of
-families of algebraic curves depending algebraically on $k$ such as $\log A(k)$ and $\arctan A(k)$
-and more generally complete elliptic, hyperelliptic and abelian integrals.
+The underlying class of holonomic functions is
+also closed under integration, and contains the periods of
+families of algebraic curves depending algebraically on $k$ such as complete elliptic, hyperelliptic and abelian integrals.
 %\footnote{These closure properties concern $F$ alone; the factors $z^k$ and $e^{-\tau k^r}$ of the damped functions are kept
 %apart, and for instance $\int z^xx^{-1}\dd x = \operatorname{Ei}(x\log z)$ is not of the form $z^xG(x)$ with $G$
 %regular at infinity.}
@@ -297,18 +298,20 @@ Special cases of such sums were already known to be efficiently computable. Amon
 Euler's constant $\gamma$ and closed forms involving $\pi$ can be computed
 in quasilinear time. More generally, so can every number that is the value at an algebraic point of a holonomic function
 with algebraic coefficients and initial values \cite{CC90,vdH99}, such as the integer zeta values $\zeta(3), \zeta(5),
-\dots$, polylogarithms at algebraic points, Catalan's constant and $\Gamma(\frac14)$; this includes many periods and
+\dots$, polylogarithms at algebraic points and Catalan's constant; this includes many periods and
 exponential periods in the sense of Kontsevich and Zagier \cite{KZ01}.
 The Weierstrass products of the gamma function give sums of the same kind as the series for $\gamma$,
 \[
-  \log\Gamma(1+x) = -\gamma x + \sum_{k=1}^{\infty}\Bigl(\frac xk - \log\Bigl(1+\frac xk\Bigr)\Bigr), \qquad
+  \log\Gamma(1+x) = -\gamma x + \sum_{k=1}^{\infty}\Bigl(\frac xk - \log\Bigl(1+\frac xk\Bigr)\Bigr),% \qquad
+\]
+\[
   \psi(1+x) = -\gamma + \sum_{k=1}^{\infty}\frac{x}{k(k+x)},
 \]
 and for algebraic $x$ these too can be computed in quasilinear time, from the incomplete gamma integral
 \cite{BZ10}.
 For rational $A$, the sum $\sum_k A(k)$
 reduces by partial fractions to polygamma values, and sums of logarithms or inverse trigonometric or hyperbolic
-functions of a rational function of $k$ reduce to logarithms of gamma values at algebraic points, as in (A352619)
+functions of a rational function of $k$ reduce to logarithms of gamma values at algebraic points, as in (OEIS A352619, A393668)
 %\[
 %  \sum_{k=1}^{\infty}\Bigl(\frac1k - \arctan\frac1k\Bigr) = \gamma + \arg\Gamma(1+i),
 %\]
@@ -316,28 +319,26 @@ functions of a rational function of $k$ reduce to logarithms of gamma values at 
 %  \sum_{k=2}^{\infty}\arctanh\frac1{k^2} = \frac12\log\frac{\sinh\pi}{\pi};
 %\]
 $\sum_{k=1}^{\infty} (\frac1k - \arctan(\frac1k)) = \gamma + \arg\Gamma(1+i)$ and
-(A393668)
 $\sum_{k=2}^{\infty}\arctanh(1/k^2) = \tfrac{1}{2} \log(\sinh(\pi)/\pi)$,
 all computable in quasilinear time.
-But this structure is fragile: an extra factor $\frac1k$, as in
-$\sum_k\frac1k\arctan\frac1k$, destroys it.
 
-For constants of Table~\ref{tab:constants} other than those above, and for sums of
-algebraic functions that are not rational, we know of no quasilinear
-algorithm, and no earlier subquadratic algorithm
-except the restriction of this paper's method to $F = 1$
-which is classical (see comments below in Section~\ref{sec:related}).
-
-A Weierstrass product similar to those for $\psi$ and $\log \Gamma$
-leads to the Barnes $G$-function
+On the level of summands, the structure leading to such quasilinear-time algorithms is fragile:
+an extra factor $\frac1k$, as in $\sum_k\frac1k\arctan\frac1k$, destroys it.
+To take another example, a Weierstrass product similar to those for $\psi$ and $\log \Gamma$
+gives the Barnes $G$-function
 \[
   \log G(1+x) = \frac x2\log2\pi - \frac{x + (1+\gamma)x^2}2 + \sum_{k=1}^{\infty}\Bigl(k\log\Bigl(1+\frac xk\Bigr) - x
   + \frac{x^2}{2k}\Bigr),
 \]
-whose summand is in $\Reg$, and Theorem~B below computes it in time $p^{3/2+o(1)}$ for algebraic $x$.
-We know of no quasilinear algorithm in this case, which as a special case
-would give Glaisher's constant $A$ in quasilinear time since
-$G(\frac12) = 2^{1/24}e^{1/8}\pi^{-1/4}A^{-3/2}$.
+which interpolates $G(n) = \prod_{i=0}^{n-2} i!$.
+This is computable in time $p^{3/2+o(1)}$ for algebraic $x$ by Theorem~B,
+but unlike $\psi$ and $\Gamma$ no better method is known when $x \in \Qbar \setminus \ZZ$.
+
+For constants of Table~\ref{tab:constants} other than the above exceptions, and for sums of
+algebraic functions that are not rational, we know of no quasilinear
+algorithm, and no earlier subquadratic algorithm
+except the restriction of this paper's method to $F = 1$
+which is classical (see comments below in Section~\ref{sec:related}).
 
 \subsection{Results}
 Let $F$ be analytic at infinity, $F(k) = f(1/k)$ for $k \ge k_0$, where
@@ -450,13 +451,14 @@ Eulerian polynomials $A_n(z)$ & & $\frac{z-1}{z-e^{(z-1)t}}$ & $(1-z)^{n+1}z^{-1
 \end{tabular}
 \end{table}
 
-For Khinchin's constant we develop three complete algorithms (Section~\ref{sec:khinchin}): from the derivative
-$-Z'(0)$, from the logarithmic series for $\log K\log 2$ at the beginning of this introduction, and from a
+For Khinchin's constant we develop three complete algorithms (Section~\ref{sec:khinchin}): from
+the derivative of what we call the Khinchin zeta function,
+from the logarithmic series for $\log K\log 2$ at the beginning of this introduction, and from a
 dilogarithm series of Bailey, Borwein
 and Crandall, a value of the twisted zeta function $L_G$ of the non-elementary function $G(k) = \Li_2(4/k^2)$. With the
-same machinery, the third is about $5$ times faster than the second and $19$ times faster than the first, because its
-coefficients are hypergeometric, and we discuss to what extent such rewritings generalize. With an implementation of
-the dilogarithm series in FLINT we computed $K$ to $10^7$ digits, and with a generic program several other constants of
+same machinery, the third is about $5$ times faster than the second and $19$ times faster than the first,
+and we discuss to what extent such rewritings generalize. With an implementation of
+the last series in FLINT we computed $K$ to $10^7$ digits, and with a generic program several other constants of
 Table~\ref{tab:constants} to $10^6$ digits (Section~\ref{sec:other}).
 
 \subsection{Related work}
@@ -2205,8 +2207,7 @@ dimension $12$ instead of $4$. The dilogarithm series \eqref{eq:K3} pays for its
 exponential type $4$ instead of $1$ (slightly longer $k$-series, and $k = 2$ excluded), which costs far less.
 The dilogarithm form is $4.6$ and $5.6$ times faster than the logarithmic series at $10^4$ and $10^5$
 digits. (The optimized implementation of Section~\ref{sec:khimpl} takes $88$ CPU seconds at $10^5$ digits on the
-same machine, against $234$.) Earlier, separately optimized implementations of \eqref{eq:K2} and \eqref{eq:K3} in FLINT \cite{FLINT}
-gave similar ratios, $3.9$ to $4.6$ from $10^4$ to $10^6$ digits.
+same machine, against $234$.)
 
 The first representation \eqref{eq:K1} has the simplest kernel of all, but it is the slowest, by a factor of about
 $19$ against \eqref{eq:K3}. $\log K$ is a
@@ -2225,8 +2226,8 @@ five-dimensional dual state.
 
 
 \subsection{Implementation in FLINT}\label{sec:khimpl}
-Our implementation is part of FLINT \cite{FLINT}, as the function
-\texttt{mp\_real\_const\_khinchin} of the \texttt{mp\_real} module. It uses the theta splitting above
+Our implementation is part of FLINT \cite{FLINT} version 3.7.0-dev.
+The function \texttt{arb\_const\_khinchin} uses the new theta splitting algorithm above
 $5\cdot10^6$ bits (about $1.5\cdot10^6$ digits) and an optimized zeta-value expansion \eqref{eq:zetavalue} below.
 We only sketch it; Appendix~\ref{sec:khpseudo} gives pseudocode for the algorithm at the level of a direct
 implementation.
@@ -2255,10 +2256,8 @@ in the precision times the number of threads, mostly for FFT transforms.
 \subsection{Timings and a record computation}\label{sec:khresults}
 Table~\ref{tab:khinchin} compares the theta splitting (with $u_0 = \frac1{16}$) with the zeta-value expansion in FLINT,
 both run with $8$ threads on the same machine, with an AMD Ryzen 7 PRO 5850U processor and $32$ GB of memory. The
-comparison is with a strong baseline: the zeta-value implementation in FLINT has been optimized meticulously. On the
-same machine it is $3$ times faster than the program of Ghazi \cite{Gha26}, used for the previous record, at $10^5$
-digits and $5$ times faster at $3\cdot10^5$ digits, although that program is built on FLINT as well and uses the same
-reverse Bernoulli iterator.
+comparison is with a strong baseline: the zeta-value implementation in FLINT has itself
+been optimized meticulously (it is $3$ times faster than the program of Ghazi \cite{Gha26}, used for the previous record, at $10^5$ digits, and $5$ times faster at $3\cdot10^5$ digits).
 \begin{table}[ht]
 \centering\footnotesize
 \setlength{\tabcolsep}{3.5pt}
@@ -2277,10 +2276,11 @@ $10^7$ & $19\,194$/$382$ & $327\,183$\,s & $40\,921$\,s & $10.5$\,GB & $1\,852\,
 \bottomrule
 \end{tabular}
 \end{table}
+
 Per decade the theta splitting grows by a factor $61$ from $10^5$ to $10^6$ digits and $60$ from $10^6$ to $10^7$ (about
 $p^{1.78}$, consistent with $p^{3/2}$ times logarithmic factors), the zeta-value expansion by $227$ and $437$ (about
 $p^{2.36}$ and $p^{2.64}$; the exponent of this power-sum based implementation keeps growing with $p$). The crossover
-lies between $10^6$ and $2\cdot10^6$ digits, as reflected in the cutoff of \texttt{mp\_real\_const\_khinchin}. At $10^7$
+lies between $10^6$ and $2\cdot10^6$ digits, as reflected in the cutoff of \texttt{arb\_const\_khinchin}. At $10^7$
 digits the theta splitting is $5.7$ times faster ($11.4$ hours of wall time against $65.4$) and needs less memory
 ($10.5$ GB against $15.3$ GB). Both methods parallelize almost perfectly: the ratio of CPU to wall time is $7.9$--$8.0$ on
 $8$ threads. The $10^7$-digit result of the theta splitting has error radius $1.8\cdot10^{-10\,000\,044}$, and the
@@ -2403,18 +2403,19 @@ $\sum_ke^{-\sqrt k}$ (Sections~\ref{sec:somos} and~\ref{sec:expsqrt}), we give t
 Section~\ref{sec:appcomp} reports computations of all of them to $10^6$ digits with a generic program.
 
 \subsection{The constants of Euler, Stieltjes, Stirling and Glaisher}\label{sec:stieltjes}
-Several classical constants are the constant terms in the asymptotic expansions of partial sums. Euler's constant is
-that of the harmonic numbers, $\sum_{k\le n}\frac1k = \log n + \gamma + o(1)$, and the Stieltjes constants are, by
+Several classical constants are the constant terms in the asymptotic expansions of partial sums.
+Euler's constant is that of the harmonic numbers,
+$\sum_{k\le n}\frac1k = \log n + \gamma + o(1)$, and the Stieltjes constants are, by
 Stieltjes's definition, those of the sums of $(\log k)^m/k$,
 \[
   \sum_{k=1}^{n}\frac{(\log k)^m}k = \frac{(\log n)^{m+1}}{m+1} + \gamma_m + o(1),
 \]
 with $\gamma_0 = \gamma$. Stirling's formula is the analogous statement for $\log n! = \sum_{k\le n}\log k$, with the
-constant $\log\sqrt{2\pi}$, and Glaisher's constant plays the same role for the hyperfactorials $1 \cdot 2^2 \cdots n^n$:
+constant $\log\sqrt{2\pi}$, and Glaisher's constant $A = 1.2824271291\ldots$
+plays the same role for the hyperfactorials $1 \cdot 2^2 \cdots n^n$:
 \[
-  \sum_{k=1}^{n}k\log k = \Bigl(\frac{n^2}2 + \frac n2 + \frac1{12}\Bigr)\log n - \frac{n^2}4 + \log A + o(1),
+  \sum_{k=1}^{n}k\log k = \Bigl(\frac{n^2}2 + \frac n2 + \frac1{12}\Bigr)\log n - \frac{n^2}4 + \log A + o(1).
 \]
-with $A = 1.2824271291\ldots$.
 
 In general, for $F \in \Reg$ the Euler--Maclaurin formula expands $\sum_{k\le n}F(k)$ in powers of $n$ and
 $\log n$, and, with the antiderivative of $F$ normalized to have no constant term, the constant term of this
@@ -2423,16 +2424,19 @@ of $\frac12F(n)$ and of the corrections $B_{2j}F^{(2j-1)}(n)/(2j)!$, which are e
 
 For the examples above,
 $\gamma_m = (-1)^m\CT_{s=1}\zeta^{(m)}(s)$, $\log\sqrt{2\pi} = -\zeta'(0)$ and $\log A = \frac1{12} - \zeta'(-1)$, and the generalized Glaisher constants of the products
-$\prod_{k\le n}k^{k^m}$ involve $\zeta'(-m)$. Infinite products are covered in the same way: Wallis's product
+$\prod_{k\le n}k^{k^m}$ involve $\zeta'(-m)$.
+
+Infinite products are covered in the same way: Wallis's product
 \[
   \frac\pi2 = \prod_{k=1}^{\infty}\frac{4k^2}{4k^2-1}, \qquad \log\frac\pi2 = \zeta_G(0), \quad
   G(k) = -\log\Bigl(1-\frac1{4k^2}\Bigr),
 \]
 is a value of the class, although computing $\pi$ this way would be circular, as $\pi$ enters the splitting through
-the dual points $\pi^2m^2$. Glaisher's constant is also $A = (2^{1/24}e^{1/8}\pi^{-1/4}/G(\frac12))^{2/3}$, and the
-Weierstrass product of the Barnes $G$-function at $x = -\frac12$ gives a third series for it, which, unlike the one
-below, contains $\gamma$ explicitly. Constants of this kind with $F \ne 1$ include Hlawka's constant of Table~\ref{tab:constants},
+the dual points $\pi^2m^2$. Constants of this kind with $F \ne 1$ include Hlawka's constant of Table~\ref{tab:constants},
 the constant term of $\sum_{k<n}\arctan(1/\sqrt k) = 2\sqrt n + K + o(1)$ (Section~\ref{sec:theodorus}).
+
+%with Glaisher's constant $A = (2^{1/24}e^{1/8}\pi^{-1/4}/G(\frac12))^{2/3}$
+%as a particular value.
 
 For $F = 1$ all of these are values of $\zeta$ and its derivatives: $\gamma$ can be computed in quasilinear time
 \cite{BM80}, and the $\gamma_m$ and $\zeta'(-m)$ in time $p^{3/2+o(1)}$ by Theorem~\ref{thm:complexity} with $F = 1$
