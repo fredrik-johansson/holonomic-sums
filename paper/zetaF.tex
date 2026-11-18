@@ -125,7 +125,11 @@ as demonstrated with several examples.
 The starting point is the familiar device of viewing any infinite sum
 as a Dirichlet series.
 In general, let $\Reg$ be the class of sequences $F$ that for large indices
-agree with a holonomic function regular at infinity (Definition~\ref{def:regular}). To $F \in \Reg$ we attach the following functions:
+agree with a holonomic function regular at infinity (Definition~\ref{def:regular}), and let $\RegQ \subset \Reg$ be
+the subclass in which the differential equation and the expansion of $F$ at infinity have algebraic coefficients.
+This is a condition on the data describing $F$, not on $F$ itself, which need not be an algebraic function:
+$\log(1+\frac1k)$ is in $\RegQ$, but $\log(1+\frac{\pi}{k})$ is not. To $F \in \Reg$ we attach the following
+functions:
 \begin{equation}\label{eq:functions}
 \begin{aligned}
   \zeta_F(s) &= \sum_{k=1}^{\infty}F(k)\,k^{-s} &&\text{(zeta function)}, \\
@@ -147,38 +151,74 @@ The periodic weight $\chi$ and the factors $z^k$
 and $e^{-\tau k^r}$ are kept separate from $F$ because they are not regular at infinity
 (Section~\ref{sec:defs}).
 
-Each function in \eqref{eq:functions} is, as a function of $s$, a deformation of the corresponding classical function:
-$\zeta_F$ and $L_F$ are meromorphic in $\CC$, and $\Li_F(s,z)$, $\Phi_F$ and $\Lambda_F$ are entire in $s$.
-We show that Riemann's classical theta splitting method for computing
-the analytic continuation of $\zeta$ extends to all of them
-and that holonomy of $F$ makes this fast (Theorem~B below).
+Sums of holonomic functions are values and derivatives of these functions; for instance $\sum_kF(k) = \zeta_F(0)$
+and $\sum_k(\log k)F(k) = -\zeta_F'(0)$ (Section~\ref{sec:sums}). We show that they can be computed in subquadratic
+time, by an extension of Riemann's theta splitting of $\zeta(s)$, the formula behind his second proof of the
+functional equation.
 
-Euler's constant is of course the constant term
-of $\zeta(s)$ at its pole $s = 1$, and by
-\eqref{eq:twoconstants} also expressible as $\zeta_{F_1}(0)$ with $F_1(k) = \tfrac{1}{k} - \log(1+\tfrac{1}{k})$.
-We will similarly show several ways to
-express Khinchin's constant $K$ (and many other constants) as a particular value of $\zeta_F$
-for various $F$.
+\subsection{Main results}
+Let $F$ be analytic at infinity, $F(k) = f(1/k)$ for $k \ge k_0$, where
+$f(x) = \sum_{n=0}^{\infty} a_nx^n$ has radius of convergence $\rho > 1/k_0$. The following formula needs only this;
+holonomy of $f$ is what makes its pieces computable (Theorem~B).
 
-%: by , all of these functions
-%can be computed to $p$ bits in $p^{3/2+o(1)}$ bit operations at special points.
+\begin{theoremA}[exact approximate functional equation; Theorem~\ref{thm:split}]
+For every $u_0 > 0$ and every $s \in \CC$ except the poles,
+\[
+  \zeta_F(s) = \sum_{k=1}^{k_0-1}F(k)k^{-s} + \sum_{k=k_0}^{\infty}\mathcal{L}_s(k^2)
+  + \sqrt\pi\sum_{m=1}^{\infty}\mathcal{D}_s(\pi^2m^2) + M(s),
+\]
+where $\mathcal{L}_s(K) = \int_{u_0}^\infty e^{-Ku}h_s(u)\dd u$ and
+$\mathcal{D}_s(c) = \int_0^{u_0}u^{-1/2}e^{-c/u}h_s(u)\dd u$ are entire in $s$ (and holonomic in $K$ and $c$ when
+moreover $F \in \Reg$),
+$h_s(u) = \sum_{n=0}^{\infty} a_n u^{(s+n)/2-1}/\Gamma(\frac{s+n}{2})$ is a Borel-type transform of $f$, and $M$ is an
+explicit series of elementary functions and incomplete gamma functions carrying all the poles.
+\end{theoremA}
 
-%and all convergent sums
-%as the zeta-regularized values of divergent ones, can be computed to $p$ bits in $p^{3/2+o(1)}$ bit operations.
+For $f = 1$, $k_0 = 1$ and $u_0 = \pi$ this is Riemann's formula, and both sides are the same function: the
+functional equation. In general the two sides differ, but both are rapidly convergent: the $k$-terms decay
+like $e^{-k^2u_0}$ and the dual terms like $e^{-\pi^2m^2/u_0}$. Formally the dual side is the Poisson dual
+$\sum_{m\in\ZZ} \widehat G_s(m)$ of $G_s(x) = |x|^{-s}F(|x|)$, and $u_0$ is a smoothing parameter
+(Remark~\ref{rem:poisson}). The other functions have splittings of the same shape. For $\Li_F(s,z)$ and $\Phi_F$ the
+factor $z^k = e^{2\pi i\alpha k}$ is a twist by a complex characteristic: the dual points become
+$\pi^2(n-\alpha)^2$, complex numbers, and for $F = 1$ the formula is Crandall's \cite{Cra12}
+(Theorem~\ref{thm:geometric}). For $\Lambda_F$ the factor $e^{-\tau k^r}$ is moved into the kernel $h_s$, which
+becomes an entire function of $u^{-r/2}$ (Propositions~\ref{prop:expsplit} and~\ref{prop:prodsplit}).
 
+\begin{theoremB}[Theorems~\ref{thm:complexity} and~\ref{thm:geometric}, Section~\ref{sec:dampedcost}]
+Let $F \in \RegQ$, let $s_0$ be algebraic, and let
+$j \ge 0$ be fixed. Then the $j$-th Taylor (or Laurent) coefficient at $s_0$ of each of
+\begin{enumerate}
+\item $\zeta_F(s)$, and $L_F(s,\chi)$ for $\chi$ periodic with algebraic values,
+\item $\Li_F(s,z)$ and $\Phi_F(z,s,a)$, for algebraic $z$ with $0 < |z| < 1$ and algebraic $a > 0$,
+\end{enumerate}
+can be computed to $p$ bits in $O(p^{1/2}\Mul(p)\log^2 p)$ bit operations.
+\end{theoremB}
 
-% $\sum_kA(k)$, $\sum_kA(k)(\log k)^j$, $\sum_kA(k)z^k$ and $\sum_k\log A(k)$ with $A$ algebraic over $\Qbar(k)$, as well
+For the damped zeta functions the splitting identities are proved (Propositions~\ref{prop:expsplit}
+and~\ref{prop:prodsplit}), but we only sketch the cost analysis, so we state that bound separately.
 
-%\begin{remark}
-%The factor $k^{-s}$ could be absorbed into $F$, but $s$ is the parameter intrinsic to the class: multiplying by
-%$k^{-s}$ only shifts the exponents at infinity, the poles of $\zeta_F$ record the expansion of $F$ at infinity
-%(Proposition~\ref{prop:cont}), and the cost bound of our method is
-%uniform in~$s$ (Theorem~\ref{thm:uniform}) specifically for parametrizations of this form.
-%\end{remark}
+\begin{claimC}[Section~\ref{sec:dampedcost}, Appendix~\ref{app:stretched}]
+Let $\tau > 0$ and $s_0$ be algebraic and $j \ge 0$ fixed. When $F = 1$ and $r \in \QQ$, $0 < r < 2$, or when
+$F \in \RegQ$ is analytic at infinity and $r = 1/q$ with an integer $q \ge 2$, the $j$-th Taylor coefficient of
+$\Lambda_F(s;\tau,r)$ at $s_0$ can be computed to $p$ bits in $p^{3/2+o(1)}$ bit operations.
+\end{claimC}
 
-\subsection{Sums in the class}
+Here $\Mul(p)$ is the cost of $p$-bit integer multiplication, so the bound is $p^{3/2+o(1)}$, against
+$p^{2+o(1)}$ for the classical methods (Euler--Maclaurin summation, the expansion in zeta values, and, for the
+functions with exponential decay, direct summation, which needs $p^{1+1/r+o(1)}$ for $\Lambda_F$). The proofs are by class: Theorem~A and its cost analysis for~(1), and the twist by a complex characteristic for~(2); for Claim~C the
+factor $e^{-\tau k^r}$ is moved into the kernel.
 
-The functions \eqref{eq:functions} cover the familiar ways in which sums of holonomic functions arise:
+The expansion $\zeta_F(s) = \sum_{k<k_0}F(k)k^{-s} + \sum_{n=0}^{\infty}a_n\zeta(s+n,k_0)$ in Hurwitz zeta values
+\cite{FV96} gives the meromorphic continuation, with simple poles at $s = 1-n$ of residue $a_n$ and the
+zeta-regularized values of divergent sums $\sum_kk^mF(k)$ at $s = -m$ \cite{Eli95,Kir02}
+(Proposition~\ref{prop:cont}). Other analytic properties of $\zeta_F$, such as its growth and zeros, play no role in the
+algorithms and are treated in a companion note \cite{Joh26}.
+
+\subsection{Sums in the class}\label{sec:sums}
+
+Euler's constant is the constant term of $\zeta(s)$ at its pole $s = 1$, and by \eqref{eq:twoconstants} also
+$\zeta_{F_1}(0)$ with $F_1(k) = \frac1k - \log(1+\frac1k)$; we will similarly express Khinchin's constant, and many other
+constants, as values of $\zeta_F$ for various $F$. The functions \eqref{eq:functions} cover the familiar ways in which sums of holonomic functions arise:
 \begin{itemize}
 \item a sum $\sum_{k=1}^{\infty} F(k)$ is the value $\zeta_F(0)$, and an alternating sum $\sum_{k=1}^{\infty} (-1)^k F(k)$ is the value $L_F(0, \chi)$ where $\chi(k) = (-1)^k$;
 \item a sum $\sum_{k=1}^{\infty}(\log k)^jF(k)$ is $(-1)^j\zeta_F^{(j)}(0)$;
@@ -193,12 +233,6 @@ functions (Section~\ref{sec:twistshift});
 \item summands with stretched-exponential decay, such as $e^{-\sqrt k}$, are values of damped zeta functions.
 \end{itemize}
 
-%an algebraic function $A(k)$
-%5satisfies a linear
-%differential equation in $k$ whose singular points are all regular, so every branch that is analytic on an interval
-%$(R,\infty)$ is regular at infinity, with a convergent Puiseux expansion in powers of $k^{-1/q}$
-%(Remark~\ref{rem:puiseux}), and if its minimal polynomial has algebraic coefficients, so do its Puiseux expansions.
-
 The class $\Reg$ is large. It is closed under sums and products, and
 contains every algebraic function $A(k)$,
 the compositions $\log A(k)$ and $\arctan A(k)$,
@@ -208,22 +242,12 @@ such as the generalized hypergeometric function $G(z) = {}_pF_{p-1}(\ldots; z)$.
 The underlying class of holonomic functions is
 also closed under integration, and contains the periods of
 families of algebraic curves depending algebraically on $k$ such as complete elliptic, hyperelliptic and abelian integrals.
-%\footnote{These closure properties concern $F$ alone; the factors $z^k$ and $e^{-\tau k^r}$ of the damped functions are kept
-%apart, and for instance $\int z^xx^{-1}\dd x = \operatorname{Ei}(x\log z)$ is not of the form $z^xG(x)$ with $G$
-%regular at infinity.}
 
 Table~\ref{tab:constants} lists constants from classical analysis, number theory and mathematical physics expressed in
 this way, including examples from the tables of Flajolet and Vardi~\cite{FV96} and of Finch~\cite{Fin03},
-Sloane's OEIS~\cite{OEIS}, and other sources.
-
-By Theorem~B below, all convergent sums of this form,
-as well as the zeta-regularized values of divergent ones (analytically continued with respect to~$s$),
-can be computed to $p$ bits in $p^{3/2+o(1)}$ bit operations when $s$ is algebraic
-and $F \in \RegQ$, the subclass of $\Reg$ in which the differential equation and the expansion of $F$ at infinity
-have algebraic coefficients. This is a condition on the data describing $F$, not on $F$ itself, which need not be
-an algebraic function: $\log(1+\frac1k)$ is in $\RegQ$ (however, $\log(1+\tfrac{\pi}{k})$ is not).
-
-%$\sum_k A(k)$, $\sum_kA(k)(\log k)^j$, $\sum_kA(k)z^k$ and $\sum_k\log A(k)$ with $A$ algebraic over $\Qbar(k)$, as well
+Sloane's OEIS~\cite{OEIS}, and other sources. By Theorem~B, all of them, and in general all convergent sums of this form and the
+zeta-regularized values of divergent ones, can be computed to $p$ bits in $p^{3/2+o(1)}$ bit operations when $s$ is
+algebraic and $F \in \RegQ$.
 
 \begin{table}[p]
 \centering\footnotesize
@@ -341,64 +365,9 @@ algorithm, and no earlier subquadratic algorithm
 except the restriction of this paper's method to $F = 1$
 which is classical (see comments below in Section~\ref{sec:related}).
 
-\subsection{Results}
-Let $F$ be analytic at infinity, $F(k) = f(1/k)$ for $k \ge k_0$, where
-$f(x) = \sum_{n=0}^{\infty} a_nx^n$ has radius of convergence $\rho > 1/k_0$. Holonomy of $f$ is what makes the
-pieces of the following formula computable (Theorem~B); the formula itself needs only analyticity.
+\subsection{Further results}
 
-\begin{theoremA}[exact approximate functional equation; Theorem~\ref{thm:split}]
-For every $u_0 > 0$ and every $s \in \CC$ except the poles,
-\[
-  \zeta_F(s) = \sum_{k=1}^{k_0-1}F(k)k^{-s} + \sum_{k=k_0}^{\infty}\mathcal{L}_s(k^2)
-  + \sqrt\pi\sum_{m=1}^{\infty}\mathcal{D}_s(\pi^2m^2) + M(s),
-\]
-where $\mathcal{L}_s(K) = \int_{u_0}^\infty e^{-Ku}h_s(u)\dd u$ and
-$\mathcal{D}_s(c) = \int_0^{u_0}u^{-1/2}e^{-c/u}h_s(u)\dd u$ are entire in $s$ (and holonomic in $K$ and $c$ when
-moreover $F \in \Reg$),
-$h_s(u) = \sum_{n=0}^{\infty} a_n u^{(s+n)/2-1}/\Gamma(\frac{s+n}{2})$ is a Borel-type transform of $f$, and $M$ is an
-explicit series of elementary functions and incomplete gamma functions carrying all the poles.
-\end{theoremA}
-
-For $f = 1$, $k_0 = 1$ and $u_0 = \pi$ this is Riemann's formula, and both sides are the same function: the
-functional equation. In general the two sides differ, but both are rapidly convergent: the $k$-terms decay
-like $e^{-k^2u_0}$ and the dual terms like $e^{-\pi^2m^2/u_0}$. Formally the dual side is the Poisson dual
-$\sum_{m\in\ZZ} \widehat G_s(m)$ of $G_s(x) = |x|^{-s}F(|x|)$, and $u_0$ is a smoothing parameter
-(Remark~\ref{rem:poisson}). The other functions have splittings of the same shape. For $\Li_F(s,z)$ and $\Phi_F$ the
-factor $z^k = e^{2\pi i\alpha k}$ is a twist by a complex characteristic: the dual points become
-$\pi^2(n-\alpha)^2$, complex numbers, and for $F = 1$ the formula is Crandall's \cite{Cra12}
-(Theorem~\ref{thm:geometric}). For $\Lambda_F$ the factor $e^{-\tau k^r}$ is moved into the kernel $h_s$, which
-becomes an entire function of $u^{-r/2}$ (Propositions~\ref{prop:expsplit} and~\ref{prop:prodsplit}).
-
-The expansion $\zeta_F(s) = \sum_{k<k_0}F(k)k^{-s} + \sum_{n=0}^{\infty}a_n\zeta(s+n,k_0)$ in Hurwitz zeta values
-\cite{FV96} gives the meromorphic continuation, with simple poles at $s = 1-n$ of residue $a_n$ and the
-zeta-regularized values of divergent sums $\sum_kk^mF(k)$ at $s = -m$ \cite{Eli95,Kir02}
-(Proposition~\ref{prop:cont}). Other analytic properties of $\zeta_F$, such as its growth and zeros, play no role in the
-algorithms and are treated in a companion note \cite{Joh26}.
-
-\begin{theoremB}[Theorems~\ref{thm:complexity} and~\ref{thm:geometric}, Section~\ref{sec:dampedcost}]
-Let $F \in \RegQ$, let $s_0$ be algebraic, and let
-$j \ge 0$ be fixed. Then the $j$-th Taylor (or Laurent) coefficient at $s_0$ of each of
-\begin{enumerate}
-\item $\zeta_F(s)$, and $L_F(s,\chi)$ for $\chi$ periodic with algebraic values,
-\item $\Li_F(s,z)$ and $\Phi_F(z,s,a)$, for algebraic $z$ with $0 < |z| < 1$ and algebraic $a > 0$,
-\end{enumerate}
-can be computed to $p$ bits in $O(p^{1/2}\Mul(p)\log^2 p)$ bit operations.
-\end{theoremB}
-
-For the damped zeta functions the splitting identities are proved (Propositions~\ref{prop:expsplit}
-and~\ref{prop:prodsplit}), but we only sketch the cost analysis, so we state the bound separately.
-
-\begin{claimC}[Section~\ref{sec:dampedcost}, Appendix~\ref{app:stretched}]
-Let $\tau > 0$ and $s_0$ be algebraic and $j \ge 0$ fixed. When $F = 1$ and $r \in \QQ$, $0 < r < 2$, or when
-$F \in \RegQ$ is analytic at infinity and $r = 1/q$ with an integer $q \ge 2$, the $j$-th Taylor coefficient of
-$\Lambda_F(s;\tau,r)$ at $s_0$ can be computed to $p$ bits in $p^{3/2+o(1)}$ bit operations.
-\end{claimC}
-
-Here $\Mul(p)$ is the cost of $p$-bit integer multiplication, so the bound is $p^{3/2+o(1)}$, against
-$p^{2+o(1)}$ for the classical methods (Euler--Maclaurin summation, the expansion in zeta values, and, for the
-functions with exponential decay, direct summation, which needs $p^{1+1/r+o(1)}$ for $\Lambda_F$). The proofs are by
-class: Theorem~A and its cost analysis for~(1), and the twist by a complex characteristic for~(2); for Claim~C the
-factor $e^{-\tau k^r}$ is moved into the kernel. We compare these methods in the setting of $\zeta_F$ (Section~\ref{sec:complexity}): the
+We compare the theta splitting with the classical methods in the setting of $\zeta_F$ (Section~\ref{sec:complexity}): the
 zeta-value expansion is Theorem~A with the order of two summations exchanged, and Euler--Maclaurin summation is Poisson
 summation with a sharp instead of a smoothed cutoff. At large height and moderate precision, $\zeta_F(\sigma + i t)$ can be computed
 in $O(t^{1/2})$ operations by combining the zeta-value expansion with the Riemann--Siegel formula.
@@ -413,42 +382,6 @@ exponential generating function that is rational in $e^{\lambda t}$, subject to 
 (Corollaries~\ref{cor:bernoulli} and~\ref{cor:egf}, Table~\ref{tab:sequences}). For the Bernoulli numbers this matches
 Harvey's algorithm \cite{Har14} in its quasilinear-memory setting. For the others we know of no earlier subquadratic
 algorithm, apart from \cite{Joh21} for the Euler numbers.
-
-\begin{table}[t]
-\centering\footnotesize
-\renewcommand{\arraystretch}{1.25}\setlength{\tabcolsep}{4pt}
-\caption{Sequences that can be computed exactly in $n^{3/2+o(1)}$ bit operations and $O(n\log n)$ bits of memory
-(Corollaries~\ref{cor:bernoulli} and~\ref{cor:egf}), with their exponential generating functions and expressions as
-special values. $x$, $z$ rational and $\chi$ of period $f$ are fixed; $\beta(s) = L(s,\chi_{-4})$,
-$\eta(s) = (1-2^{1-s})\zeta(s)$; $E_n(x)$ are the Euler polynomials. The identities with $\Li_{-n}$ hold for $n \ge 1$.
-Above the rule only $\zeta$ and Dirichlet $L$-functions occur; below it, polylogarithms inside the unit
-disk.}
-\label{tab:sequences}
-\begin{tabular}{llll}
-\toprule
-sequence & OEIS & e.g.f. & value \\
-\midrule
-Bernoulli $B_n$ & A027641/2 & $\frac{t}{e^t-1}$ & $-n\zeta(1-n)$ \\
-Bernoulli polynomials $B_n(x)$ & & $\frac{te^{xt}}{e^t-1}$ & $-n\zeta(1-n,x)$ \\
-generalized Bernoulli $B_{n,\chi}$ & & $\sum_{a=1}^{f}\frac{\chi(a)te^{at}}{e^{ft}-1}$ & $-nL(1-n,\chi)$ \\
-Euler (secant) $|E_{2n}|$ & A000364 & $\sec t$ & $2|\beta(-2n)|$ \\
-tangent $T_{2n-1}$ & A000182 & $\tan t$ & $2^{2n}(2^{2n}-1)|\zeta(1-2n)|$ \\
-Euler zigzag $A_n$ & A000111 & $\sec t + \tan t$ & $|E_n|$ or $T_n$ \\
-Genocchi $G_{2n}$ & A110501 & $t\tan\frac t2$ & $4n|\eta(1-2n)|$ \\
-Springer $S_n$ & A001586 & $\frac1{\cos t - \sin t}$ & $4^n|E_n(\frac14)|$ \\
-Glaisher's $G$ & A002111 & $\frac{3t}{2+4\cos t}$ & $(-1)^{n+1}3^{2n+1}B_{2n+1}(\frac13)$ \\
-Glaisher's $H'$ & A002114 & $\frac1{2(2\cos t - 1)}$ & $\frac12 3^{2n}|E_{2n}(\frac13)|$ \\
-\midrule
-Fubini (ordered Bell) & A000670 & $\frac1{2-e^t}$ & $\frac12\Li_{-n}(\frac12)$ \\
-necklaces of partitions & A000629 & $\frac{e^t}{2-e^t}$ & $\Li_{-n}(\frac12)$ \\
-generalized weak orders & A004123 & $\frac1{3-2e^t}$ & $\frac13\Li_{-n}(\frac23)$ \\
-$\sum_k3^kk!\,S(n,k)$ & A032033 & $\frac1{4-3e^t}$ & $\frac14\Li_{-n}(\frac34)$ \\
-ord.\ partitions, odd blocks & A006154 & $\frac1{1-\sinh t}$ & $\frac{\Li_{-n}(\sqrt2-1) + (-1)^n\Li_{-n}(1-\sqrt2)}{\sqrt2}$ \\
-ord.\ partitions, even blocks & A094088 & $\frac1{2-\cosh t}$ & $\frac2{\sqrt3}\Li_{-2n}(2-\sqrt3)$ \\
-Eulerian polynomials $A_n(z)$ & & $\frac{z-1}{z-e^{(z-1)t}}$ & $(1-z)^{n+1}z^{-1}\Li_{-n}(z)$ \\
-\bottomrule
-\end{tabular}
-\end{table}
 
 For Khinchin's constant we develop three complete algorithms (Section~\ref{sec:khinchin}): from
 the derivative of what we call the Khinchin zeta function,
@@ -1372,8 +1305,32 @@ $j \ge 0$ be fixed. Then the $j$-th coefficient of the Laurent expansion of $L_F
 $p$ bits in $O(p^{1/2}\Mul(p)\log^2 p)$ bit operations.
 \end{theorem}
 
-The proof, a cost analysis of each piece of Theorem~\ref{thm:split}, is in Appendix~\ref{app:cost}. The splitting
-is applied to the tail $L_F^{\ge k_0}$ with $k_0 > R$. If $F(k) = G(k)$ $(k \ge k_1)$ with $k_1 < k_0$, the finitely many
+The proof is a cost analysis of each piece of Theorem~\ref{thm:split}, given in Appendix~\ref{app:cost} and
+summarized in Table~\ref{tab:pieces}. After a reduction to $f$ analytic at $0$ and $\chi$ even
+(Lemma~\ref{lem:reduction}, Remark~\ref{rem:twist}), each of the $O(\sqrt p)$ pieces is a series with P-recursive
+terms and $O(\log p)$-bit coefficients, or the value of a fixed holonomic system at a point with $O(\log p)$ bits, and
+so costs $O(\Mul(p)\log^2p)$; the derivatives in $s$ are obtained by the same computations over truncated power series
+in $s - s_0$.
+
+\begin{table}[ht]
+\centering\footnotesize
+\caption{The pieces of Theorem~\ref{thm:split} in the proof of Theorem~\ref{thm:complexity}; each costs
+$O(\Mul(p)\log^2p)$ bit operations.}
+\label{tab:pieces}
+\begin{tabular}{@{}llll@{}}
+\toprule
+piece & number & form & tool \\
+\midrule
+$k$-terms $I_k$ & $O(\sqrt p)$ & double series \eqref{eq:Ik} & binary splitting \\
+incomplete gamma & $O(\sqrt p)$ & hypergeometric series & binary splitting \\
+dual terms $J_m$ & $O(\sqrt p)$ & value of $cY' = (B_0 + cB_1)Y$ at $\pi^2m^2$ & bit-burst \\
+starting values $Y(c_0)$ & $O(\sqrt p)$ & series \eqref{eq:startvals} & binary splitting \\
+main term $M$ & $1$ & series in $n$ & binary splitting \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The splitting is applied to the tail $L_F^{\ge k_0}$ with $k_0 > R$. If $F(k) = G(k)$ $(k \ge k_1)$ with $k_1 < k_0$, the finitely many
 values $G(k)$, $k_1 \le k < k_0$, are obtained from the expansion of $G$ at $x = k_0$ by analytic continuation along
 the real axis, in quasilinear time \cite{CC90,vdH99}, so they do not affect the bound.
 
@@ -1518,7 +1475,43 @@ coefficient. With $N = |N_{\mathbb K/\QQ}(Q(1))|$ we get
 $d^{\,n}N^{n+1}a_n \in \mathcal O_{\mathbb K} \cap \QQ = \ZZ$. So $p = n\log_2n + O(n)$ bits determine $a_n$.
 \end{proof}
 
-Table~\ref{tab:sequences} in the introduction lists integer sequences covered by
+\begin{table}[t]
+\centering\footnotesize
+\renewcommand{\arraystretch}{1.25}\setlength{\tabcolsep}{4pt}
+\caption{Sequences that can be computed exactly in $n^{3/2+o(1)}$ bit operations and $O(n\log n)$ bits of memory
+(Corollaries~\ref{cor:bernoulli} and~\ref{cor:egf}), with their exponential generating functions and expressions as
+special values. $x$, $z$ rational and $\chi$ of period $f$ are fixed; $\beta(s) = L(s,\chi_{-4})$,
+$\eta(s) = (1-2^{1-s})\zeta(s)$; $E_n(x)$ are the Euler polynomials. The identities with $\Li_{-n}$ hold for $n \ge 1$.
+Above the rule only $\zeta$ and Dirichlet $L$-functions occur; below it, polylogarithms inside the unit
+disk.}
+\label{tab:sequences}
+\begin{tabular}{llll}
+\toprule
+sequence & OEIS & e.g.f. & value \\
+\midrule
+Bernoulli $B_n$ & A027641/2 & $\frac{t}{e^t-1}$ & $-n\zeta(1-n)$ \\
+Bernoulli polynomials $B_n(x)$ & & $\frac{te^{xt}}{e^t-1}$ & $-n\zeta(1-n,x)$ \\
+generalized Bernoulli $B_{n,\chi}$ & & $\sum_{a=1}^{f}\frac{\chi(a)te^{at}}{e^{ft}-1}$ & $-nL(1-n,\chi)$ \\
+Euler (secant) $|E_{2n}|$ & A000364 & $\sec t$ & $2|\beta(-2n)|$ \\
+tangent $T_{2n-1}$ & A000182 & $\tan t$ & $2^{2n}(2^{2n}-1)|\zeta(1-2n)|$ \\
+Euler zigzag $A_n$ & A000111 & $\sec t + \tan t$ & $|E_n|$ or $T_n$ \\
+Genocchi $G_{2n}$ & A110501 & $t\tan\frac t2$ & $4n|\eta(1-2n)|$ \\
+Springer $S_n$ & A001586 & $\frac1{\cos t - \sin t}$ & $4^n|E_n(\frac14)|$ \\
+Glaisher's $G$ & A002111 & $\frac{3t}{2+4\cos t}$ & $(-1)^{n+1}3^{2n+1}B_{2n+1}(\frac13)$ \\
+Glaisher's $H'$ & A002114 & $\frac1{2(2\cos t - 1)}$ & $\frac12 3^{2n}|E_{2n}(\frac13)|$ \\
+\midrule
+Fubini (ordered Bell) & A000670 & $\frac1{2-e^t}$ & $\frac12\Li_{-n}(\frac12)$ \\
+necklaces of partitions & A000629 & $\frac{e^t}{2-e^t}$ & $\Li_{-n}(\frac12)$ \\
+generalized weak orders & A004123 & $\frac1{3-2e^t}$ & $\frac13\Li_{-n}(\frac23)$ \\
+$\sum_k3^kk!\,S(n,k)$ & A032033 & $\frac1{4-3e^t}$ & $\frac14\Li_{-n}(\frac34)$ \\
+ord.\ partitions, odd blocks & A006154 & $\frac1{1-\sinh t}$ & $\frac{\Li_{-n}(\sqrt2-1) + (-1)^n\Li_{-n}(1-\sqrt2)}{\sqrt2}$ \\
+ord.\ partitions, even blocks & A094088 & $\frac1{2-\cosh t}$ & $\frac2{\sqrt3}\Li_{-2n}(2-\sqrt3)$ \\
+Eulerian polynomials $A_n(z)$ & & $\frac{z-1}{z-e^{(z-1)t}}$ & $(1-z)^{n+1}z^{-1}\Li_{-n}(z)$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:sequences} lists integer sequences covered by
 Corollaries~\ref{cor:bernoulli} and~\ref{cor:egf}. Those above the rule have poles only at roots of unity. They need only the case $F = 1$ of Theorem~\ref{thm:uniform}, that is, Dirichlet $L$-functions and Hurwitz zeta
 values at rational parameters. The others need polylogarithms $\Li_{-n}(z)$ at fixed algebraic $z$ inside the unit
 disk. Some sequences are not of this form. The Bell numbers $\sum_kk^n/(e\,k!)$ have a summand $1/k!$ that is not
