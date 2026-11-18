@@ -110,7 +110,7 @@ notoriously difficult to calculate to high precision''.
 In this work, we show that both sums \eqref{eq:twoconstants} and many others
 belong to a common class which can be computed in subquadratic time.
 The method is practical for computing millions of digits,
-as verified by implementing several examples.
+as demonstrated by implementing several examples.
 
 \subsection{Zeta functions of holonomic functions}
 
@@ -141,7 +141,7 @@ and $e^{-\tau k^r}$ are kept separate from $F$ because they are not regular at i
 
 Each function in \eqref{eq:functions} is, as a function of $s$, a deformation of the corresponding classical function:
 $\zeta_F$ and $L_F$ are meromorphic in $\CC$, and $\Li_F(s,z)$, $\Phi_F$ and $\Lambda_F$ are entire in $s$.
-We show that Riemann's classical theta-function method for computing
+We show that Riemann's classical theta splitting method for computing
 the analytic continuation of $\zeta$ extends to all of them
 and that holonomy of $F$ makes this fast (Theorem~B below).
 
@@ -191,7 +191,7 @@ functions (Section~\ref{sec:twistshift});
 %$(R,\infty)$ is regular at infinity, with a convergent Puiseux expansion in powers of $k^{-1/q}$
 %(Remark~\ref{rem:puiseux}), and if its minimal polynomial has algebraic coefficients, so do its Puiseux expansions.
 
-The class of summands $F$ is large. It is closed under sums and products, and
+The class of admissible sequences $F$ is large. It is closed under sums and products, and
 contains every algebraic function $A(k)$ and
 the compositions $G(A(k))$ of an algebraic function $A$ with a holonomic function $G$ that is
 analytic or regular singular at the limit of $A$ at infinity
@@ -199,9 +199,9 @@ such as the generalized hypergeometric function $G(z) = {}_pF_{p-1}(\ldots; z)$.
 The class is also closed under integration, and contains the periods of
 families of algebraic curves depending algebraically on $k$ such as $\log A(k)$ and $\arctan A(k)$
 and more generally complete elliptic, hyperelliptic and abelian integrals.
-(These closure properties concern $F$ alone; the factors $z^k$ and $e^{-\tau k^r}$ of the damped functions are kept
-apart, and for instance $\int z^xx^{-1}\dd x = \operatorname{Ei}(x\log z)$ is not of the form $z^xG(x)$ with $G$
-regular at infinity.)
+%\footnote{These closure properties concern $F$ alone; the factors $z^k$ and $e^{-\tau k^r}$ of the damped functions are kept
+%apart, and for instance $\int z^xx^{-1}\dd x = \operatorname{Ei}(x\log z)$ is not of the form $z^xG(x)$ with $G$
+%regular at infinity.}
 
 Table~\ref{tab:constants} lists constants from classical analysis, number theory and mathematical physics expressed in
 this way, including examples from the tables of Flajolet and Vardi~\cite{FV96} and of Finch~\cite{Fin03},
@@ -296,14 +296,7 @@ The Weierstrass products of the gamma function give sums of the same kind as the
   \psi(1+x) = -\gamma + \sum_{k=1}^{\infty}\frac{x}{k(k+x)},
 \]
 and for algebraic $x$ these too can be computed in quasilinear time, from the incomplete gamma integral
-\cite{BZ10}. The Barnes $G$-function, with
-\[
-  \log G(1+x) = \frac x2\log2\pi - \frac{x + (1+\gamma)x^2}2 + \sum_{k=1}^{\infty}\Bigl(k\log\Bigl(1+\frac xk\Bigr) - x
-  + \frac{x^2}{2k}\Bigr),
-\]
-is a value of the class, so that Theorem~B below computes $G(1+x)$ in time $p^{3/2+o(1)}$ for algebraic $x$. We know of
-no quasilinear algorithm for it; one would also give Glaisher's constant, since
-$G(\frac12) = 2^{1/24}e^{1/8}\pi^{-1/4}A^{-3/2}$.
+\cite{BZ10}.
 For rational $A$, the sum $\sum_k A(k)$
 reduces by partial fractions to polygamma values, and sums of logarithms or inverse trigonometric or hyperbolic
 functions of a rational function of $k$ reduce to logarithms of gamma values at algebraic points, as in (A352619)
@@ -320,10 +313,22 @@ all computable in quasilinear time.
 But this structure is fragile: an extra factor $\frac1k$, as in
 $\sum_k\frac1k\arctan\frac1k$, destroys it.
 
-The constants of Stieltjes and Glaisher are values of $\zeta$ and
-its derivatives, for which subquadratic algorithms exist \cite{Joh21}.
-For the other constants of Table~\ref{tab:constants}, and for sums of
-algebraic functions that are not rational, we know of no earlier subquadratic algorithm.
+For constants of Table~\ref{tab:constants} other than those above, and for sums of
+algebraic functions that are not rational, we know of no quasilinear
+algorithm, and no earlier subquadratic algorithm
+except the restriction of the following method to $F = 1$
+which is classical (see comments below in Section~\ref{sec:related}).
+
+The Barnes $G$-function, with
+\[
+  \log G(1+x) = \frac x2\log2\pi - \frac{x + (1+\gamma)x^2}2 + \sum_{k=1}^{\infty}\Bigl(k\log\Bigl(1+\frac xk\Bigr) - x
+  + \frac{x^2}{2k}\Bigr),
+\]
+is a value of the class, and Theorem~B below computes it in time $p^{3/2+o(1)}$ for algebraic $x$.
+The above sum derives from a Weierstrass product similar to those
+for $\psi$ and $\log \Gamma$, but we know of
+no quasilinear algorithm for it; one would also give Glaisher's constant $A$, since
+$G(\frac12) = 2^{1/24}e^{1/8}\pi^{-1/4}A^{-3/2}$.
 
 \subsection{Results}
 Let $F$ be analytic at infinity, $F(k) = f(1/k)$ for $k \ge k_0$, where
@@ -446,6 +451,7 @@ the dilogarithm series in FLINT we computed $K$ to $10^7$ digits, and with a gen
 Table~\ref{tab:constants} to $10^6$ digits (Section~\ref{sec:other}).
 
 \subsection{Related work}
+\label{sec:related}
 The meromorphic continuation of a Dirichlet series $\sum_{k=1}^{\infty} F(k)k^{-s}$ whose coefficients have an asymptotic
 expansion at infinity is classical; it follows from Euler--Maclaurin summation or the Mellin transform method
 \cite{Zag06,FGD95}, and is used routinely for zeta regularization in physics \cite{Eli95,Kir02}. Dirichlet series
@@ -3239,7 +3245,7 @@ Eisenstein series of the Gaussian lattice. They are two-dimensional lattice sums
 \section{Acknowledgements}
 
 This research was done in collaboration with Claude Opus 5.5.
-The author thanks Drew Sutherland for his extremely generous donation of a
+The author thanks Drew Sutherland for the extremely generous donation of a
 Claude subscription which enabled this work.
 We thank Vincent Neiger for running an additional
 verification computation of Khinchin's constant.
