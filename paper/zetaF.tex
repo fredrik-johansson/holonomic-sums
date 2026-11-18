@@ -418,11 +418,9 @@ $\Gamma_{\RR}(s+\mu_j) = \pi^{-(s+\mu_j)/2}\Gamma(\frac{s+\mu_j}2)$, its weights
 the inverse Mellin transform of $\gamma$, a Meijer $G$-function, and are therefore holonomic: incomplete gamma
 functions in degree $d = 1$ and for $\Gamma_{\RR}(s)\Gamma_{\RR}(s+1)$, and Bessel and Meijer $G$-functions in
 general. These methods are analysed by the number of terms, about $\sqrt N$ at fixed precision. As a function of
-$p$, the weights decay like $\exp(-cx^{2/d})$, so that about $\sqrt N\,p^{d/2}$ terms are needed. In degree~$1$ this
-gives $p^{3/2+o(1)}$ at algebraic $s$ (see below); from degree~$2$ on, for instance for elliptic curves, it gives
-$p^{2+o(1)}$ or more, and the coefficients $a_n$ offer nothing like the exchange of summations in Theorem~A.
-Products of functions of degree~$1$, such as Dedekind zeta functions of abelian fields, can be computed factor
-by factor.
+$p$, about $\sqrt N\,p^{d/2}$ terms are needed, so only degree~$1$ gives $p^{3/2+o(1)}$ at algebraic $s$ (see below
+and Section~\ref{sec:limits}); products of functions of degree~$1$, such as Dedekind zeta functions of abelian fields,
+can be computed factor by factor.
 
 For $F = 1$ every term of the theta splitting is a single incomplete gamma value, and the method then
 gives $p^{3/2+o(1)}$ at algebraic $s$ by fast evaluation of the incomplete gamma function \cite{CC90,vdH99}.
@@ -2504,7 +2502,7 @@ Infinite products are covered in the same way: Wallis's product
 \]
 is a value of the class, although computing $\pi$ this way would be circular, as $\pi$ enters the splitting through
 the dual points $\pi^2m^2$. Constants of this kind with $F \ne 1$ include Hlawka's constant of Table~\ref{tab:constants},
-the constant term of $\sum_{k<n}\arctan(1/\sqrt k) = 2\sqrt n + K + o(1)$ (Section~\ref{sec:theodorus}).
+the constant term of $\sum_{k<n}\arctan(1/\sqrt k) = 2\sqrt n + C_{\mathrm H} + o(1)$ (Section~\ref{sec:theodorus}).
 
 %with Glaisher's constant $A = (2^{1/24}e^{1/8}\pi^{-1/4}/G(\frac12))^{2/3}$
 %as a particular value.
@@ -3388,8 +3386,8 @@ geometric series, so $p$ bits need
 \begin{equation}\label{eq:counts}
   k \le k_{\max} \approx \sqrt{\frac{p\log 2}{u_0}}, \qquad m \le m_{\max} \approx \frac{q}{\pi}\sqrt{p\log 2\cdot u_0},
 \end{equation}
-that is, $O(\sqrt p)$ terms on each side ($q$ the period of $\chi$). Note that $k_{\max}m_{\max} \approx q\,p\log2/\pi$
-does not depend on $u_0$; the choice of $u_0$ only balances the two sides.
+that is, $O(\sqrt p)$ terms on each side ($q$ the period of $\chi$); the choice of $u_0$ only balances the two sides
+(Section~\ref{sec:complexity}).
 
 \subsection{The $k$-terms}
 Let $k \ge k_0$, $K = k^2$ and $x = Ku_0$. With $Q(\sigma_0+m, x) = Q(\sigma_0, x) + e^{-x}\sum_{j=0}^{m-1}x^{\sigma_0+j}/\Gamma(\sigma_0+j+1)$,
