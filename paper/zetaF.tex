@@ -2389,15 +2389,11 @@ real numbers whose expansion begins with $a_0, \ldots, a_N$ is an interval, thes
 $K$. Let $p_n/q_n$ be the convergents. Then $q_N = 2.484246\ldots\cdot10^{4\,999\,999}$, and the largest of these
 partial quotients is $a_{7\,384\,031} = 34\,770\,305$.
 
-The statistics of the partial quotients are those of a typical real number. Lochs' theorem \cite{Loc64} says that
-for almost all $x$, $n$ decimal digits determine about $\lambda n$ partial quotients, and L\'evy's theorem
-\cite{Lev36} that $\frac1n\log q_n \to \mu$, where
-\[
-  \lambda = \frac{6\log2\log10}{\pi^2} = 0.970270\ldots, \qquad \mu = \frac{\pi^2}{12\log2} = 1.186569\ldots;
-\]
-here $N/D = 0.969914$ and $\frac1N\log q_N = 1.187005$. The proportions of the partial quotients $1$, $2$ and $3$ are
-$0.414921$, $0.169996$ and $0.093136$, against the Gauss--Kuzmin probabilities $\log_2\frac43 = 0.415037$, $0.169925$
-and $0.093109$.
+These partial quotients look like those of a typical real number. We have $N/D = 0.969914$ and
+$\frac1N\log q_N = 1.187005$, against the constants $6\log2\log10/\pi^2 = 0.970270\ldots$ of Lochs' theorem
+\cite{Loc64} and $\pi^2/(12\log2) = 1.186569\ldots$ of L\'evy's theorem \cite{Lev36}, and the proportions of the
+partial quotients $1$, $2$ and $3$ are $0.414921$, $0.169996$ and $0.093136$, against the Gauss--Kuzmin probabilities
+$0.415037$, $0.169925$ and $0.093109$.
 
 \begin{proposition}\label{thm:khrat}
 Assume that $K \in I$, i.e.\ that the $10^7$ digits of Section~\ref{sec:khresults} are correct. If $K = p/q$ with
@@ -2425,28 +2421,12 @@ The hypothesis rests on the rigorous error bounds of Section~\ref{sec:khbounds} 
 independent computations.
 % TODO(author): add commit hash of the code used and the location of the archived digits.
 
-By Khinchin's theorem \cite{Khi35}, the geometric means
-\[
-  G_n = (a_1a_2\cdots a_n)^{1/n}
-\]
-of the partial quotients of almost every $x$ tend to $K$. Whether $K$ itself has this property is not known, but its
-first $N$ partial quotients behave as expected (Figure~\ref{fig:khcf}): $G_N = 2.686720\ldots$, so that $G_N - K = 1.27\cdot10^{-3}$. The
-error decreases like $n^{-1/2}$, as it should: for $x$ chosen at random (with respect to the Gauss or the Lebesgue
-measure) the sums $\sum_{k=1}^{n}\log a_k$ satisfy a central limit theorem \cite{IK02}, so that
-\[
-  z_n = \sqrt n\,(\log G_n - \log K)
-\]
-is asymptotically normal with mean $0$ and variance
-\[
-  \sigma^2 = \lim_{n\to\infty}\frac1n\operatorname{Var}\sum_{k=1}^{n}\log a_k;
-\]
-this is smaller than
-$\operatorname{Var}(\log a_1) = 1.3919$, because consecutive partial quotients are weakly correlated. Batch means over
-blocks of $10^4$ consecutive partial quotients of $K$ give $\sigma^2 \approx 1.21 \pm 0.06$, that is,
-$\sigma \approx 1.10$. In the time scale $\log n$ the normalized error $z_n$ wanders like a Brownian motion, as the
-invariance principle predicts; it stays below $3.6$ in absolute value for $n \ge 10^3$ (with excursions to $-3.57$ at
-$n = 1\,289$ and $3.21$ at $n = 4\,386\,910$, unremarkable over so long a range of $\log n$), and
-$z_N = 1.47 \approx 1.34\,\sigma$.
+By Khinchin's theorem the geometric means $G_n = (a_1\cdots a_n)^{1/n}$ of almost every $x$ tend to $K$; whether
+$K$ itself has this property is not known. Its first $N$ partial quotients give $G_N = 2.686720\ldots$, and the
+normalized error $z_n = \sqrt n\,(\log G_n - \log K)$ behaves as the central limit theorem for $\sum_k\log a_k$
+\cite{IK02} predicts (Figure~\ref{fig:khcf}): batch means over blocks of $10^4$ partial quotients give a standard
+deviation $\sigma \approx 1.10$ (less than $\operatorname{Var}(\log a_1)^{1/2} = 1.18$, since consecutive partial quotients
+are weakly correlated), $|z_n| < 3.6$ for $n \ge 10^3$, and $z_N = 1.47 \approx 1.34\,\sigma$.
 
 \begin{figure}[ht]
 \centering
@@ -2770,15 +2750,9 @@ a $2\times2$ recurrence as for Khinchin's constant.
 \subsection{Periodic arrays of vortex rings}\label{sec:vortex}
 
 Consider an infinite row of identical coaxial thin-cored vortex rings of radius $r$ and circulation $\Gamma$, spaced
-$\lambda r$ apart along their common axis. An isolated thin ring travels along its axis with a self-induced velocity
-that depends logarithmically on the radius of its core (Kelvin's formula). In the row, every ring is moreover carried
-along by the flow that all the other rings induce at its core. By the Biot--Savart law, a ring at axial distance
-$n\lambda r$ induces at a point of the core of another ring the axial velocity
-$\frac{\Gamma}{4\pi r}\int_0^{2\pi}(1-\cos\varphi)\,(2(1-\cos\varphi)+n^2\lambda^2)^{-3/2}\dd\varphi$, where $\varphi$ is the
-azimuthal angle along the inducing ring, measured from the point. This is positive: the ring is pushed forward
-alike by the rings ahead of it and by those behind it, whose radial contributions cancel, so the whole row translates
-rigidly. Summing over the rings on both sides, the speed of the row exceeds that of an isolated ring by
-$U(\lambda)\,\Gamma/r$, where
+$\lambda r$ apart along their common axis. Each ring is carried along by the flow that the others induce at its core
+(by the Biot--Savart law, the rings ahead and behind push it forward alike), so the row translates rigidly, faster
+than an isolated ring by $U(\lambda)\,\Gamma/r$, where
 \begin{equation}\label{eq:vortex}
   U(\lambda) = \frac{1}{2\pi}\sum_{n=1}^{\infty}\int_0^{2\pi}\frac{(1-\cos\varphi)\dd\varphi}{\bigl(2(1-\cos\varphi)+n^2\lambda^2\bigr)^{3/2}},
 \end{equation}
@@ -2808,34 +2782,21 @@ $\lambda \to \infty$ \cite{MS22}. The zeta-value expansion of the terms $n \ge k
 converges like $(\beta/k_0^2)^j$.
 
 \subsubsection{A magnetic analogue}
-The same elliptic integrals describe coaxial current loops, since the vector potential of a circular current and the
-stream function of a vortex ring are given by the same function. By Maxwell's formula, two coaxial circular loops of
-radius $r$ at distance $d$ have the mutual inductance
-\[
-  M(d) = \mu_0r\Bigl(\Bigl(\frac2\kappa - \kappa\Bigr)K(\kappa) - \frac2\kappa E(\kappa)\Bigr), \qquad
-  \kappa^2 = \frac{4r^2}{4r^2+d^2}
-\]
-\cite{RG12}. The bracket is $\frac{\pi\kappa^3}{16}\,{}_2F_1(\frac32,\frac32;3;\kappa^2)$, so Pfaff's transformation
-gives, with $\beta = 4/\lambda^2$ as above,
+The same elliptic integrals give the mutual inductance of two coaxial circular loops of radius $r$ (Maxwell's
+formula \cite{RG12}); at distance $n\lambda r$, by Pfaff's transformation and with $\beta = 4/\lambda^2$,
 \[
   M(n\lambda r) = \frac{\pi\mu_0r}{2\lambda^3n^3}\,{}_2F_1\Bigl(\frac32,\frac32;3;-\frac{\beta}{n^2}\Bigr).
 \]
-A chain of identical ring resonators spaced $\lambda r$ apart carries magnetoinductive waves \cite{SKRS02}; let $L$
-be the self-inductance and $\omega_0$ the resonant frequency of each ring. In the quasistatic circuit model with coupling between all
-rings, Kirchhoff's equations for a current wave $I_n \propto e^{in\theta}$ give
-\[
-  \frac{\omega_0^2}{\omega^2} = 1 + \frac2L\sum_{n=1}^{\infty}M(n\lambda r)\cos n\theta.
-\]
-The coupling sum
+A chain of identical ring resonators spaced $\lambda r$ apart carries magnetoinductive waves \cite{SKRS02}. With coupling
+between all rings, the dispersion relation of a current wave $I_n \propto e^{in\theta}$ in the quasistatic circuit
+model involves the coupling sum
 \[
   S_\lambda(\theta) = \frac1{\mu_0r}\sum_{n=1}^{\infty}M(n\lambda r)\cos n\theta
   = \frac{\pi}{2\lambda^3}\,L_F(3, \cos k\theta),
 \]
-with $F(k) = {}_2F_1(\frac32,\frac32;3;-\beta/k^2)$,
-differs from \eqref{eq:vortex} only in the third parameter of the ${}_2F_1$ and in the twist; for rational
-$\theta/2\pi$ the weight $\cos k\theta$ is periodic, and Theorem~\ref{thm:complexity} applies. At the band edges
-$\theta = 0$ and $\theta = \pi$ it is a multiple of $\zeta_F(3)$ and of the alternating sum $L_F(3, (-1)^k)$. For rings
-spaced one diameter apart ($\lambda = 2$),
+with $F(k) = {}_2F_1(\frac32,\frac32;3;-\beta/k^2)$, which differs from \eqref{eq:vortex} only in the third parameter and in the twist. For rational $\theta/2\pi$ the
+weight is periodic and Theorem~\ref{thm:complexity} applies. For rings spaced one diameter apart ($\lambda = 2$), at
+the band edges,
 \begin{align*}
   S_2(0) &= 0.14792841117146353358\ldots, \\
   S_2(\pi) &= -0.09695771912060612665\ldots
@@ -3356,22 +3317,16 @@ values
 $\Li_F(-m,z)$, respectively $\CT_{s=-m}\zeta_F(s)$, are not all algebraic for large $m$.
 \end{conjecture}
 
-For $F(k) = \log(1+\frac1k)$ and $z = 1$, the first values are
-\begin{gather*}
-  0, \qquad \frac{1 - \log 2\pi}2, \qquad \frac{\log 2\pi - 1 + 4\zeta'(-1)}2, \\
-  \frac{11 - 12\log 2\pi - 72\zeta'(-1) + 72\zeta'(-2)}{24},
-\end{gather*}
-for $m = 0, 1, 2, 3$, found numerically with PSLQ at $50$ digits. In general $\CT_{s=-m}\zeta_F(s)$ lies in the span
-of $1$, $\log 2\pi$ and $\zeta'(-j)$, $1 \le j < m$. Since $\zeta'(-2n) = (-1)^n(2n)!\,\zeta(2n+1)/(2(2\pi)^{2n})$, the
-space $V_F(1)$ contains $\zeta(3)/\pi^2, \zeta(5)/\pi^4, \dots$. For this $F$ the conjecture therefore follows from the
-algebraic independence of $\pi, \zeta(3), \zeta(5), \dots$ (Grothendieck's period conjecture), but unconditionally
-it is not even known that $\dim V_F(1) \ge 3$. For summands such as $e^{1/k}$ the values are not obviously periods,
-and we know of no conditional proof. The conjecture says nothing about sequences expressed less directly in terms of
-these functions, for example through compositions with other functions or products of values. We make no claim
-about those. Rational values of $L$-functions of higher degree do occur, for instance the Hurwitz numbers, from
-Eisenstein series of the Gaussian lattice. They are two-dimensional lattice sums, which need about $p$ terms
-(Section~\ref{sec:limits}), so they are outside the subquadratic class anyway.
+For $F(k) = \log(1+\frac1k)$ and $z = 1$, PSLQ suggests that $\CT_{s=-m}\zeta_F(s)$ lies in the span of $1$,
+$\log 2\pi$ and $\zeta'(-j)$, $1 \le j < m$ (for instance $\frac12(1 - \log2\pi)$ at $m = 1$). Since
+$\zeta'(-2n) = (-1)^n(2n)!\,\zeta(2n+1)/(2(2\pi)^{2n})$, the space $V_F(1)$ then contains
+$\zeta(3)/\pi^2, \zeta(5)/\pi^4, \dots$, and the conjecture for this $F$ follows from Grothendieck's period conjecture;
+unconditionally it is not even known that $\dim V_F(1) \ge 3$. For summands such as $e^{1/k}$ the values are not
+obviously periods. Rational values of $L$-functions of higher degree do occur, for instance the Hurwitz numbers from
+Eisenstein series of the Gaussian lattice, but these are two-dimensional lattice sums, outside the subquadratic class
+(Section~\ref{sec:limits}).
 
+%======================================================================
 \section{Acknowledgements}
 
 This research was done in collaboration with Claude Opus 5.5.
