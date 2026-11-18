@@ -1256,6 +1256,18 @@ $p$-bit integers satisfying the usual regularity conditions ($\Mul(p)/p$ nondecr
 $\Mul(p\log p) = O(\Mul(p)\log p)$); one can take $\Mul(p) = p\log p$ \cite{HvdH21} or even
 $p(\log p)^{1-\kappa}$ for an explicit $\kappa > 0$ \cite{OAI26}.
 
+\emph{Generic data.} When $s$ or the data of $F$ are arbitrary complex numbers, given by $p$-bit approximations, binary
+splitting no longer applies, and a single value of a holonomic function to $p$ bits costs $p^{3/2+o(1)}$ by the
+baby-step giant-step method of Chudnovsky and Chudnovsky \cite{CC90}, against $p^{2+o(1)}$ for summing its series
+term by term. The theta splitting needs $O(\sqrt p)$ such values, hence $p^{2+o(1)}$. The classical methods need
+$\Theta(p)$ values $F(k)$, which would cost $p^{5/2+o(1)}$ if computed one at a time, but which can be computed
+together: the coefficients $a_0, \dots, a_M$ of the expansion at infinity, $M = O(p)$, cost $O(p)$ operations by their
+recurrence, and the truncated expansion $\sum_{n\le M}a_nx^n$ is then evaluated at all the points $x = 1/k$,
+$2R \le k < N$, by fast multipoint evaluation, which needs only $O(p)$ guard bits for points in a disk where the
+series converges geometrically \cite{KZ08,Mor21}. This costs $\widetilde O(p^2)$, the $O(1)$ values with $k < 2R$
+cost $p^{3/2+o(1)}$ each, and the powers $k^{-s}$ cost $\widetilde O(p)$ each, so the classical methods stay at
+$p^{2+o(1)}$ (for the zeta-value expansion, see Section~\ref{sec:zetavalue}).
+
 \subsection{Theta splitting}
 \begin{theorem}\label{thm:complexity}
 Let $F \in \RegQ$, let $\chi$ be periodic with algebraic values, let $s_0 \in \Qbar$, and let
@@ -1582,7 +1594,8 @@ holonomic $F$ satisfy a linear recurrence, so that after the direct terms everyt
 numbers. Since $R_J$ is analytic for $\operatorname{Re}s > 1 - n_0 - 2J$, the formula gives the continuation in
 growing half-planes, which is the classical proof that $\zeta_F^{\ge N}(s) - \mathcal M_F(s;N)$ is entire. For $p$ bits at fixed $s$ one
 needs $N$ and $J$ proportional to $p$, so the cost is $p^{2+o(1)}$: $\Theta(p)$ values $F(k)$, each in
-$O(\Mul(p)\log^2p)$, and $\Theta(p)$ Bernoulli numbers.
+$O(\Mul(p)\log^2p)$ for $F \in \RegQ$ and together in $\widetilde O(p^2)$ for generic data (\emph{Generic data} at the beginning of
+Section~\ref{sec:complexity}), and $\Theta(p)$ Bernoulli numbers.
 
 \emph{Many derivatives.} Euler--Maclaurin summation gives many derivatives in $s$ at almost no extra cost, also for
 $s$ given numerically and for $F \in \Reg \setminus \RegQ$. Replace $s$ by $s+t$ and work with power series in
@@ -1599,8 +1612,9 @@ with $\gamma_i = \sum_jB_{2j}F_{2j-1-i}/(2j)$,
 where the $\gamma_i$ are a correlation of two sequences (one multiplication of polynomials), and the sum over $i$, whose
 terms satisfy a first-order recurrence with coefficients linear in $t$, is again a product tree. With $N, J = O(p)$
 this costs $\widetilde O(p^2)$ bit operations for all $n \le p$ derivatives together, the same as for a single value,
-provided the values $F(k)$, $k < N$, and the $F_i$ are available in that time (by multipoint evaluation of the
-expansion of $F$ at infinity, or by binary splitting when $F \in \RegQ$). In particular $n$ derivatives
+provided the values $F(k)$, $k < N$, and the $F_i$ are available in that time (by binary splitting when
+$F \in \RegQ$, and otherwise by multipoint evaluation of the expansion of $F$ at infinity as in \emph{Generic data} at the
+beginning of Section~\ref{sec:complexity}, and by the recurrence for the $F_i$ from $O(1)$ derivatives at $N$). In particular $n$ derivatives
 to $n$ bits cost $\widetilde O(n^2)$, as for the Hurwitz zeta function \cite{Joh15}. The theta splitting, in contrast,
 gains nothing for many derivatives at a generic point.
 
@@ -1619,7 +1633,8 @@ $O(p)$ terms. For $\zeta_F$ the corresponding identity is
 \]
 which relates $\zeta_F$ to the different function $\zeta_{F(2\,\cdot)}$ unless $F$ is a power. So these methods apply
 to twisted functions such as $L_G(s,\chi)$ in \eqref{eq:K3}, provided the terms are moments of a positive measure, but
-not to $\zeta_F$ itself; in either case they need $\Theta(p)$ values $F(k)$ to $p$ bits, hence $p^{2+o(1)}$.
+not to $\zeta_F$ itself; in either case they need $\Theta(p)$ values $F(k)$ to $p$ bits, hence $p^{2+o(1)}$, also
+for generic data.
 
 \subsection{Large height}\label{sec:rs}
 At large height and moderate precision the zeta-value expansion combines with the Riemann--Siegel formula.
@@ -3660,7 +3675,7 @@ $L$, with the size of its coefficients and with the degree of $\mathbb K$.
 \input{khinchin_pseudocode}
 
 %======================================================================
-% CHECK bibliographic details of Kat97, Zag06, HL23, AdR11, Bor00, Har10, Bal00, vdH07, BC21, Bri12, Dav93, Hla80, Gau10, RG12, SKRS02, KZ01, Joh15 (added from memory/web search).
+% CHECK bibliographic details of Kat97, Zag06, HL23, AdR11, Bor00, Har10, Bal00, vdH07, BC21, Bri12, Dav93, Hla80, Gau10, RG12, SKRS02, KZ01, Joh15, KZ08, Mor21 (added from memory/web search).
 \begin{thebibliography}{99}
 \bibitem{AdR11} J.~Arias de Reyna, High precision computation of Riemann's zeta function by the Riemann--Siegel formula, I, Math.\ Comp.\ 80 (2011), 995--1009.
 \bibitem{AG77} K.~Alladi and C.~Grinstead, On the decomposition of $n!$ into prime powers, J.\ Number Theory 9 (1977), 452--458.
@@ -3711,6 +3726,7 @@ to this paper, 2026, \url{https://github.com/fredrik-johansson/holonomic-sums}.
 \bibitem{Khi35} A.~Khintchine, Metrische Kettenbruchprobleme, Compositio Math.\ 1 (1935), 361--382.
 \bibitem{Khi64} A.~Ya.~Khinchin, \emph{Continued Fractions}, University of Chicago Press, 1964.
 \bibitem{Kir02} K.~Kirsten, \emph{Spectral Functions in Mathematics and Physics}, Chapman \& Hall/CRC, 2002.
+\bibitem{KZ08} S.~K\"ohler and M.~Ziegler, On the stability of fast polynomial arithmetic, in \emph{Proc.\ 8th Conference on Real Numbers and Computers}, Santiago de Compostela, 2008, 147--156.
 \bibitem{KZ01} M.~Kontsevich and D.~Zagier, Periods, in \emph{Mathematics Unlimited---2001 and Beyond}, Springer, 2001, 771--808.
 \bibitem{Lav68} A.~F.~Lavrik, Approximate functional equations of Dirichlet functions, Izv.\ Akad.\ Nauk SSSR Ser.\ Mat.\ 32 (1968), 134--185.
 \bibitem{Lev36} P.~L\'evy, Sur le d\'eveloppement en fraction continue d'un nombre choisi au hasard, Compositio
@@ -3739,6 +3755,7 @@ J.\ Eur.\ Math.\ Soc.\ 21 (2019), 2751--2792.
 \bibitem{vdH99} J.~van der Hoeven, Fast evaluation of holonomic functions, Theoret.\ Comput.\ Sci.\ 210 (1999), 199--215.
 \bibitem{vdH07} J.~van der Hoeven, Efficient accelero-summation of holonomic functions, J.\ Symbolic Comput.\ 42 (2007), 389--428.
 \bibitem{Wat44} G.~N.~Watson, \emph{A Treatise on the Theory of Bessel Functions}, 2nd ed., Cambridge University Press, 1944.
+\bibitem{Mor21} G.~Moroz, New data structure for univariate polynomial approximation and applications to root isolation, numerical multipoint evaluation, and other problems, in \emph{Proc.\ 62nd IEEE Symposium on Foundations of Computer Science (FOCS)}, 2021, 1090--1099.
 \bibitem{MWKdigits} E.~W.~Weisstein, Khinchin's constant digits, MathWorld, \url{https://mathworld.wolfram.com/KhinchinsConstantDigits.html}, accessed November 2026.
 \bibitem{Zag06} D.~Zagier, The Mellin transform and related analytic techniques, appendix to E.~Zeidler, \emph{Quantum Field Theory I}, Springer, 2006, 305--323.
 \bibitem{Zei90} D.~Zeilberger, A holonomic systems approach to special functions identities, J.\ Comput.\ Appl.\ Math.\ 32 (1990), 321--368.
