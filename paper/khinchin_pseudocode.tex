@@ -8,7 +8,9 @@ Algorithms~\ref{alg:binsplit}--\ref{alg:khinchin} spell out the evaluation of Th
 bounds of Section~\ref{sec:khbounds}, at the level of a direct implementation. They are written for clarity, not
 speed. A line-by-line Python transcription using python-flint (exact matrices \texttt{fmpq\_mat}, Arb balls),
 \texttt{khinchin\_ref.py}, is in the repository; it agrees with \texttt{arb\_const\_khinchin} for $64 \le p \le 5000$,
-taking $11$ seconds at $p = 5000$.
+taking $11$ seconds at $p = 5000$. The generic C implementation of the same algorithm in \texttt{holsum} takes
+$0.17$ seconds on one thread at this precision, about $65$ times less; FLINT's optimized function uses the zeta-value
+expansion at this precision and takes $0.01$ seconds.
 
 \emph{Conventions.} The parameters $u_0 = \frac1{16}$, $r_0 = 16$ (bits of the first bit-burst point), $g = 4$ (growth
 factor), the target $p$ and $\varepsilon = 2^{-p-10}$ are global. Quantities computed from $u_0$, $k$, $n$, $j$, $c_0$,

@@ -191,7 +191,7 @@ functions (Section~\ref{sec:twistshift});
 %$(R,\infty)$ is regular at infinity, with a convergent Puiseux expansion in powers of $k^{-1/q}$
 %(Remark~\ref{rem:puiseux}), and if its minimal polynomial has algebraic coefficients, so do its Puiseux expansions.
 
-The class of summands is large. It is closed under sums and products, and
+The class of summands $F$ is large. It is closed under sums and products, and
 contains every algebraic function $A(k)$ and
 the compositions $G(A(k))$ of an algebraic function $A$ with a holonomic function $G$ that is
 analytic or regular singular at the limit of $A$ at infinity
@@ -199,6 +199,9 @@ such as the generalized hypergeometric function $G(z) = {}_pF_{p-1}(\ldots; z)$.
 The class is also closed under integration, and contains the periods of
 families of algebraic curves depending algebraically on $k$ such as $\log A(k)$ and $\arctan A(k)$
 and more generally complete elliptic, hyperelliptic and abelian integrals.
+(These closure properties concern $F$ alone; the factors $z^k$ and $e^{-\tau k^r}$ of the damped functions are kept
+apart, and for instance $\int z^xx^{-1}\dd x = \operatorname{Ei}(x\log z)$ is not of the form $z^xG(x)$ with $G$
+regular at infinity.)
 
 Table~\ref{tab:constants} lists constants from classical analysis, number theory and mathematical physics expressed in
 this way, including examples from the tables of Flajolet and Vardi~\cite{FV96} and of Finch~\cite{Fin03},
@@ -287,6 +290,20 @@ in quasilinear time. More generally, so can every number that is the value at an
 with algebraic coefficients and initial values \cite{CC90,vdH99}, such as the integer zeta values $\zeta(3), \zeta(5),
 \dots$, polylogarithms at algebraic points, Catalan's constant and $\Gamma(\frac14)$; this includes many periods and
 exponential periods in the sense of Kontsevich and Zagier \cite{KZ01}.
+The Weierstrass products of the gamma function give sums of the same kind as the series for $\gamma$,
+\[
+  \log\Gamma(1+x) = -\gamma x + \sum_{k=1}^{\infty}\Bigl(\frac xk - \log\Bigl(1+\frac xk\Bigr)\Bigr), \qquad
+  \psi(1+x) = -\gamma + \sum_{k=1}^{\infty}\frac{x}{k(k+x)},
+\]
+and for algebraic $x$ these too can be computed in quasilinear time, from the incomplete gamma integral
+\cite{BZ10}. The Barnes $G$-function, with
+\[
+  \log G(1+x) = \frac x2\log2\pi - \frac{x + (1+\gamma)x^2}2 + \sum_{k=1}^{\infty}\Bigl(k\log\Bigl(1+\frac xk\Bigr) - x
+  + \frac{x^2}{2k}\Bigr),
+\]
+is a value of the class, so that Theorem~B below computes $G(1+x)$ in time $p^{3/2+o(1)}$ for algebraic $x$. We know of
+no quasilinear algorithm for it; one would also give Glaisher's constant, since
+$G(\frac12) = 2^{1/24}e^{1/8}\pi^{-1/4}A^{-3/2}$.
 For rational $A$, the sum $\sum_k A(k)$
 reduces by partial fractions to polygamma values, and sums of logarithms or inverse trigonometric or hyperbolic
 functions of a rational function of $k$ reduce to logarithms of gamma values at algebraic points, as in (A352619)
@@ -1194,18 +1211,20 @@ $p(\log p)^{1-\kappa}$ for an explicit $\kappa > 0$ \cite{OAI26}.
 
 \begin{table}[t]
 \centering\small
-\caption{Methods for $\zeta_F(s)$ at a fixed algebraic point, for $F$ defined over $\Qbar$.}
+\caption{Methods for $\zeta_F(s)$ to $p$ bits at a fixed point: for algebraic $s$ and $F$ defined over $\Qbar$, and
+for generic $s$ or $F$ (given by $p$-bit approximations).}
 \label{tab:methods}
-\begin{tabular}{lll}
+\begin{tabular}{llll}
 \toprule
-method & $p$ bits, algebraic $s$ & continuation \\
+method & algebraic $s$, $F$ & generic $s$ or $F$ & continuation \\
 \midrule
-direct summation & $2^{\Theta(p)}$ & no \\
-zeta-value expansion & $p^{2+o(1)}$ & yes \\
-Euler--Maclaurin & $p^{2+o(1)}$ & in half-planes \\
-alternating series acceleration & $p^{2+o(1)}$ (twisted series only) & no \\
-theta splitting (Theorem~\ref{thm:split}) & $p^{3/2+o(1)}$ & yes \\
+direct summation & $2^{\Theta(p)}$ & $2^{\Theta(p)}$ & no \\
+zeta-value expansion & $p^{2+o(1)}$ & $p^{2+o(1)}$ & yes \\
+Euler--Maclaurin & $p^{2+o(1)}$ & $p^{2+o(1)}$ & in half-planes \\
+alternating series$^\dagger$ & $p^{2+o(1)}$ & $p^{2+o(1)}$ & no \\
+theta splitting (Theorem~\ref{thm:split}) & $p^{3/2+o(1)}$ & $p^{2+o(1)}$ & yes \\
 \bottomrule
+\multicolumn{4}{l}{\footnotesize ${}^\dagger$Twisted series only.}
 \end{tabular}
 \end{table}
 
@@ -1534,9 +1553,29 @@ $\sum_na_nN^{1-s-n}/(s+n-1)$, and the
 derivatives $g^{(i)}(N)$ are, up to factorials, the Taylor coefficients of $F(x)x^{-s}$ at $x = N$, which for
 holonomic $F$ satisfy a linear recurrence, so that after the direct terms everything costs $O(J)$ arithmetic operations plus the Bernoulli
 numbers. Since $R_J$ is analytic for $\operatorname{Re}s > 1 - n_0 - 2J$, the formula gives the continuation in
-growing half-planes, which is the classical proof that $\zeta_F(s;N) - \mathcal M_F(s;N)$ is entire. For $p$ bits at fixed $s$ one
+growing half-planes, which is the classical proof that $\zeta_F^{\ge N}(s) - \mathcal M_F(s;N)$ is entire. For $p$ bits at fixed $s$ one
 needs $N$ and $J$ proportional to $p$, so the cost is $p^{2+o(1)}$: $\Theta(p)$ values $F(k)$, each in
 $O(\Mul(p)\log^2p)$, and $\Theta(p)$ Bernoulli numbers.
+
+\emph{Many derivatives.} Euler--Maclaurin summation gives many derivatives in $s$ at almost no extra cost, also for
+$s$ given numerically and for $F$ with non-algebraic coefficients. Replace $s$ by $s+t$ and work with power series in
+$t$ truncated at order $n \le p$. The direct terms become $\sum_{k<N}w_ke^{-t\log k}$ with $w_k = F(k)k^{-s}$, that
+is, the power sums $\sum_kw_k(\log k)^i$, $i < n$, which are the coefficients of the rational function
+$\sum_kw_k/(1-t\log k)$ and can be computed by a product tree in $\widetilde O(N + n)$ operations on $p$-bit numbers.
+The Mellin part $\sum_na_nN^{1-s-t-n}/(s+t+n-1)$ is a sum of the same kind. In the Bernoulli terms,
+$g^{(m)}(N)/m! = N^{-s-t}\sum_{i\le m}F_{m-i}\binom{-s-t}{i}N^{-i}$ with the Taylor coefficients $F_i$ of $F$ at $N$;
+exchanging the sums,
+\[
+  \sum_{j=1}^{J}\frac{B_{2j}}{(2j)!}\,g^{(2j-1)}(N) = N^{-s-t}\sum_{i}\gamma_i\binom{-s-t}{i}N^{-i},
+\]
+with $\gamma_i = \sum_jB_{2j}F_{2j-1-i}/(2j)$,
+where the $\gamma_i$ are a correlation of two sequences (one multiplication of polynomials), and the sum over $i$, whose
+terms satisfy a first-order recurrence with coefficients linear in $t$, is again a product tree. With $N, J = O(p)$
+this costs $\widetilde O(p^2)$ bit operations for all $n \le p$ derivatives together, the same as for a single value,
+provided the values $F(k)$, $k < N$, and the $F_i$ are available in that time (by multipoint evaluation of the
+expansion of $F$ at infinity, or by binary splitting when $F$ is defined over $\Qbar$). In particular $n$ derivatives
+to $n$ bits cost $\widetilde O(n^2)$, as for the Hurwitz zeta function \cite{Joh15}. The theta splitting, in contrast,
+gains nothing for many derivatives at a generic point.
 
 Euler--Maclaurin summation is Poisson summation with a sharp cutoff: applied to $g\cdot\mathbf{1}_{[N,\infty)}$, the
 dual terms are $\int_N^\infty g(x)e^{2\pi imx}\dd x$, and integrating by parts at the endpoint and summing over $m \ne 0$ with
@@ -1599,8 +1638,7 @@ $L_F(0,e^{2\pi i\alpha k})$ of Remark~\ref{rem:twist}, so the theta splitting ap
 converges geometrically, and Theorem~\ref{thm:geometric} improves direct summation from $p^{2+o(1)}$ to
 $p^{3/2+o(1)}$ at algebraic $z$ (Section~\ref{sec:dampedcost}). The
 Lambert series $\sum_kF(k)z^k/(1-z^k)$ is the generating function of $\sum_{d\mid n}F(d)$, with Dirichlet series
-$\zeta(s)\zeta_F(s)$, and its expansion at $z = 1$ starts with $\zeta_F(1)/t$; for the Gauss--Kuzmin probabilities,
-$\sum_{d\mid n}p_d$ is the probability that $a_1$ divides $n$, whose mean over $n$ is $Z(1) = 1/K_{-1}$.
+$\zeta(s)\zeta_F(s)$, and its expansion at $z = 1$ starts with $\zeta_F(1)/t$.
 
 \subsection{Damped functions}\label{sec:dampedcost}
 For the polylogarithm, Theorem~\ref{thm:geometric}(2) gives the same bound as Theorem~\ref{thm:complexity}. At
@@ -1813,6 +1851,9 @@ $-\partial_t\Psi(s,0) = Z(s)\log 2$, and
 Euler's and Khinchin's constants are thus coefficients of the same function at the points $(1,0)$ and $(0,0)$;
 the splitting of $\Psi$ is a one-parameter deformation of Riemann's formula (Example~\ref{ex:riemann}), to which it
 reduces at $t = 0$.
+
+\emph{Divisibility.} The Dirichlet series $\zeta(s)Z(s)$ is that of $\sum_{d\mid n}p_d$, the probability that $a_1$
+divides $n$; the mean of this probability over $n \le N$ tends to $Z(1) = 1/K_{-1}$ as $N \to \infty$.
 
 \subsection{The derivative of $Z$}\label{sec:Zprime}
 For \eqref{eq:K1} let $L(s) = \log 2\sum_{k=3}^{\infty}p_kk^{-s}$, so that $\log K = \log\frac98 - L'(0)/\log 2$,
@@ -2336,7 +2377,9 @@ $\prod_{k\le n}k^{k^m}$ involve $\zeta'(-m)$. Infinite products are covered in t
   G(k) = -\log\Bigl(1-\frac1{4k^2}\Bigr),
 \]
 is a value of the class, although computing $\pi$ this way would be circular, as $\pi$ enters the splitting through
-the dual points $\pi^2m^2$. Constants of this kind with $F \ne 1$ include Hlawka's constant of Table~\ref{tab:constants},
+the dual points $\pi^2m^2$. Glaisher's constant is also $A = (2^{1/24}e^{1/8}\pi^{-1/4}/G(\frac12))^{2/3}$, and the
+Weierstrass product of the Barnes $G$-function at $x = -\frac12$ gives a third series for it, which, unlike the one
+below, contains $\gamma$ explicitly. Constants of this kind with $F \ne 1$ include Hlawka's constant of Table~\ref{tab:constants},
 the constant term of $\sum_{k<n}\arctan(1/\sqrt k) = 2\sqrt n + K + o(1)$ (Section~\ref{sec:theodorus}).
 
 For $F = 1$ all of these are values of $\zeta$ and its derivatives: $\gamma$ can be computed in quasilinear time
@@ -3017,7 +3060,9 @@ with $Q$ a polynomial and $\phi$ a power series (possibly with logarithms) that 
 damped, which gives a stretched exponential when its degree $r$ is less than $2$ (up to routine extensions, such as
 several terms or complex $\tau$) and is harmless when $r \ge 2$, or purely oscillatory, which gives a twist when
 $r = 1$. Only oscillatory factors with $r \ne 1$, such as $e^{i\sqrt k}$, are excluded; for these, as for $k^{-it}$ at
-large height, the Poisson dual of a chirp is again a chirp, and no splitting shortens both sides.
+large height, the Poisson dual of a chirp is again a chirp: by stationary phase, the Fourier transform of
+$e^{i\tau x^r}$ is, up to a slowly varying amplitude, $e^{i\tau'|\xi|^{r'}}$ with $r' = r/(r-1)$, which does not decay
+either, so that smoothing one side lengthens the other and no splitting shortens both.
 
 The problem is the divergence of $\phi$, and the threshold is set by the Gaussian kernel. If $\phi$ has Gevrey order
 $1/r$, as it does when another solution of the operator has an exponential factor of degree $r$, the coefficients of
@@ -3588,7 +3633,7 @@ $L$, with the size of its coefficients and with the degree of $\mathbb K$.
 \input{khinchin_pseudocode}
 
 %======================================================================
-% CHECK bibliographic details of Kat97, Zag06, HL23, AdR11, Bor00, Har10, Bal00, vdH07, BC21, Bri12, Dav93, Hla80, Gau10, RG12, SKRS02, KZ01 (added from memory/web search).
+% CHECK bibliographic details of Kat97, Zag06, HL23, AdR11, Bor00, Har10, Bal00, vdH07, BC21, Bri12, Dav93, Hla80, Gau10, RG12, SKRS02, KZ01, Joh15 (added from memory/web search).
 \begin{thebibliography}{99}
 \bibitem{AdR11} J.~Arias de Reyna, High precision computation of Riemann's zeta function by the Riemann--Siegel formula, I, Math.\ Comp.\ 80 (2011), 995--1009.
 \bibitem{AG77} K.~Alladi and C.~Grinstead, On the decomposition of $n!$ into prime powers, J.\ Number Theory 9 (1977), 452--458.
@@ -3630,6 +3675,7 @@ $L$, with the size of its coefficients and with the degree of $\mathbb K$.
 \bibitem{Hla80} E.~Hlawka, Gleichverteilung und Quadratwurzelschnecke, Monatsh.\ Math.\ 89 (1980), 19--44.
 \bibitem{IK02} M.~Iosifescu and C.~Kraaikamp, \emph{Metrical Theory of Continued Fractions}, Kluwer, 2002.
 \bibitem{Inc26} E.~L.~Ince, \emph{Ordinary Differential Equations}, Longmans, Green and Co., 1926.
+\bibitem{Joh15} F.~Johansson, Rigorous high-precision computation of the Hurwitz zeta function and its derivatives, Numer.\ Algorithms 69 (2015), 253--270.
 \bibitem{Joh21} F.~Johansson, Rapid computation of special values of Dirichlet $L$-functions, arXiv:2110.10583, 2021.
 \bibitem{Joh26} F.~Johansson, Analytic properties of Dirichlet series of functions analytic at infinity, companion note
 to this paper, 2026, \url{https://github.com/fredrik-johansson/holonomic-sums}.
