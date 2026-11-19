@@ -631,28 +631,10 @@ characters cannot be removed.
 \]
 and $F(qx+a)$ is regular at infinity; but now $s$ enters the summand through $(j+a/q)^{-s} = j^{-s}(1+\frac{a}{qj})^{-s}$,
 as in the Hurwitz zeta function. So at a \emph{fixed} point $s_0$ the left-hand side is, up to the term $j = 0$, a value
-$\zeta_{F'}(s_0)$ with $F'(j) = q^{-s_0}F(qj+a)(1+\frac a{qj})^{-s_0}$, which suffices for computing it, but as a function of $s$ it is
-a diagonal of a two-variable family (Example~(2) below), not a function $\zeta_{F'}$. When only the value at a fixed point matters, as for the sums of Table~\ref{tab:constants}, periodic weights can
+$\zeta_{F'}(s_0)$ with $F'(j) = q^{-s_0}F(qj+a)(1+\frac a{qj})^{-s_0}$, which suffices for computing it, but as a function of $s$ it is not a function $\zeta_{F'}$, since the summand
+depends on $s$. When only the value at a fixed point matters, as for the sums of Table~\ref{tab:constants}, periodic weights can
 therefore be removed; here we keep them, and
 Theorem~\ref{thm:split} handles them directly (Remark~\ref{rem:twist}).
-
-\subsection{Examples}
-Besides $F = 1$, rational $F$ and the constants of Table~\ref{tab:constants}:
-\begin{enumerate}
-\item The Khinchin zeta function \eqref{eq:Z}: $F(k) = p_k$, $f(x) = \log_2\bigl((1+x)^2/(1+2x)\bigr)$, $\rho = \frac12$.
-\item Families: if $G \in \Reg$ and $G(x) \to 1$ as $x \to \infty$, then $F_t(k) = G(k)^t$ is in $\Reg$ for every
-$t$, which gives two-variable functions
-\[
-  \Psi(s,t) = \sum_{k=1}^{\infty} G(k)^tk^{-s}.
-\]
-The Hurwitz zeta function $\sum_{k=1}^{\infty}(k+a)^{-s} = \Psi(s,-s)$ with $G(x) = 1 + a/x$, and the Dirichlet
-series $\sum_{k=1}^{\infty} P(k)^{-s}$ of a polynomial, are diagonals of such families. (The summand depends on $s$,
-so they are not themselves zeta functions $\zeta_F$ in the sense of Definition~\ref{def:functions}.)
-\item Not regular and not of this form: summands such as $e^{ik^2}$ or $1/k!$, with a stronger singularity at
-infinity than an exponential factor; and the Lerch-type series $\sum_{k=1}^{\infty} e^{2\pi i\alpha k}k^{-s}$ with
-irrational real $\alpha$, which is the limit $|z| \to 1$ of $\Li_1(s,z)$ and can be treated as a twist
-(Remark~\ref{rem:twist}).
-\end{enumerate}
 
 \subsection{A worked example}\label{sec:workedexample}
 Before the general construction, here is Theorem~A for one sum, with every piece explicit. Let
@@ -1005,15 +987,6 @@ first for $\operatorname{Re}s$ large, then by continuation. For $\chi(k) = e^{2\
 (not periodic), the even and odd parts are $\cos2\pi\alpha k$ and $i\sin2\pi\alpha k$, Poisson summation gives
 $\sum_{k\in\ZZ}\cos(2\pi\alpha k)e^{-k^2u} = \sqrt{\pi/u}\sum_{n\in\ZZ}e^{-\pi^2(n-\alpha)^2/u}$ and its derivative in
 $\alpha$, and the dual terms are the same moments at the points $c = \pi^2(n-\alpha)^2$.
-\end{remark}
-
-\begin{remark}[Two variables]\label{rem:twovar}
-If the coefficients $a_n = a_n(t)$ depend polynomially (or analytically, with uniform bounds) on a parameter $t$,
-all pieces of Theorem~\ref{thm:split} are analytic in $(s,t)$, and $\sum_{k=1}^{\infty}F_t(k)k^{-s}$ is meromorphic in $\CC^2$
-with polar divisor contained in $\bigcup_n\{s = 1-n\}$ and residues $a_n(t)$. For the families
-$\sum_{k=1}^{\infty}G(k)^tk^{-s}$ of Section~\ref{sec:defs} this gives a new proof of the meromorphic continuation of the
-Dirichlet series of polynomials of Mahler \cite{Mah28} along with a fast evaluation scheme; see also
-Section~\ref{sec:khinchinzeta}.
 \end{remark}
 
 %======================================================================
@@ -1937,22 +1910,6 @@ to $N$ bits in time $\widetilde O(N^{3/2})$. Some values for illustration:
   K_{-2} &= 1.4503403284956304060\ldots, & K_{-3} &= 1.3135070786879857468\ldots
 \end{align*}
 Bailey, Borwein and Crandall \cite{BBC97} computed the $K_{-n}$ for small $n$ to high precision.
-
-\emph{A two-variable function.} Since $k(k+2)/(k+1)^2 = 1 - (k+1)^{-2}$, Khinchin's constant also sits in the family
-\[
-  \Psi(s,t) = \sum_{k=1}^{\infty}k^{-s}\bigl(1 - (k+1)^{-2}\bigr)^t.
-\]
-Here $f_t(x) = ((1+2x)/(1+x)^2)^t$ is algebraic, analytic for $|x| < \frac12$, with coefficients
-$a_0(t) = 1$, $a_1(t) = 0$, $a_2(t) = -t$, $a_3(t) = 2t$, \dots\ polynomial in $t$. By Theorem~\ref{thm:split}
-(Remark~\ref{rem:twovar}), $\Psi$ is meromorphic in $\CC^2$ with polar divisor
-$\{s=1\}\cup\bigcup_{n\ge2}\{s = 1-n\}$; there is no pole along $s = 0$. Moreover $\Psi(s,0) = \zeta(s)$,
-$-\partial_t\Psi(s,0) = Z(s)\log 2$, and
-\[
-  \gamma = \CT_{s=1}\Psi(s,0), \qquad \log K\log 2 = \partial_s\partial_t\Psi(0,0).
-\]
-Euler's and Khinchin's constants are thus coefficients of the same function at the points $(1,0)$ and $(0,0)$;
-the splitting of $\Psi$ is a one-parameter deformation of Riemann's formula (Example~\ref{ex:riemann}), to which it
-reduces at $t = 0$.
 
 \emph{Divisibility.} The Dirichlet series $\zeta(s)Z(s)$ is that of $\sum_{d\mid n}p_d$, the probability that $a_1$
 divides $n$; the mean of this probability over $n \le N$ tends to $Z(1) = 1/K_{-1}$ as $N \to \infty$.
