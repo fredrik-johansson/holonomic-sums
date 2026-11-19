@@ -2297,9 +2297,8 @@ two results agree. Since the theta splitting shares nothing with the zeta-value 
 sums), it is a genuinely independent check.
 
 \subsection{The continued fraction of $K$}\label{sec:khcf}
-With $D = 10^7$ and $d = \lfloor 10^DK\rfloor$, we have $K \in I = [d\,10^{-D}, (d+1)10^{-D}]$. We computed the
-continued fraction expansions of both endpoints of $I$ with FLINT's subquadratic \texttt{fmpq\_get\_cfrac} (in
-$16$ seconds). They agree in the first $N + 1$ partial quotients, $N = 9\,699\,141$,
+With $D = 10^7$ and $d = \lfloor 10^DK\rfloor$, we have $K \in I = [d, d+1] \cdot 10^{-D}$. We computed the
+continued fraction expansions of both endpoints of $I$. They agree in the first $N + 1$ partial quotients, $N = 9\,699\,141$,
 \[
   K = [2; 1, 2, 5, 1, 1, 2, 1, 1, 3, 10, 2, 1, 3, 2, 24, 1, 3, 2, 3, \ldots, a_N, \ldots],
 \]
@@ -3253,6 +3252,16 @@ verification computation of Khinchin's constant.
 
 \section{Proof of Theorem~\ref{thm:complexity}}\label{app:cost}
 
+The following proof text is LLM-generated and unedited by the author.
+The ingredients are holonomy of all terms,
+standard bounds, and standard techniques
+for fast evaluation of holonomic functions.
+Everything else is tedious bookkeeping; we do not believe
+the details offer any insights for human readers,
+and include the full proof only for completeness.
+
+\begin{small}
+
 \subsection{Tools}\label{app:tools}
 \emph{Binary splitting.} Let $X_{n+1} = q_n^{-1}A_nX_n$ and $s_n = s_{n-1} + q_n^{-1}B_nX_n$, where $A_n$, $B_n$ are matrices of
 fixed size whose entries, like $q_n$, are integers (or integers of a fixed number field) of $O(\log p)$ bits for
@@ -3626,6 +3635,7 @@ finitely many initial values. Unwanted solutions of the recurrence grow at most 
 guard bits suffice, which again gives $p^{3/2+o(1)}$. We have not written out the order and degree of these
 recurrences.
 
+\end{small}
 
 
 \input{khinchin_pseudocode}

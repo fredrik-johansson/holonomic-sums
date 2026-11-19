@@ -17,29 +17,23 @@ r0 = 16                  # bits of the first bit-burst point
 g = 4                    # bit-burst growth factor
 half = fmpq(1, 2)
 
-
 def least(n, cond):                                   # min{n' >= n : cond(n')}
     while not cond(n):
         n += 1
     return n
 
-
 def mat(rows):
     return fmpq_mat(len(rows), len(rows[0]), [fmpq(x) for r in rows for x in r])
-
 
 def matvec(S, v):                                     # exact matrix times balls
     return [sum((arb(S[i, j]) * v[j] for j in range(S.ncols()) if S[i, j] != 0), arb(0))
             for i in range(S.nrows())]
 
-
 def pm(x, r):                                         # x +/- r
     return x + arb(0, arb(r).upper())
 
-
 def Eip(y):                                           # sum y^n/(n n!)
     return y.ei() - arb.const_euler() - y.log()
-
 
 # Algorithm 1
 def BinSplit(T, W, a, b):
@@ -50,7 +44,6 @@ def BinSplit(T, W, a, b):
     P1, S1 = BinSplit(T, W, a, m)
     P2, S2 = BinSplit(T, W, m, b)
     return P2 * P1, S1 + S2 * P1
-
 
 # Algorithm 2
 def KTerm(k, eps):
@@ -72,7 +65,6 @@ def KTerm(k, eps):
     s = matvec(S, [arb(q), arb(4 * u0)])[0]
     return pm((-X).exp() * s, R(N))
 
-
 # Algorithm 3
 def MainTerm(eps):
     U = arb(u0)
@@ -87,13 +79,11 @@ def MainTerm(eps):
     A, B, C = matvec(S, [arb(4 * u0)] * 3)
     return pm((-U).exp() * A - (-4 * U).exp() * B - C / 2, R(N))
 
-
 # Algorithm 4
 def Forcing(E):
     U = arb(u0)
     Eh = E / U.sqrt()
     return [Eh * Eip(4 * U), Eh * (4 * U).exp(), Eh]
-
 
 # Algorithm 5
 def StartValues(c0, eps):
@@ -125,7 +115,6 @@ def StartValues(c0, eps):
     Ym = pm(D * s[4] + Eh * s[5], R(N))
     return [nu, Y, Ym, D] + Forcing(E)
 
-
 # Algorithm 6
 def TaylorStage(c, delta, V, eps):
     U = arb(u0)
@@ -147,7 +136,6 @@ def TaylorStage(c, delta, V, eps):
     _, S = BinSplit(T, W, 0, L)
     return [pm(si, R(L)) for si in matvec(S, V)] + Forcing((-arb(c + delta) / U).exp())
 
-
 # Algorithm 7
 def DualTerm(m, eps):
     U = arb(u0)
@@ -164,7 +152,6 @@ def DualTerm(m, eps):
         V = TaylorStage(cc, trunc(r) - cc, V, eps)
         cc = trunc(r)
     return pm(arb.pi().sqrt() * V[0], K0 * (arb(2) ** (-rstar) + c.rad()))
-
 
 # Algorithm 8
 def Khinchin(p):
@@ -185,7 +172,6 @@ def Khinchin(p):
     log2 = arb.const_log2()
     L0 = log2 ** 2 + arb(-half).polylog(2) + arb.pi() ** 2 / 12
     return ((L0 + S / 2) / log2).exp(), kmax, mmax
-
 
 if __name__ == "__main__":
     p = int(sys.argv[1]) if len(sys.argv) > 1 else 333
