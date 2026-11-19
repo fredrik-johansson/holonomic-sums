@@ -1,7 +1,7 @@
 """
 Reference implementation of the dilogarithm-series theta splitting for
-Khinchin's constant (Theorem thm:khinchin of zetaF.tex).  It follows the
-pseudocode in khinchin_pseudocode.tex line by line (same names, same order).
+Khinchin's constant (Theorem thm:khinchin of zetaF.tex), listed with
+annotations in Appendix B of the paper (khinchin_listing.tex).
 
 Exact rational matrices (python-flint fmpq_mat) are multiplied by binary
 splitting; real numbers are Arb balls, and every truncation adds its bound
@@ -17,27 +17,28 @@ r0 = 16                  # bits of the first bit-burst point
 g = 4                    # bit-burst growth factor
 half = fmpq(1, 2)
 
-def least(n, cond):                                   # min{n' >= n : cond(n')}
+def least(n, cond):                     # min{n' >= n : cond(n')}
     while not cond(n):
         n += 1
     return n
 
-def mat(rows):
-    return fmpq_mat(len(rows), len(rows[0]), [fmpq(x) for r in rows for x in r])
+def mat(rows):                          # rational matrix from a list of rows
+    return fmpq_mat(len(rows), len(rows[0]),
+                    [fmpq(x) for r in rows for x in r])
 
-def matvec(S, v):                                     # exact matrix times balls
-    return [sum((arb(S[i, j]) * v[j] for j in range(S.ncols()) if S[i, j] != 0), arb(0))
-            for i in range(S.nrows())]
+def matvec(S, v):                       # exact matrix times vector of balls
+    return [sum((arb(S[i, j]) * v[j] for j in range(S.ncols())
+                 if S[i, j] != 0), arb(0)) for i in range(S.nrows())]
 
-def pm(x, r):                                         # x +/- r
+def pm(x, r):                           # x +/- r
     return x + arb(0, arb(r).upper())
 
-def Eip(y):                                           # sum y^n/(n n!)
+def Eip(y):                             # sum_{n>=1} y^n/(n n!)
     return y.ei() - arb.const_euler() - y.log()
 
-# Algorithm 1
+# Binary splitting
 def BinSplit(T, W, a, b):
-    """(P, S) with P = T(b-1)...T(a),  S = sum_{n=a}^{b-1} W(n) T(n-1)...T(a)."""
+    """(P, S): P = T(b-1)...T(a), S = sum_{a<=n<b} W(n) T(n-1)...T(a)."""
     if b == a + 1:
         return T(a), W(a)
     m = (a + b) // 2
@@ -45,13 +46,14 @@ def BinSplit(T, W, a, b):
     P2, S2 = BinSplit(T, W, m, b)
     return P2 * P1, S1 + S2 * P1
 
-# Algorithm 2
+# The k-terms I_k
 def KTerm(k, eps):
     K = fmpq(k * k); x = K * u0; q = 4 / K; n1 = int(x.ceil()) + 1
     X = arb(x)
 
     def tau(n):
-        return arb(q) ** n * min(arb(1), n * X ** (n - 1) * (-X).exp() / arb(n - 1).fac()) / n ** 2
+        p = n * X ** (n - 1) * (-X).exp() / arb(n - 1).fac()
+        return arb(q) ** n * min(arb(1), p) / n ** 2
 
     def R(N):
         if N < n1:
@@ -65,7 +67,7 @@ def KTerm(k, eps):
     s = matvec(S, [arb(q), arb(4 * u0)])[0]
     return pm((-X).exp() * s, R(N))
 
-# Algorithm 3
+# The main term M
 def MainTerm(eps):
     U = arb(u0)
     R = lambda N: 6 * (8 * U) ** N / arb(N).fac()
@@ -79,13 +81,13 @@ def MainTerm(eps):
     A, B, C = matvec(S, [arb(4 * u0)] * 3)
     return pm((-U).exp() * A - (-4 * U).exp() * B - C / 2, R(N))
 
-# Algorithm 4
+# Forcing components of the dual state
 def Forcing(E):
     U = arb(u0)
     Eh = E / U.sqrt()
     return [Eh * Eip(4 * U), Eh * (4 * U).exp(), Eh]
 
-# Algorithm 5
+# Starting values of the dual state at a rational point c0
 def StartValues(c0, eps):
     U, C0 = arb(u0), arb(c0)
     D = (arb.pi() / C0).sqrt() * (C0 / U).sqrt().erfc()
@@ -94,19 +96,21 @@ def StartValues(c0, eps):
     b = lambda n: arb(4) ** n / arb(n).fac()
 
     def R(N):
-        return 2 * b(N) * max(2 * alpha(N + s) * D + E * U ** (N + s - half) / (N + s - half)
+        return 2 * b(N) * max(2 * alpha(N + s) * D
+                              + E * U ** (N + s - half) / (N + s - half)
                               for s in (0, 1))
-    N = least(1, lambda N: 32 * c0 <= (2 * N + 1) * (2 * N + 2) and 8 * u0 <= N + 1
-              and R(N) <= eps)
+    N = least(1, lambda N: 32 * c0 <= (2 * N + 1) * (2 * N + 2)
+              and 8 * u0 <= N + 1 and R(N) <= eps)
 
     def T(n):
         h = n + half; d = 4 / ((n + 1) * h)
-        return mat([[-c0 * d, 0, 0], [0, -c0 * d, u0 * d], [0, 0, 4 * u0 / (n + 1)]])
+        return mat([[-c0 * d, 0, 0], [0, -c0 * d, u0 * d],
+                    [0, 0, 4 * u0 / (n + 1)]])
 
     def W(n):
         h = n + half
-        return mat([[fmpq(1, n), 0, 0], [0, fmpq(1, n), 0], [1, 0, 0], [0, 1, 0],
-                    [-c0 / h, 0, 0], [0, -c0 / h, u0 / h]])
+        return mat([[fmpq(1, n), 0, 0], [0, fmpq(1, n), 0], [1, 0, 0],
+                    [0, 1, 0], [-c0 / h, 0, 0], [0, -c0 / h, u0 / h]])
     _, S = BinSplit(T, W, 1, N)
     s = matvec(S, [arb(-8 * c0), arb(8 * u0), arb(4 * u0)])
     s = [si + arb(ti) for si, ti in zip(s, [0, 0, 1, 0, -2 * c0, 2 * u0])]
@@ -115,7 +119,7 @@ def StartValues(c0, eps):
     Ym = pm(D * s[4] + Eh * s[5], R(N))
     return [nu, Y, Ym, D] + Forcing(E)
 
-# Algorithm 6
+# One bit-burst stage: from V(c) to V(c + delta)
 def TaylorStage(c, delta, V, eps):
     U = arb(u0)
     rho = arb(abs(delta) / c)
@@ -123,24 +127,26 @@ def TaylorStage(c, delta, V, eps):
     L = least(2, lambda L: R(L) <= eps)
 
     def T(j):
-        h = -delta / (j + 1); gj = j + half
-        M = [[gj / c, -1 / c, 0, 1 / c, 1 / c, 0, 0],
-             [0, gj / c, -4 / c, 0, 0, 1 / c, 0],
+        h = -delta / (j + 1); e = j + half
+        M = [[e / c, -1 / c, 0, 1 / c, 1 / c, 0, 0],
+             [0, e / c, -4 / c, 0, 0, 1 / c, 0],
              [0, 1, 0, 0, 0, 0, 0],
-             [0, 0, 0, gj / c, 0, 0, 1 / c],
+             [0, 0, 0, e / c, 0, 0, 1 / c],
              [0, 0, 0, 0, 1 / u0, 0, 0],
              [0, 0, 0, 0, 0, 1 / u0, 0],
              [0, 0, 0, 0, 0, 0, 1 / u0]]
-        return mat([[h * e for e in row] for row in M])
-    W = lambda j: mat([[int(i == j2) for j2 in range(7)] for i in range(4)])
+        return mat([[h * x for x in row] for row in M])
+    W = lambda j: mat([[int(i == l) for l in range(7)] for i in range(4)])
     _, S = BinSplit(T, W, 0, L)
-    return [pm(si, R(L)) for si in matvec(S, V)] + Forcing((-arb(c + delta) / U).exp())
+    E = (-arb(c + delta) / U).exp()
+    return [pm(si, R(L)) for si in matvec(S, V)] + Forcing(E)
 
-# Algorithm 7
+# The dual terms J_m
 def DualTerm(m, eps):
     U = arb(u0)
     c = arb.pi() ** 2 * (m + arb(half)) ** 2
-    trunc = lambda r: fmpq(int((c.mid() * 2 ** r).floor().unique_fmpz()), 2 ** r)
+    trunc = lambda r: fmpq(int((c.mid() * 2 ** r).floor().unique_fmpz()),
+                           2 ** r)
     cm = c.lower() - arb(2) ** (-r0)
     K0 = 2 * arb.pi().sqrt() * Eip(4 * U) * (-cm / U).exp() / (U.sqrt() * cm)
     x = ((K0 / (eps - K0 * c.rad())).log() / arb.const_log2()).upper()
@@ -153,14 +159,16 @@ def DualTerm(m, eps):
         cc = trunc(r)
     return pm(arb.pi().sqrt() * V[0], K0 * (arb(2) ** (-rstar) + c.rad()))
 
-# Algorithm 8
+# Khinchin's constant
 def Khinchin(p):
     ctx.prec = p + 30
     eps = arb(2) ** (-p - 10)
-    U = arb(u0)
+    U, pi = arb(u0), arb.pi()
     G = Eip(4 * U) / U
-    tk = lambda k: 2 * (-((k + 1) ** 2 - 4) * U).exp() / (((k + 1) ** 2 - 4) * U)
-    tm = lambda m: 4 * (arb.pi() * U).sqrt() * G * (-arb.pi() ** 2 * (m + 1 + arb(half)) ** 2 / U).exp()
+    tk = lambda k: (2 * (-((k + 1) ** 2 - 4) * U).exp()
+                    / (((k + 1) ** 2 - 4) * U))
+    tm = lambda m: (4 * (pi * U).sqrt() * G
+                    * (-pi ** 2 * (m + 1 + arb(half)) ** 2 / U).exp())
     kmax = least(3, lambda k: tk(k) <= eps)
     mmax = least(0, lambda m: tm(m) <= eps)
     S = MainTerm(eps)
@@ -170,7 +178,7 @@ def Khinchin(p):
         S += DualTerm(m, eps)
     S = pm(S, tk(kmax) + tm(mmax))
     log2 = arb.const_log2()
-    L0 = log2 ** 2 + arb(-half).polylog(2) + arb.pi() ** 2 / 12
+    L0 = log2 ** 2 + arb(-half).polylog(2) + pi ** 2 / 12
     return ((L0 + S / 2) / log2).exp(), kmax, mmax
 
 if __name__ == "__main__":

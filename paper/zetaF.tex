@@ -5,8 +5,7 @@
 \usepackage{xcolor}
 \usepackage{xurl}
 \usepackage{pgfplots}
-\usepackage{algorithm}
-\usepackage{algpseudocode}
+\usepackage{listings}
 \pgfplotsset{compat=1.18}
 \usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
 
@@ -461,7 +460,7 @@ uniform bounds and their consequences for integer sequences, and compares the th
 methods. Section~\ref{sec:khinchin} defines the Khinchin zeta function and gives three algorithms for Khinchin's
 constant, with an implementation and a computation to $10^7$ digits. Section~\ref{sec:other} treats the other
 constants of Table~\ref{tab:constants}, and Section~\ref{sec:open} lists open problems. Appendix~\ref{app:cost} contains the
-cost analysis and Appendix~\ref{sec:khpseudo} pseudocode for Khinchin's constant.
+cost analysis and Appendix~\ref{sec:khpseudo} an annotated reference implementation for Khinchin's constant.
 
 %======================================================================
 \section{Definitions and examples}\label{sec:defs}
@@ -2233,8 +2232,8 @@ five-dimensional dual state.
 Our implementation is part of FLINT \cite{FLINT} version 3.7.0-dev.
 The function \texttt{arb\_const\_khinchin} uses the new theta splitting algorithm above
 $5\cdot10^6$ bits (about $1.5\cdot10^6$ digits) and an optimized zeta-value expansion \eqref{eq:zetavalue} below.
-We only sketch it; Appendix~\ref{sec:khpseudo} gives pseudocode for the algorithm at the level of a direct
-implementation.
+We only sketch it; Appendix~\ref{sec:khpseudo} lists a short annotated reference implementation of the same
+algorithm.
 \begin{itemize}
 \item All linear recurrences (the $k$-terms, the Taylor stages and starting values of the dual terms,
 $\Gamma(\frac12, y)$) are evaluated by exact binary splitting of products of small integer matrices over chunks of
@@ -3638,7 +3637,7 @@ recurrences.
 \end{small}
 
 
-\input{khinchin_pseudocode}
+\input{khinchin_listing}
 
 %======================================================================
 % CHECK bibliographic details of Kat97, Zag06, HL23, AdR11, Bor00, Har10, Bal00, vdH07, BC21, Bri12, Dav93, Hla80, Gau10, RG12, SKRS02, KZ01, Joh15, KZ08, Mor21 (added from memory/web search).
