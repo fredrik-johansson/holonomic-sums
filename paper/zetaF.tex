@@ -117,8 +117,7 @@ notoriously difficult to calculate to high precision''.
 
 In this work, we show that both sums \eqref{eq:twoconstants} and many others
 belong to a common class which can be computed in subquadratic time.
-The method is practical for computing millions of digits,
-as demonstrated with several examples.
+As demonstrated on examples, the method is practical for computing millions of digits.
 
 \subsection{Zeta functions of holonomic functions}
 
@@ -166,21 +165,32 @@ For every $u_0 > 0$ and every $s \in \CC$ except the poles,
   \zeta_F(s) = \sum_{k=1}^{k_0-1}F(k)k^{-s} + \sum_{k=k_0}^{\infty}\mathcal{L}_s(k^2)
   + \sqrt\pi\sum_{m=1}^{\infty}\mathcal{D}_s(\pi^2m^2) + M(s),
 \]
-where $\mathcal{L}_s(K) = \int_{u_0}^\infty e^{-Ku}h_s(u)\dd u$ and
-$\mathcal{D}_s(c) = \int_0^{u_0}u^{-1/2}e^{-c/u}h_s(u)\dd u$ are entire in $s$ (and holonomic in $K$ and $c$ when
-moreover $F \in \Reg$),
-$h_s(u) = \sum_{n=0}^{\infty} a_n u^{(s+n)/2-1}/\Gamma(\frac{s+n}{2})$ is a Borel-type transform of $f$, and $M$ is an
+where the ``$k$-terms''
+\[\mathcal{L}_s(K) = \int_{u_0}^\infty e^{-Ku}h_s(u)\dd u
+\]
+and the ``dual terms''
+\[
+\mathcal{D}_s(c) = \int_0^{u_0}u^{-1/2}e^{-c/u}h_s(u)\dd u
+\]
+are entire in $s$ (and holonomic in $K$ and $c$ when moreover $F \in \Reg$),
+\[
+h_s(u) = \sum_{n=0}^{\infty} a_n u^{(s+n)/2-1}/\Gamma(\frac{s+n}{2})
+\]
+is a Borel-type transform of $f$, and $M$ is an
 explicit series of elementary functions and incomplete gamma functions carrying all the poles.
 \end{theoremA}
 
-For $f = 1$, $k_0 = 1$ and $u_0 = \pi$ this is Riemann's formula, and both sides are the same function: the
-functional equation. In general the two sides differ, but both are rapidly convergent: the $k$-terms decay
-like $e^{-k^2u_0}$ and the dual terms like $e^{-\pi^2m^2/u_0}$. Formally the dual side is the Poisson dual
+For $F = 1$, $k_0 = 1$ and $u_0 = \pi$ this is Riemann's formula, and the two infinite sums
+are symmetric in $s$ and $1-s$ which gives the
+functional equation. The two sums differ in general
+but both are rapidly convergent: the $k$-terms decay
+like $e^{-k^2u_0}$ and the dual terms like $e^{-\pi^2m^2/u_0}$.
+Formally the dual side is the Poisson dual
 $\sum_{m\in\ZZ} \widehat G_s(m)$ of $G_s(x) = |x|^{-s}F(|x|)$, and $u_0$ is a smoothing parameter
 (Remark~\ref{rem:poisson}). The other functions have splittings of the same shape. For $\Li_F(s,z)$ and $\Phi_F$ the
 factor $z^k = e^{2\pi i\alpha k}$ is a twist by a complex characteristic: the dual points become
 $\pi^2(n-\alpha)^2$, complex numbers, and for $F = 1$ the formula is Crandall's \cite{Cra12}
-(Theorem~\ref{thm:geometric}). For $\Lambda_F$ the factor $e^{-\tau k^r}$ is moved into the kernel $h_s$, which
+(Theorem~\ref{thm:geometric}). For $\Lambda_F$ the factor $e^{-\tau k^r}$ moves into the kernel $h_s$, which
 becomes an entire function of $u^{-r/2}$ (Propositions~\ref{prop:expsplit} and~\ref{prop:prodsplit}).
 
 \begin{theoremB}[Theorems~\ref{thm:complexity} and~\ref{thm:geometric}, Section~\ref{sec:dampedcost}]
@@ -431,8 +441,8 @@ $F = 1$ to all $F \in \RegQ$ and to polylogarithms and Lerch transcendents (Clai
 that \cite{Joh21} argued only briefly.
 
 Crandall \cite{Cra12} developed the splitting systematically for polylogarithms, Lerch transcendents and
-related functions (see also \cite{BB15}), without a complexity analysis. To our knowledge the class of holonomic $F$
-has not been studied as such. What holonomy adds is that every piece of the splitting is again holonomic, which is
+related functions (see also \cite{BB15}), without a complexity analysis. To our knowledge Dirichlet series for holonomic $F$
+have not been studied as such. What holonomy adds is that every piece of the splitting is again holonomic, which is
 what makes the fast evaluation possible.
 
 %In physics, sums of the class are usually truncated and the tail estimated by its leading term;
