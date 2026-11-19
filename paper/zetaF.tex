@@ -175,7 +175,7 @@ are entire in $s$ (and holonomic in $K$ and $c$ when moreover $F \in \Reg$),
 \[
 h_s(u) = \sum_{n=0}^{\infty} a_n u^{(s+n)/2-1}/\Gamma(\frac{s+n}{2})
 \]
-is a Borel-type transform of $f$, and $M$ is an
+is a Borel-type transform of $f$ (the \emph{kernel}), and the \emph{main term} $M$ is an
 explicit series of elementary functions and incomplete gamma functions carrying all the poles.
 \end{theoremA}
 
@@ -185,9 +185,9 @@ functional equation. The two sums differ in general
 but both are rapidly convergent: the $k$-terms decay
 like $e^{-k^2u_0}$ and the dual terms like $e^{-\pi^2m^2/u_0}$.
 Formally the dual side is the Poisson dual
-$\sum_{m\in\ZZ} \widehat G_s(m)$ of $G_s(x) = |x|^{-s}F(|x|)$, and $u_0$ is a smoothing parameter
+$\sum_{m\in\ZZ} \widehat G_s(m)$ of $G_s(x) = |x|^{-s}F(|x|)$, and the \emph{split point} $u_0$ is a smoothing parameter
 (Remark~\ref{rem:poisson}). The other functions have splittings of the same shape. For $\Li_F(s,z)$ and $\Phi_F$ the
-factor $z^k = e^{2\pi i\alpha k}$ is a twist by a complex characteristic: the dual points become
+factor $z^k = e^{2\pi i\alpha k}$, with complex $\alpha$, is treated like a periodic weight: the dual points become
 $\pi^2(n-\alpha)^2$, complex numbers, and for $F = 1$ the formula is Crandall's \cite{Cra12}
 (Theorem~\ref{thm:geometric}). For $\Lambda_F$ the factor $e^{-\tau k^r}$ moves into the kernel $h_s$, which
 becomes an entire function of $u^{-r/2}$ (Propositions~\ref{prop:expsplit} and~\ref{prop:prodsplit}).
@@ -216,7 +216,7 @@ $p^{2+o(1)}$ for the classical methods (Euler--Maclaurin summation, the expansio
 functions with exponential decay, direct summation, which needs $p^{1+1/r+o(1)}$ for $\Lambda_F$).
 
 The expansion $\zeta_F(s) = \sum_{k<k_0}F(k)k^{-s} + \sum_{n=0}^{\infty}a_n\zeta(s+n,k_0)$ in Hurwitz zeta values
-\cite{FV96} gives the meromorphic continuation, with simple poles at $s = 1-n$ of residue $a_n$ and the
+\cite{FV96}, the \emph{zeta-value expansion}, gives the meromorphic continuation, with simple poles at $s = 1-n$ of residue $a_n$ and the
 zeta-regularized values of divergent sums $\sum_kk^mF(k)$ at $s = -m$ \cite{Eli95,Kir02}
 (Proposition~\ref{prop:cont}). Other analytic properties of $\zeta_F$, such as its growth and zeros, play no role in the
 algorithms and are treated in a companion note \cite{Joh26}.
@@ -519,14 +519,16 @@ Membership in $\RegQ$ concerns the operator and the expansion at infinity, and h
 which are roots of an indicial polynomial with algebraic coefficients: ${}_2F_1(\frac32,\frac32;2;-\frac4{k^2})$ is in $\RegQ$, and so is $\sin(x/k)$
 for algebraic $x$, but not for $x = \pi$, when its expansion has the coefficients $\pm\pi^{2n+1}/(2n+1)!$. Both
 conditions are needed: $k^{-\pi}$ has the single expansion coefficient $1$, but its exponent is transcendental.
-Constant factors can be taken outside the sum: the Khinchin probabilities $p_k = \log_2(1+\frac1{k(k+2)})$ are not in
-$\RegQ$, but $p_k\log 2$ is.
 
-A function that is both regular and analytic at infinity is $F(x) = f(1/x)$ with $f$ analytic at $0$ and annihilated
-by an operator with an ordinary or regular singular point at $0$. Holonomy of $f$ alone does not suffice for this:
-the Stieltjes transform $f(t) = \int_1^\infty(e^{1/v}-1)\,v^{-1}(v-t)^{-1}\dd v$ is holonomic and analytic at
-$t = 0$, but its jump across $(1,\infty)$ is $2\pi i(e^{1/t}-1)/t$, which every operator annihilating $f$ also
-annihilates, so every such operator has an irregular singularity at $t = 0$, and $F(x) = f(1/x)$ is not regular at infinity.
+The two conditions of Definition~\ref{def:regular} are independent. A regular $F$ need not be analytic at infinity
+(it may involve $x^{-\sigma}$ and $\log x$), and a holonomic $F$ that is analytic at infinity need not be regular
+there. Regularity is a property of the operator, and an operator that annihilates $F$ also annihilates all analytic
+continuations of $F$. For example, $F(x) = e^{x-\sqrt{x^2+1}} = e^{-1/(2x) + O(x^{-3})}$ is holonomic and analytic at
+infinity, but continuing it around the branch point $x = i$ gives $e^{x+\sqrt{x^2+1}}$, which grows like $e^{2x}$.
+Every operator annihilating $F$ annihilates this function too, so $x = \infty$ is an irregular singular point of all
+of them, and $F$ is not regular at infinity. The functions that are both regular and analytic at infinity are the
+$F(x) = f(1/x)$ with $f$ analytic at $0$ and annihilated by an operator with an ordinary or regular singular point
+at $0$.
 
 Besides the closure properties listed in Section~\ref{sec:sums}, regularity at infinity is preserved by
 $F(x) \mapsto F(qx+a)$, by multiplication by $x^{-\sigma}$ and $(\log x)^j$, and by differentiation. It holds for all G-functions of $1/x$ (algebraic functions,
@@ -591,20 +593,21 @@ parts of $R(y)$; this is the decomposition into monodromy eigenspaces used in th
 Theorem~\ref{thm:complexity} (Appendix~\ref{app:cost}).
 \end{remark}
 
-\subsection{Standing assumptions}\label{sec:scope}
-We assume that $F$ is analytic at infinity:
+\subsection{The analytic case}\label{sec:scope}
+The constructions of Sections~\ref{sec:splitting}--\ref{sec:complexity} are carried out for summands that are
+analytic at infinity. Where this is assumed, we write
 \begin{equation}\label{eq:f}
   F(k) = f(1/k) \quad (k \ge k_0), \qquad f(x) = \sum_{n=0}^{\infty}a_nx^n, \qquad |a_n| \le C R^n,
   \quad R < k_0,
 \end{equation}
-and let $n_0 = \min\{n : a_n \ne 0\}$ (we exclude $f = 0$). The splitting identity (Theorem~\ref{thm:split}) needs
-nothing more. That its two sides are holonomic (Lemma~\ref{lem:kernelhol}, Proposition~\ref{prop:dual}), and hence
+and let $n_0 = \min\{n : a_n \ne 0\}$ (we exclude $f = 0$). General $F \in \Reg$, of the form \eqref{eq:frob},
+reduce to this case by Lemma~\ref{lem:reduction}, at the price of shifts and derivatives in $s$; this is how
+Theorem~\ref{thm:complexity} is proved in that generality. For $F$ as in \eqref{eq:f}, the splitting identity
+(Theorem~\ref{thm:split}) needs nothing more. That its two sides are holonomic (Lemma~\ref{lem:kernelhol}, Proposition~\ref{prop:dual}), and hence
 Theorem~\ref{thm:complexity} and the algorithms of Section~\ref{sec:khinchin}, need $F$ regular and analytic at
 infinity; condition~(H) of Section~\ref{sec:splitting} is what gives the dual side a first-order system with
 polynomial coefficients. The cost bounds for the classical methods in Section~\ref{sec:complexity} need only that
-the $a_n$, and the Taylor coefficients of $F$, are P-recursive. General $F \in \Reg$, of the form \eqref{eq:frob}, reduce to the
-analytic case by Lemma~\ref{lem:reduction}, at the price of shifts and derivatives in $s$; this is how
-Theorem~\ref{thm:complexity} is proved in that generality.
+the $a_n$, and the Taylor coefficients of $F$, are P-recursive.
 
 \subsection{Twists, dilations and shifts}\label{sec:twists}
 Three operations relate the functions $L_F(s,\chi)$.
@@ -634,6 +637,27 @@ $\zeta_{F'}(s_0)$ with $F'(j) = q^{-s_0}F(qj+a)(1+\frac a{qj})^{-s_0}$, which su
 depends on $s$. When only the value at a fixed point matters, as for the sums of Table~\ref{tab:constants}, periodic weights can
 therefore be removed; here we keep them, and
 Theorem~\ref{thm:split} handles them directly (Remark~\ref{rem:twist}).
+
+\subsection{Evaluating holonomic functions}\label{sec:evalhol}
+Two classical techniques evaluate holonomic functions with algebraic data in quasilinear time, and we use them
+throughout; Appendix~\ref{app:tools} states them precisely. \emph{Binary splitting} sums a series whose terms satisfy a
+linear recurrence with polynomial coefficients, such as a hypergeometric series or the Taylor series of a holonomic
+function at a point with few bits: the terms are products of matrices with small entries, and the products are formed
+in a balanced tree, so that the numbers being multiplied have similar sizes. For a geometrically convergent series
+with algebraic coefficients this costs $O(\Mul(p)\log^2p)$ bit operations for $p$ bits \cite{HP98,CC90}. The
+\emph{bit-burst algorithm} extends this to a point $x$ given to $p$ bits: it continues the solution of the
+differential equation from a point with few bits through truncations of $x$ to $2^j$ bits, $j = 1, 2, \dots$, summing
+one Taylor series by binary splitting at each step, again in $O(\Mul(p)\log^2p)$ \cite{CC90,vdH99}.
+
+We use the error functions $\operatorname{erf}$, $\erfc = 1 - \operatorname{erf}$ and
+$\erfi(x) = -i\operatorname{erf}(ix)$, the incomplete gamma functions $\Gamma(a,x)$ and $\gamma(a,x)$ with their
+regularized forms $Q(a,x) = \Gamma(a,x)/\Gamma(a)$ and $P(a,x) = 1 - Q(a,x)$, the exponential integrals
+$E_1(x) = \Gamma(0,x)$ and $\operatorname{Ei}$, the entire functions
+\[
+  \Ein(y) = \sum_{n=1}^{\infty}\frac{(-1)^{n+1}y^n}{n\cdot n!}, \qquad \Eip(y) = \sum_{n=1}^{\infty}\frac{y^n}{n\cdot n!}
+  = \operatorname{Ei}(y) - \gamma - \log y,
+\]
+and the cosine integral $\Ci$. All are holonomic.
 
 \subsection{A worked example}\label{sec:workedexample}
 Before the general construction, here is Theorem~A for one sum, with every piece explicit. Let
@@ -1879,7 +1903,8 @@ For the Khinchin zeta function \eqref{eq:Z},
 \[
   f(x) = \frac{2\log(1+x) - \log(1+2x)}{\log 2}, \qquad a_n = \frac{(-1)^n(2^n - 2)}{n\log 2},
 \]
-with $\rho = \frac12$, so $k_0 = 3$, and $a_0 = a_1 = 0$, $n_0 = 2$. By Proposition~\ref{prop:cont}, $Z$ is
+with $\rho = \frac12$, so $k_0 = 3$, and $a_0 = a_1 = 0$, $n_0 = 2$. (Strictly, $p_k$ is not in $\RegQ$ because of
+the factor $1/\log 2$; the algorithms compute $Z(s)\log 2$.) By Proposition~\ref{prop:cont}, $Z$ is
 meromorphic with simple poles at $s = -1, -2, -3, \dots$ of residues $1/\log 2$, $-2/\log 2$, $\frac{7}{2\log2}, \dots$,
 and is analytic in $\operatorname{Re}s > -1$.
 
@@ -2139,7 +2164,8 @@ summed by one binary splitting. The bit-burst algorithm then steps from $c_0$ to
 constants are rational series.
 
 \subsubsection{Error bounds}\label{sec:khbounds}
-With $U = u_0$ and $E = e^{-c/U}$, the following bounds make the evaluation rigorous in ball arithmetic.
+With $U = u_0$ and $E = e^{-c/U}$, the following bounds make the evaluation rigorous in ball arithmetic (interval arithmetic with midpoint--radius
+intervals, as in FLINT \cite{FLINT}).
 \begin{itemize}
 \item \emph{Omitted terms.} Since $G(u) \le e^{4u}/U$ for $u \ge U$,
 \[
@@ -3078,7 +3104,7 @@ $e^{i\tau x^r}$ is, up to a slowly varying amplitude, $e^{i\tau'|\xi|^{r'}}$ wit
 either, so that smoothing one side lengthens the other and no splitting shortens both.
 
 The problem is the divergence of $\phi$, and the threshold is set by the Gaussian kernel. If $\phi$ has Gevrey order
-$1/r$, as it does when another solution of the operator has an exponential factor of degree $r$, the coefficients of
+$1/r$ (coefficients of size $(n!)^{1/r}$ up to geometric factors), as it does when another solution of the operator has an exponential factor of degree $r$, the coefficients of
 $E_s$ in \eqref{eq:kernel} grow like $\Gamma(n/r)/\Gamma(n/2)$. For $r > 2$ the kernel is still entire. For $r = 2$
 it has a finite radius of convergence, as in the first of
 \begin{gather*}
@@ -3110,8 +3136,8 @@ $\sum_ke^{-kz}J_0(kr)$, a solution of Laplace's equation in cylindrical coordina
 $J_\nu(kx)$ is a combination of $e^{\pm ikx}k^{-1/2}$ times divergent series in $1/k$, so it is not a twist
 (Remark~\ref{rem:twist}) of a regular function.
 \item Relativistic Boltzmann sums $\sum_ke^{-\beta\sqrt{k^2+m^2}}$. The summand is $e^{-\beta k}F(k)$ with
-$F(x) = e^{\beta(x-\sqrt{x^2+m^2})}$, which is analytic at infinity but not regular there: as for the Stieltjes
-transform in Section~\ref{sec:defs}, every operator annihilating $F$ also annihilates the conjugate
+$F(x) = e^{\beta(x-\sqrt{x^2+m^2})}$, which is analytic at infinity but not regular there: as for the example in Section~\ref{sec:defs}, every
+operator annihilating $F$ also annihilates the conjugate
 $e^{\beta(x+\sqrt{x^2+m^2})}$. So Theorem~\ref{thm:geometric}(1) gives a splitting, but condition~(H) fails and
 the proof of Proposition~\ref{prop:dual} does not apply. By Poisson summation, these sums are dual to sums of values
 $K_1(m\sqrt{\beta^2+4\pi^2\ell^2})/\sqrt{\beta^2+4\pi^2\ell^2}$. Such sums of Bessel functions $K_\nu$ give the
