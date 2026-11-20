@@ -790,7 +790,8 @@ $S_A = \sum_{m=1}^{\infty}2(\zeta(2m)-1)/(2m-1)$. The rest of this section carri
 $F$, and Section~\ref{sec:complexity} the cost analysis.
 
 \subsection{The kernel}\label{sec:kernel}
-Under \eqref{eq:f} define, for $s \in \CC$ and $u > 0$,
+The kernel is the function whose Laplace transform in $\kappa = k^2$ is $k^{-s}f(1/k)$. It is obtained by applying the
+formula for $k^{-s}$ used in Riemann's proof termwise to $f$. Under \eqref{eq:f} define, for $s \in \CC$ and $u > 0$,
 \begin{equation}\label{eq:kernel}
   h_s(u) = \sum_{n=0}^{\infty} a_n\frac{u^{(s+n)/2-1}}{\Gamma(\frac{s+n}{2})} = u^{s/2-1}E_s(u^{1/2}), \qquad
   E_s(v) = \sum_{n=0}^{\infty}\frac{a_nv^n}{\Gamma(\frac{s+n}2)}.
@@ -810,6 +811,18 @@ $h_s$ is $u^{s/2}$ times an even and an odd entire function of $v$:
   g_1(u) = \sum_{m=0}^{\infty}\frac{a_{2m+1}u^{m}}{\Gamma(m+\frac{s+1}2)}.
 \end{gathered}
 \end{equation}
+The reason for this split is that the transform halves exponents: $a_nk^{-s-n}$ corresponds to $u^{(s+n)/2-1}$, so
+even and odd $n$ give two classes of exponents at $u = 0$, differing by $\frac12$ modulo $\ZZ$. Equivalently, with
+$f(x) = A_0(x^2) + xA_1(x^2)$,
+\[
+  F(k)k^{-s} = k^{-s}A_0(k^{-2}) + k^{-s-1}A_1(k^{-2}),
+\]
+a sum of two functions of $k^2$ times powers of $k$, which is the form the Gaussians $e^{-k^2u}$ can handle.
+Within one class the factors $1/\Gamma(m+\sigma)$ change by the rational factor $m+\sigma$ from one term to the next,
+whereas $\Gamma(w)/\Gamma(w+\frac12)$ is not rational in $w$. So each part has a power series with P-recursive
+coefficients (Lemma~\ref{lem:kernelhol}), and each needs its own incomplete gamma values below, since the recurrences
+for $Q(a,x)$ and for the moments $D_a$ only relate exponents $a$ in the same class modulo $\ZZ$. For $f = 1$ only the
+even part occurs.
 
 The rest of this subsection, and Section~\ref{sec:twosides}, assume moreover that $F$ is regular at infinity. Then
 $f$ is annihilated by an operator that is regular singular (or ordinary) at $x = 0$. Written in terms of $\vartheta = x\frac{\mathrm d}{\mathrm dx}$ it has the form
@@ -830,7 +843,7 @@ $b \in \mathbb K(s)[u]^\ell$ such that $\mathbf G = (G, \vartheta G, \dots, \var
 \end{lemma}
 
 \begin{proof}
-Write $f(x) = A_0(x^2) + xA_1(x^2)$. First, $A_0$ and $A_1$ are annihilated by operators satisfying (H). Let $L$ be the
+First, $A_0$ and $A_1$ are annihilated by operators satisfying (H). Let $L$ be the
 operator of $f$ and $L^-$ the operator obtained by $x \mapsto -x$, which also satisfies (H). The least common left
 multiple of $L$ and $L^-$ annihilates $f(x) \pm f(-x)$; its solution space is the sum of those of $L$ and $L^-$, so by
 Fuchs's criterion it is regular singular at $0$ and satisfies (H). So the even part $A_0(x^2)$ is annihilated by an
@@ -860,7 +873,17 @@ companion matrix of size $\ell = d + r$, where $r$ is the degree in $y$ of the o
 $G_1$.
 \end{proof}
 
+Condition (H) is what the dual side needs. It makes the coefficient of the highest power of $\vartheta$ in the
+operator of $G$ a constant, so that \eqref{eq:Gsys} has polynomial coefficients in $u$, without denominators.
+Multiplication by $u^i$ only shifts the index of the moments $Z_t$ in Section~\ref{sec:twosides}, so finitely many
+moments form a closed system (Proposition~\ref{prop:dual}).
+
 \subsection{The splitting}
+As in Riemann's proof, we insert \eqref{eq:laplace} into the sum and split the integral over $u$ at $u_0$. For
+$u \ge u_0$ the Gaussians $e^{-k^2u}$ decay rapidly in $k$, and for $u \le u_0$ the theta transformation turns them into
+Gaussians $e^{-\pi^2m^2/u}$ that decay rapidly in $m$. Since \eqref{eq:laplace} holds only for $k > R$, the sum starts
+at $k_0 > R$; the theta transformation needs the full lattice, so the terms $k < k_0$ are subtracted again in $M$.
+
 For fixed $x > 0$ the regularized incomplete gamma functions $Q(a,x)$ and $P(a,x) = \gamma(a,x)/\Gamma(a)$ are
 entire in $a$.
 
@@ -946,8 +969,9 @@ and nothing is gained.
 \end{remark}
 
 \subsection{The two sides are holonomic}\label{sec:twosides}
-In this subsection $F$ is regular and analytic at infinity, so that $f$ satisfies (H).
-Both sides of Theorem~\ref{thm:split} are built from two integral transforms of the kernel, the truncated Laplace
+In this subsection $F$ is regular and analytic at infinity, so that $f$ satisfies (H). Holonomy is what makes each term
+cheap: a value of a holonomic function with small parameters, at a point with few bits, costs $\widetilde O(p)$ by
+binary splitting or the bit-burst algorithm (Section~\ref{sec:evalhol}). Both sides of Theorem~\ref{thm:split} are built from two integral transforms of the kernel, the truncated Laplace
 transform and the dual moments
 \[
   \mathcal L[g](\kappa) = \int_{u_0}^\infty e^{-\kappa u}g(u)\dd u, \qquad Z_t[g](c) = \int_0^{u_0}u^{-t}e^{-c/u}g(u)\dd u.
@@ -957,7 +981,8 @@ For fixed $s$, $I_k(s) = \mathcal L[h_s](k^2)$ and $J_m(s) = Z_{1/2}[h_s](\pi^2m
 \[
   Z_{1/2}[h_s](c) = Z_{(3-s)/2}[G_0](c) + Z_{1-s/2}[G_1](c).
 \]
-For a $C^1$ function $g$ on $[0,u_0]$, integrating
+On the dual side, differentiation in $c$ raises the index $t$, while integration by parts together with the equation
+of the kernel lowers it again; so a finite window of indices is closed under $\partial_c$. For a $C^1$ function $g$ on $[0,u_0]$, integrating
 $\frac{\mathrm d}{\mathrm du}(u^{1-t}e^{-c/u}g) = u^{-t}e^{-c/u}((1-t)g + \frac cug + \vartheta g)$ gives, with $E = e^{-c/u_0}$,
 \begin{equation}\label{eq:ibp}
   c\,Z_{t+1}[g] = E\,u_0^{1-t}g(u_0) - (1-t)\,Z_t[g] - Z_t[\vartheta g],
@@ -990,9 +1015,11 @@ $c\,\partial_cE = -(c/u_0)E$. The integrals converge locally uniformly for $\ope
 
 Similarly $\mathcal L[h_s](\kappa)$ is holonomic in $\kappa$, and on the $k$-side the series in $n$
 for $I_k(s)$ has terms satisfying a linear recurrence in $n$ with coefficients in $\QQ(s,k,u_0)$, since
-$Q(a+1,x) = Q(a,x) + x^ae^{-x}/\Gamma(a+1)$.
+$Q(a+1,x) = Q(a,x) + x^ae^{-x}/\Gamma(a+1)$. The algorithms sum this series for each $k$ (Appendix~\ref{app:cost}).
 
-\emph{Starting values.} Let
+\emph{Starting values.} The point $c = \pi^2m^2$ is transcendental, so binary splitting does not apply there
+directly. Instead we compute $Y$ at a nearby rational point $c_0$ by expanding $g$ termwise, and the bit-burst algorithm
+carries it to $c$ (Theorem~\ref{thm:complexity}). Let
 \[
   D_a(c) = Z_{1-a}[1](c) = \int_0^{u_0}u^{a-1}e^{-c/u}\dd u = c^a\,\Gamma\Bigl(-a, \frac{c}{u_0}\Bigr), \qquad E = e^{-c/u_0},
 \]
@@ -1006,8 +1033,7 @@ and integration by parts with $g = u^a$ gives
 \end{equation}
 For $a \in \frac12 + \ZZ$ this expresses every $D_a$ as $\alpha_aD_{-1/2} + \beta_aE$ with
 $D_{-1/2} = \sqrt{\pi/c}\erfc\sqrt{c/u_0}$, and for $a \in \ZZ$ in terms of $E_1(c/u_0)$ and $E$; in general one
-incomplete gamma value per class of $a$ modulo $\ZZ$ is needed. The bit-burst algorithm then steps from $c_0$ to
-$c = \pi^2m^2$ (Theorem~\ref{thm:complexity}).
+incomplete gamma value per class of $a$ modulo $\ZZ$ is needed.
 
 \begin{remark}[Periodic weights and twists]\label{rem:twist}
 Let $\chi$ have period $q$. Splitting $\chi$ into its even and odd parts, it suffices to treat $\chi$ of parity
