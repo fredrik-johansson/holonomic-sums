@@ -248,6 +248,19 @@ such as the generalized hypergeometric function $G(z) = {}_pF_{p-1}(\ldots; z)$.
 The underlying class of holonomic functions is
 also closed under integration, and contains the periods of
 families of algebraic curves depending algebraically on $k$ such as complete elliptic, hyperelliptic and abelian integrals.
+Further examples are sums of inverse trigonometric functions recorded in the OEIS, such as
+$\sum_{j\ge1}(j\arcsin\frac1j - 1)$ (A323737); sums $\sum_k(\log k)^jR(k)$ with rational $R$, such as
+$\sum_{k\ge2}\zeta''(k) = \sum_{k\ge2}\log^2k/(k(k-1))$ \cite[p.~538]{Fin18}; Boyadzhiev's constant
+$\sum_{k\ge1}\frac1k\log(1+\frac1k)$ \cite{Boy19}; and integrals $\int_0^\infty G(t)\,(e^t-1)^{-1}\dd t$ of an entire
+holonomic $G$ of finite exponential type against the Bose--Einstein weight (or the Fermi--Dirac weight
+$(e^t+1)^{-1}$), which are sums $\sum_k\int_0^\infty G(t)e^{-kt}\dd t$ of Laplace transforms, for instance
+\[
+  \int_0^\infty\frac{t\,J_0(at)}{e^t-1}\dd t = \sum_{k=1}^{\infty}\frac{k}{(k^2+a^2)^{3/2}}.
+\]
+In physics such sums are usually truncated and the tail estimated by its leading term; besides the examples of
+Table~\ref{tab:constants}, they include Matsubara-frequency sums of one-loop integrals at finite temperature
+\cite{HLS24}, with arctangents of algebraic functions of the frequency index, and sums over Kaluza--Klein towers
+\cite{Pet02}.
 
 Table~\ref{tab:constants} lists constants from classical analysis, number theory and mathematical physics expressed in
 this way, including examples from the tables of Flajolet and Vardi~\cite{FV96} and of Finch~\cite{Fin03},
@@ -294,7 +307,7 @@ $\sum_{k=1}^{\infty}\frac{1}{k^{3/2}+1}$ & $\frac1{k^3-1}$ ($k\ge2$) & $\frac12+
 \midrule
 \multicolumn{3}{@{}p{\textwidth}@{}}{\emph{Mathematical physics} (Section~\ref{sec:vortex}, Remark~\ref{rem:algebraic}):
 coaxial rings of unit radius spaced $\lambda$ apart ($\theta/2\pi \in \QQ$);
-$E_a(t) = \sum_k(k^2+a^2)^{-t}$, $t > \frac12$; hydrogen partition function, $\xi = I/(k_BT)$;
+$E_a(t) = \sum_k(k^2+a^2)^{-t}$, $t > \frac12$; hydrogen partition function \cite{EKR11}, $\xi = I/(k_BT)$;
 Casimir-type sums \cite{Eli95,Kir02}.} \\
 \midrule
 vortex rings $U(\lambda)$ & ${}_2F_1(\frac32,\frac32;2;-\frac{4}{\lambda^2k^2})$ & $\lambda^{-3}\zeta_F(3)$ \\
@@ -328,7 +341,7 @@ Special cases of such sums were already known to be efficiently computable. Amon
 Euler's constant $\gamma$ and closed forms involving $\pi$ can be computed
 in quasilinear time. More generally, so can every number that is the value at an algebraic point of a holonomic function
 with algebraic coefficients and initial values \cite{CC90,vdH99}, such as the integer zeta values $\zeta(3), \zeta(5),
-\dots$, polylogarithms at algebraic points and Catalan's constant; this includes many periods and
+\dots$ \cite{Kar95,Kar98}, polylogarithms at algebraic points and Catalan's constant; this includes many periods and
 exponential periods in the sense of Kontsevich and Zagier \cite{KZ01}.
 The Weierstrass products of the gamma function give sums of the same kind as the series for $\gamma$,
 \[
@@ -418,7 +431,12 @@ expansions in parameters \cite{Kat97}.
 
 Approximate functional equations go back to Riemann \cite{Rie59} and
 Hardy and Littlewood \cite{HL23}; the theta-function (``smoothed'') form for general $L$-functions is due to
-Lavrik \cite{Lav68} and is the basis of the algorithms of Rubinstein \cite{Rub05} and Dokchitser \cite{Dok04}.
+Lavrik \cite{Lav68} and Chandrasekharan and Narasimhan \cite{CN62}, and is the basis of the algorithms of Rubinstein
+\cite{Rub05} and Dokchitser \cite{Dok04}; for the Lerch zeta function see \cite{GLS03}. In mathematical physics the
+same device is Ewald summation of lattice sums \cite{Ewa21}, the Chowla--Selberg formula for Epstein zeta functions
+\cite{CS67} (see \cite{BGMWZ13}), and the proper-time and heat-kernel representations of sums $\sum_kF(k^2)$ in quantum
+field theory \cite{Sch51,Eli95,Kir02}; Crandall used such splittings as computational tools for $\zeta$
+\cite{BBC00} and for polylogarithms and Lerch transcendents \cite{Cra12} (see also \cite{Cof12}).
 For $\Lambda(s) = N^{s/2}\gamma(s)L(s)$ with $\gamma$ a product of $d$ factors
 $\Gamma_{\RR}(s+\mu_j) = \pi^{-(s+\mu_j)/2}\Gamma(\frac{s+\mu_j}2)$, its weights are incomplete Mellin transforms of
 the inverse Mellin transform of $\gamma$, a Meijer $G$-function, and are therefore holonomic: incomplete gamma
@@ -520,7 +538,9 @@ the understanding that $F(1) = 0$.
 Membership in $\RegQ$ concerns the operator and the expansion at infinity, and hence also the exponents $\sigma$,
 which are roots of an indicial polynomial with algebraic coefficients: ${}_2F_1(\frac32,\frac32;2;-\frac4{k^2})$ is in $\RegQ$, and so is $\sin(x/k)$
 for algebraic $x$, but not for $x = \pi$, when its expansion has the coefficients $\pm\pi^{2n+1}/(2n+1)!$. Both
-conditions are needed: $k^{-\pi}$ has the single expansion coefficient $1$, but its exponent is transcendental.
+conditions are needed: $k^{-\pi}$ has the single expansion coefficient $1$, but its exponent is transcendental. Some
+such condition is needed for any complexity bound, since otherwise $F$ could be a hard-to-compute constant times a
+simple function.
 
 The two conditions of Definition~\ref{def:regular} are independent. A regular $F$ need not be analytic at infinity
 (it may involve $x^{-\sigma}$ and $\log x$), and a holonomic $F$ that is analytic at infinity need not be regular
@@ -601,10 +621,11 @@ throughout; Appendix~\ref{app:tools} states them precisely. \emph{Binary splitti
 linear recurrence with polynomial coefficients, such as a hypergeometric series or the Taylor series of a holonomic
 function at a point with few bits: the terms are products of matrices with small entries, and the products are formed
 in a balanced tree, so that the numbers being multiplied have similar sizes. For a geometrically convergent series
-with algebraic coefficients this costs $O(\Mul(p)\log^2p)$ bit operations for $p$ bits \cite{HP98,CC90}. The
+with algebraic coefficients this costs $O(\Mul(p)\log^2p)$ bit operations for $p$ bits \cite{HP98,CC90,CHTZZ07}. The
 \emph{bit-burst algorithm} extends this to a point $x$ given to $p$ bits: it continues the solution of the
 differential equation from a point with few bits through truncations of $x$ to $2^j$ bits, $j = 1, 2, \dots$, summing
-one Taylor series by binary splitting at each step, again in $O(\Mul(p)\log^2p)$ \cite{CC90,vdH99}.
+one Taylor series by binary splitting at each step, again in $O(\Mul(p)\log^2p)$ \cite{CC90,vdH99}; see
+\cite{Mez10,Mez16} for rigorous implementations.
 
 We use the error functions $\operatorname{erf}$, $\erfc = 1 - \operatorname{erf}$ and
 $\erfi(x) = -i\operatorname{erf}(ix)$, the incomplete gamma functions $\Gamma(a,x)$ and $\gamma(a,x)$ with their
@@ -1281,7 +1302,7 @@ $p(\log p)^{1-\kappa}$ for an explicit $\kappa > 0$ \cite{OAI26}.
 
 \emph{Generic data.} When $s$ or the data of $F$ are arbitrary complex numbers, given by $p$-bit approximations, binary
 splitting no longer applies, and a single value of a holonomic function to $p$ bits costs $p^{3/2+o(1)}$ by the
-baby-step giant-step method \cite{Bor87,CC90}, against $p^{2+o(1)}$ for summing its series
+baby-step giant-step method \cite{Bor87,CC90,BGS07}, against $p^{2+o(1)}$ for summing its series
 term by term. The theta splitting needs $O(\sqrt p)$ such values, hence $p^{2+o(1)}$. The classical methods need
 $\Theta(p)$ values $F(k)$, which would cost $p^{5/2+o(1)}$ if computed one at a time, but which can be computed
 together: the coefficients $a_0, \dots, a_M$ of the expansion at infinity, $M = O(p)$, cost $O(p)$ operations by their
@@ -1852,9 +1873,10 @@ $\sum_ke^{-\tau k^{1/q}}F(k)k^{-s}$ & $p^{1+q}$ & $p^{2}$ & $p^{3/2}$ & sketched
 \section{Khinchin's constant}\label{sec:khinchin}
 
 Khinchin's constant is $K = \prod_{k=1}^{\infty}k^{\mu_k}$, where $\mu_k = \log_2(1 + \frac1{k(k+2)})$ are the
-Gauss--Kuzmin probabilities (Section~\ref{sec:khinchinzeta}). All earlier high-precision computations of $K$, from Bailey, Borwein and Crandall \cite{BBC97} to the record of Ghazi
-\cite{Gha26}, use expansions in zeta values, which cost $p^{2+o(1)}$ bit operations
-(Section~\ref{sec:zetavalue}). Our method gives three subquadratic algorithms, which we call K1, K2 and K3, from
+Gauss--Kuzmin probabilities (Section~\ref{sec:khinchinzeta}). All earlier high-precision computations of $K$ use expansions in zeta values, going back to Shanks and
+Wrench \cite{SW59}, which cost $p^{2+o(1)}$ bit operations (Section~\ref{sec:zetavalue}): $7\,350$ digits by Bailey,
+Borwein and Crandall \cite{BBC97}, $110\,000$ by Gourdon (1997), $10^6$ by Sim\'o (2016) and $2\cdot10^6$ by Ghazi
+\cite{Gha26}, according to \cite{MWKdigits}. Our method gives three subquadratic algorithms, which we call K1, K2 and K3, from
 three representations of $K$ as a special value of a function of the class \eqref{eq:functions}:
 \begin{align}
   \log K &= -Z'(0), \tag{K1}\label{eq:K1}\\
@@ -2218,7 +2240,7 @@ constants are rational series.
 
 \subsubsection{Error bounds}\label{sec:khbounds}
 With $U = u_0$ and $E = e^{-c/U}$, the following bounds make the evaluation rigorous in ball arithmetic (interval arithmetic with midpoint--radius
-intervals, as in FLINT \cite{FLINT}).
+intervals, as in FLINT \cite{FLINT,Joh17}).
 \begin{itemize}
 \item \emph{Omitted terms.} Since $G(u) \le e^{4u}/U$ for $u \ge U$,
 \[
@@ -3141,6 +3163,14 @@ dual recurrences of the vortex sum, which the ball arithmetic revealed at $10^4$
 %======================================================================
 \section{Open problems}\label{sec:open}
 
+\subsection{The exponent}\label{sec:openexp}
+Can $\zeta_F(s)$ be computed in quasilinear time for $F \in \RegQ$ and algebraic $s$? This is open even for
+$\zeta(s)$ at algebraic $s \notin \ZZ$. The exponent $\frac32$ comes from the uncertainty principle of the Gaussian
+(Section~\ref{sec:complexity}): $k_{\max}m_{\max} \approx qp\log2/\pi$ for every split point, and each term costs at
+least $\Mul(p)$. Lowering it would require evaluating many terms at once. The dual points $\pi^2m^2$ share the number
+$\pi^2$, and the bit-burst paths could share their rational approximations, but the Taylor expansions differ with
+$m$; the $k$-terms are values of one holonomic function of $k^2$, for which fast multipoint evaluation might help.
+
 \subsection{Irregular singularities at infinity}\label{sec:openirreg}
 The summands in \eqref{eq:functions} are a function regular at infinity times a periodic weight, a geometric factor or a
 stretched exponential. Can sums of holonomic functions with other irregular singularities at infinity be computed in
@@ -3209,7 +3239,11 @@ for which both sides of a splitting are cheap (compare Section~\ref{sec:limits})
 \begin{itemize}
 \item Summands that are P-recursive in $k$ but not holonomic as functions of a continuous variable, such as $k^n/k!$
 in Dobinski's formula $B_n = e^{-1}\sum_kk^n/k!$ for the Bell numbers, which Corollary~\ref{cor:egf} does not
-cover.
+cover, or Dirichlet series with P-recursive coefficients, such as the harmonic zeta function
+$\sum_kH_kk^{-s}$ \cite{AV84,CC20}. P-recursive sequences of polynomial growth typically have divergent asymptotic
+expansions ($H_k = \psi(k+1) + \gamma$, or $\binom{2k}{k}4^{-k}$), so they are not values of a function regular at
+infinity; conversely $\log k$ and $\sqrt k$ are not P-recursive \cite{FGS05}. The overlap of the two classes consists
+of the rational functions (Proposition~\ref{prop:rationalF}(2)).
 \item Summands that are analytic at infinity but not holonomic, although their zeta-value expansions converge
 geometrically. Examples are the logarithm of the Kepler--Bouwkamp constant and two constants from the OEIS (A342680,
 A336405),
@@ -3732,7 +3766,7 @@ recurrences.
 \input{khinchin_listing}
 
 %======================================================================
-% CHECK bibliographic details of Kat97, Zag06, HL23, AdR11, Bor00, Har10, Bal00, vdH07, BC21, Bri12, Dav93, Hla80, Gau10, RG12, SKRS02, KZ01, Joh15, KZ08, Mor21, Nol90, Bor87, Joh23 (added from memory/web search).
+% CHECK bibliographic details of Kat97, Zag06, HL23, AdR11, Bor00, Har10, Bal00, vdH07, BC21, Bri12, Dav93, Hla80, Gau10, RG12, SKRS02, KZ01, Joh15, KZ08, Mor21, Nol90, Bor87, Joh23, and the entries carried over from zetaseries.tex: BBC00, BGMWZ13, BGS07, Boy19, CC20, CHTZZ07, CN62, CS67, Cof12, EKR11, Ewa21, FGS05, Fin18, GLS03, HLS24, Joh17, Kar95, Kar98, Mez10, Mez16, Pet02, SW59, Sch51 (added from memory/web search).
 \begin{thebibliography}{99}
 \bibitem{AdR11} J.~Arias de Reyna, High precision computation of Riemann's zeta function by the Riemann--Siegel formula, I, Math.\ Comp.\ 80 (2011), 995--1009.
 \bibitem{AG77} K.~Alladi and C.~Grinstead, On the decomposition of $n!$ into prime powers, J.\ Number Theory 9 (1977), 452--458.
@@ -3741,45 +3775,62 @@ recurrences.
 \bibitem{BB15} D.~H.~Bailey and J.~M.~Borwein, Crandall's computation of the incomplete gamma function and the Hurwitz zeta function, with applications to Dirichlet $L$-series, Appl.\ Math.\ Comput.\ 268 (2015), 462--477.
 \bibitem{BB87} J.~M.~Borwein and P.~B.~Borwein, \emph{Pi and the AGM}, Wiley, 1987.
 \bibitem{BB88} J.~M.~Borwein and P.~B.~Borwein, On the complexity of familiar functions and numbers, SIAM Review 30, 1988, 589--601.
+\bibitem{BBC00} J.~M.~Borwein, D.~M.~Bradley and R.~E.~Crandall, Computational strategies for the Riemann zeta function, J.\ Comput.\ Appl.\ Math.\ 121 (2000), 247--296.
 \bibitem{BBC97} D.~H.~Bailey, J.~M.~Borwein and R.~E.~Crandall, On the Khintchine constant, Math.\ Comp.\ 66 (1997), 417--431.
 \bibitem{BC21} K.~Belabas and H.~Cohen, \emph{Numerical Algorithms for Number Theory: Using Pari/GP}, Math.\ Surveys Monogr.\ 254, Amer.\ Math.\ Soc., 2021.
+\bibitem{BGMWZ13} J.~M.~Borwein, M.~L.~Glasser, R.~C.~McPhedran, J.~G.~Wan and I.~J.~Zucker, \emph{Lattice Sums Then and Now}, Cambridge University Press, 2013.
+\bibitem{BGS07} A.~Bostan, P.~Gaudry and \'E.~Schost, Linear recurrences with polynomial coefficients and application to integer factorization and Cartier--Manin operator, SIAM J.\ Comput.\ 36 (2007), 1777--1806.
 \bibitem{BM80} R.~P.~Brent and E.~M.~McMillan, Some new algorithms for high-precision computation of Euler's constant, Math.\ Comp.\ 34 (1980), 305--312.
 \bibitem{Bor00} P.~Borwein, An efficient algorithm for the Riemann zeta function, in \emph{Constructive, Experimental, and Nonlinear Analysis}, CMS Conf.\ Proc.\ 27, 2000, 29--34.
 \bibitem{Bor87} P.~B.~Borwein, Reduced complexity evaluation of hypergeometric functions, J.\ Approx.\ Theory 50 (1987), 193--199.
+\bibitem{Boy19} K.~N.~Boyadzhiev, A special constant and series with zeta values and harmonic numbers, arXiv:1903.11141, 2019.
 \bibitem{BZ10} R.~P.~Brent and P.~Zimmermann, \emph{Modern Computer Arithmetic}, Cambridge University Press, 2010.
+\bibitem{CC20} B.~Candelpergher and M.-A.~Coppo, Laurent expansion of harmonic zeta functions, preprint, HAL hal-02444740.
 \bibitem{CC90} D.~V.~Chudnovsky and G.~V.~Chudnovsky, Computer algebra in the service of mathematical physics and number theory, in \emph{Computers in Mathematics}, Lecture Notes in Pure and Appl.\ Math.\ 125, Dekker, 1990, 109--232.
+\bibitem{CHTZZ07} H.~Cheng, G.~Hanrot, E.~Thom\'e, E.~Zima and P.~Zimmermann, Time- and space-efficient evaluation of some hypergeometric constants, Proc.\ ISSAC 2007, 85--91.
+\bibitem{CN62} K.~Chandrasekharan and R.~Narasimhan, Functional equations with multiple gamma factors and the average order of arithmetical functions, Ann.\ of Math.\ 76 (1962), 93--136.
 \bibitem{CN81} P.~Cassou-Nogu\`es, Applications arithm\'etiques de l'\'etude des valeurs aux entiers n\'egatifs des s\'eries de Dirichlet associ\'ees \`a un polyn\^ome, Ann.\ Inst.\ Fourier 31 (1981), no.~4.
+\bibitem{Cof12} M.~W.~Coffey, Series representation of the Riemann zeta function and other results: complements to a paper of Crandall, Math.\ Comp.\ 83 (2014), 1383--1395.
 \bibitem{Cof14} M.~W.~Coffey, Series representations for the Stieltjes constants, Rocky Mountain J.\ Math.\ 44 (2014), 443--477.
 \bibitem{Bri12} D.~Brink, The spiral of Theodorus and sums of zeta-values at the half-integers, Amer.\ Math.\ Monthly 119 (2012), 779--786.
 \bibitem{Cra12} R.~E.~Crandall, Unified algorithms for polylogarithm, $L$-series, and zeta variants, preprint, 2012.
 \bibitem{CRVZ00} H.~Cohen, F.~Rodriguez Villegas and D.~Zagier, Convergence acceleration of alternating series, Experiment.\ Math.\ 9 (2000), 3--12.
+\bibitem{CS67} S.~Chowla and A.~Selberg, On Epstein's zeta-function, J.\ Reine Angew.\ Math.\ 227 (1967), 86--110.
 \bibitem{Dav93} P.~J.~Davis, \emph{Spirals: From Theodorus to Chaos}, A K Peters, 1993.
 \bibitem{DLMF} F.~W.~J.~Olver et al.\ (eds.), \emph{NIST Digital Library of Mathematical Functions}, \url{https://dlmf.nist.gov/}.
-
 \bibitem{Dok04} T.~Dokchitser, Computing special values of motivic $L$-functions, Experiment.\ Math.\ 13 (2004), 137--149.
+\bibitem{EKR11} W.~Ebeling, W.-D.~Kraeft and G.~R\"opke, Bound states in Coulomb systems -- old problems and new solutions, arXiv:1110.1962, 2011.
 \bibitem{Eli95} E.~Elizalde, \emph{Ten Physical Applications of Spectral Zeta Functions}, Lecture Notes in Physics m35, Springer, 1995.
 \bibitem{Ess97} D.~Essouabri, Singularit\'es des s\'eries de Dirichlet associ\'ees \`a des polyn\^omes de plusieurs variables et applications en th\'eorie analytique des nombres, Ann.\ Inst.\ Fourier 47 (1997), 429--483.
+\bibitem{Ewa21} P.~P.~Ewald, Die Berechnung optischer und elektrostatischer Gitterpotentiale, Ann.\ Phys.\ 369 (1921), 253--287.
 \bibitem{FGD95} P.~Flajolet, X.~Gourdon and P.~Dumas, Mellin transforms and asymptotics: harmonic sums, Theoret.\ Comput.\ Sci.\ 144 (1995), 3--58.
+\bibitem{FGS05} P.~Flajolet, S.~Gerhold and B.~Salvy, On the non-holonomic character of logarithms, powers, and the $n$th prime function, Electron.\ J.\ Combin.\ 11(2) (2004--2005), \#A2.
 \bibitem{Fin03} S.~R.~Finch, \emph{Mathematical Constants}, Cambridge University Press, 2003.
+\bibitem{Fin18} S.~R.~Finch, \emph{Mathematical Constants II}, Cambridge University Press, 2018.
 \bibitem{FLINT} The FLINT team, FLINT: Fast Library for Number Theory, \url{https://flintlib.org}.
 \bibitem{FV96} P.~Flajolet and I.~Vardi, Zeta function expansions of classical constants, manuscript, 1996.
 \bibitem{Gau05} W.~Gautschi, The Hardy--Littlewood function: an exercise in slowly convergent series, J.\ Comput.\ Appl.\ Math.\ (2005), 249--254.
 \bibitem{Gau10} W.~Gautschi, The spiral of Theodorus, numerical analysis, and special functions, J.\ Comput.\ Appl.\ Math.\ 235 (2010), 1042--1052.
 \bibitem{Gha26} R.~K.~Ghazi, khinchin-fast: Khinchin's constant to $2\,000\,000$ certified decimal digits, Zenodo, 2026, \url{https://doi.org/10.5281/zenodo.22134905}.
+\bibitem{GLS03} R.~Garun\v{k}\v{s}tis, A.~Laurin\v{c}ikas and J.~Steuding, An approximate functional equation for the Lerch zeta function, Math.\ Notes 74 (2003), 469--476.
 \bibitem{Har10} D.~Harvey, A multimodular algorithm for computing Bernoulli numbers, Math.\ Comp.\ 79 (2010), 2361--2370.
 \bibitem{Har14} D.~Harvey, A subquadratic algorithm for computing the $n$-th Bernoulli number, Math.\ Comp.\ 83 (2014), 2471--2477.
 \bibitem{HL23} G.~H.~Hardy and J.~E.~Littlewood, The approximate functional equation in the theory of the zeta-function, with applications to the divisor-problems of Dirichlet and Piltz, Proc.\ London Math.\ Soc.\ (2) 21 (1923), 39--74.
+\bibitem{HLS24} D.~Harnett, S.~Li and T.~G.~Steele, Numerically computing finite temperature loop integrals using pySecDec, Eur.\ Phys.\ J.\ A (2024), arXiv:2401.05258.
 \bibitem{HP98} B.~Haible and T.~Papanikolaou, Fast multiprecision evaluation of series of rational numbers, Proc.\ ANTS-III, LNCS 1423, Springer, 1998, 338--350.
 \bibitem{HvdH21} D.~Harvey and J.~van der Hoeven, Integer multiplication in time $O(n\log n)$, Ann.\ of Math.\ 193 (2021), 563--617.
 \bibitem{Hla80} E.~Hlawka, Gleichverteilung und Quadratwurzelschnecke, Monatsh.\ Math.\ 89 (1980), 19--44.
 \bibitem{IK02} M.~Iosifescu and C.~Kraaikamp, \emph{Metrical Theory of Continued Fractions}, Kluwer, 2002.
 \bibitem{Inc26} E.~L.~Ince, \emph{Ordinary Differential Equations}, Longmans, Green and Co., 1926.
 \bibitem{Joh15} F.~Johansson, Rigorous high-precision computation of the Hurwitz zeta function and its derivatives, Numer.\ Algorithms 69 (2015), 253--270.
+\bibitem{Joh17} F.~Johansson, Arb: efficient arbitrary-precision midpoint-radius interval arithmetic, IEEE Trans.\ Comput.\ 66 (2017), 1281--1292.
 \bibitem{Joh21} F.~Johansson, Rapid computation of special values of Dirichlet $L$-functions, arXiv:2110.10583, 2021.
 \bibitem{Joh23} F.~Johansson, Arbitrary-precision computation of the gamma function, Maple Trans.\ 3 (2023), no.~1, \url{https://doi.org/10.5206/mt.v3i1.14591}.
 \bibitem{Joh26} F.~Johansson, Analytic properties of Dirichlet series of functions analytic at infinity, companion note
 to this paper, 2026, \url{https://github.com/fredrik-johansson/holonomic-sums}.
 \bibitem{Kal88} S.~Kalpazidou, Khintchine's constant for L\"uroth representation, J.\ Number Theory 29 (1988), 196--205.
+\bibitem{Kar95} E.~A.~Karatsuba, Fast calculation of the Riemann zeta function $\zeta(s)$ for integer values of the argument $s$, Problems Inform.\ Transmission 31 (1995), 353--362.
+\bibitem{Kar98} E.~A.~Karatsuba, Fast evaluation of the Hurwitz zeta function and Dirichlet $L$-series, Problems Inform.\ Transmission 34 (1998), 342--353.
 \bibitem{Kat97} M.~Katsurada, An application of Mellin--Barnes' type integrals to the mean square of Lerch zeta-functions, Collect.\ Math.\ 48 (1997), 137--153.
 \bibitem{Khi35} A.~Khintchine, Metrische Kettenbruchprobleme, Compositio Math.\ 1 (1935), 361--382.
 \bibitem{Khi64} A.~Ya.~Khinchin, \emph{Continued Fractions}, University of Chicago Press, 1964.
@@ -3792,22 +3843,26 @@ Math.\ 3 (1936), 286--303.
 \bibitem{Loc64} G.~Lochs, Vergleich der Genauigkeit von Dezimalbruch und Kettenbruch, Abh.\ Math.\ Sem.\ Univ.\
 Hamburg 27 (1964), 142--144.
 \bibitem{Mah28} K.~Mahler, \"Uber einen Satz von Mellin, Math.\ Ann.\ 100 (1928).
+\bibitem{Mez10} M.~Mezzarobba, NumGfun: a package for numerical and analytic computation with D-finite functions, Proc.\ ISSAC 2010, 139--146.
+\bibitem{Mez16} M.~Mezzarobba, Rigorous multiple-precision evaluation of D-finite functions in SageMath, arXiv:1607.01967, 2016.
 \bibitem{Mon10} H.~Monien, Gaussian quadrature for sums: a rapidly convergent summation scheme, Math.\ Comp.\ 79 (2010), 857--869.
 \bibitem{MS22} E.~Masroor and M.~A.~Stremler, On the topology of the atmosphere advected by a periodic array of axisymmetric thin-cored vortex rings, Regul.\ Chaotic Dyn.\ 27 (2022), 183--197.
 \bibitem{OAI26} OpenAI, Integer multiplication below $n\log n$, OpenAI Math Release preprint, September 2026, \url{https://github.com/openai/math/tree/main/preprints/Integer-multiplication-below-n-log-n-September-23-2026}.
 \bibitem{Nol90} V.~N.~Nolte, Some probabilistic results on the convergents of continued fractions, Indag.\ Math.\ (N.S.) 1 (1990), 381--389.
 \bibitem{OEIS} OEIS Foundation Inc., The On-Line Encyclopedia of Integer Sequences, \url{https://oeis.org}.
+\bibitem{Pet02} F.~J.~Petriello, Kaluza--Klein effects on Higgs physics in universal extra dimensions, arXiv:hep-ph/0204067, 2002.
 \bibitem{Pet98} M.~Peter, Dirichlet series associated with polynomials, Acta Arith.\ 84 (1998), 245--278.
 \bibitem{Rie59} B.~Riemann, Ueber die Anzahl der Primzahlen unter einer gegebenen Gr\"osse, Monatsber.\ Berliner Akad., 1859.
 \bibitem{RG12} E.~B.~Rosa and F.~W.~Grover, Formulas and tables for the calculation of mutual and self-inductance, Bull.\ Bureau of Standards 8 (1912), 1--237.
 \bibitem{Rub05} M.~Rubinstein, Computational methods and experiments in analytic number theory, in \emph{Recent Perspectives in Random Matrix Theory and Number Theory}, LMS Lecture Note Ser.\ 322, Cambridge University Press, 2005, 425--506.
 \bibitem{Sar84} P.~Sargos, Prolongement m\'eromorphe des s\'eries de Dirichlet associ\'ees \`a des fractions rationnelles de plusieurs variables, Ann.\ Inst.\ Fourier 34 (1984), no.~3, 83--123.
+\bibitem{Sch51} J.~Schwinger, On gauge invariance and vacuum polarization, Phys.\ Rev.\ 82 (1951), 664--679.
 \bibitem{SH07} J.~Sondow and P.~Hadjicostas, The generalized-Euler-constant function $\gamma(z)$ and a generalization of Somos's quadratic recurrence constant, J.\ Math.\ Anal.\ Appl.\ 332 (2007), 292--314.
-
 \bibitem{SKRS02} E.~Shamonina, V.~A.~Kalinin, K.~H.~Ringhofer and L.~Solymar, Magnetoinductive waves in one, two, and three dimensions, J.\ Appl.\ Phys.\ 92 (2002), 6252--6261.
 \bibitem{SS19} R.~Sch\"afke and M.~F.~Singer, Consistent systems of linear differential and difference equations,
 J.\ Eur.\ Math.\ Soc.\ 21 (2019), 2751--2792.
 \bibitem{Sta80} R.~P.~Stanley, Differentiably finite power series, European J.\ Combin.\ 1 (1980), 175--188.
+\bibitem{SW59} D.~Shanks and J.~W.~Wrench, Khintchine's constant, Amer.\ Math.\ Monthly 66 (1959), 276--279.
 \bibitem{vdH99} J.~van der Hoeven, Fast evaluation of holonomic functions, Theoret.\ Comput.\ Sci.\ 210 (1999), 199--215.
 \bibitem{vdH07} J.~van der Hoeven, Efficient accelero-summation of holonomic functions, J.\ Symbolic Comput.\ 42 (2007), 389--428.
 \bibitem{Wat44} G.~N.~Watson, \emph{A Treatise on the Theory of Bessel Functions}, 2nd ed., Cambridge University Press, 1944.
@@ -3815,7 +3870,6 @@ J.\ Eur.\ Math.\ Soc.\ 21 (2019), 2751--2792.
 \bibitem{MWKdigits} E.~W.~Weisstein, Khinchin's constant digits, MathWorld, \url{https://mathworld.wolfram.com/KhinchinsConstantDigits.html}, accessed November 2026.
 \bibitem{Zag06} D.~Zagier, The Mellin transform and related analytic techniques, appendix to E.~Zeidler, \emph{Quantum Field Theory I}, Springer, 2006, 305--323.
 \bibitem{Zei90} D.~Zeilberger, A holonomic systems approach to special functions identities, J.\ Comput.\ Appl.\ Math.\ 32 (1990), 321--368.
-
 \end{thebibliography}
 
 \end{document}
