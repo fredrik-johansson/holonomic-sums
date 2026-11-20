@@ -2326,7 +2326,8 @@ digits the theta splitting is $5.7$ times faster ($11.4$ hours of wall time agai
 ($10.5$ GB against $15.3$ GB). Both methods parallelize almost perfectly: the ratio of CPU to wall time is $7.9$--$8.0$ on
 $8$ threads. The $10^7$-digit result of the theta splitting has error radius $1.8\cdot10^{-10\,000\,044}$, and the
 two results agree. Since the theta splitting shares nothing with the zeta-value method (no Bernoulli numbers or power
-sums), it is a genuinely independent check.
+sums), it is a genuinely independent check. The $10^7$ digits after the decimal point are available at
+\url{https://github.com/fredrik-johansson/holonomic-sums/blob/main/results/digits/khinchin_10000000.txt}.
 
 \subsection{The continued fraction of $K$}\label{sec:khcf}
 With $D = 10^7$ and $d = \lfloor 10^DK\rfloor$, we have $K \in I = [d, d+1] \cdot 10^{-D}$. We computed the
@@ -2368,8 +2369,8 @@ $q(x_{10}) = 10q_N + q_{N-1}$. The bound for $p$ follows from $K > 2.685$.
 \end{proof}
 
 The hypothesis rests on the rigorous error bounds of Section~\ref{sec:khbounds} and on the agreement of two
-independent computations.
-% TODO(author): add commit hash of the code used and the location of the archived digits.
+independent computations; the digits are in the repository (Section~\ref{sec:khresults}).
+% TODO(author): add commit hash of the code used.
 
 By Khinchin's theorem the geometric means $G_n = (a_1\cdots a_n)^{1/n}$ of almost every $x$ tend to $K$; whether
 $K$ itself has this property is not known. Its first $N$ partial quotients give $G_N = 2.686720\ldots$, and the
@@ -3061,7 +3062,8 @@ series), which grows by a factor of about $130$ per decade but is $4.6$ times fa
 $10^5$ digits, so that the crossover should be near $10^7$ digits. For the generating function $\sum_kF(k)2^{-k}$ of a
 general $F \in \Reg$ there is no such shortcut.
 
-The values are
+The values are, to $50$ digits (the $10^6$-digit files are in
+\url{https://github.com/fredrik-johansson/holonomic-sums/tree/main/results/digits}),
 \begin{align*}
   \mathcal A &= 1.02313872642793929553508807697521809749214527936608\ldots, \\
   \mathcal C &= 0.78853056591150896106027632345455466647274966822328\ldots, \\

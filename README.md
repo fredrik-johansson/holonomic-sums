@@ -154,6 +154,8 @@ methods up to $10^5$ digits, except Euler–Maclaurin for `vortex`, which stops 
 `--max-theta`, `--max-zeta`, `--max-em`, `--max-em-vortex`). Results go to `results/`:
 
 * `results/digits/CONSTANT_METHOD_DIGITS.txt`: the digits;
+* `results/digits/khinchin_10000000.txt`: Khinchin's constant to $10^7$ digits after the decimal point
+  (truncated, not rounded), from the FLINT computation described in the paper, not produced by `run.py`;
 * `results/runs.jsonl`: one JSON record per run, as above;
 * `results/summary.md`, `results/summary.csv`: a table of all runs, with a cross-check column: every digit
   file is compared with every other file for the same constant (a truncation to fewer digits must be a prefix
