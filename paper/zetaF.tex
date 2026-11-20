@@ -1281,7 +1281,7 @@ $p(\log p)^{1-\kappa}$ for an explicit $\kappa > 0$ \cite{OAI26}.
 
 \emph{Generic data.} When $s$ or the data of $F$ are arbitrary complex numbers, given by $p$-bit approximations, binary
 splitting no longer applies, and a single value of a holonomic function to $p$ bits costs $p^{3/2+o(1)}$ by the
-baby-step giant-step method of Chudnovsky and Chudnovsky \cite{CC90}, against $p^{2+o(1)}$ for summing its series
+baby-step giant-step method \cite{Bor87,CC90}, against $p^{2+o(1)}$ for summing its series
 term by term. The theta splitting needs $O(\sqrt p)$ such values, hence $p^{2+o(1)}$. The classical methods need
 $\Theta(p)$ values $F(k)$, which would cost $p^{5/2+o(1)}$ if computed one at a time, but which can be computed
 together: the coefficients $a_0, \dots, a_M$ of the expansion at infinity, $M = O(p)$, cost $O(p)$ operations by their
@@ -1298,10 +1298,10 @@ The gamma function is the model for both kinds of data. For $\operatorname{Re}a 
 \]
 where $\Gamma(a,N) = O(N^{\operatorname{Re}a}e^{-N})$ is negligible and $O(p)$ terms of the series suffice. For
 algebraic $a$ the terms are P-recursive with coefficients of $O(\log p)$ bits, so binary splitting gives $\Gamma(a)$ in
-$O(\Mul(p)\log^2p)$ \cite{BZ10}, and the same series over truncated power series in $a$ gives $\log\Gamma$, $\psi$ and
+$O(\Mul(p)\log^2p)$ \cite[Chapter~10]{BB87}, \cite{BB88,Bor87,BZ10,Joh23}, and the same series over truncated power series in $a$ gives $\log\Gamma$, $\psi$ and
 the polygamma functions. For $a$ given only to $p$ bits the coefficients have $p$ bits, binary splitting no longer
-applies, and the baby-step giant-step evaluation of the product of the term ratios \cite{CC90} gives
-$p^{3/2+o(1)}$. Theorem~\ref{thm:complexity} uses the same series for its incomplete gamma values.
+applies, and the baby-step giant-step evaluation of the product of the term ratios gives $p^{3/2+o(1)}$
+\cite[Chapter~10]{BB87}, \cite{BB88,Bor87,CC90,Joh23}. Theorem~\ref{thm:complexity} uses the same series for its incomplete gamma values.
 
 For rational $F$, partial fractions reduce $\zeta_F$ at integer points to such values. Write $F(k)$ as a polynomial plus
 a combination of terms $(k+b)^{-m}$. At an integer $s$, $F(k)k^{-s}$ is again of this form, and
@@ -3732,7 +3732,7 @@ recurrences.
 \input{khinchin_listing}
 
 %======================================================================
-% CHECK bibliographic details of Kat97, Zag06, HL23, AdR11, Bor00, Har10, Bal00, vdH07, BC21, Bri12, Dav93, Hla80, Gau10, RG12, SKRS02, KZ01, Joh15, KZ08, Mor21, Nol90 (added from memory/web search).
+% CHECK bibliographic details of Kat97, Zag06, HL23, AdR11, Bor00, Har10, Bal00, vdH07, BC21, Bri12, Dav93, Hla80, Gau10, RG12, SKRS02, KZ01, Joh15, KZ08, Mor21, Nol90, Bor87, Joh23 (added from memory/web search).
 \begin{thebibliography}{99}
 \bibitem{AdR11} J.~Arias de Reyna, High precision computation of Riemann's zeta function by the Riemann--Siegel formula, I, Math.\ Comp.\ 80 (2011), 995--1009.
 \bibitem{AG77} K.~Alladi and C.~Grinstead, On the decomposition of $n!$ into prime powers, J.\ Number Theory 9 (1977), 452--458.
@@ -3745,6 +3745,7 @@ recurrences.
 \bibitem{BC21} K.~Belabas and H.~Cohen, \emph{Numerical Algorithms for Number Theory: Using Pari/GP}, Math.\ Surveys Monogr.\ 254, Amer.\ Math.\ Soc., 2021.
 \bibitem{BM80} R.~P.~Brent and E.~M.~McMillan, Some new algorithms for high-precision computation of Euler's constant, Math.\ Comp.\ 34 (1980), 305--312.
 \bibitem{Bor00} P.~Borwein, An efficient algorithm for the Riemann zeta function, in \emph{Constructive, Experimental, and Nonlinear Analysis}, CMS Conf.\ Proc.\ 27, 2000, 29--34.
+\bibitem{Bor87} P.~B.~Borwein, Reduced complexity evaluation of hypergeometric functions, J.\ Approx.\ Theory 50 (1987), 193--199.
 \bibitem{BZ10} R.~P.~Brent and P.~Zimmermann, \emph{Modern Computer Arithmetic}, Cambridge University Press, 2010.
 \bibitem{CC90} D.~V.~Chudnovsky and G.~V.~Chudnovsky, Computer algebra in the service of mathematical physics and number theory, in \emph{Computers in Mathematics}, Lecture Notes in Pure and Appl.\ Math.\ 125, Dekker, 1990, 109--232.
 \bibitem{CN81} P.~Cassou-Nogu\`es, Applications arithm\'etiques de l'\'etude des valeurs aux entiers n\'egatifs des s\'eries de Dirichlet associ\'ees \`a un polyn\^ome, Ann.\ Inst.\ Fourier 31 (1981), no.~4.
@@ -3775,6 +3776,7 @@ recurrences.
 \bibitem{Inc26} E.~L.~Ince, \emph{Ordinary Differential Equations}, Longmans, Green and Co., 1926.
 \bibitem{Joh15} F.~Johansson, Rigorous high-precision computation of the Hurwitz zeta function and its derivatives, Numer.\ Algorithms 69 (2015), 253--270.
 \bibitem{Joh21} F.~Johansson, Rapid computation of special values of Dirichlet $L$-functions, arXiv:2110.10583, 2021.
+\bibitem{Joh23} F.~Johansson, Arbitrary-precision computation of the gamma function, Maple Trans.\ 3 (2023), no.~1, \url{https://doi.org/10.5206/mt.v3i1.14591}.
 \bibitem{Joh26} F.~Johansson, Analytic properties of Dirichlet series of functions analytic at infinity, companion note
 to this paper, 2026, \url{https://github.com/fredrik-johansson/holonomic-sums}.
 \bibitem{Kal88} S.~Kalpazidou, Khintchine's constant for L\"uroth representation, J.\ Number Theory 29 (1988), 196--205.
