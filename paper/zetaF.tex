@@ -169,8 +169,8 @@ where the \emph{$k$-terms} and the \emph{dual terms}
   I_k(s) = \int_{u_0}^\infty e^{-k^2u}h_s(u)\dd u, \qquad
   J_m(s) = \int_0^{u_0}u^{-1/2}e^{-\pi^2m^2/u}h_s(u)\dd u
 \]
-are entire in $s$ (and, when moreover $F \in \Reg$, values at $K = k^2$ and $c = \pi^2m^2$ of holonomic functions of
-$K$ and $c$),
+are entire in $s$ (and, when moreover $F \in \Reg$, values at $\kappa = k^2$ and $c = \pi^2m^2$ of holonomic functions of
+$\kappa$ and $c$),
 \[
 h_s(u) = \sum_{n=0}^{\infty} a_n u^{(s+n)/2-1}/\Gamma(\frac{s+n}{2})
 \]
@@ -275,11 +275,11 @@ Wallis's $\frac\pi2 = \prod_k\frac{4k^2}{4k^2-1}$ & $-\log(1-\frac1{4k^2})$ & $e
 Glaisher's $A$ & $1$; or $F_3$ & $e^{1/12-\zeta'(-1)}$; or $(2\pi e)^{\frac1{12}}e^{\zeta_{F_3}(0)/6}$ \\
 \midrule
 \multicolumn{3}{@{}p{\textwidth}@{}}{\emph{Continued fractions and L\"uroth expansions} (Sections~\ref{sec:khinchin}, \ref{sec:AG}, \ref{sec:KH}):
-Gauss--Kuzmin probabilities $p_k$, Khinchin zeta function $Z$; Alladi--Grinstead and Kalpazidou constants
+Gauss--Kuzmin probabilities $\mu_k$, Khinchin zeta function $Z$; Alladi--Grinstead and Kalpazidou constants
 $e^{\mathcal C-1}$, $e^{\mathcal C}$.} \\
 \midrule
-Khinchin's $K$ & $p_k = \log_2(1+\frac{1}{k(k+2)})$ & $\exp(-Z'(0))$ \\
-H\"older means $K_p$, $p<1$ & $p_k$ & $Z(-p)^{1/p}$ \\
+Khinchin's $K$ & $\mu_k = \log_2(1+\frac{1}{k(k+2)})$ & $\exp(-Z'(0))$ \\
+H\"older means $K_q$, $q<1$ & $\mu_k$ & $Z(-q)^{1/q}$ \\
 $\mathcal A = \sum_{k=2}^{\infty}\frac{\log k}{k^2-1}$ & $\frac1{k^2-1}$ ($k\ge2$) & $-\zeta_F'(0)$ \\
 $\mathcal C = \sum_{k=1}^{\infty}\frac{\log k}{k(k+1)}$ & $\frac{1}{k(k+1)}$ & $-\zeta_F'(0)$ \\
 \midrule
@@ -689,8 +689,8 @@ with
 \]
 a double sum whose terms satisfy first-order recurrences with small rational coefficients, so binary splitting
 computes $I_k$ to $p$ bits in quasilinear time. Equivalently, $I_k = \ell(k^2)$, where the truncated Laplace transform
-$\ell(K) = \int_{u_0}^\infty e^{-Ku}h(u)\dd u$ satisfies the first-order equation
-$K\ell' = -\frac12\ell - u_0e^{-Ku_0}h(u_0) - e^{-(K-1)u_0}/(K-1)$.
+$\ell(\kappa) = \int_{u_0}^\infty e^{-\kappa u}h(u)\dd u$ satisfies the first-order equation
+$\kappa\ell' = -\frac12\ell - u_0e^{-\kappa u_0}h(u_0) - e^{-(\kappa-1)u_0}/(\kappa-1)$.
 
 \emph{The dual terms.} Let
 \[
@@ -737,10 +737,11 @@ $h_s$, $g_0$, $g_1$, $G_0$, $G_1$ & kernel and its even and odd parts \eqref{eq:
 $I_k$, $J_m$, $M$ & $k$-terms, dual terms and main term (Theorem~\ref{thm:split}) \\
 $Q(a,x)$, $P(a,x)$ & regularized upper and lower incomplete gamma functions \\
 $\vartheta$ & Euler operator $x\,\mathrm d/\mathrm dx$ or $u\,\mathrm d/\mathrm du$ \\
-$\mathcal L[g](K)$, $Z_t[g](c)$ & truncated Laplace transform and dual moments (Section~\ref{sec:twosides}) \\
+$\mathcal L[g](\kappa)$, $Z_t[g](c)$ & truncated Laplace transform and dual moments (Section~\ref{sec:twosides}) \\
 $E$, $D_a$ & $E = e^{-c/u_0}$, starting values \eqref{eq:startvals} \\
+$\kappa$, $x$ & $\kappa = k^2$ and $x = \kappa u_0$ in the $k$-terms \\
 $k_{\max}$, $m_{\max}$ & numbers of $k$-terms and dual terms \eqref{eq:counts} \\
-$K$, $p_k$, $Z$ & Khinchin's constant, Gauss--Kuzmin probabilities, Khinchin zeta function \\
+$K$, $\mu_k$, $Z$ & Khinchin's constant, Gauss--Kuzmin probabilities, Khinchin zeta function \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -862,14 +863,14 @@ First let $\operatorname{Re}s > 1$. By \eqref{eq:laplace}, $\zeta_F^{\ge k_0}(s)
 with $\Theta(u) = \sum_{k=k_0}^{\infty}e^{-k^2u}$, the interchange being justified by Tonelli on $[u_0,\infty)$ and,
 on $(0,u_0]$, by $\Theta(u) \le \sqrt{\pi/u}$ and $|h_s(u)| \ll u^{\operatorname{Re}s/2-1}$. Split the integral at $u_0$.
 On $[u_0,\infty)$ integrate termwise in $k$, which gives the $I_k$, and termwise in $n$, which gives the series for
-$I_k$ (with $\int_{u_0}^\infty e^{-Ku}u^{w-1}\dd u = K^{-w}\Gamma(w)Q(w,Ku_0)$). On $(0,u_0]$ use the theta
+$I_k$ (with $\int_{u_0}^\infty e^{-\kappa u}u^{w-1}\dd u = \kappa^{-w}\Gamma(w)Q(w,\kappa u_0)$). On $(0,u_0]$ use the theta
 transformation
 \[
   \Theta(u) = \frac12\sqrt{\frac\pi u} - \frac12 - \sum_{k=1}^{k_0-1}e^{-k^2u} + \sqrt{\frac\pi u}\sum_{m=1}^{\infty}e^{-\pi^2m^2/u}.
 \]
 The last sum gives the $J_m$. The first three terms give $M$, by termwise integration in $n$ of
 $\int_0^{u_0}u^{w-3/2}\dd u = u_0^{w-1/2}/(w-\frac12)$, $\int_0^{u_0}u^{w-1}\dd u = u_0^w/w$ and
-$\int_0^{u_0}e^{-Ku}u^{w-1}\dd u = K^{-w}\Gamma(w)P(w,Ku_0)$ with $w = (s+n)/2$.
+$\int_0^{u_0}e^{-\kappa u}u^{w-1}\dd u = \kappa^{-w}\Gamma(w)P(w,\kappa u_0)$ with $w = (s+n)/2$.
 
 Now the continuation. $I_k$ is entire since $u \ge u_0$, and $|h_s(u)| \ll e^{R^2u}$ there gives the bound.
 $J_m$ is entire since $e^{-\pi^2m^2/u}$ kills any power of $u$ at $0$, and
@@ -925,7 +926,7 @@ In this subsection $F$ is regular and analytic at infinity, so that $f$ satisfie
 Both sides of Theorem~\ref{thm:split} are built from two integral transforms of the kernel, the truncated Laplace
 transform and the dual moments
 \[
-  \mathcal L[g](K) = \int_{u_0}^\infty e^{-Ku}g(u)\dd u, \qquad Z_t[g](c) = \int_0^{u_0}u^{-t}e^{-c/u}g(u)\dd u.
+  \mathcal L[g](\kappa) = \int_{u_0}^\infty e^{-\kappa u}g(u)\dd u, \qquad Z_t[g](c) = \int_0^{u_0}u^{-t}e^{-c/u}g(u)\dd u.
 \]
 For fixed $s$, $I_k(s) = \mathcal L[h_s](k^2)$ and $J_m(s) = Z_{1/2}[h_s](\pi^2m^2)$, and with
 \eqref{eq:kernelparts},
@@ -963,7 +964,7 @@ $c$ times a component of $Y$. The same holds for the $C_{t-i}$, and for the last
 $c\,\partial_cE = -(c/u_0)E$. The integrals converge locally uniformly for $\operatorname{Re}c > 0$.
 \end{proof}
 
-Similarly $\mathcal L[h_s](K)$ is holonomic in $K$, and on the $k$-side the series in $n$
+Similarly $\mathcal L[h_s](\kappa)$ is holonomic in $\kappa$, and on the $k$-side the series in $n$
 for $I_k(s)$ has terms satisfying a linear recurrence in $n$ with coefficients in $\QQ(s,k,u_0)$, since
 $Q(a+1,x) = Q(a,x) + x^ae^{-x}/\Gamma(a+1)$.
 
@@ -1019,8 +1020,8 @@ $\alpha$, and the dual terms are the same moments at the points $c = \pi^2(n-\al
 
 The proof of Theorem~\ref{thm:split} uses two facts: that the summand is a superposition of Gaussians,
 $F(x)x^{-s} = \int_0^\infty e^{-x^2u}h_s(u)\dd u$ for $x \ge k_0$, and the theta transformation. The algorithm
-needs a third: that the truncated Laplace transform $\mathcal L[h_s](K)$ and the dual moment $Z_{1/2}[h_s](c)$
-(Section~\ref{sec:twosides}) are holonomic in $K$ and $c$, with series at rational points whose terms are
+needs a third: that the truncated Laplace transform $\mathcal L[h_s](\kappa)$ and the dual moment $Z_{1/2}[h_s](c)$
+(Section~\ref{sec:twosides}) are holonomic in $\kappa$ and $c$, with series at rational points whose terms are
 P-recursive. This section extends the splitting, and with it the algorithm, to the damped functions $\Li_F$, $\Phi_F$
 and $\Lambda_F$ of \eqref{eq:functions}, whose summands are a regular function times an exponential factor. There are
 two ways to add such a factor. A geometric factor $z^k$ can be kept
@@ -1548,9 +1549,9 @@ integer $s$ they are $\zeta(2), \dots, \zeta(N)$ minus finite power sums, and
   \log\Gamma(1+x) = -\gamma x + \sum_{n=2}^{\infty}\frac{(-1)^n\zeta(n)}{n}x^n,
 \]
 so it suffices to compute $\Gamma(1+x)$ in $\RR[[x]]/(x^N)$ to $p$ bits and take the logarithm of the power series.
-With $L \approx p\log 2$ and $K \approx eL$,
+With $L \approx p\log 2$ and $T \approx eL$,
 \[
-  \Gamma(1+x) = L^{1+x}e^{-L}\sum_{k=0}^{K-1}\frac{L^k}{(1+x)(2+x)\cdots(k+1+x)} + O(2^{-p}),
+  \Gamma(1+x) = L^{1+x}e^{-L}\sum_{k=0}^{T-1}\frac{L^k}{(1+x)(2+x)\cdots(k+1+x)} + O(2^{-p}),
 \]
 truncating the lower incomplete gamma series of $\Gamma(1+x) = \gamma(1+x,L) + \Gamma(1+x,L)$, and the sum is evaluated by
 binary splitting with polynomials in $x$ truncated to degree $N$; the numbers at the top of the product tree have
@@ -1729,8 +1730,8 @@ implied constants depending on $F$, $\sigma$ and $\varepsilon$.
 
 \begin{proof}
 Write $\zeta_F(s) = \sum_{k<k_0}F(k)k^{-s} + \sum_{n<N}a_n\zeta(s+n,k_0) + R_N(s)$ with
-$R_N(s) = \sum_{k=k_0}^{\infty}k^{-s}r_N(k)$ and $|r_N(k)| \le C'(R/k)^N$. Choose $N$ and then $K$, independently of $t$, so that
-the terms of $R_N$ with $k > K$ contribute less than $\varepsilon/2$, and evaluate the others directly. Each of the
+$R_N(s) = \sum_{k=k_0}^{\infty}k^{-s}r_N(k)$ and $|r_N(k)| \le C'(R/k)^N$. Choose $N$ and then $k_2$, independently of $t$, so that
+the terms of $R_N$ with $k > k_2$ contribute less than $\varepsilon/2$, and evaluate the others directly. Each of the
 finitely many $\zeta(s+n,k_0)$ is $\zeta(s+n)$ minus a finite sum, and $\zeta(s+n)$ is computed by the Riemann--Siegel
 formula in $O(t^{1/2})$ operations \cite{AdR11}.
 \end{proof}
@@ -1824,27 +1825,27 @@ $\sum_ke^{-\tau k^{1/q}}F(k)k^{-s}$ & $p^{1+q}$ & $p^{2}$ & $p^{3/2}$ & sketched
 Let $x = [a_0; a_1, a_2, \dots]$ be the continued fraction of a real number $x$. For almost every $x$, the partial
 quotients follow the Gauss--Kuzmin law: the proportion of the $a_i$ equal to $k$ is
 \[
-  p_k = \log_2\Bigl(1 + \frac1{k(k+2)}\Bigr),
+  \mu_k = \log_2\Bigl(1 + \frac1{k(k+2)}\Bigr),
 \]
 the probability that $a_1 = k$ when $x$ is drawn from the Gauss measure
 \[\frac{\dd x}{(1+x)\log2}\]
 on $(0,1)$, which
 is invariant under the continued fraction map \cite{Khi64,IK02}. By the ergodic theorem the geometric means
-$(a_1\cdots a_n)^{1/n}$ therefore tend to Khinchin's constant $K = \prod_kk^{p_k}$ \cite{Khi35}, and the H\"older means
+$(a_1\cdots a_n)^{1/n}$ therefore tend to Khinchin's constant $K = \prod_kk^{\mu_k}$ \cite{Khi35}, and the H\"older means
 \[
-\Bigl(\frac1n\sum_{i\le n}a_i^p\Bigr)^{1/p}
+\Bigl(\frac1n\sum_{i\le n}a_i^q\Bigr)^{1/q}
 \]
-tend to $K_p = (\sum_kk^pp_k)^{1/p}$ for $p < 1$, $p \ne 0$ \cite{BBC97}.
+tend to $K_q = (\sum_kk^q\mu_k)^{1/q}$ for $q < 1$, $q \ne 0$ \cite{BBC97}.
 
 All of
 these are values of the \emph{Khinchin zeta function}
 \begin{equation}\label{eq:Z}
-  Z(s) = \sum_{k=1}^{\infty} p_k\,k^{-s} = \mathbb{E}\bigl[a_1^{-s}\bigr],
+  Z(s) = \sum_{k=1}^{\infty} \mu_k\,k^{-s} = \mathbb{E}\bigl[a_1^{-s}\bigr],
 \end{equation}
-the zeta function $\zeta_F$ of $F(k) = p_k$, which is analytic at infinity. Indeed $Z(0) = 1$ (the product
+the zeta function $\zeta_F$ of $F(k) = \mu_k$, which is analytic at infinity. Indeed $Z(0) = 1$ (the product
 $\prod_k(k+1)^2/(k(k+2))$ telescopes to $2$),
 \[
-  K = \exp(-Z'(0)), \qquad K_p = Z(-p)^{1/p},
+  K = \exp(-Z'(0)), \qquad K_q = Z(-q)^{1/q},
 \]
 and in particular the harmonic mean is $K_{-1} = 1/Z(1)$.
 
@@ -1864,7 +1865,7 @@ where
 \]
 and $\chi(k) = (-1)^k$. (The sum for $G$ also starts at $k = 2$: at $k = 1$, $\Li_2(4)$ is not real.) The second is the series of \eqref{eq:twoconstants}.
 The three are linked by the operations of Section~\ref{sec:generalize}. Summation by parts turns the weight $\log k$
-in $-Z'(0) = \sum_kp_k\log k$ into the product of logarithms in \eqref{eq:K2}; this holds only at $s = 0$, so $Z$
+in $-Z'(0) = \sum_k\mu_k\log k$ into the product of logarithms in \eqref{eq:K2}; this holds only at $s = 0$, so $Z$
 and $\zeta_F$ are different functions that share one value. A dilation and a telescoping identity then turn
 \eqref{eq:K2} into \eqref{eq:K3} (Lemma~\ref{lem:dilog}). Each representation gives an algorithm with the complexity
 of Theorem~\ref{thm:complexity}, by a different route. \eqref{eq:K1} is a derivative at a regular point, so the
@@ -1909,14 +1910,14 @@ For the Khinchin zeta function \eqref{eq:Z},
 \[
   f(x) = \frac{2\log(1+x) - \log(1+2x)}{\log 2}, \qquad a_n = \frac{(-1)^n(2^n - 2)}{n\log 2},
 \]
-with $\rho = \frac12$, so $k_0 = 3$, and $a_0 = a_1 = 0$, $n_0 = 2$. (Strictly, $p_k$ is not in $\RegQ$ because of
+with $\rho = \frac12$, so $k_0 = 3$, and $a_0 = a_1 = 0$, $n_0 = 2$. (Strictly, $\mu_k$ is not in $\RegQ$ because of
 the factor $1/\log 2$; the algorithms compute $Z(s)\log 2$.) By Proposition~\ref{prop:cont}, $Z$ is
 meromorphic with simple poles at $s = -1, -2, -3, \dots$ of residues $1/\log 2$, $-2/\log 2$, $\frac{7}{2\log2}, \dots$,
 and is analytic in $\operatorname{Re}s > -1$.
 
 \begin{proposition}\label{prop:Z}
 $Z(s) = \dfrac{1}{(s+1)\log2} - \dfrac{1}{\log2} + O(s+1)$ as $s \to -1$. Equivalently, the H\"older means
-satisfy $\log 2\,(K_p)^p = (1-p)^{-1} - 1 + O(1-p)$ as $p \to 1^-$.
+satisfy $\log 2\,(K_q)^q = (1-q)^{-1} - 1 + O(1-q)$ as $q \to 1^-$.
 \end{proposition}
 
 \begin{proof}
@@ -1924,16 +1925,16 @@ By summation by parts
 \begin{multline*}
 \sum_{k=1}^{N}k\,(2\log(k+1) - \log k - \log(k+2)) \\ = \log(N+1) - N\log\frac{N+2}{N+1} = \log N - 1 + o(1),
 \end{multline*}
-so $\sum_{k=1}^{\infty}(kp_k - \frac{1}{k\log2})$ converges to $-(1+\gamma)/\log 2$.
+so $\sum_{k=1}^{\infty}(k\mu_k - \frac{1}{k\log2})$ converges to $-(1+\gamma)/\log 2$.
 Since $Z(s) - \zeta(s+2)/\log 2$ is analytic at
-$s = -1$ with value $\sum_{k=1}^{\infty}(kp_k - \frac1{k\log 2})$, and $\zeta(s+2) = \tfrac{1}{s+1} + \gamma + O(s+1)$, the constant term
+$s = -1$ with value $\sum_{k=1}^{\infty}(k\mu_k - \frac1{k\log 2})$, and $\zeta(s+2) = \tfrac{1}{s+1} + \gamma + O(s+1)$, the constant term
 is $-1/\log 2$.
 \end{proof}
 
 So the value at $0$ and the constant term at the first pole are elementary (both by telescoping), while the
 derivative at $0$ is Khinchin's constant and the value at $1$ is the reciprocal of the harmonic mean. By
-Theorem~\ref{thm:complexity} all H\"older means $K_p$ with rational $p < 1$, not only the $K_{-n}$, can be computed
-to $N$ bits in time $\widetilde O(N^{3/2})$. Some values for illustration:
+Theorem~\ref{thm:complexity} all H\"older means $K_q$ with rational $q < 1$, not only the $K_{-n}$, can be computed
+to $p$ bits in time $\widetilde O(p^{3/2})$. Some values for illustration:
 \begin{align*}
   K_{1/2} &= 4.5330951149778199744\ldots, & K_{-1/2} &= 2.0548408683571442932\ldots, \\
   K_{1/3} &= 3.6217632159994293888\ldots, & K_{-1/3} &= 2.2119276176511428815\ldots, \\
@@ -1941,11 +1942,11 @@ to $N$ bits in time $\widetilde O(N^{3/2})$. Some values for illustration:
 \end{align*}
 Bailey, Borwein and Crandall \cite{BBC97} computed the $K_{-n}$ for small $n$ to high precision.
 
-\emph{Divisibility.} The Dirichlet series $\zeta(s)Z(s)$ is that of $\sum_{d\mid n}p_d$, the probability that $a_1$
+\emph{Divisibility.} The Dirichlet series $\zeta(s)Z(s)$ is that of $\sum_{d\mid n}\mu_d$, the probability that $a_1$
 divides $n$; the mean of this probability over $n \le N$ tends to $Z(1) = 1/K_{-1}$ as $N \to \infty$.
 
 \subsection{The derivative of $Z$}\label{sec:Zprime}
-For \eqref{eq:K1} let $L(s) = \log 2\sum_{k=3}^{\infty}p_kk^{-s}$, so that $\log K = \log\frac98 - L'(0)/\log 2$,
+For \eqref{eq:K1} let $L(s) = \log 2\sum_{k=3}^{\infty}\mu_kk^{-s}$, so that $\log K = \log\frac98 - L'(0)/\log 2$,
 with $f(x) = 2\log(1+x) - \log(1+2x)$, $a_n = (-1)^n(2^n - 2)/n$ and $k_0 = 3$. At $s = 0$ both parts
 \eqref{eq:kernelparts} of the kernel are elementary,
 \[
@@ -2024,7 +2025,7 @@ Theorem~\ref{thm:split} at $s = 0$ gives, for every $u_0 > 0$,
 \end{multline*}
 with the $k$-terms
 \[
-  I_k = e^{-x}\sum_{n=0}^{\infty}\frac{A_{n+1}}{n+1}\,\frac{e_{n+1}(x)}{K^{n+1}}, \qquad K = k^2,\ x = Ku_0,
+  I_k = e^{-x}\sum_{n=0}^{\infty}\frac{A_{n+1}}{n+1}\,\frac{e_{n+1}(x)}{\kappa^{n+1}}, \qquad \kappa = k^2,\ x = \kappa u_0,
 \]
 where $e_n(x) = \sum_{i=0}^{n-1}x^i/i!$. The terms satisfy a $4\times4$ triangular recurrence (for the truncated
 exponential, the powers of $x$ and $K$, and their products with $A_n$), summed by binary splitting. The moments
@@ -2129,7 +2130,7 @@ where
 \end{gather*}
 and $\log K\log2 = \log^22 + \Li_2(-\frac12) + \frac12(\frac{\pi^2}6 + T_3)$ by Lemma~\ref{lem:dilog}. Termwise,
 \begin{gather*}
-  \int_{u_0}^\infty e^{-Ku}u^{n-1}\dd u = \frac{(n-1)!}{K^n}\,e^{-x}e_n(x), \\
+  \int_{u_0}^\infty e^{-\kappa u}u^{n-1}\dd u = \frac{(n-1)!}{\kappa^n}\,e^{-x}e_n(x), \\
   \int_0^{u_0}e^{-au}u^{n-1}\dd u = \frac{(n-1)!}{a^n}\,\pi_n(au_0)
 \end{gather*}
 give $I_k$ and $M$. For the dual terms,
@@ -2149,9 +2150,9 @@ like $(16c)^n/(2n)!$ and $(4u_0)^n/n!$. For the constants, $\Li_2(-\frac12) = -\
 and $\Li_2(\frac13) = \frac16\Li_2(\frac19) + \frac{\pi^2}{18} - \frac16\log^23$.
 
 \subsubsection{Evaluation}
-On the $k$-side, let $P_n = (4/K)^ne_n(x)$ and $Q_n = (4u_0)^n/n!$. Then
+On the $k$-side, let $P_n = (4/\kappa)^ne_n(x)$ and $Q_n = (4u_0)^n/n!$. Then
 \[
-  P_{n+1} = \frac4K(P_n + Q_n), \quad Q_{n+1} = \frac{4u_0}{n+1}Q_n, \quad I_k = e^{-x}\sum_{n=1}^{\infty}\frac{P_n}{n^2},
+  P_{n+1} = \frac4\kappa(P_n + Q_n), \quad Q_{n+1} = \frac{4u_0}{n+1}Q_n, \quad I_k = e^{-x}\sum_{n=1}^{\infty}\frac{P_n}{n^2},
 \]
 a $2\times2$ triangular recurrence. On the dual side, with $\nu_t = Z_t[\Eip(4u)]$, $Y_t = Z_t[e^{4u}]$,
 $C_t = Z_t[1]$ and $E = e^{-c/u_0}$, integration by parts gives
@@ -2181,11 +2182,11 @@ and both tails are at most twice their first term, so $p$ bits need $k_{\max} \a
 $m_{\max} \approx \sqrt{pU\log 2}/\pi$.
 \item \emph{$k$-series.} The $n$-th term of $e^{-x}\sum_{n=1}^{\infty}P_n/n^2$ is
 \[
-  \Bigl(\frac4K\Bigr)^n\frac{\Pr[\mathrm{Poisson}(x) \le n-1]}{n^2},
+  \Bigl(\frac4\kappa\Bigr)^n\frac{\Pr[\mathrm{Poisson}(x) \le n-1]}{n^2},
 \]
-bounded by $\tau_n = (\frac4K)^n\min(1, \frac{n\,x^{n-1}e^{-x}}{(n-1)!})\frac{1}{n^2}$ for $n - 1 < x$ and by
-$(4/K)^n/n^2$ beyond; for $U \le \frac14$ the tail after $N$ terms is at most
-$2\tau_N + \frac95(\frac4K)^{n_1}n_1^{-2}$ with $n_1 = \lceil x\rceil + 1$.
+bounded by $\tau_n = (\frac4\kappa)^n\min(1, \frac{n\,x^{n-1}e^{-x}}{(n-1)!})\frac{1}{n^2}$ for $n - 1 < x$ and by
+$(4/\kappa)^n/n^2$ beyond; for $U \le \frac14$ the tail after $N$ terms is at most
+$2\tau_N + \frac95(\frac4\kappa)^{n_1}n_1^{-2}$ with $n_1 = \lceil x\rceil + 1$.
 \item \emph{Taylor stages.} With $\rho = |\delta|/c_0$, the remainder after $L \ge 2$ terms of the Taylor series of
 every state component at $c_0$ is at most
 \[
@@ -2585,7 +2586,7 @@ and odd dual states are
 \]
 and
 the $k$-side recurrences have states of dimension $4$ (the harmonic numbers double the $2\times2$ systems). The
-constant $\sum_{m=1}^{\infty} H_mK^{-m} = -\log(1-\frac1K)/(1-\frac1K)$ multiplies $\erfc(k\sqrt{u_0})$.
+constant $\sum_{m=1}^{\infty} H_m\kappa^{-m} = -\log(1-\frac1\kappa)/(1-\frac1\kappa)$, with $\kappa = k^2$, multiplies $\erfc(k\sqrt{u_0})$.
 The same applies to every $K_{-n}$, $n \ge 1$, with $f(x) = (x/(1-x))^n(-\log(1-x^2))$.
 
 \subsection{The constant of Theodorus}\label{sec:theodorus}
@@ -2689,9 +2690,10 @@ $P_t = Z_t[h]$, $Q_t = Z_t[\vartheta h]$ and $R_t = Z_t[\vartheta^2h]$, \eqref{e
   c\,R_{t+1} &= E\,u_0^{1-t}\,(\vartheta^2h)(u_0) - \bigl(\tfrac12 - t\bigr)R_t + \tfrac{x^2}{4}P_{t-1},
 \end{align*}
 and $J_m = Z_{1/2}[h](\pi^2m^2)$: a state of dimension $4$ ($P_t, Q_t, R_t, P_{t-1}$) with three forcing constants and
-$t_0 = \frac12$, so that the starting values involve $\Gamma(\frac12, c_0/u_0)$. The $k$-terms are
+$t_0 = \frac12$, so that the starting values involve $\Gamma(\frac12, c_0/u_0)$. With $\kappa = k^2$ and
+$x_k = \kappa u_0$, the $k$-terms are
 \[
-  I_k = e^{-x_k}\sum_{m=1}^{\infty}\frac{(-1)^{m-1}x^{2m-1}}{(2m-1)!}K^{-m}e_m(x_k),
+  I_k = e^{-x_k}\sum_{m=1}^{\infty}\frac{(-1)^{m-1}x^{2m-1}}{(2m-1)!}\kappa^{-m}e_m(x_k),
 \]
 a $2\times2$ recurrence as for Khinchin's constant.
 
@@ -2770,19 +2772,19 @@ gives
 \[
   U(\lambda) = \frac{2}{\sqrt\pi\,\lambda^3}\Bigl(\sum_{n=k_0}^{\infty}I_n + \sum_{n=1}^{k_0-1}(T_n - L_n) + M + \sqrt\pi\sum_{m=1}^{\infty}J_m\Bigr),
 \]
-where, with $K = n^2$ and $x = Ku_0$,
+where, with $\kappa = n^2$ and $x = \kappa u_0$,
 \begin{align*}
-  I_n &= \mathcal L[u^{1/2}y](K)
-       = \frac{1}{2K^{3/2}}\Bigl(\Gamma(\tfrac12, x)\,F(n)
+  I_n &= \mathcal L[u^{1/2}y](\kappa)
+       = \frac{1}{2\kappa^{3/2}}\Bigl(\Gamma(\tfrac12, x)\,F(n)
          + 2e^{-x}\sqrt x\sum_{j=0}^{\infty}A_jR_j\Bigr), \\
-  &\qquad A_j = \frac{(3/2)_j^2}{(2)_j\,j!}\Bigl(-\frac\beta K\Bigr)^j, \quad R_j = \sum_{i=0}^{j}\frac{\Gamma(\frac32)\,x^i}{\Gamma(i+\frac32)}, \\
-  T_n &= \int_0^\infty u^{1/2}y\,e^{-Ku}\dd u = \frac{\sqrt\pi}{2}(K+\beta)^{-3/2}\,{}_2F_1\Bigl(\frac32,\frac12;2;\frac{\beta}{\beta+K}\Bigr), \\
-  L_n &= \int_0^{u_0}u^{1/2}y\,e^{-Ku}\dd u, \\
+  &\qquad A_j = \frac{(3/2)_j^2}{(2)_j\,j!}\Bigl(-\frac\beta \kappa\Bigr)^j, \quad R_j = \sum_{i=0}^{j}\frac{\Gamma(\frac32)\,x^i}{\Gamma(i+\frac32)}, \\
+  T_n &= \int_0^\infty u^{1/2}y\,e^{-\kappa u}\dd u = \frac{\sqrt\pi}{2}(\kappa+\beta)^{-3/2}\,{}_2F_1\Bigl(\frac32,\frac12;2;\frac{\beta}{\beta+\kappa}\Bigr), \\
+  L_n &= \int_0^{u_0}u^{1/2}y\,e^{-\kappa u}\dd u, \\
   M &= \frac{\sqrt\pi}2\int_0^{u_0}y\dd u - \frac12\int_0^{u_0}u^{1/2}y\dd u, \\
   J_m &= Z_0[y](\pi^2m^2) .
 \end{align*}
-The $k$-side series converge like $(\beta/K)^j$, so we take $k_0$ minimal with $k_0^2 > 2\beta$; the finitely many terms
-$n < k_0$ are the full integral $T_n$ (by Pfaff's transformation) minus $L_n$, whose integrand $u^{1/2}y(u)e^{-Ku}$ has an
+The $k$-side series converge like $(\beta/\kappa)^j$, so we take $k_0$ minimal with $k_0^2 > 2\beta$; the finitely many terms
+$n < k_0$ are the full integral $T_n$ (by Pfaff's transformation) minus $L_n$, whose integrand $u^{1/2}y(u)e^{-\kappa u}$ has an
 entire power series factor with coefficients satisfying a three-term recurrence. $F(n) = \sum_{j=0}^{\infty}A_j$ is summed in the
 same binary splitting as $\sum_{j=0}^{\infty}A_jR_j$, with the state $(A_jR_j, A_jx^j/\Gamma(j+\frac32), A_j)$.
 
@@ -3178,6 +3180,14 @@ and degrees of the recurrences, and treat irrational $r$ and $r$ not of the form
 smoothed Riemann--Siegel formula for $\zeta_F$ with $O(\sqrt t)$ terms (Remark~\ref{rem:complexu0}), and an algorithm
 uniform in $\operatorname{Im}s$.
 
+\subsection{Uniformity in the operator}\label{sec:openuniform}
+Theorem~\ref{thm:uniform} is uniform in $s_0$ and in the coordinates of $F$, but the operator $L$ is fixed
+(Remark~\ref{rem:complexity}). Make the bound explicit in the order, degree and height of $L$ and in the degree of
+the number field. Besides the sizes of the recurrences, this involves the radius $R$, which can be exponential in the
+height of $L$, and with it the number of terms added directly, the analytic continuation to them and the growth
+$e^{R^2u}$ of the kernel. Families of interest where $R$ grows with a parameter include the Epstein--Hurwitz sums with
+large $a$ ($R = a$) and the vortex sums with small spacing $\lambda$ ($R = 2/\lambda$, Section~\ref{sec:vortex}).
+
 \subsection{Good representatives}\label{sec:generalize}
 Given a constant $\sum_{k=1}^{\infty}F(k)$, find a representative that minimizes the cost of
 Theorem~\ref{thm:complexity}. A sum $\sum_{k=1}^{\infty}F(k) = \zeta_F(0)$ can be rewritten without changing its value (up to explicit constants) by three
@@ -3200,7 +3210,7 @@ hypergeometric coefficients. Other examples point the same way:
 hypergeometric coefficients $1/(2m-1)$ and $1/n$ and elementary or $\operatorname{erfi}$-type kernels
 (Section~\ref{sec:workedexample}).
 \item For the harmonic mean, $1/K_{-1} = Z(1)$, and the choice of the variable matters: in $1/k$ the summand
-$p_k/k = x\log_2((1+x)^2/(1+2x))$ has coefficients that are a sum of two hypergeometric terms, while after the shift
+$\mu_k/k = x\log_2((1+x)^2/(1+2x))$ has coefficients that are a sum of two hypergeometric terms, while after the shift
 $j = k+1$, as in $\log 2/K_{-1} = \sum_{j=2}^{\infty}-\log(1-j^{-2})/(j-1)$, the coefficients are harmonic numbers
 $H_{\lfloor (n-1)/2\rfloor}$. Section~\ref{sec:KH} uses the second form. The first form trades the harmonic
 numbers for two exponential scales: it splits into the pieces $x\log(1+x)$ and $x\log(1+2x)$, with kernels of
@@ -3345,25 +3355,25 @@ that is, $O(\sqrt p)$ terms on each side ($q$ the period of $\chi$); the choice 
 (Section~\ref{sec:complexity}).
 
 \subsection{The $k$-terms}
-Let $k \ge k_0$, $K = k^2$ and $x = Ku_0$. With $Q(\sigma_0+m, x) = Q(\sigma_0, x) + e^{-x}\sum_{j=0}^{m-1}x^{\sigma_0+j}/\Gamma(\sigma_0+j+1)$,
+Let $k \ge k_0$, $\kappa = k^2$ and $x = \kappa u_0$. With $Q(\sigma_0+m, x) = Q(\sigma_0, x) + e^{-x}\sum_{j=0}^{m-1}x^{\sigma_0+j}/\Gamma(\sigma_0+j+1)$,
 the series for $I_k(s)$ in Theorem~\ref{thm:split} becomes, for $f(x) = A_0(x^2) + xA_1(x^2)$,
 \begin{equation}\label{eq:Ik}
 \begin{split}
-  I_k(s) &= k^{-s}\Bigl(Q\bigl(\tfrac s2, x\bigr)A_0\bigl(\tfrac1K\bigr) + Q\bigl(\tfrac{s+1}2, x\bigr)\frac{A_1(1/K)}{k}\Bigr) \\
+  I_k(s) &= k^{-s}\Bigl(Q\bigl(\tfrac s2, x\bigr)A_0\bigl(\tfrac1\kappa\bigr) + Q\bigl(\tfrac{s+1}2, x\bigr)\frac{A_1(1/\kappa)}{k}\Bigr) \\
   &\quad + e^{-x}u_0^{s/2}\sum_{m=1}^{\infty}\frac{a_{2m}}{K^m}\sum_{j=0}^{m-1}\frac{x^j}{\Gamma(\frac s2+j+1)} \\
   &\quad + e^{-x}u_0^{(s+1)/2}\sum_{m=1}^{\infty}\frac{a_{2m+1}}{K^m}\sum_{j=0}^{m-1}\frac{x^j}{\Gamma(\frac{s+1}2+j+1)},
 \end{split}
 \end{equation}
 since
 \[
-  k^{-s-2m}x^{s/2+j} = u_0^{s/2}K^{-m}x^j, \qquad k^{-s-2m-1}x^{(s+1)/2+j} = u_0^{(s+1)/2}K^{-m}x^j.
+  k^{-s-2m}x^{s/2+j} = u_0^{s/2}\kappa^{-m}x^j, \qquad k^{-s-2m-1}x^{(s+1)/2+j} = u_0^{(s+1)/2}\kappa^{-m}x^j.
 \]
 After factoring out
 $1/\Gamma(\frac s2+1)$ and $1/\Gamma(\frac{s+1}2+1)$, the inner sums satisfy first-order inhomogeneous recurrences in $m$
 with coefficients in $\QQ(s)$, and $a_n$ is P-recursive, so the double sums are binary splitting series over a fixed
-number field. Their terms are bounded by $|a_n|K^{-n/2}$ times $e^{x}$, which the prefactor $e^{-x}$ cancels, so
-$O(p/\log(k/R))$ terms suffice, with $O(\log p)$-bit coefficients since $K, x = O(p)$. The values $A_0(1/K)$ and
-$A_1(1/K)$ are holonomic functions at a rational point inside the disk of convergence, $k^{-s} = e^{-s\log k}$ costs
+number field. Their terms are bounded by $|a_n|\kappa^{-n/2}$ times $e^{x}$, which the prefactor $e^{-x}$ cancels, so
+$O(p/\log(k/R))$ terms suffice, with $O(\log p)$-bit coefficients since $\kappa, x = O(p)$. The values $A_0(1/\kappa)$ and
+$A_1(1/\kappa)$ are holonomic functions at a rational point inside the disk of convergence, $k^{-s} = e^{-s\log k}$ costs
 $O(\Mul(p)\log^2p)$, and the incomplete gamma values are needed only to absolute precision $2^{-p}|k^s|$
 (Section~\ref{app:gamma}). So each $I_k$ costs $O(\Mul(p)\log^2p)$.
 
@@ -3515,9 +3525,9 @@ part. The terms with $j \ge j_1$ then follow a recurrence that divides only by n
 at least $\frac12$. These are units of $\mathbb K[\varepsilon]/(\varepsilon^{j+1})$ when $s = s_0 + \varepsilon$. The
 $O(S)$ terms with $j < j_1$ are polynomials in $s$ times that factor. By (G1) and (G2),
 $\sum_j x^j|1/\Gamma(\frac s2+j+1)| \le 2^{O(p)}x^{S}e^x$, and $x^S = 2^{O(p)}$ since $x = k^2u_0 = O(p)$. So the
-terms of the double sums are at most $2^{O(p)}|a_{2m}|K^{-m}$, which gives (b) and (d). The coefficients are
-polynomials in $s$, $m$ and $j$ of bounded degree, hence (c). Further, $|k^{-s}| \le k^S = 2^{O(p)}$, and $A_0(1/K)$,
-$A_1(1/K)$ do not depend on $s$.
+terms of the double sums are at most $2^{O(p)}|a_{2m}|\kappa^{-m}$, which gives (b) and (d). The coefficients are
+polynomials in $s$, $m$ and $j$ of bounded degree, hence (c). Further, $|k^{-s}| \le k^S = 2^{O(p)}$, and $A_0(1/\kappa)$,
+$A_1(1/\kappa)$ do not depend on $s$.
 
 \emph{Incomplete gamma functions.} For $|a| \le 2S$ and rational $0 < y = O(p)$ write
 $P(a,y) = y^ae^{-y}\sum_iy^i/\Gamma(a+i+1)$ and factor out $1/\Gamma(a+i_1+1)$ as above. The terms are at most
