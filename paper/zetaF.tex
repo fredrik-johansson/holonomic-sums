@@ -248,11 +248,7 @@ such as the generalized hypergeometric function $G(z) = {}_pF_{p-1}(\ldots; z)$.
 The underlying class of holonomic functions is
 also closed under integration, and contains the periods of
 families of algebraic curves depending algebraically on $k$ such as complete elliptic, hyperelliptic and abelian integrals.
-Further examples are sums of inverse trigonometric functions recorded in the OEIS, such as
-$\sum_{j\ge1}(j\arcsin\frac1j - 1)$ (A323737); sums $\sum_k(\log k)^jR(k)$ with rational $R$, such as
-$\sum_{k\ge2}\zeta''(k) = \sum_{k\ge2}\log^2k/(k(k-1))$ \cite[p.~538]{Fin18}; Boyadzhiev's constant
-$\sum_{k\ge1}\frac1k\log(1+\frac1k)$ \cite{Boy19}; and integrals $\int_0^\infty G(t)\,(e^t-1)^{-1}\dd t$ of an entire
-holonomic $G$ of finite exponential type against the Bose--Einstein weight (or the Fermi--Dirac weight
+Further examples are integrals $\int_0^\infty G(t)\,(e^t-1)^{-1}\dd t$ of an entire holonomic $G$ of finite exponential type against the Bose--Einstein weight (or the Fermi--Dirac weight
 $(e^t+1)^{-1}$), which are sums $\sum_k\int_0^\infty G(t)e^{-kt}\dd t$ of Laplace transforms, for instance
 \[
   \int_0^\infty\frac{t\,J_0(at)}{e^t-1}\dd t = \sum_{k=1}^{\infty}\frac{k}{(k^2+a^2)^{3/2}}.
@@ -269,8 +265,8 @@ operations.
 
 \begin{table}[p]
 \centering\footnotesize
-\renewcommand{\arraystretch}{1.1}
-\setlength{\aboverulesep}{0.3ex}\setlength{\belowrulesep}{0.4ex}
+\renewcommand{\arraystretch}{1.05}
+\setlength{\aboverulesep}{0.25ex}\setlength{\belowrulesep}{0.35ex}
 \caption{Constants and families of constants as special values of the functions \eqref{eq:functions}.}
 \label{tab:constants}
 \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lll@{}}
@@ -304,24 +300,26 @@ Theodorus $\sum_{k=1}^{\infty}\frac{1}{(k+1)\sqrt k}$ & $\frac1{k+1}$ & $\zeta_F
 Hlawka's constant & $\arctan\frac1{\sqrt k}$ & $\zeta_F(0)$ (regularized) \\
 Hardy--Littlewood $H(x)$ & $\sin(x/k)$ & $\zeta_F(1)$ \\
 $\sum_{k=1}^{\infty}\frac{1}{k^{3/2}+1}$ & $\frac1{k^3-1}$ ($k\ge2$) & $\frac12+\zeta_F(-\frac32)-\zeta_F(0)$ \\
+$\sum_{k=1}^{\infty}(k\arcsin\frac1k - 1)$ & $k\arcsin\frac1k - 1$ & $\zeta_F(0)$ (A323737) \\
+$\sum_{k=2}^{\infty}\zeta''(k)$ \cite{Fin18} & $\frac1{k(k-1)}$ ($k\ge2$) & $\zeta_F''(0)$ \\
+Boyadzhiev's constant \cite{Boy19} & $\frac1k\log(1+\frac1k)$ & $\zeta_F(0)$ \\
 \midrule
 \multicolumn{3}{@{}p{\textwidth}@{}}{\emph{Mathematical physics} (Section~\ref{sec:vortex}, Remark~\ref{rem:algebraic}):
 coaxial rings of unit radius spaced $\lambda$ apart ($\theta/2\pi \in \QQ$);
-$E_a(t) = \sum_k(k^2+a^2)^{-t}$, $t > \frac12$; hydrogen partition function \cite{EKR11}, $\xi = I/(k_BT)$;
+hydrogen partition function \cite{EKR11}, $\xi = I/(k_BT)$;
 Casimir-type sums \cite{Eli95,Kir02}.} \\
 \midrule
 vortex rings $U(\lambda)$ & ${}_2F_1(\frac32,\frac32;2;-\frac{4}{\lambda^2k^2})$ & $\lambda^{-3}\zeta_F(3)$ \\
 ring resonators $S_\lambda(\theta)$ & ${}_2F_1(\frac32,\frac32;3;-\frac{4}{\lambda^2k^2})$ & $\frac{\pi}{2\lambda^3}L_F(3,\cos k\theta)$ \\
-Epstein--Hurwitz $E_a(t)$ & $(1+\frac{a^2}{k^2})^{-t}$ & $\zeta_F(2t)$ \\
+Epstein--Hurwitz $E_a(t)$, $t > \frac12$ & $(1+\frac{a^2}{k^2})^{-t}$ & $\zeta_F(2t)$ \\
 Planck--Larkin $\sigma(T)$ & $e^{\xi/k^2} - 1 - \xi/k^2$ & $\zeta_F(-2)$ \\
 Casimir-type sums & $F(k)$ & $\zeta_F(-m)$ (regularized) \\
 \midrule
 \multicolumn{3}{@{}p{\textwidth}@{}}{\emph{Geometric factors: polylogarithms and Lerch transcendents} (Sections~\ref{sec:geometric},
 \ref{sec:somos}); $F_1$, $F_2$ as above;
-$j \in \frac12 + \ZZ$ for Bose--Einstein and Fermi--Dirac; Fisher's log-series distribution.} \\
+$t > 1$; $j \in \frac12 + \ZZ$ for Bose--Einstein and Fermi--Dirac; Fisher's log-series distribution.} \\
 \midrule
-Somos's $\sigma = \prod_kk^{2^{-k}}$ & $1$; or $F_2$ & $e^{-\partial_s\Li_s(\frac12)|_{s=0}}$; or $e^{\Li_{F_2}(0,\frac12)}$ \\
-$\sigma_t = \prod_kk^{t^{-k}}$, $t > 1$ & $1$ & $\exp(-\partial_s\Li_s(\frac1t)|_{s=0})$ \\
+Somos's $\sigma_2$; $\sigma_t = \prod_kk^{t^{-k}}$ & $1$; or $F_2$ ($t = 2$) & $e^{-\partial_s\Li_s(\frac1t)|_{s=0}}$; or $e^{\Li_{F_2}(0,\frac12)}$ \\
 Sondow--Hadjicostas $\gamma(z)$ & $F_1$ & $z^{-1}\Li_{F_1}(0,z)$ \\
 Bose--Einstein $g_{j}(z)$ & $1$ & $\Li_j(z)$ \\
 Fermi--Dirac $F_{j-1}(\eta)$, $\eta < 0$ & $1$ & $-\Li_j(-e^\eta)$ \\
@@ -1386,53 +1384,45 @@ $k$-terms need only relative precision $p - (k^2u_0)\log_2 e$ and the dual terms
 shortens the series. (3) For $u_0 = 4^{-a}$ the arguments $k\sqrt{u_0}$ and $c_0/u_0$ are short dyadic numbers, so the
 incomplete gamma values are cheap binary splitting series. (4) A dual term is typically several dozen times as
 expensive as a $k$-term, so by the balancing argument above the optimal $u_0$ is below $1$ (in most of our applications
-$u_0 = \frac1{16}$; for Somos's constant, whose $k$-terms are single incomplete gamma values, $u_0 = 1$).
+$u_0 = \frac1{16}$; for Somos's constant, whose $k$-terms are single incomplete gamma values, $u_0 = 1$). (5) In
+floating-point evaluation of $M$, the functions $P(a,x)$ for $k < k_0$ must be computed directly from the lower
+series and not as $1 - Q(a,x)$, since they are multiplied by $a_nk^{-n}$, which may be exponentially large.
 \end{remark}
 
-\emph{Uniformity.} In Theorem~\ref{thm:complexity} everything is fixed except $p$. The proof only uses that the
-recurrences have coefficients of $O(\log p)$ bits, that the intermediate quantities are bounded by $2^{O(p)}$, and
-that the number of terms and the lengths of the series are $O(\sqrt p)$ and $O(p)$. This leaves room for the data to
-vary with $p$. For $\alpha$ in a number field $\mathbb K$ let
-$H(\alpha) = \prod_v\max(1,|\alpha|_v)^{[\mathbb K_v:\QQ_v]/[\mathbb K:\QQ]}$ be the absolute multiplicative height and
-$h(\alpha) = \log H(\alpha)$ the logarithmic height. An $\alpha \in \mathbb K$ with $H(\alpha) \le B$ can be written
-with $O(\log B)$ bits, all its conjugates are at most $B^{[\mathbb K:\QQ]}$ in absolute value, and, if $\alpha \ne 0$,
-$|\alpha| \ge B^{-[\mathbb K:\QQ]}$ (Liouville's inequality, from the product formula). By a \emph{Frobenius basis} at
-$\infty$ of an operator $L$ we mean a basis of solutions on $(R,\infty)$ of the form \eqref{eq:frob}.
+\subsection{Uniformity}\label{sec:uniform}
+In Theorem~\ref{thm:complexity} everything is fixed except $p$. Its proof only uses that there are $O(\sqrt p)$
+pieces, that their series have $O(p)$ terms and recurrences with $O(\log p)$-bit coefficients, and that all
+intermediate quantities are bounded by $2^{O(p)}$. These properties survive when $s_0$ and the coefficients of $F$
+grow moderately with $p$. This is what is needed to compute values at $s_0 = 1 - n$ exactly, such as Bernoulli numbers.
+
+We write $H(\alpha)$ for the absolute multiplicative height of an algebraic number $\alpha$ and
+$h(\alpha) = \log H(\alpha)$; in a fixed number field, an $\alpha$ with $H(\alpha) \le B$ can be written with
+$O(\log B)$ bits.
 
 \begin{theorem}[uniformity]\label{thm:uniform}
 Fix a number field $\mathbb K \subset \CC$, an operator $L$ with coefficients in $\mathbb K[x]$ for which $\infty$ is
-an ordinary or regular singular point and whose exponents at $\infty$ lie in $\mathbb K$, a Frobenius basis
-$y_1, \dots, y_r$ of $L$ at $\infty$ whose power series have coefficients in $\mathbb K$, integers $k_0 > R$,
-$1 \le k_1 \le k_0$, $q \ge 1$ and $j \ge 0$, and a constant $c > 0$, and assume that the $y_i$ continue
-analytically to $[k_1, \infty)$. For $p \ge 2$ let
-\begin{itemize}
-\item $s_0 \in \mathbb K$ with $H(s_0) \le p^c$ and $|s_0| \le cp/\log p$;
-\item $F(k) = \sum_{i=1}^r\lambda_iy_i(k)$ $(k \ge k_1)$, with $\lambda_i \in \mathbb K$;
-\item $\chi\colon\ZZ \to \mathbb K$ periodic with period $q$;
-\end{itemize}
-where $h(\lambda_i)$ and $h(\chi(k))$ are at most $cp$. Then the $j$-th Laurent coefficient of
-$L_F(s,\chi)$ at $s_0$ can be computed with absolute error at most $2^{-p}$ in $O(p^{1/2}\Mul(p)\log^2p)$ bit
-operations and $O(p)$ bits of memory, with implied constants depending only on the fixed data. If only
-$|s_0| \le cp$ is assumed, the bounds become $O(p^{1/2}\Mul(p)\log^{7/2}p)$ bit operations and $O(p\log p)$ bits.
-The same holds for the $j$-th Laurent coefficient of $\sum_{k=1}^{\infty}\chi(k)z^kF(k)k^{-s}$ (in particular of
-$\Li_F(s,z)$), for a fixed $z \in \mathbb K$ with $0 < |z| < 1$.
+an ordinary or regular singular point with exponents in $\mathbb K$, and a basis $y_1, \dots, y_r$ of solutions of
+the form \eqref{eq:frob} whose power series have coefficients in $\mathbb K$ and which continue analytically to
+$[k_1, \infty)$. Fix also integers $q \ge 1$ and $j \ge 0$ and a constant $c > 0$. For $p \ge 2$, let
+$F(k) = \sum_{i=1}^r\lambda_iy_i(k)$ $(k \ge k_1)$, let $\chi\colon\ZZ \to \mathbb K$ have period $q$, and let
+$s_0 \in \mathbb K$, where
+\[
+  h(\lambda_i) \le cp, \qquad h(\chi(k)) \le cp, \qquad H(s_0) \le p^c, \qquad |s_0| \le \frac{cp}{\log p}.
+\]
+Then the $j$-th Laurent coefficient of $L_F(s,\chi)$ at $s_0$ can be computed with absolute error at most $2^{-p}$
+in $O(p^{1/2}\Mul(p)\log^2p)$ bit operations and $O(p)$ bits of memory, with implied constants depending only on the
+fixed data. If only $|s_0| \le cp$, the bounds become $O(p^{1/2}\Mul(p)\log^{7/2}p)$ bit operations and $O(p\log p)$
+bits. The same holds for $\sum_{k=1}^{\infty}\chi(k)z^kF(k)k^{-s}$, in particular for $\Li_F(s,z)$, with a fixed
+$z \in \mathbb K$, $0 < |z| < 1$.
 \end{theorem}
 
-The memory bounds assume that $p$-bit integers can be multiplied in time $\Mul(p)$ and space $O(p)$, as with
-FFT-based algorithms. Without the blocking of the binary splitting described in the proof, the memory is
-$O(p\log p)$ bits in the first case. The proof is in Appendix~\ref{app:uniform}. The hypotheses on $s_0$ are of two
-kinds. The bound $H(s_0) \le p^{O(1)}$ means that $s_0$ has $O(\log p)$ bits, which is what binary splitting needs;
-an $s_0$ of $p$ bits is in effect an arbitrary real number (\emph{Generic data} above). The bound on $|s_0|$
-keeps the intermediate quantities below $2^{O(p)}$, or $2^{O(p\log p)}$ in the second case. Some such bound is needed
-with real $u_0$: for $|\operatorname{Im}s_0| \gg p$ the cancellation $e^{\pi|\operatorname{Im}s_0|/4}$ exceeds
-$2^{O(p)}$ (Remark~\ref{rem:complexu0}), and for $s_0 \to -\infty$ the value itself may have more than $p$ bits
-before the point. For rational $s_0$, and for $s_0$ in an imaginary quadratic field, $|s_0| \le H(s_0)$, so the
-hypothesis of the second case is just $H(s_0) \le cp$. In a general number field a bound on $H(s_0)$ does not bound
-$|s_0|$ by $H(s_0)$ (consider the units of a real quadratic field). The coefficients $\lambda_i$ and the values of $\chi$ enter
-linearly, which is why heights $e^{O(p)}$ are allowed for them.
+The proof (Appendix~\ref{app:uniform}) checks the properties above piece by piece. The bound on $H(s_0)$ says that
+$s_0$ has $O(\log p)$ bits, as binary splitting requires; an $s_0$ of $p$ bits is in effect generic data. The bound on
+$|s_0|$ keeps the intermediate quantities below $2^{O(p)}$, or $2^{O(p\log p)}$ in the second case. The $\lambda_i$
+and the values of $\chi$ enter linearly, which is why heights $e^{O(p)}$ are allowed for them. The theorem is not
+uniform in the operator $L$ (Section~\ref{sec:openuniform}).
 
-The theorem applies at $s_0 = 1 - n$, where the values are rational and their size is known in advance. Let
-$B_n(x)$ and $E_n(x)$ be the Bernoulli and Euler polynomials, $B_n = B_n(0)$ and $E_n = 2^nE_n(\frac12)$, and, for a
+Let $B_n(x)$ and $E_n(x)$ be the Bernoulli and Euler polynomials, $B_n = B_n(0)$ and $E_n = 2^nE_n(\frac12)$, and, for a
 function $\chi$ of period $f$, let $B_{n,\chi} = f^{n-1}\sum_{a=1}^f\chi(a)B_n(a/f)$ be the generalized Bernoulli
 numbers.
 
@@ -1443,44 +1433,31 @@ holds for $B_n$, for $E_n$, for the tangent and Genocchi numbers, and for $B_{n,
 with values in a fixed number field.
 \end{corollary}
 
-\begin{proof}
-By $B_n(x+1) = B_n(x) + nx^{n-1}$ we may assume $0 < x = b/f' \le 1$, with $b, f'$ fixed. For $n \ge 1$ and
-$\operatorname{Re}s > 1$,
-\[
-  \zeta(s, x) = \sum_{k=0}^{\infty}(k+x)^{-s} = f'^{\,s}\sum_{k\equiv b \bmod f'}k^{-s} = f'^{\,s}L_1(s, \mathbf 1_{b+f'\ZZ}),
-\]
-and $\zeta(1-n, x) = -B_n(x)/n$, so $B_n(x) = -nf'^{\,1-n}L_1(1-n, \mathbf 1_{b+f'\ZZ})$. Write
-$B_n(x) = \sum_k\binom nkB_kx^{n-k}$. By von Staudt--Clausen the denominator of $B_k$ divides $\prod_{\ell\le k+1}\ell$
-over primes $\ell$, so $D_nB_n(x) \in \ZZ$ with $D_n = f'^{\,n}\prod_{\ell\le n+1}\ell = e^{O(n)}$. From
-$|B_k| \le 4k!/(2\pi)^k$ we get $|B_n(x)| \le 4n!\sum_k(2\pi)^{-k}/(n-k)! \le 4e\cdot n!$ for $0 \le x \le 1$. So
-$p = n\log_2n + O(n)$ bits of $L_1(1-n, \mathbf 1_{b+f'\ZZ})$ determine $B_n(x)$. Theorem~\ref{thm:uniform} applies
-with $F = 1$ ($L = \partial_x$), $\mathbb K = \QQ$, $j = 0$ and $s_0 = 1 - n$: $H(s_0) \le n \le p$ and
-$|s_0| \le n = O(p/\log p)$. The cost is $O(p^{1/2}\Mul(p)\log^2p)$ with $p = \Theta(n\log n)$, and
-$\Mul(n\log n) = O(\Mul(n)\log n)$. For the Euler polynomials,
-$E_n(x) = \frac2{n+1}(B_{n+1}(x) - 2^{n+1}B_{n+1}(\frac x2))$. The tangent and Genocchi numbers are $2^{2n}(2^{2n}-1)|B_{2n}|/(2n)$
-and $2(1-2^n)B_n$, and $B_{n,\chi}$ is a fixed linear combination of the rationals $f^{n-1}B_n(a/f)$.
-\end{proof}
+For $x = b/f'$ in $(0, 1]$ we have $B_n(x) = -nf'^{\,1-n}L_1(1-n, \mathbf 1_{b+f'\ZZ})$, an instance of
+Theorem~\ref{thm:uniform} with $F = 1$ and $s_0 = 1 - n$. Since $B_n(x)$ has a denominator $e^{O(n)}$ and absolute value
+at most $4e\cdot n!$, $p = n\log_2n + O(n)$ bits determine it (Appendix~\ref{app:sequences}). Equivalently,
+$L(1-n,\chi) = -B_{n,\chi}/n$ for every $\chi$ of period $f$, and $\beta(-n) = L(-n, \chi_{-4}) = E_n/2$ for the
+Dirichlet beta function, so the corollary computes the values of all Dirichlet $L$-functions of bounded conductor at
+the negative integers, exactly.
 
-Equivalently, $L(1-n,\chi) = -B_{n,\chi}/n$ for every $\chi$ of period $f$, and
-$\beta(-n) = L(-n, \chi_{-4}) = E_n/2$ for the Dirichlet beta function. So the corollary computes the values of all
-Dirichlet $L$-functions of bounded conductor at the negative integers, exactly. These are the statements of
-\cite[Theorem~2]{Joh21} for $B_n$ and $E_n$, now with a complete proof, extended to $B_n(x)$ and $B_{n,\chi}$, and with
-the explicit bounds above. For comparison, the classical algorithms for $B_n$ (from $\zeta(n)$ by an Euler product,
-or multimodular \cite{Har10}) take $n^{2+o(1)}$ bit operations. Harvey's subquadratic algorithm \cite{Har14} has a
-time--space tradeoff: with a parameter $\frac13 \le \alpha \le \frac12$ it uses $n^{1+\alpha}\log^{4-\alpha+o(1)}n$
+This proves \cite[Theorem~2]{Joh21} for $B_n$ and $E_n$, extends it to $B_n(x)$ and $B_{n,\chi}$, and makes the bounds
+explicit. The classical algorithms for $B_n$ (from $\zeta(n)$ by an Euler product, or multimodular \cite{Har10}) take
+$n^{2+o(1)}$ bit operations. Harvey's subquadratic algorithm \cite{Har14}, which computes $B_n$ modulo many primes, has
+a time--space tradeoff: with a parameter $\frac13 \le \alpha \le \frac12$ it uses $n^{1+\alpha}\log^{4-\alpha+o(1)}n$
 bit operations and $O(n^{2-2\alpha}\log^{1+2\alpha}n)$ bits of memory. At $\alpha = \frac13$ it is faster than
-Corollary~\ref{cor:bernoulli}, $n^{4/3+o(1)}$, but needs $n^{4/3+o(1)}$ bits of memory. At $\alpha = \frac12$ its memory
-is quasilinear, $O(n\log^2n)$, and its time is $n^{3/2}\log^{7/2+o(1)}n$, comparable to the
-$O(n^{3/2}\log^{9/2}n)$ that Corollary~\ref{cor:bernoulli} gives with $\Mul(n) = O(n\log n)$. Harvey's algorithm, which computes $B_n$ modulo many primes, has only been stated for $B_n$, although it may well
-extend to $E_n$ and $B_{n,\chi}$. We know of no other published subquadratic algorithm for $E_n$, $B_n(x)$ or
-$B_{n,\chi}$.
+Corollary~\ref{cor:bernoulli} but needs $n^{4/3+o(1)}$ bits of memory; at $\alpha = \frac12$ its memory is
+$O(n\log^2n)$ and its time $n^{3/2}\log^{7/2+o(1)}n$, comparable to the $O(n^{3/2}\log^{9/2}n)$ of
+Corollary~\ref{cor:bernoulli} with $\Mul(n) = O(n\log n)$. Harvey's algorithm has only been stated for $B_n$, although
+it may well extend to $E_n$ and $B_{n,\chi}$; we know of no other published subquadratic algorithm for $E_n$,
+$B_n(x)$ or $B_{n,\chi}$.
 
-Corollaries~\ref{cor:bernoulli} and~\ref{cor:egf} are of theoretical interest. For $B_n$ the case $F = 1$ was
-implemented in \cite{Joh21}: the subquadratic scaling is visible, barely, over the range tested, but the method was
-about $100$ times slower than the quadratic algorithms there. The regime $s_0 = 1 - n$, with $p \approx n\log_2n$ and
-large cancellation, is where the constants of the method are least favourable. With $F \ne 1$ the theorem gives, in the same way, the constant terms of $\zeta_F$ at
-$s = 1-n$, the zeta-regularized values of the divergent sums $\sum_kk^{n-1}F(k)$, at uniform cost for
-$n = O(p/\log p)$. These are convergent sums of the same type plus Bernoulli corrections \cite{Joh26}, and in general transcendental.
+These results are of theoretical interest. For $B_n$ the case $F = 1$ was implemented in \cite{Joh21}: the
+subquadratic scaling is visible, barely, over the range tested, but the method was about $100$ times slower than the
+quadratic algorithms there. The regime $s_0 = 1 - n$, with $p \approx n\log_2n$ and large cancellation, is where the
+constants of the method are least favourable. With $F \ne 1$ the theorem gives, in the same way, the constant terms
+of $\zeta_F$ at $s = 1-n$, the zeta-regularized values of the divergent sums $\sum_kk^{n-1}F(k)$, at uniform cost for
+$n = O(p/\log p)$. These are convergent sums of the same type plus Bernoulli corrections \cite{Joh26}, and in general
+transcendental.
 
 The last statement of Theorem~\ref{thm:uniform} extends this from roots of unity to all algebraic poles of an
 exponential generating function that is rational in $e^t$.
@@ -1492,27 +1469,9 @@ $a_n = n!\,[t^n]\,t^mR(e^{\lambda t})$. If the $a_n$ are rational, they can be c
 $O(n^{1/2}\Mul(n)\log^{7/2}n)$ bit operations and $O(n\log n)$ bits of memory.
 \end{corollary}
 
-\begin{proof}
-Since $a_n = n(n-1)\cdots(n-m+1)\,b_{n-m}$ and $b_n = \lambda^nc_n$, with $b_n = n![t^n]R(e^{\lambda t})$ and
-$c_n = n![t^n]R(e^t)$, it suffices to compute $c_n$. Over a fixed extension of $\mathbb K$ containing the poles,
-$R(x)$ is a Laurent polynomial plus a combination of terms $(1 - x/\rho)^{-i}$. A Laurent polynomial contributes
-$\sum_j\gamma_jj^n$. For $|\rho| > 1$, the expansion
-$(1 - e^t/\rho)^{-i} = \sum_{k\ge0}\binom{k+i-1}{i-1}\rho^{-k}e^{kt}$ converges near $t = 0$. It contributes a fixed
-combination of the values $\Li_{-n-l}(1/\rho)$ with $0 \le l < i$. For $|\rho| < 1$, expand
-$(1 - e^t/\rho)^{-i} = (-\rho e^{-t})^i(1 - \rho e^{-t})^{-i}$ in the same way, which gives values
-$\Li_{-n-l}(\rho)$. For a root of unity $\rho \ne 1$, both sides of the first expansion are rational functions of
-$z = 1/\rho$, continuous on $|z| \le 1$, $z \ne 1$. At $|z| = 1$ the value $\Li_{-n-l}(z)$ is $L_1(-n-l,\chi)$ with the
-periodic $\chi(k) = z^k$. By Theorem~\ref{thm:uniform}, with $F = 1$ and $s_0 = -n-l$, each of these $O(1)$
-values can be computed to $p$ bits within the stated bounds, for $p = O(n\log n)$.
-
-It remains to bound the size and the denominator of $a_n$. $R(e^{\lambda t})$ is analytic in a fixed disk about
-$t = 0$, so $|a_n| \le C^nn!$. Write $R = P/Q$ with $P, Q \in \mathcal O_{\mathbb K}[x, x^{-1}]$ and $Q(1) \ne 0$, and
-choose $d \ge 1$ with $d\lambda \in \mathcal O_{\mathbb K}$. The series $\sum_ne_nt^n/n!$ with
-$e_n \in d^{-n}\mathcal O_{\mathbb K}$ form a ring that contains $e^{\pm j\lambda t}$, and
-$1/Q(e^{\lambda t}) = \sum_{i\ge0}(Q(1) - Q(e^{\lambda t}))^i/Q(1)^{i+1}$, where only $i \le n$ contribute to the $n$-th
-coefficient. With $N = |N_{\mathbb K/\QQ}(Q(1))|$ we get
-$d^{\,n}N^{n+1}a_n \in \mathcal O_{\mathbb K} \cap \QQ = \ZZ$. So $p = n\log_2n + O(n)$ bits determine $a_n$.
-\end{proof}
+By partial fractions in $e^t$, $a_n$ is a fixed combination of values $\Li_{-n-l}(z)$ at the points $z = \rho^{\pm1}$ in the closed
+unit disk, $\rho$ running over the poles; these are values of $L$-functions with periodic weights when $|z| = 1$; again $n\log_2n + O(n)$ bits determine $a_n$
+(Appendix~\ref{app:sequences}).
 
 \begin{table}[t]
 \centering\footnotesize
@@ -1557,17 +1516,6 @@ disk. Some sequences are not of this form. The Bell numbers $\sum_kk^n/(e\,k!)$ 
 regular at infinity. The generalized Euler numbers with e.g.f. $1/\sum_kt^{qk}/(qk)!$, $q \ge 3$, are not covered
 either. Their denominator is an exponential polynomial with frequencies $e^{2\pi ij/q}$, which are not all integer
 multiples of a single $\lambda$.
-
-\begin{remark}\label{rem:complexity}
-Theorem~\ref{thm:uniform} gives uniformity in $s_0$ and in the coordinates of $F$, but not in the operator $L$: the
-constants grow with its order and degree, with the size of its coefficients and with the degree of $\mathbb K$. In
-particular $R$, and with it the number $k_0 - k_1$ of terms added directly and the length of the analytic
-continuation to them, can grow exponentially with the height of $L$, since a polynomial of height $h$ can have roots of
-size $e^{h}$; a version uniform in $L$ would need, among other things, a bound such as $R = O(\sqrt p)$, which keeps the
-$O(R)$ direct terms within the bound. In
-floating-point evaluation of $M$, the functions $P(a,x)$ for $k < k_0$ must be computed directly from the lower
-series and not as $1 - Q(a,x)$, since they are multiplied by $a_nk^{-n}$, which may be exponentially large.
-\end{remark}
 
 \subsection{The zeta-value expansion}\label{sec:zetavalue}
 The classical starting point is the expansion in Hurwitz zeta values \cite{FV96}.
@@ -3264,7 +3212,7 @@ uniform in $\operatorname{Im}s$.
 
 \subsection{Uniformity in the operator}\label{sec:openuniform}
 Theorem~\ref{thm:uniform} is uniform in $s_0$ and in the coordinates of $F$, but the operator $L$ is fixed
-(Remark~\ref{rem:complexity}). Make the bound explicit in the order, degree and height of $L$ and in the degree of
+(Appendix~\ref{app:uniform}). Make the bound explicit in the order, degree and height of $L$ and in the degree of
 the number field. Besides the sizes of the recurrences, this involves the radius $R$, which can be exponential in the
 height of $L$, and with it the number of terms added directly, the analytic continuation to them and the growth
 $e^{R^2u}$ of the kernel. Families of interest where $R$ grows with a parameter include the Epstein--Hurwitz sums with
@@ -3542,8 +3490,16 @@ costs $O(1)$ multiplications of rationals per operation.
 \end{proof}
 
 \subsection{Uniformity and memory}\label{app:uniform}
+For $\alpha$ in a number field $\mathbb K$ the absolute multiplicative height is
+\[
+  H(\alpha) = \prod_v\max(1,|\alpha|_v)^{[\mathbb K_v:\QQ_v]/[\mathbb K:\QQ]}.
+\]
+An $\alpha \in \mathbb K$ with $H(\alpha) \le B$ can be written with $O(\log B)$ bits, all its conjugates are at most
+$B^{[\mathbb K:\QQ]}$ in absolute value, and, if $\alpha \ne 0$, $|\alpha| \ge B^{-[\mathbb K:\QQ]}$ (Liouville's
+inequality, from the product formula).
+
 \begin{proof}[Proof of Theorem~\ref{thm:uniform}]
-Assume first that $|s_0| \le cp/\log p$, and let $S = |s_0| + 2$, so that $S\log S \le c'p$. Constants in $O(\cdot)$
+Fix an integer $k_0 \ge k_1$ with $k_0 > R$. Assume first that $|s_0| \le cp/\log p$, and let $S = |s_0| + 2$, so that $S\log S \le c'p$. Constants in $O(\cdot)$
 depend only on the fixed data. The cost bounds of Section~\ref{app:tools} depend on four quantities:
 \begin{enumerate}
 \item[(a)] the numbers of $k$-terms and dual terms;
@@ -3692,6 +3648,61 @@ inequality bounds the transition matrices by $O(1)$ as before, and the bit-burst
 need $\Gamma(-a_*)$, which is at most $2^{O(p)}$ by (G3), and $\gamma(-a_*, y)$ at a Gaussian rational $y = O(p)$.
 The series for the latter has $O(p)$ terms and cancels by at most $e^{O(|y|)} = 2^{O(p)}$. The cancellation between
 the $k$-terms and the dual terms, $e^{(\log|z|)^2/(4u_0)}$, does not depend on $p$. The memory analysis is unchanged.
+\end{proof}
+
+\emph{Remarks.} The memory bounds assume that $p$-bit integers can be multiplied in time $\Mul(p)$ and space $O(p)$,
+as with FFT-based algorithms; without the blocking of the binary splitting, the memory is $O(p\log p)$ bits in the
+first case. Some bound on $|s_0|$ is needed with real $u_0$: for $|\operatorname{Im}s_0| \gg p$ the cancellation
+$e^{\pi|\operatorname{Im}s_0|/4}$ exceeds $2^{O(p)}$ (Remark~\ref{rem:complexu0}), and for $s_0 \to -\infty$ the value
+itself may have more than $p$ bits before the point. For rational $s_0$, and for $s_0$ in an imaginary quadratic
+field, $|s_0| \le H(s_0)$, so the hypothesis of the second case is just $H(s_0) \le cp$. In a general number field a
+bound on $H(s_0)$ does not bound $|s_0|$ (consider the units of a real quadratic field).
+
+The constants grow with the order and degree of $L$, with the size of its coefficients and with the degree of
+$\mathbb K$. In particular $R$, and with it the number $k_0 - k_1$ of terms added directly and the length of the
+analytic continuation to them, can grow exponentially with the height of $L$, since a polynomial of height $h$ can
+have roots of size $e^{h}$; a version uniform in $L$ would need, among other things, a bound such as
+$R = O(\sqrt p)$, which keeps the $O(R)$ direct terms within the bound.
+
+\subsection{Bernoulli numbers and exponential generating functions}\label{app:sequences}
+\begin{proof}[Proof of Corollary~\ref{cor:bernoulli}]
+By $B_n(x+1) = B_n(x) + nx^{n-1}$ we may assume $0 < x = b/f' \le 1$, with $b, f'$ fixed. For $n \ge 1$ and
+$\operatorname{Re}s > 1$,
+\[
+  \zeta(s, x) = \sum_{k=0}^{\infty}(k+x)^{-s} = f'^{\,s}\sum_{k\equiv b \bmod f'}k^{-s} = f'^{\,s}L_1(s, \mathbf 1_{b+f'\ZZ}),
+\]
+and $\zeta(1-n, x) = -B_n(x)/n$, so $B_n(x) = -nf'^{\,1-n}L_1(1-n, \mathbf 1_{b+f'\ZZ})$. Write
+$B_n(x) = \sum_k\binom nkB_kx^{n-k}$. By von Staudt--Clausen the denominator of $B_k$ divides $\prod_{\ell\le k+1}\ell$
+over primes $\ell$, so $D_nB_n(x) \in \ZZ$ with $D_n = f'^{\,n}\prod_{\ell\le n+1}\ell = e^{O(n)}$. From
+$|B_k| \le 4k!/(2\pi)^k$ we get $|B_n(x)| \le 4n!\sum_k(2\pi)^{-k}/(n-k)! \le 4e\cdot n!$ for $0 \le x \le 1$. So
+$p = n\log_2n + O(n)$ bits of $L_1(1-n, \mathbf 1_{b+f'\ZZ})$ determine $B_n(x)$. Theorem~\ref{thm:uniform} applies
+with $F = 1$ ($L = \partial_x$), $\mathbb K = \QQ$, $j = 0$ and $s_0 = 1 - n$: $H(s_0) \le n \le p$ and
+$|s_0| \le n = O(p/\log p)$. The cost is $O(p^{1/2}\Mul(p)\log^2p)$ with $p = \Theta(n\log n)$, and
+$\Mul(n\log n) = O(\Mul(n)\log n)$. For the Euler polynomials,
+$E_n(x) = \frac2{n+1}(B_{n+1}(x) - 2^{n+1}B_{n+1}(\frac x2))$. The tangent and Genocchi numbers are $2^{2n}(2^{2n}-1)|B_{2n}|/(2n)$
+and $2(1-2^n)B_n$, and $B_{n,\chi}$ is a fixed linear combination of the rationals $f^{n-1}B_n(a/f)$.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{cor:egf}]
+Since $a_n = n(n-1)\cdots(n-m+1)\,b_{n-m}$ and $b_n = \lambda^nc_n$, with $b_n = n![t^n]R(e^{\lambda t})$ and
+$c_n = n![t^n]R(e^t)$, it suffices to compute $c_n$. Over a fixed extension of $\mathbb K$ containing the poles,
+$R(x)$ is a Laurent polynomial plus a combination of terms $(1 - x/\rho)^{-i}$. A Laurent polynomial contributes
+$\sum_j\gamma_jj^n$. For $|\rho| > 1$, the expansion
+$(1 - e^t/\rho)^{-i} = \sum_{k\ge0}\binom{k+i-1}{i-1}\rho^{-k}e^{kt}$ converges near $t = 0$. It contributes a fixed
+combination of the values $\Li_{-n-l}(1/\rho)$ with $0 \le l < i$. For $|\rho| < 1$, expand
+$(1 - e^t/\rho)^{-i} = (-\rho e^{-t})^i(1 - \rho e^{-t})^{-i}$ in the same way, which gives values
+$\Li_{-n-l}(\rho)$. For a root of unity $\rho \ne 1$, both sides of the first expansion are rational functions of
+$z = 1/\rho$, continuous on $|z| \le 1$, $z \ne 1$. At $|z| = 1$ the value $\Li_{-n-l}(z)$ is $L_1(-n-l,\chi)$ with the
+periodic $\chi(k) = z^k$. By Theorem~\ref{thm:uniform}, with $F = 1$ and $s_0 = -n-l$, each of these $O(1)$
+values can be computed to $p$ bits within the stated bounds, for $p = O(n\log n)$.
+
+It remains to bound the size and the denominator of $a_n$. $R(e^{\lambda t})$ is analytic in a fixed disk about
+$t = 0$, so $|a_n| \le C^nn!$. Write $R = P/Q$ with $P, Q \in \mathcal O_{\mathbb K}[x, x^{-1}]$ and $Q(1) \ne 0$, and
+choose $d \ge 1$ with $d\lambda \in \mathcal O_{\mathbb K}$. The series $\sum_ne_nt^n/n!$ with
+$e_n \in d^{-n}\mathcal O_{\mathbb K}$ form a ring that contains $e^{\pm j\lambda t}$, and
+$1/Q(e^{\lambda t}) = \sum_{i\ge0}(Q(1) - Q(e^{\lambda t}))^i/Q(1)^{i+1}$, where only $i \le n$ contribute to the $n$-th
+coefficient. With $N = |N_{\mathbb K/\QQ}(Q(1))|$ we get
+$d^{\,n}N^{n+1}a_n \in \mathcal O_{\mathbb K} \cap \QQ = \ZZ$. So $p = n\log_2n + O(n)$ bits determine $a_n$.
 \end{proof}
 
 \subsection{Geometric factors}\label{app:geometric}
