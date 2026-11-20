@@ -388,9 +388,9 @@ exponential generating function that is rational in $e^{\lambda t}$, subject to 
 Harvey's algorithm \cite{Har14} in its quasilinear-memory setting. For the others we know of no earlier subquadratic
 algorithm, apart from \cite{Joh21} for the Euler numbers.
 
-For Khinchin's constant we develop three complete algorithms (Section~\ref{sec:khinchin}): from
+For Khinchin's constant we develop three complete algorithms, K1, K2 and K3 (Section~\ref{sec:khinchin}): from
 the derivative of what we call the Khinchin zeta function,
-from the logarithmic series for $\log K\log 2$ at the beginning of this introduction, and from a
+from the logarithm series for $\log K\log 2$ at the beginning of this introduction, and from a
 dilogarithm series of Bailey, Borwein
 and Crandall, a value of the twisted zeta function $L_G$ of the non-elementary function $G(k) = \Li_2(4/k^2)$. With the
 same machinery, the third is about $5$ times faster than the second and $19$ times faster than the first,
@@ -1824,43 +1824,17 @@ $\sum_ke^{-\tau k^{1/q}}F(k)k^{-s}$ & $p^{1+q}$ & $p^{2}$ & $p^{3/2}$ & sketched
 %======================================================================
 \section{Khinchin's constant}\label{sec:khinchin}
 
-Let $x = [a_0; a_1, a_2, \dots]$ be the continued fraction of a real number $x$. For almost every $x$, the partial
-quotients follow the Gauss--Kuzmin law: the proportion of the $a_i$ equal to $k$ is
-\[
-  \mu_k = \log_2\Bigl(1 + \frac1{k(k+2)}\Bigr),
-\]
-the probability that $a_1 = k$ when $x$ is drawn from the Gauss measure
-\[\frac{\dd x}{(1+x)\log2}\]
-on $(0,1)$, which
-is invariant under the continued fraction map \cite{Khi64,IK02}. By the ergodic theorem the geometric means
-$(a_1\cdots a_n)^{1/n}$ therefore tend to Khinchin's constant $K = \prod_kk^{\mu_k}$ \cite{Khi35}, and the H\"older means
-\[
-\Bigl(\frac1n\sum_{i\le n}a_i^q\Bigr)^{1/q}
-\]
-tend to $K_q = (\sum_kk^q\mu_k)^{1/q}$ for $q < 1$, $q \ne 0$ \cite{BBC97}.
-
-All of
-these are values of the \emph{Khinchin zeta function}
-\begin{equation}\label{eq:Z}
-  Z(s) = \sum_{k=1}^{\infty} \mu_k\,k^{-s} = \mathbb{E}\bigl[a_1^{-s}\bigr],
-\end{equation}
-the zeta function $\zeta_F$ of $F(k) = \mu_k$, which is analytic at infinity. Indeed $Z(0) = 1$ (the product
-$\prod_k(k+1)^2/(k(k+2))$ telescopes to $2$),
-\[
-  K = \exp(-Z'(0)), \qquad K_q = Z(-q)^{1/q},
-\]
-and in particular the harmonic mean is $K_{-1} = 1/Z(1)$.
-
-All earlier high-precision computations of $K$, from Bailey, Borwein and Crandall \cite{BBC97} to the record of Ghazi
+Khinchin's constant is $K = \prod_{k=1}^{\infty}k^{\mu_k}$, where $\mu_k = \log_2(1 + \frac1{k(k+2)})$ are the
+Gauss--Kuzmin probabilities (Section~\ref{sec:khinchinzeta}). All earlier high-precision computations of $K$, from Bailey, Borwein and Crandall \cite{BBC97} to the record of Ghazi
 \cite{Gha26}, use expansions in zeta values, which cost $p^{2+o(1)}$ bit operations
-(Section~\ref{sec:zetavalue}). Our method gives three subquadratic algorithms, from three representations of $K$ as a
-special value of a function of the class \eqref{eq:functions}:
+(Section~\ref{sec:zetavalue}). Our method gives three subquadratic algorithms, which we call K1, K2 and K3, from
+three representations of $K$ as a special value of a function of the class \eqref{eq:functions}:
 \begin{align}
-  \log K &= -Z'(0), \label{eq:K1}\\
-  \log K\log 2 &= \zeta_F(0), \label{eq:K2}\\
-  \log K\log 2 &= \log^22 + \Li_2(-\tfrac12) + \tfrac12 L_G(0,\chi), \label{eq:K3}
+  \log K &= -Z'(0), \tag{K1}\label{eq:K1}\\
+  \log K\log 2 &= \zeta_F(0), \tag{K2}\label{eq:K2}\\
+  \log K\log 2 &= \log^22 + \Li_2(-\tfrac12) + \tfrac12 L_G(0,\chi), \tag{K3}\label{eq:K3}
 \end{align}
-where
+where $Z(s) = \sum_{k\ge1}\mu_kk^{-s}$ is the Khinchin zeta function (Section~\ref{sec:khinchinzeta}),
 \[
   F(k) = -\log\Bigl(1-\frac1k\Bigr)\log\Bigl(1+\frac1k\Bigr) \quad (k \ge 2), \qquad
   G(k) = \Li_2\Bigl(\frac{4}{k^2}\Bigr) \quad (k \ge 2),
@@ -1870,18 +1844,18 @@ The three are linked by the operations of Section~\ref{sec:generalize}. Summatio
 in $-Z'(0) = \sum_k\mu_k\log k$ into the product of logarithms in \eqref{eq:K2}; this holds only at $s = 0$, so $Z$
 and $\zeta_F$ are different functions that share one value. A dilation and a telescoping identity then turn
 \eqref{eq:K2} into \eqref{eq:K3} (Lemma~\ref{lem:dilog}). Each representation gives an algorithm with the complexity
-of Theorem~\ref{thm:complexity}, by a different route. \eqref{eq:K1} is a derivative at a regular point, so the
-splitting must be differentiated in $s$; \eqref{eq:K2} is a value of $\zeta_F$; and \eqref{eq:K3} is a value of the
-twisted zeta function of the non-elementary $G$.
+of Theorem~\ref{thm:complexity}, by a different route: \eqref{eq:K1} is a derivative at a regular point, so
+Algorithm~K1 differentiates the splitting in $s$; \eqref{eq:K2} is a value of $\zeta_F$; and \eqref{eq:K3} is a value
+of the twisted zeta function of the non-elementary $G$.
 
 The constant-factor overheads of these algorithms differ widely. Table~\ref{tab:khstates} lists the sizes of what each algorithm evaluates: the
 series of each $k$-term, the moment systems of the dual terms (Proposition~\ref{prop:dual}), and the incomplete gamma
-values; Section~\ref{sec:khcompare} explains the differences. After a closer look at $Z$
-(Section~\ref{sec:khinchinzeta}), we work out the three algorithms (Sections~\ref{sec:Zprime},
+values; Section~\ref{sec:khcompare} explains the differences. After the probabilistic background and a closer look at
+$Z$ (Section~\ref{sec:khinchinzeta}), we work out the three algorithms (Sections~\ref{sec:Zprime},
 \ref{sec:logform} and~\ref{sec:dilog}), and compare implementations that share all their machinery
-(Section~\ref{sec:khcompare}); to what extent such rewritings generalize is discussed in Section~\ref{sec:generalize}. The
-dilogarithm series is also the basis of an optimized implementation in FLINT, with which we computed $K$ to $10^7$
-digits (Sections~\ref{sec:khimpl}--\ref{sec:khcf}).
+(Section~\ref{sec:khcompare}); to what extent such rewritings generalize is discussed in Section~\ref{sec:generalize}.
+Algorithm~K3 is also the basis of an optimized implementation in FLINT, with which we computed $K$ to $10^7$ digits
+(Sections~\ref{sec:khimpl}--\ref{sec:khcf}).
 
 \begin{table}[t]
 \centering\footnotesize
@@ -1895,7 +1869,7 @@ $\times$ dimension of the state, with the number of forcing constants in parenth
 \setlength{\tabcolsep}{4pt}
 \begin{tabular}{llll}
 \toprule
- & \eqref{eq:K1} & \eqref{eq:K2} & \eqref{eq:K3} \\
+ & K1 & K2 & K3 \\
 \midrule
 kernel coefficients & $2$ hypergeometric & alt.\ harmonic & hypergeometric \\
 exponential type & $4$ & $1$ & $4$ \\
@@ -1908,7 +1882,22 @@ gamma values, dual term & $\Gamma(\frac12)$, $E_1$; $\partial_b$ of both & $\Gam
 \end{table}
 
 \subsection{The Khinchin zeta function}\label{sec:khinchinzeta}
-For the Khinchin zeta function \eqref{eq:Z},
+Let $x = [a_0; a_1, a_2, \dots]$ be the continued fraction of a real number $x$. For almost every $x$, the partial
+quotients follow the Gauss--Kuzmin law: the proportion of the $a_i$ equal to $k$ is $\mu_k$, the probability that
+$a_1 = k$ when $x$ is drawn from the Gauss measure $\dd x/((1+x)\log2)$ on $(0,1)$, which is invariant under the
+continued fraction map \cite{Khi64,IK02}. By the ergodic theorem the geometric means $(a_1\cdots a_n)^{1/n}$ tend
+to $K$ \cite{Khi35}, and the H\"older means $(\frac1n\sum_{i\le n}a_i^q)^{1/q}$ tend to
+$K_q = (\sum_kk^q\mu_k)^{1/q}$ for $q < 1$, $q \ne 0$ \cite{BBC97}. All of these are values of the
+\emph{Khinchin zeta function}
+\begin{equation}\label{eq:Z}
+  Z(s) = \sum_{k=1}^{\infty} \mu_k\,k^{-s} = \mathbb{E}\bigl[a_1^{-s}\bigr],
+\end{equation}
+the zeta function $\zeta_F$ of $F(k) = \mu_k$, which is analytic at infinity. Indeed $Z(0) = 1$ (the product
+$\prod_k(k+1)^2/(k(k+2))$ telescopes to $2$),
+\[
+  K = \exp(-Z'(0)), \qquad K_q = Z(-q)^{1/q},
+\]
+and in particular the harmonic mean is $K_{-1} = 1/Z(1)$. Here
 \[
   f(x) = \frac{2\log(1+x) - \log(1+2x)}{\log 2}, \qquad a_n = \frac{(-1)^n(2^n - 2)}{n\log 2},
 \]
@@ -1947,7 +1936,7 @@ Bailey, Borwein and Crandall \cite{BBC97} computed the $K_{-n}$ for small $n$ to
 \emph{Divisibility.} The Dirichlet series $\zeta(s)Z(s)$ is that of $\sum_{d\mid n}\mu_d$, the probability that $a_1$
 divides $n$; the mean of this probability over $n \le N$ tends to $Z(1) = 1/K_{-1}$ as $N \to \infty$.
 
-\subsection{The derivative of $Z$}\label{sec:Zprime}
+\subsection{K1: the derivative of $Z$}\label{sec:Zprime}
 For \eqref{eq:K1} let $L(s) = \log 2\sum_{k=3}^{\infty}\mu_kk^{-s}$, so that $\log K = \log\frac98 - L'(0)/\log 2$,
 with $f(x) = 2\log(1+x) - \log(1+2x)$, $a_n = (-1)^n(2^n - 2)/n$ and $k_0 = 3$. At $s = 0$ both parts
 \eqref{eq:kernelparts} of the kernel are elementary,
@@ -2001,7 +1990,7 @@ $\Gamma(\frac12,y)$, $E_1(y)$ and $\partial_b\Gamma(b,y)$ at $b = \frac12$ and $
 derivatives of $k^{-s-n}P(\frac{s+n}2,k^2u_0)$; reorganized by the lower series of $P$, these are rational series with
 harmonic weights, summed by binary splitting once.
 
-\subsection{The logarithmic series}\label{sec:logform}
+\subsection{K2: the logarithm series}\label{sec:logform}
 For \eqref{eq:K2}, $k_0 = 2$ and
 \[
   f(x) = -\log(1-x)\log(1+x) = \sum_{n=1}^{\infty}\frac{A_n}{n}x^{2n}, \qquad A_n = \sum_{j=1}^{2n-1}\frac{(-1)^{j+1}}j.
@@ -2039,7 +2028,7 @@ $Z_t[H](c_0) = \sum_jh_jD_{j-t+1}(c_0)$ of \eqref{eq:startvals}, with $t = \frac
 $D_{-1/2} = \sqrt{\pi/c}\erfc\sqrt{c/u_0}$ and $E = e^{-c/u_0}$. Since $H$ has type $1$, the $k$-terms decay like
 $e^{-(k^2-1)u_0}$ and the dual terms like $e^{-\pi^2m^2/u_0}$, and $O(\sqrt p)$ terms of each kind suffice for $p$ bits.
 
-\subsection{The dilogarithm series}\label{sec:dilog}
+\subsection{K3: the dilogarithm series}\label{sec:dilog}
 
 \begin{lemma}[{Bailey, Borwein and Crandall \cite[\S3]{BBC97}}]\label{lem:dilog}
 \[
@@ -2230,7 +2219,7 @@ $u_0$ of each, with the fraction spent on the $k$-side in parentheses.}
 \label{tab:khcompare}
 \begin{tabular}{lrrr}
 \toprule
-digits & \eqref{eq:K1}, $u_0 = \frac1{16}$ & \eqref{eq:K2}, $u_0 = \frac1{64}$ & \eqref{eq:K3}, $u_0 = \frac1{16}$ \\
+digits & K1, $u_0 = \frac1{16}$ & K2, $u_0 = \frac1{64}$ & K3, $u_0 = \frac1{16}$ \\
 \midrule
 $10^4$ & $80.0$\,s ($0.46$) & $18.4$\,s ($0.51$) & $4.04$\,s ($0.45$) \\
 $10^5$ & $4\,415$\,s ($0.50$) & $1\,320$\,s ($0.41$) & $234$\,s ($0.48$) \\
@@ -2238,17 +2227,17 @@ $10^5$ & $4\,415$\,s ($0.50$) & $1\,320$\,s ($0.41$) & $234$\,s ($0.48$) \\
 \end{tabular}
 \end{table}
 
-The ordering follows Table~\ref{tab:khstates}. The logarithmic series \eqref{eq:K2} has the simpler summand, but the
+The ordering follows Table~\ref{tab:khstates}. Algorithm~K2 has the simpler summand, but the
 alternating harmonic numbers $A_n$ are not hypergeometric (they are a first derivative with respect to a parameter,
 $A_n = \log 2 + \frac12(\psi(n+\frac12)-\psi(n))$), so its kernel has order $4$ instead of $1$, and its dual system has
-dimension $12$ instead of $4$. The dilogarithm series \eqref{eq:K3} pays for its hypergeometric coefficients with
+dimension $12$ instead of $4$. Algorithm~K3 pays for its hypergeometric coefficients with
 exponential type $4$ instead of $1$ (slightly longer $k$-series, and $k = 2$ excluded), which costs far less.
-The dilogarithm form is $4.6$ and $5.6$ times faster than the logarithmic series at $10^4$ and $10^5$
+Algorithm~K3 is $4.6$ and $5.6$ times faster than K2 at $10^4$ and $10^5$
 digits. (The optimized implementation of Section~\ref{sec:khimpl} takes $88$ CPU seconds at $10^5$ digits on the
 same machine, against $234$.)
 
-The first representation \eqref{eq:K1} has the simplest kernel of all, but it is the slowest, by a factor of about
-$19$ against \eqref{eq:K3}. $\log K$ is a
+Algorithm~K1 has the simplest kernel of all, but it is the slowest, by a factor of about
+$19$ against K3. $\log K$ is a
 derivative in $s$, and differentiating $1/\Gamma(\frac{s+n}2)$ introduces $\psi(\frac n2)$, that is, harmonic numbers
 again, while the weight $\log u$ doubles the dual states. In addition the coefficients
 $(-1)^n(2^n-2)/n$ combine two exponential scales, which doubles the states once more, and each term needs extra
