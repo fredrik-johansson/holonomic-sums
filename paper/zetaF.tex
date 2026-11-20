@@ -1,4 +1,5 @@
 \documentclass[11pt,reqno]{amsart}
+
 \usepackage{amssymb}
 \usepackage{booktabs}
 \usepackage[expansion=false]{microtype}
@@ -57,7 +58,7 @@
 
 \begin{abstract}
 For a holonomic function $F$ that is regular at infinity we study the zeta function
-$\zeta_F(s) = \sum_{k}F(k)k^{-s}$.
+$\zeta_F(s) = \sum_{k=1}^{\infty} F(k)k^{-s}$.
 %Using Riemann's theta-function splitting, we write
 %$\zeta_F$ as two superexponentially convergent sums of values of
 %holonomic functions.
@@ -66,12 +67,13 @@ values and derivatives of $\zeta_F$ at algebraic $s$ can be computed
 to $p$ bits in $p^{3/2+o(1)}$ bit operations.
 %The same holds for polylogarithm-type generalizations of $\zeta_F$.
 This gives subquadratic algorithms for a large class of numbers,
-including every sum $\sum_k A(k)$ or $\sum_k \log A(k)$ where $A$ is an
+including every sum $\sum_{k=1}^{\infty} A(k)$ or $\sum_{k=1}^{\infty} \log A(k)$ where $A$ is an
 algebraic function with algebraic coefficients, most of which had no previously known algorithm with better than
 quadratic complexity.
 We give several examples, including the first subquadratic algorithm for
 Khinchin's constant which we compute to $10^7$ digits.
 \end{abstract}
+
 
 \subjclass[2020]{Primary 11Y60, 65D20; Secondary 65B10, 33F05, 11M41, 68W30, 11Y65}
 \keywords{holonomic functions, zeta functions, theta functions, arbitrary-precision arithmetic, Khinchin's constant}
@@ -116,7 +118,7 @@ notoriously difficult to calculate to high precision''.
 
 In this work, we show that both sums \eqref{eq:twoconstants} and many others
 belong to a common class which can be computed in subquadratic time.
-As demonstrated on examples, the method is practical for computing millions of digits.
+We demonstrate with several examples that the method is practical for computing millions of digits.
 
 \subsection{Zeta functions of holonomic functions}
 
@@ -304,7 +306,7 @@ $\sum_{k=1}^{\infty}(k\arcsin\frac1k - 1)$ & $k\arcsin\frac1k - 1$ & $\zeta_F(0)
 $\sum_{k=2}^{\infty}\zeta''(k)$ \cite{Fin18} & $\frac1{k(k-1)}$ ($k\ge2$) & $\zeta_F''(0)$ \\
 Boyadzhiev's constant \cite{Boy19} & $\frac1k\log(1+\frac1k)$ & $\zeta_F(0)$ \\
 \midrule
-\multicolumn{3}{@{}p{\textwidth}@{}}{\emph{Mathematical physics} (Section~\ref{sec:vortex}, Remark~\ref{rem:algebraic}):
+\multicolumn{3}{@{}p{\textwidth}@{}}{\emph{Mathematical physics} (Section~\ref{sec:vortex}):
 coaxial rings of unit radius spaced $\lambda$ apart ($\theta/2\pi \in \QQ$);
 hydrogen partition function \cite{EKR11}, $\xi = I/(k_BT)$;
 Casimir-type sums \cite{Eli95,Kir02}.} \\
@@ -424,7 +426,7 @@ half-integers.
 For summands with an expansion in powers of $k^{-1/q}$, which include the algebraic functions, a
 general-purpose numerical method is Monien summation~\cite{Mon10} as implemented in PARI/GP \cite{BC21}, which evaluates the
 summand at $O(p/\log p)$ points; like Euler--Maclaurin summation it costs $p^{2+o(1)}$. Mellin--Barnes integrals
-give the continuation of hypergeometric cases such as $\sum_{k=1}^{\infty} k^{-s}(k+a)^{-t}$ and their asymptotic
+give the continuation of hypergeometric cases like $\sum_{k=1}^{\infty} k^{-s}(k+a)^{-t}$ and their asymptotic
 expansions in parameters \cite{Kat97}.
 
 Approximate functional equations go back to Riemann \cite{Rie59} and
@@ -3114,10 +3116,8 @@ dual recurrences of the vortex sum, which the ball arithmetic revealed at $10^4$
 \subsection{The exponent}\label{sec:openexp}
 Can $\zeta_F(s)$ be computed in quasilinear time for $F \in \RegQ$ and algebraic $s$? This is open even for
 $\zeta(s)$ at algebraic $s \notin \ZZ$. The exponent $\frac32$ comes from the uncertainty principle of the Gaussian
-(Section~\ref{sec:complexity}): $k_{\max}m_{\max} \approx qp\log2/\pi$ for every split point, and each term costs at
-least $\Mul(p)$. Lowering it would require evaluating many terms at once. The dual points $\pi^2m^2$ share the number
-$\pi^2$, and the bit-burst paths could share their rational approximations, but the Taylor expansions differ with
-$m$; the $k$-terms are values of one holonomic function of $k^2$, for which fast multipoint evaluation might help.
+(Section~\ref{sec:complexity}); lowering it would require evaluating a sum of many terms at once, or an entirely
+different method.
 
 \subsection{Irregular singularities at infinity}\label{sec:openirreg}
 The summands in \eqref{eq:functions} are a function regular at infinity times a periodic weight, a geometric factor or a
@@ -3772,7 +3772,6 @@ guard bits suffice, which again gives $p^{3/2+o(1)}$. We have not written out th
 recurrences.
 
 \end{small}
-
 
 \input{khinchin_listing}
 
