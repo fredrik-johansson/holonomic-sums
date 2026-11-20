@@ -452,8 +452,8 @@ what makes the fast evaluation possible.
 
 \subsection{Outline}
 Section~\ref{sec:defs} defines the classes $\Reg$ and $\RegQ$ of summands and the functions
-\eqref{eq:functions}, and works out one example in full. Section~\ref{sec:splitting} proves Theorem~A and shows that both sides are
-holonomic. Section~\ref{sec:beyond} gives the splittings of the polylogarithm, the Lerch transcendent and the damped zeta
+\eqref{eq:functions}, and recalls the fast evaluation of holonomic functions. Section~\ref{sec:splitting} works out one
+example in full, proves Theorem~A and shows that both sides are holonomic. Section~\ref{sec:beyond} gives the splittings of the polylogarithm, the Lerch transcendent and the damped zeta
 function, and discusses the limits of the method. Section~\ref{sec:complexity} proves Theorem~B, states the
 uniform bounds and their consequences for integer sequences, and compares the theta splitting with the classical
 methods. Section~\ref{sec:khinchin} defines the Khinchin zeta function and gives three algorithms for Khinchin's
@@ -462,7 +462,9 @@ constants of Table~\ref{tab:constants}, and Section~\ref{sec:open} lists open pr
 cost analysis and Appendix~\ref{sec:khpseudo} an annotated reference implementation for Khinchin's constant.
 
 %======================================================================
-\section{Definitions and examples}\label{sec:defs}
+\section{Preliminaries}\label{sec:defs}
+This section defines the class of summands and the functions attached to them, recalls how holonomic functions are
+evaluated quickly, and fixes notation.
 
 \subsection{Holonomic functions and the regular class}
 A function $F$ of one variable, analytic on some open set, is \emph{holonomic} (or \emph{D-finite}) if it satisfies a
@@ -592,6 +594,27 @@ parts of $R(y)$; this is the decomposition into monodromy eigenspaces used in th
 Theorem~\ref{thm:complexity} (Appendix~\ref{app:cost}).
 \end{remark}
 
+\subsection{Evaluating holonomic functions}\label{sec:evalhol}
+Two classical techniques evaluate holonomic functions with algebraic data in quasilinear time, and we use them
+throughout; Appendix~\ref{app:tools} states them precisely. \emph{Binary splitting} sums a series whose terms satisfy a
+linear recurrence with polynomial coefficients, such as a hypergeometric series or the Taylor series of a holonomic
+function at a point with few bits: the terms are products of matrices with small entries, and the products are formed
+in a balanced tree, so that the numbers being multiplied have similar sizes. For a geometrically convergent series
+with algebraic coefficients this costs $O(\Mul(p)\log^2p)$ bit operations for $p$ bits \cite{HP98,CC90}. The
+\emph{bit-burst algorithm} extends this to a point $x$ given to $p$ bits: it continues the solution of the
+differential equation from a point with few bits through truncations of $x$ to $2^j$ bits, $j = 1, 2, \dots$, summing
+one Taylor series by binary splitting at each step, again in $O(\Mul(p)\log^2p)$ \cite{CC90,vdH99}.
+
+We use the error functions $\operatorname{erf}$, $\erfc = 1 - \operatorname{erf}$ and
+$\erfi(x) = -i\operatorname{erf}(ix)$, the incomplete gamma functions $\Gamma(a,x)$ and $\gamma(a,x)$ with their
+regularized forms $Q(a,x) = \Gamma(a,x)/\Gamma(a)$ and $P(a,x) = 1 - Q(a,x)$, the exponential integrals
+$E_1(x) = \Gamma(0,x)$ and $\operatorname{Ei}$, the entire functions
+\[
+  \Ein(y) = \sum_{n=1}^{\infty}\frac{(-1)^{n+1}y^n}{n\cdot n!}, \qquad \Eip(y) = \sum_{n=1}^{\infty}\frac{y^n}{n\cdot n!}
+  = \operatorname{Ei}(y) - \gamma - \log y,
+\]
+and the cosine integral $\Ci$. All are holonomic.
+
 \subsection{The analytic case}\label{sec:scope}
 The constructions of Sections~\ref{sec:splitting}--\ref{sec:complexity} are carried out for summands that are
 analytic at infinity. Where this is assumed, we write
@@ -637,29 +660,59 @@ depends on $s$. When only the value at a fixed point matters, as for the sums of
 therefore be removed; here we keep them, and
 Theorem~\ref{thm:split} handles them directly (Remark~\ref{rem:twist}).
 
-\subsection{Evaluating holonomic functions}\label{sec:evalhol}
-Two classical techniques evaluate holonomic functions with algebraic data in quasilinear time, and we use them
-throughout; Appendix~\ref{app:tools} states them precisely. \emph{Binary splitting} sums a series whose terms satisfy a
-linear recurrence with polynomial coefficients, such as a hypergeometric series or the Taylor series of a holonomic
-function at a point with few bits: the terms are products of matrices with small entries, and the products are formed
-in a balanced tree, so that the numbers being multiplied have similar sizes. For a geometrically convergent series
-with algebraic coefficients this costs $O(\Mul(p)\log^2p)$ bit operations for $p$ bits \cite{HP98,CC90}. The
-\emph{bit-burst algorithm} extends this to a point $x$ given to $p$ bits: it continues the solution of the
-differential equation from a point with few bits through truncations of $x$ to $2^j$ bits, $j = 1, 2, \dots$, summing
-one Taylor series by binary splitting at each step, again in $O(\Mul(p)\log^2p)$ \cite{CC90,vdH99}.
+\subsection{Notation}\label{sec:notation}
+Table~\ref{tab:notation} lists the notation used throughout. Symbols that occur only in one example (in
+Sections~\ref{sec:khinchin} and~\ref{sec:other}) are defined where they occur.
 
-We use the error functions $\operatorname{erf}$, $\erfc = 1 - \operatorname{erf}$ and
-$\erfi(x) = -i\operatorname{erf}(ix)$, the incomplete gamma functions $\Gamma(a,x)$ and $\gamma(a,x)$ with their
-regularized forms $Q(a,x) = \Gamma(a,x)/\Gamma(a)$ and $P(a,x) = 1 - Q(a,x)$, the exponential integrals
-$E_1(x) = \Gamma(0,x)$ and $\operatorname{Ei}$, the entire functions
-\[
-  \Ein(y) = \sum_{n=1}^{\infty}\frac{(-1)^{n+1}y^n}{n\cdot n!}, \qquad \Eip(y) = \sum_{n=1}^{\infty}\frac{y^n}{n\cdot n!}
-  = \operatorname{Ei}(y) - \gamma - \log y,
-\]
-and the cosine integral $\Ci$. All are holonomic.
+\begin{table}[ht]
+\centering\small
+\caption{Principal notation.}
+\label{tab:notation}
+\begin{tabular}{@{}lp{0.62\textwidth}@{}}
+\toprule
+$F$, $f$, $a_n$ & summand, $F(k) = f(1/k)$ for $k \ge k_0$, $f(x) = \sum_na_nx^n$ \\
+$R$, $\rho$ & $|a_n| \le CR^n$; radius of convergence of $f$ \\
+$k_0$, $k_1$ & start of the convergent expansion; $F(k) = 0$ for $k < k_1$ (Definition~\ref{def:regular}) \\
+$\Reg$, $\RegQ$ & admissible summands; those with algebraic data (Definition~\ref{def:regular}) \\
+$\zeta_F$, $L_F$, $\Li_F$, $\Phi_F$, $\Lambda_F$ & the functions \eqref{eq:functions} \\
+$\chi$, $q$ & periodic weight and its period \\
+$s$, $s_0$ & complex variable; evaluation point \\
+$p$, $\Mul(p)$ & precision in bits; cost of $p$-bit multiplication \\
+$u_0$ & split point of the theta splitting \\
+$h_s$, $g_0$, $g_1$, $G_0$, $G_1$ & kernel and its even and odd parts \eqref{eq:kernel}, \eqref{eq:kernelparts} \\
+$I_k$, $J_m$, $M$ & $k$-terms, dual terms and main term (Theorem~\ref{thm:split}) \\
+$Q(a,x)$, $P(a,x)$ & regularized upper and lower incomplete gamma functions \\
+$\vartheta$ & Euler operator $x\,\mathrm d/\mathrm dx$ or $u\,\mathrm d/\mathrm du$ \\
+$\mathcal L[g](\kappa)$, $Z_t[g](c)$ & truncated Laplace transform and dual moments (Section~\ref{sec:twosides}) \\
+$E$, $D_a$ & $E = e^{-c/u_0}$, starting values \eqref{eq:startvals} \\
+$\kappa$, $x$ & $\kappa = k^2$ and $x = \kappa u_0$ in the $k$-terms \\
+$k_{\max}$, $m_{\max}$ & numbers of $k$-terms and dual terms \eqref{eq:counts} \\
+$K$, $\mu_k$, $Z$ & Khinchin's constant, Gauss--Kuzmin probabilities, Khinchin zeta function \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-\subsection{A worked example}\label{sec:workedexample}
-Before the general construction, here is Theorem~A for one sum, with every piece explicit. Let
+%======================================================================
+\section{Theta splitting}\label{sec:splitting}
+
+The model is Riemann's second proof of the functional equation \cite{Rie59}. Inserting
+$k^{-s} = \Gamma(\frac s2)^{-1}\int_0^\infty u^{s/2-1}e^{-k^2u}\dd u$ into $\zeta(s) = \sum_{k=1}^{\infty}k^{-s}$
+writes $\zeta(s)$ as the Mellin transform of the theta series $\Theta(u) = \sum_{k=1}^{\infty}e^{-k^2u}$. Splitting the
+integral at $u = \pi$, integrating termwise on $[\pi,\infty)$ and using the theta transformation
+$\Theta(u) = \frac12\sqrt{\pi/u} - \frac12 + \sqrt{\pi/u}\,\Theta(\pi^2/u)$ on $(0,\pi]$ gives
+\begin{multline}\label{eq:riemann}
+  \zeta(s) = \sum_{k=1}^{\infty}k^{-s}Q\Bigl(\frac s2,\pi k^2\Bigr)
+  + \frac{\pi^{s-1/2}\Gamma(\frac{1-s}2)}{\Gamma(\frac s2)}\sum_{m=1}^{\infty}m^{s-1}Q\Bigl(\frac{1-s}2,\pi m^2\Bigr) \\
+  + \frac{\pi^{s/2}}{\Gamma(\frac s2)\,s(s-1)},
+\end{multline}
+with $Q$ as in Section~\ref{sec:evalhol}. Both sums converge like $\sum_ke^{-\pi k^2}$, for all $s$, and their symmetry
+under $s \mapsto 1-s$ is the functional equation. For general $F$, the factor $f(1/k)$ is absorbed by replacing
+$u^{s/2-1}/\Gamma(\frac s2)$ with a kernel $h_s(u)$ (Section~\ref{sec:kernel}); the splitting point $u_0$ becomes a
+free parameter that balances the two sides (Theorem~\ref{thm:split}); and when $F$ is holonomic, so are both sides,
+as functions of $k^2$ and $m^2$ (Section~\ref{sec:twosides}). We first carry out these steps for one sum.
+
+\subsection{A first example}\label{sec:workedexample}
+Before the general construction, here is Theorem~A for a sum with $F \ne 1$ in which every piece is explicit. Let
 \[
   S_A = \sum_{k=2}^{\infty}\frac2k\arctanh\frac1k = 1.35313027229593328165\ldots,
 \]
@@ -711,59 +764,8 @@ which are series in $\erfc$ and $E$.
 eight $k$-terms $k \le 9$ and three dual terms give more than $30$ digits; for $p$ bits one needs
 $O(\sqrt p)$ terms on each side, each costing $\widetilde O(p)$, and $M$ is a single hypergeometric series in $u_0$.
 This gives $p^{3/2+o(1)}$, against $\Theta(p)$ zeta values for the classical expansion
-$S_A = \sum_{m=1}^{\infty}2(\zeta(2m)-1)/(2m-1)$. Sections~\ref{sec:splitting} and~\ref{sec:complexity} carry out
-the same steps for general $F$.
-
-\subsection{Notation}\label{sec:notation}
-Table~\ref{tab:notation} lists the notation used throughout. Symbols that occur only in one example (in
-Sections~\ref{sec:khinchin} and~\ref{sec:other}) are defined where they occur.
-
-\begin{table}[ht]
-\centering\small
-\caption{Principal notation.}
-\label{tab:notation}
-\begin{tabular}{@{}lp{0.62\textwidth}@{}}
-\toprule
-$F$, $f$, $a_n$ & summand, $F(k) = f(1/k)$ for $k \ge k_0$, $f(x) = \sum_na_nx^n$ \\
-$R$, $\rho$ & $|a_n| \le CR^n$; radius of convergence of $f$ \\
-$k_0$, $k_1$ & start of the convergent expansion; $F(k) = 0$ for $k < k_1$ (Definition~\ref{def:regular}) \\
-$\Reg$, $\RegQ$ & admissible summands; those with algebraic data (Definition~\ref{def:regular}) \\
-$\zeta_F$, $L_F$, $\Li_F$, $\Phi_F$, $\Lambda_F$ & the functions \eqref{eq:functions} \\
-$\chi$, $q$ & periodic weight and its period \\
-$s$, $s_0$ & complex variable; evaluation point \\
-$p$, $\Mul(p)$ & precision in bits; cost of $p$-bit multiplication \\
-$u_0$ & split point of the theta splitting \\
-$h_s$, $g_0$, $g_1$, $G_0$, $G_1$ & kernel and its even and odd parts \eqref{eq:kernel}, \eqref{eq:kernelparts} \\
-$I_k$, $J_m$, $M$ & $k$-terms, dual terms and main term (Theorem~\ref{thm:split}) \\
-$Q(a,x)$, $P(a,x)$ & regularized upper and lower incomplete gamma functions \\
-$\vartheta$ & Euler operator $x\,\mathrm d/\mathrm dx$ or $u\,\mathrm d/\mathrm du$ \\
-$\mathcal L[g](\kappa)$, $Z_t[g](c)$ & truncated Laplace transform and dual moments (Section~\ref{sec:twosides}) \\
-$E$, $D_a$ & $E = e^{-c/u_0}$, starting values \eqref{eq:startvals} \\
-$\kappa$, $x$ & $\kappa = k^2$ and $x = \kappa u_0$ in the $k$-terms \\
-$k_{\max}$, $m_{\max}$ & numbers of $k$-terms and dual terms \eqref{eq:counts} \\
-$K$, $\mu_k$, $Z$ & Khinchin's constant, Gauss--Kuzmin probabilities, Khinchin zeta function \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-%======================================================================
-\section{Theta splitting}\label{sec:splitting}
-
-The model is Riemann's second proof of the functional equation \cite{Rie59}. Inserting
-$k^{-s} = \Gamma(\frac s2)^{-1}\int_0^\infty u^{s/2-1}e^{-k^2u}\dd u$ into $\zeta(s) = \sum_{k=1}^{\infty}k^{-s}$
-writes $\zeta(s)$ as the Mellin transform of the theta series $\Theta(u) = \sum_{k=1}^{\infty}e^{-k^2u}$. Splitting the
-integral at $u = \pi$, integrating termwise on $[\pi,\infty)$ and using the theta transformation
-$\Theta(u) = \frac12\sqrt{\pi/u} - \frac12 + \sqrt{\pi/u}\,\Theta(\pi^2/u)$ on $(0,\pi]$ gives
-\begin{multline}\label{eq:riemann}
-  \zeta(s) = \sum_{k=1}^{\infty}k^{-s}Q\Bigl(\frac s2,\pi k^2\Bigr)
-  + \frac{\pi^{s-1/2}\Gamma(\frac{1-s}2)}{\Gamma(\frac s2)}\sum_{m=1}^{\infty}m^{s-1}Q\Bigl(\frac{1-s}2,\pi m^2\Bigr) \\
-  + \frac{\pi^{s/2}}{\Gamma(\frac s2)\,s(s-1)},
-\end{multline}
-where $Q(a,x) = \Gamma(a,x)/\Gamma(a)$. Both sums converge like $\sum_ke^{-\pi k^2}$, for all $s$, and their symmetry
-under $s \mapsto 1-s$ is the functional equation. For general $F$, the factor $f(1/k)$ is absorbed by replacing
-$u^{s/2-1}/\Gamma(\frac s2)$ with a kernel $h_s(u)$ (Section~\ref{sec:kernel}); the splitting point $u_0$ becomes a
-free parameter that balances the two sides (Theorem~\ref{thm:split}); and when $F$ is holonomic, so are both sides,
-as functions of $k^2$ and $m^2$ (Section~\ref{sec:twosides}).
+$S_A = \sum_{m=1}^{\infty}2(\zeta(2m)-1)/(2m-1)$. The rest of this section carries out the same steps for general
+$F$, and Section~\ref{sec:complexity} the cost analysis.
 
 \subsection{The kernel}\label{sec:kernel}
 Under \eqref{eq:f} define, for $s \in \CC$ and $u > 0$,
@@ -837,8 +839,8 @@ $G_1$.
 \end{proof}
 
 \subsection{The splitting}
-Let $Q(a,x) = \Gamma(a,x)/\Gamma(a)$ and $P(a,x) = 1 - Q(a,x) = \gamma(a,x)/\Gamma(a)$ be the regularized
-incomplete gamma functions; for fixed $x > 0$ both are entire in $a$.
+For fixed $x > 0$ the regularized incomplete gamma functions $Q(a,x)$ and $P(a,x) = \gamma(a,x)/\Gamma(a)$ are
+entire in $a$.
 
 \begin{theorem}\label{thm:split}
 Assume \eqref{eq:f} ($F$ need not be holonomic) and let $u_0 > 0$. For $s \in \CC$ not a pole,
@@ -1243,7 +1245,7 @@ exponential factors above (and their products with regular functions), for which
 cheap; Section~\ref{sec:open} lists some candidates.
 
 %======================================================================
-\section{Computation}\label{sec:complexity}
+\section{Algorithms and complexity bounds}\label{sec:complexity}
 
 In this section we study the computational complexity and practical costs
 of theta splitting alongside several classical algorithms
@@ -2528,7 +2530,7 @@ $-\sum_{i=1}^{\infty}\zeta'(2i)$ and also
   S_A = \sum_{k=2}^{\infty}\frac{2}{k}\arctanh\frac1k = \sum_{m=1}^{\infty}\frac{2(\zeta(2m)-1)}{2m-1}
 \]
 (the second form by summation by parts, Section~\ref{sec:generalize}, or from the zeta-value expansion). The
-splitting of $S_A$ is the worked example of Section~\ref{sec:workedexample}: the kernel is
+splitting of $S_A$ is the example of Section~\ref{sec:workedexample}: the kernel is
 $h_0 = \sqrt{\pi/u}\,\erfi\sqrt u$, the dual state $(\nu_t, Y_t, Y_{t-1})$ has dimension $3$ with two forcing
 constants and $t_0 = \frac12$, and the $k$-terms are a $2\times2$ recurrence as for Khinchin's constant.
 
