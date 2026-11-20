@@ -1352,10 +1352,11 @@ $\infty$ of an operator $L$ we mean a basis of solutions on $(R,\infty)$ of the 
 Fix a number field $\mathbb K \subset \CC$, an operator $L$ with coefficients in $\mathbb K[x]$ for which $\infty$ is
 an ordinary or regular singular point and whose exponents at $\infty$ lie in $\mathbb K$, a Frobenius basis
 $y_1, \dots, y_r$ of $L$ at $\infty$ whose power series have coefficients in $\mathbb K$, integers $k_0 > R$,
-$q \ge 1$ and $j \ge 0$, and a constant $c > 0$. For $p \ge 2$ let
+$1 \le k_1 \le k_0$, $q \ge 1$ and $j \ge 0$, and a constant $c > 0$, and assume that the $y_i$ continue
+analytically to $[k_1, \infty)$. For $p \ge 2$ let
 \begin{itemize}
 \item $s_0 \in \mathbb K$ with $H(s_0) \le p^c$ and $|s_0| \le cp/\log p$;
-\item $F(k) = \sum_{i=1}^r\lambda_iy_i(k)$ $(k \ge k_0)$, with $\lambda_i \in \mathbb K$;
+\item $F(k) = \sum_{i=1}^r\lambda_iy_i(k)$ $(k \ge k_1)$, with $\lambda_i \in \mathbb K$;
 \item $\chi\colon\ZZ \to \mathbb K$ periodic with period $q$;
 \end{itemize}
 where $h(\lambda_i)$ and $h(\chi(k))$ are at most $cp$. Then the $j$-th Laurent coefficient of
@@ -1509,6 +1510,10 @@ multiples of a single $\lambda$.
 \begin{remark}\label{rem:complexity}
 Theorem~\ref{thm:uniform} gives uniformity in $s_0$ and in the coordinates of $F$, but not in the operator $L$: the
 constants grow with its order and degree, with the size of its coefficients and with the degree of $\mathbb K$. In
+particular $R$, and with it the number $k_0 - k_1$ of terms added directly and the length of the analytic
+continuation to them, can grow exponentially with the height of $L$, since a polynomial of height $h$ can have roots of
+size $e^{h}$; a version uniform in $L$ would need, among other things, a bound such as $R = O(\sqrt p)$, which keeps the
+$O(R)$ direct terms within the bound. In
 floating-point evaluation of $M$, the functions $P(a,x)$ for $k < k_0$ must be computed directly from the lower
 series and not as $1 - Q(a,x)$, since they are multiplied by $a_nk^{-n}$, which may be exponentially large.
 \end{remark}
@@ -3480,7 +3485,9 @@ $|s_0 + \sigma + n|^{-1} \le p^{O(1)}$ for the exponents $\sigma$ and integers $
 functions of the $q$ residue classes write the Laurent coefficient as a linear combination of a fixed finite set of
 pieces. The coefficients are the $\lambda_i\chi(a)$ times fixed algebraic numbers, and the pieces are Laurent
 coefficients of bounded order of the functions $\sum_{k\ge k_0,\,k\equiv a}f(1/k)k^{-s}$ at the points
-$s_0 + \sigma$, together with the terms $F(k)\chi(k)k^{-s}$ for $k < k_0$. Here $f$ and $\sigma$ range over fixed
+$s_0 + \sigma$, together with the terms $F(k)\chi(k)k^{-s}$ for $k_1 \le k < k_0$. There are at most $k_0 - k_1$ of the
+latter, a number fixed with $L$: the values $y_i(k)$ at these fixed points are computed once to $O(p)$ bits by
+analytic continuation from $x = k_0$, in quasilinear time \cite{CC90,vdH99}, and $|k^{-s_0}| \le k_0^{S} = 2^{O(p)}$. Here $f$ and $\sigma$ range over fixed
 finite sets. The coefficients have $O(p)$ bits and absolute value $e^{O(p)}$, so each piece is needed with absolute
 error $2^{-O(p)}$, and the $O(1)$ multiplications by coefficients cost $O(\Mul(p))$. The points $s_0 + \sigma$ satisfy
 the hypotheses on $s_0$ with a larger $c$. So we may assume that $F = f(1/k)$ is fixed and that $\chi$ is a fixed
