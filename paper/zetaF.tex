@@ -338,7 +338,7 @@ The Weierstrass products of the gamma function give sums of the same kind as the
   \psi(1+x) = -\gamma + \sum_{k=1}^{\infty}\frac{x}{k(k+x)},
 \]
 and for algebraic $x$ these too can be computed in quasilinear time, from the incomplete gamma integral
-\cite{BZ10}.
+(\cite{BZ10}; Section~\ref{sec:rational}).
 For rational $A$, the sum $\sum_k A(k)$
 reduces by partial fractions to polygamma values, and sums of logarithms or inverse trigonometric or hyperbolic
 functions of a rational function of $k$ reduce to logarithms of gamma values at algebraic points, as in (OEIS A352619, A393668)
@@ -350,7 +350,8 @@ functions of a rational function of $k$ reduce to logarithms of gamma values at 
 %\]
 $\sum_{k=1}^{\infty} (\frac1k - \arctan(\frac1k)) = \gamma + \arg\Gamma(1+i)$ and
 $\sum_{k=2}^{\infty}\arctanh(1/k^2) = \tfrac{1}{2} \log(\sinh(\pi)/\pi)$,
-all computable in quasilinear time.
+all computable in quasilinear time. When the coefficients of the rational function are arbitrary complex numbers,
+the same reductions still give $p^{3/2+o(1)}$ (Section~\ref{sec:rational}).
 
 On the level of summands, the structure leading to such quasilinear-time algorithms is fragile:
 an extra factor $\frac1k$, as in $\sum_k\frac1k\arctan\frac1k$, destroys it.
@@ -1266,8 +1267,10 @@ zeta-value expansion & $p^{2+o(1)}$ & $p^{2+o(1)}$ & yes \\
 Euler--Maclaurin & $p^{2+o(1)}$ & $p^{2+o(1)}$ & in half-planes \\
 alternating series$^\dagger$ & $p^{2+o(1)}$ & $p^{2+o(1)}$ & no \\
 theta splitting (Theorem~\ref{thm:split}) & $p^{3/2+o(1)}$ & $p^{2+o(1)}$ & yes \\
+partial fractions$^\ddagger$ & $p^{1+o(1)}$ & $p^{3/2+o(1)}$ & no \\
 \bottomrule
-\multicolumn{4}{l}{\footnotesize ${}^\dagger$Twisted series only.}
+\multicolumn{4}{l}{\footnotesize ${}^\dagger$Twisted series only. ${}^\ddagger$Rational $F$ at integer $s$ only
+(Section~\ref{sec:rational}).}
 \end{tabular}
 \end{table}
 
@@ -1287,6 +1290,30 @@ $2R \le k < N$, by fast multipoint evaluation, which needs only $O(p)$ guard bit
 series converges geometrically \cite{KZ08,Mor21}. This costs $\widetilde O(p^2)$, the $O(1)$ values with $k < 2R$
 cost $p^{3/2+o(1)}$ each, and the powers $k^{-s}$ cost $\widetilde O(p)$ each, so the classical methods stay at
 $p^{2+o(1)}$ (for the zeta-value expansion, see Section~\ref{sec:zetavalue}).
+
+\subsection{Rational summands and the gamma function}\label{sec:rational}
+The gamma function is the model for both kinds of data. For $\operatorname{Re}a > 0$ and $N \approx p\log2$,
+\[
+  \Gamma(a) = \gamma(a,N) + \Gamma(a,N), \qquad \gamma(a,N) = N^ae^{-N}\sum_{i=0}^{\infty}\frac{N^i}{a(a+1)\cdots(a+i)},
+\]
+where $\Gamma(a,N) = O(N^{\operatorname{Re}a}e^{-N})$ is negligible and $O(p)$ terms of the series suffice. For
+algebraic $a$ the terms are P-recursive with coefficients of $O(\log p)$ bits, so binary splitting gives $\Gamma(a)$ in
+$O(\Mul(p)\log^2p)$ \cite{BZ10}, and the same series over truncated power series in $a$ gives $\log\Gamma$, $\psi$ and
+the polygamma functions. For $a$ given only to $p$ bits the coefficients have $p$ bits, binary splitting no longer
+applies, and the baby-step giant-step evaluation of the product of the term ratios \cite{CC90} gives
+$p^{3/2+o(1)}$. Theorem~\ref{thm:complexity} uses the same series for its incomplete gamma values.
+
+For rational $F$, partial fractions reduce $\zeta_F$ at integer points to such values. Write $F(k)$ as a polynomial plus
+a combination of terms $(k+b)^{-m}$. At an integer $s$, $F(k)k^{-s}$ is again of this form, and
+$\sum_{k\ge1}(k+b)^{-m} = \zeta(m, 1+b) = (-1)^m\psi^{(m-1)}(1+b)/(m-1)!$ for $m \ge 2$, while the terms with $m = 1$
+combine to $-\sum_bc_b\psi(1+b)$ (their coefficients $c_b$ sum to zero when the sum converges) and the polynomial part
+gives values $\zeta(-j)$ in the regularized case. In the same way, $\sum_k\log R(k)$ for rational $R$ is a combination
+of values $\log\Gamma(1+b)$ at the zeros and poles of $R$, by the Weierstrass product. So these values cost
+$\widetilde O(p)$ when $F$ has algebraic coefficients, and $p^{3/2+o(1)}$ when its coefficients are arbitrary complex
+numbers, the zeros and poles being computed to $p$ bits in $\widetilde O(p)$. No such reduction exists at
+non-integer $s$, or for derivatives in $s$: the constants $\mathcal A$ and $\mathcal C$ of Table~\ref{tab:constants} are
+derivatives at $s = 0$ of $\zeta_F$ for rational $F$, and for them the theta splitting, whose pieces are then incomplete
+gamma values (Remark~\ref{rem:algebraic}), is the fastest method we know.
 
 \subsection{Theta splitting}
 \begin{theorem}\label{thm:complexity}
