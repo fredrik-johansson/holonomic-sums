@@ -2384,7 +2384,8 @@ in the precision times the number of threads, mostly for FFT transforms.
 Table~\ref{tab:khinchin} compares the theta splitting (with $u_0 = \frac1{16}$) with the zeta-value expansion in FLINT,
 both run with $8$ threads on the same machine, with an AMD Ryzen 7 PRO 5850U processor and $32$ GB of memory. The
 comparison is with a strong baseline: the zeta-value implementation in FLINT has itself
-been optimized meticulously (it is $3$ times faster than the program of Ghazi \cite{Gha26}, used for the previous record, at $10^5$ digits, and $5$ times faster at $3\cdot10^5$ digits).
+been optimized meticulously (compared to the program of Ghazi \cite{Gha26}, used for the previous record,
+it is $3$ times faster at $10^5$ digits and $5$ times faster at $3\cdot10^5$ digits).
 \begin{table}[ht]
 \centering\footnotesize
 \setlength{\tabcolsep}{3.5pt}
@@ -2438,7 +2439,8 @@ partial quotients $1$, $2$ and $3$ are $0.414921$, $0.169996$ and $0.093136$, ag
 $0.415037$, $0.169925$ and $0.093109$.
 
 \begin{proposition}\label{thm:khrat}
-Assume that $K \in I$, i.e.\ that the $10^7$ digits of Section~\ref{sec:khresults} are correct. If $K = p/q$ with
+%Assume that $K \in I$, i.e.\ that the $10^7$ digits of Section~\ref{sec:khresults} are correct.
+If $K = p/q$ with
 integers $p$ and $q > 0$, then $q \ge 10q_N + q_{N-1} > 2.587\cdot10^{5\,000\,000}$, and $p > 6.94\cdot10^{5\,000\,000}$.
 \end{proposition}
 
@@ -2459,8 +2461,8 @@ $x_{10}, \ldots, x_{26}$ or has denominator at least $q(x_9) + q(x_{10})$; in bo
 $q(x_{10}) = 10q_N + q_{N-1}$. The bound for $p$ follows from $K > 2.685$.
 \end{proof}
 
-The hypothesis rests on the rigorous error bounds of Section~\ref{sec:khbounds} and on the agreement of two
-independent computations; the digits are in the repository (Section~\ref{sec:khresults}).
+The proposition rests on the rigorous error bounds of Section~\ref{sec:khbounds} and on the agreement of two
+independent computations.
 % TODO(author): add commit hash of the code used.
 
 By Khinchin's theorem the geometric means $G_n = (a_1\cdots a_n)^{1/n}$ of almost every $x$ tend to $K$; whether
@@ -3012,11 +3014,13 @@ We computed the constants of Sections~\ref{sec:AG}--\ref{sec:expsqrt} with a gen
 Theorem~\ref{thm:complexity} at $s = 0$ (at $s = \frac12$ for $\mathcal T$), the program \texttt{holsum}
 (\url{https://github.com/fredrik-johansson/holonomic-sums}). It is much less optimized than the implementation of
 Section~\ref{sec:khimpl}: ball arithmetic
-throughout, FLINT's default matrix products, no fixed-point levels, heuristic (but conservative) truncation of the
+throughout, FLINT's default matrix products, heuristic (but conservative) truncation of the
 series, the same growth factor $4$, and split point $u_0 = \frac1{16}$ for the constants of
 Sections~\ref{sec:AG}--\ref{sec:theodorus}, $u_0 = \frac14$ for the Hardy--Littlewood function and the vortex sum, and
 the split points of Sections~\ref{sec:somos} and~\ref{sec:expsqrt} for the damped constants. (The program adds a margin of two terms
-to the counts \eqref{eq:counts}.) Tables~\ref{tab:apps} and~\ref{tab:appsref} show its timings with $8$ threads (on
+to the counts \eqref{eq:counts}.)
+
+Tables~\ref{tab:apps} and~\ref{tab:appsref} show its timings with $8$ threads (on
 the machine of Section~\ref{sec:khresults}) for $\mathcal A$, $\mathcal C$, $T$ (for $K_{-1}$), $\mathcal T$, the vortex sum at
 $\lambda = 1$ ($\beta = 4$, $k_0 = 3$), $H(1)$, $\sigma$ and $S = \sum_ke^{-\sqrt k}$. Besides the theta splitting, the
 program implements the reference methods of Sections~\ref{sec:somos} and~\ref{sec:expsqrt} for $\sigma$ and $S$, Euler--Maclaurin
@@ -3389,8 +3393,7 @@ search would amount to creative telescoping for functions regular at infinity, m
 \subsection{Closed forms and algebraic values}
 When does $\zeta_F$ have closed-form values? For rational $F$ at integer $s$, partial fractions reduce $\zeta_F(s)$
 to polygamma and log-gamma values at algebraic points (Section~\ref{sec:rational}). For other summands we know of no
-such reductions: Khinchin's constant $\log K = -Z'(0)$, where the derivatives $Z^{(j)}(0)$ are the moments of
-$\log a_1$ under the Gauss measure, and most constants of Table~\ref{tab:constants} are not known to be related to
+such reductions: most constants of Table~\ref{tab:constants} are not known to be related to
 other periods or special values. Are there identities that relate them?
 
 A sharper version of the question concerns the negative integers. For $F = 1$ the values $\zeta(-m) = -B_{m+1}/(m+1)$
@@ -3437,7 +3440,7 @@ $\zeta(3)/\pi^2$, $\zeta(5)/\pi^4$, and so on. The conjecture for this $F$ would
 conjecture, but unconditionally it is not even known that $\dim V_F(1) \ge 3$. For summands such as $e^{1/k}$ the
 moments are not obviously periods at all.
 
-Values that are rational up to a period do occur for $L$-functions of degree $2$. The Eisenstein series of the
+Values that are rational up to a period do occur for $L$-functions of degree~$2$. The Eisenstein series of the
 Gaussian lattice are
 \[
   \sum_{\lambda\in\ZZ[i]\setminus\{0\}}\lambda^{-4n} = \frac{(2\varpi)^{4n}}{(4n)!}H_{4n}, \qquad
