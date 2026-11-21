@@ -1864,25 +1864,31 @@ $\sum_ke^{-\tau k^{1/q}}F(k)k^{-s}$ & $p^{1+q}$ & $p^{2}$ & $p^{3/2}$ & sketched
 %======================================================================
 \section{Khinchin's constant}\label{sec:khinchin}
 
-Khinchin's constant is $K = \prod_{k=1}^{\infty}k^{\mu_k}$, where $\mu_k = \log_2(1 + \frac1{k(k+2)})$ are the
-Gauss--Kuzmin probabilities (Section~\ref{sec:khinchinzeta}). All earlier high-precision computations of $K$ use expansions in zeta values, going back to Shanks and
-Wrench \cite{SW59}, which cost $p^{2+o(1)}$ bit operations (Section~\ref{sec:zetavalue}): $7\,350$ digits by Bailey,
+All earlier high-precision computations of Khinchin's constant $K$ use expansions in zeta values
+with cost $p^{2+o(1)}$ (Section~\ref{sec:zetavalue}): the 66 digits by Shanks and
+Wrench \cite{SW59}, $7\,350$ digits by Bailey,
 Borwein and Crandall \cite{BBC97}, $110\,000$ by Gourdon (1997), $10^6$ by Sim\'o (2016) and $2\cdot10^6$ by Ghazi
-\cite{Gha26}, according to \cite{MWKdigits}. Our method gives three subquadratic algorithms, which we call K1, K2 and K3, from
+\cite{Gha26,MWKdigits}.
+
+Our method gives three subquadratic algorithms, which we call K1, K2 and K3, from
 three representations of $K$ as a special value of a function of the class \eqref{eq:functions}:
 \begin{align}
   \log K &= -Z'(0), \tag{K1}\label{eq:K1}\\
   \log K\log 2 &= \zeta_F(0), \tag{K2}\label{eq:K2}\\
   \log K\log 2 &= \log^22 + \Li_2(-\tfrac12) + \tfrac12 L_G(0,\chi), \tag{K3}\label{eq:K3}
 \end{align}
-where $Z(s) = \sum_{k\ge1}\mu_kk^{-s}$ is the Khinchin zeta function (Section~\ref{sec:khinchinzeta}),
+where $Z(s)$ is the Khinchin zeta function introduced below in Section~\ref{sec:khinchinzeta},
 \[
-  F(k) = -\log\Bigl(1-\frac1k\Bigr)\log\Bigl(1+\frac1k\Bigr) \quad (k \ge 2), \qquad
+  F(k) = -\log\Bigl(1-\frac1k\Bigr)\log\Bigl(1+\frac1k\Bigr) \quad (k \ge 2),
+\]
+is the formula \eqref{eq:twoconstants} from the introduction, and
+\[
   G(k) = \Li_2\Bigl(\frac{4}{k^2}\Bigr) \quad (k \ge 2),
 \]
-and $\chi(k) = (-1)^k$. (The sum for $G$ also starts at $k = 2$: at $k = 1$, $\Li_2(4)$ is not real.) The second is the series of \eqref{eq:twoconstants}.
-The three are linked by the operations of Section~\ref{sec:generalize}. Summation by parts turns the weight $\log k$
-in $-Z'(0) = \sum_k\mu_k\log k$ into the product of logarithms in \eqref{eq:K2}; this holds only at $s = 0$, so $Z$
+twisted by $\chi(k) = (-1)^k$. The sums for both K2 and K3 start at $k = 2$; at $k = 1$, $\Li_2(4)$ is not real.
+
+The three formulas for $K$ are linked by the operations of Section~\ref{sec:generalize}.
+Summation by parts turns $-Z'(0)$ into the product of logarithms in \eqref{eq:K2}; this holds only at $s = 0$, so $Z$
 and $\zeta_F$ are different functions that share one value. A dilation and a telescoping identity then turn
 \eqref{eq:K2} into \eqref{eq:K3} (Lemma~\ref{lem:dilog}). Each representation gives an algorithm with the complexity
 of Theorem~\ref{thm:complexity}, by a different route: \eqref{eq:K1} is a derivative at a regular point, so
@@ -1904,8 +1910,7 @@ Algorithm~K3 is also the basis of an optimized implementation in FLINT, with whi
 type, the series evaluated for each $k$-term (number of series $\times$ dimension of the state), the incomplete gamma
 values $\Gamma(b, \cdot)$ and $\partial_b\Gamma(b, \cdot)$ needed for each $k$-term and each dual term, and the moment
 systems of the dual terms (number of systems
-$\times$ dimension of the state, with the number of forcing constants in parentheses), as implemented in
-\texttt{holsum}.}
+$\times$ dimension of the state, with the number of forcing constants in parentheses).}
 \label{tab:khstates}
 \setlength{\tabcolsep}{4pt}
 \begin{tabular}{llll}
@@ -1923,33 +1928,45 @@ gamma values, dual term & $\Gamma(\frac12)$, $E_1$; $\partial_b$ of both & $\Gam
 \end{table}
 
 \subsection{The Khinchin zeta function}\label{sec:khinchinzeta}
+
 Let $x = [a_0; a_1, a_2, \dots]$ be the continued fraction of a real number $x$. For almost every $x$, the partial
-quotients follow the Gauss--Kuzmin law: the proportion of the $a_i$ equal to $k$ is $\mu_k$, the probability that
+quotients follow the Gauss--Kuzmin law: the proportion of the $a_i$ equal to $k$ is
+\[
+\mu_k = \log_2\Bigl(1 + \frac1{k(k+2)}\Bigr)
+\]
+the probability that
 $a_1 = k$ when $x$ is drawn from the Gauss measure $\dd x/((1+x)\log2)$ on $(0,1)$, which is invariant under the
 continued fraction map \cite{Khi64,IK02}. By the ergodic theorem the geometric means $(a_1\cdots a_n)^{1/n}$ tend
-to $K$ \cite{Khi35}, and the H\"older means $(\frac1n\sum_{i\le n}a_i^q)^{1/q}$ tend to
-$K_q = (\sum_kk^q\mu_k)^{1/q}$ for $q < 1$, $q \ne 0$ \cite{BBC97}. All of these are values of the
+to $K = \prod_{k=1}^{\infty}k^{\mu_k}$ \cite{Khi35}, and the H\"older means $(\frac1n\sum_{i\le n}a_i^q)^{1/q}$ tend to
+the generalized Khinchin constants $K_q = (\sum_kk^q\mu_k)^{1/q}$ for $q < 1$, $q \ne 0$ \cite{BBC97}.
+
+All of these are values of the
 \emph{Khinchin zeta function}
 \begin{equation}\label{eq:Z}
   Z(s) = \sum_{k=1}^{\infty} \mu_k\,k^{-s} = \mathbb{E}\bigl[a_1^{-s}\bigr],
 \end{equation}
-the zeta function $\zeta_F$ of $F(k) = \mu_k$, which is analytic at infinity. Indeed $Z(0) = 1$ (the product
+the zeta function $\zeta_F$ of $F(k) = \mu_k$.
+Indeed $Z(0) = 1$ (the product
 $\prod_k(k+1)^2/(k(k+2))$ telescopes to $2$),
 \[
   K = \exp(-Z'(0)), \qquad K_q = Z(-q)^{1/q},
 \]
-and in particular the harmonic mean is $K_{-1} = 1/Z(1)$. Here
-\[
-  f(x) = \frac{2\log(1+x) - \log(1+2x)}{\log 2}, \qquad a_n = \frac{(-1)^n(2^n - 2)}{n\log 2},
-\]
-with $\rho = \frac12$, so $k_0 = 3$, and $a_0 = a_1 = 0$, $n_0 = 2$. (Strictly, $\mu_k$ is not in $\RegQ$ because of
-the factor $1/\log 2$; the algorithms compute $Z(s)\log 2$.) By Proposition~\ref{prop:cont}, $Z$ is
+and in particular the harmonic mean is $K_{-1} = 1/Z(1)$.
+
+By Proposition~\ref{prop:cont}, $Z$ is
 meromorphic with simple poles at $s = -1, -2, -3, \dots$ of residues $1/\log 2$, $-2/\log 2$, $\frac{7}{2\log2}, \dots$,
 and is analytic in $\operatorname{Re}s > -1$.
 
 \begin{proposition}\label{prop:Z}
-$Z(s) = \dfrac{1}{(s+1)\log2} - \dfrac{1}{\log2} + O(s+1)$ as $s \to -1$. Equivalently, the H\"older means
-satisfy $\log 2\,(K_q)^q = (1-q)^{-1} - 1 + O(1-q)$ as $q \to 1^-$.
+The H\"older means
+satisfy
+\[
+\log 2\,(K_q)^q = (1-q)^{-1} - 1 + O(1-q), \qquad q \to 1^-.
+\]
+Equivalently,
+\[
+Z(s) = \dfrac{1}{(s+1)\log2} - \dfrac{1}{\log2} + O(s+1), \qquad s \to -1.
+\]
 \end{proposition}
 
 \begin{proof}
@@ -1963,14 +1980,13 @@ $s = -1$ with value $\sum_{k=1}^{\infty}(k\mu_k - \frac1{k\log 2})$, and $\zeta(
 is $-1/\log 2$.
 \end{proof}
 
-So the value at $0$ and the constant term at the first pole are elementary (both by telescoping), while the
-derivative at $0$ is Khinchin's constant and the value at $1$ is the reciprocal of the harmonic mean.
-Table~\ref{tab:Zvalues} collects these and other special values. By Theorem~\ref{thm:complexity} all H\"older means
-$K_q$ with rational $q < 1$, not only the $K_{-n}$ computed by Bailey, Borwein and Crandall \cite{BBC97}, can be
-computed to $p$ bits in time $\widetilde O(p^{3/2})$. Apart from the residues, we know of no elementary values of $Z$
-other than $Z(0) = 1$ and the constant term at $s = -1$.
+Table~\ref{tab:Zvalues} collects special values of $K$.
+Apart from the value at $0$, the constant term at the first pole
+and the residues, we know of no other elementary values.
+Numerical values of the complex zeros of $Z$
+are computed in the companion note \cite{Joh26}.
 
-\begin{table}[ht]
+\begin{table}[t]
 \centering\small
 \caption{Special values of the Khinchin zeta function $Z(s) = \sum_k\mu_kk^{-s}$ and the corresponding constants.}
 \label{tab:Zvalues}
@@ -1991,6 +2007,16 @@ $-\frac13$ & $1.53570106170602789125\ldots$ & $K_{1/3} = 3.62176321599942938889\
 \bottomrule
 \end{tabular}
 \end{table}
+
+By Theorem~\ref{thm:complexity} all H\"older means
+$K_q$ with rational $q < 1$, not only the $K_{-n}$ computed by Bailey, Borwein and Crandall \cite{BBC97}, can be
+computed to $p$ bits in time $\widetilde O(p^{3/2})$. 
+The series expansion at infinity is
+\[
+  f(x) = \frac{2\log(1+x) - \log(1+2x)}{\log 2}, \qquad a_n = \frac{(-1)^n(2^n - 2)}{n\log 2},
+\]
+with $\rho = \frac12$, so $k_0 = 3$, and $a_0 = a_1 = 0$, $n_0 = 2$. Strictly, $\mu_k$ is not in $\RegQ$ because of
+the factor $1/\log 2$; the algorithms compute $Z(s)\log 2$.
 
 \emph{Divisibility.} The Dirichlet series $\zeta(s)Z(s)$ has the coefficients $\sum_{d\mid n}\mu_d$, the probability
 that $a_1$ divides $n$, so the mean of this probability over $n \le N$ tends to $Z(1) = 1/K_{-1} = 0.5729\ldots$ as
@@ -2275,16 +2301,20 @@ $\Li_2(\frac19)$ after $N$ terms is at most $9^{-N}$.
 \end{itemize}
 
 \subsection{Comparison}\label{sec:khcompare}
-Table~\ref{tab:khcompare} compares the three algorithms as implemented in the generic program \texttt{holsum} of
-Section~\ref{sec:appcomp}. They share all their machinery: the binary splitting, the bit-burst evaluation of the moment
+Table~\ref{tab:khcompare} compares the three algorithms
+when implemented using the generic backend of Section~\ref{sec:appcomp}.
+They share all their machinery: the binary splitting, the bit-burst evaluation of the moment
 systems, which are built from the $\vartheta$-relations of the kernel functions as in Proposition~\ref{prop:dual},
 and the starting values, from one binary splitting of the kernel coefficients times the recurrence \eqref{eq:Drec}.
 Only the representations differ, and each is run at its best split point.
 
 \begin{table}[t]
 \centering\small
-\caption{Khinchin's constant by the three algorithms in \texttt{holsum}: CPU time (summed over $8$ threads, on the machine of Section~\ref{sec:khresults}), at the best split point
-$u_0$ of each, with the fraction spent on the $k$-side in parentheses.}
+\caption{Khinchin's constant by the three algorithms:
+CPU time (summed over $8$ threads, on the machine of Section~\ref{sec:khresults}), at the best split point
+$u_0$ of each, with the fraction spent on the $k$-side in parentheses.
+Here all three algorithm were implemented using the same generic backend of Section~\ref{sec:appcomp}
+for a fair comparison; a further optimized implementation of K3 is discussed below in Section~\ref{sec:khimpl}.}
 \label{tab:khcompare}
 \begin{tabular}{lrrr}
 \toprule
@@ -2332,7 +2362,8 @@ algorithm.
 $\Gamma(\frac12, y)$) are evaluated by exact binary splitting of products of small integer matrices over chunks of
 terms whose products reach about half the working precision. Within a chunk, the two halves are merged by one
 augmented product with FLINT's FFT-based matrix multiplication (\texttt{fmpz\_mat\_mul\_fft\_small}), which
-transforms each entry once. Each chunk product is applied to the state, kept as integers scaled by the denominators,
+transforms each entry once and exploits the sparsity structure.
+Each chunk product is applied to the state, kept as integers scaled by the denominators,
 by one truncated transformed matrix--vector product with per-entry exponents, so that all sizes stay $O(p)$.
 \item The $k$-terms use the triangular $2\times2$ recurrence of Section~\ref{sec:dilog}; the lowest levels of their trees are done with
 fixed-size limb arrays.
@@ -3148,12 +3179,29 @@ so that $\beta = s^2$),
 which agree with direct summation of \eqref{eq:vortex} at $30$ digits.
 
 The cross-checks are not a formality. A first version of the vortex program truncated the series for the starting
-values too early (their $E$-part decays only like $(\beta u_0)^j/j!$), and the computations at different $u_0$ disagreed
+values too early and the computations at different $u_0$ disagreed
 beyond $75\,000$ digits; a first version of \texttt{holsum} lost about $\sqrt{\beta c}$ bits to cancellation in the
 dual recurrences of the vortex sum, which the ball arithmetic revealed at $10^4$ digits.
 
 %======================================================================
 \section{Open problems}\label{sec:open}
+
+\subsection{General implementation}
+
+In all the examples given in the paper, explicit formulas,
+recurrences and error bounds for the terms
+were derived and implemented case by case.
+It should be possible to develop a general implementation of $\zeta_F$ and its relatives
+that takes any $F$ as input (for example in the form of an
+annihilating differential operator and generalized series coordinates at infinity)
+and automatically performs all applicable optimizations
+including series rewriting (see also Section~\ref{sec:generalize} below),
+parameter tuning, and dispatch to different algorithms
+(zeta expansion, Euler-Maclaurin summation, theta splitting)
+depending on the regime.
+In principle an implementation should be able to match the speed of
+our hand-optimized FLINT implementation of Khinchin's constant
+while being completely general.
 
 \subsection{The exponent}\label{sec:openexp}
 Can $\zeta_F(s)$ be computed in quasilinear time for $F \in \RegQ$ and algebraic $s$? This is open even for
