@@ -3280,8 +3280,22 @@ continuous variable, such as $k^n/k!$ in Dobinski's formula $B_n = e^{-1}\sum_kk
 Corollary~\ref{cor:egf} does not cover. Others give Dirichlet series with P-recursive coefficients, such as the
 harmonic zeta function $\sum_kH_kk^{-s}$ \cite{AV84,CC20}. P-recursive sequences of polynomial growth typically have
 divergent asymptotic expansions ($H_k = \psi(k+1) + \gamma$, or $\binom{2k}{k}4^{-k}$), so they are not values of a
-function regular at infinity; conversely $\log k$ and $\sqrt k$ are not P-recursive \cite{FGS05}. The overlap of the
-two classes consists of the rational functions (Proposition~\ref{prop:precursive}).
+function regular at infinity; conversely $\log k$ and $\sqrt k$ are not P-recursive \cite{FGS05}. By the following
+proposition, the overlap of the two classes consists of the rational functions.
+
+\begin{proposition}\label{prop:precursive}
+If $F \in \Reg$ is analytic at infinity and the sequence $F(k)$ is P-recursive, then $F(k)$ agrees for large $k$ with a
+rational function of $k$.
+\end{proposition}
+
+\begin{proof}
+Suppose $\sum_{i=0}^dc_i(k)F(k+i) = 0$ for large integers $k$. The left side, with $k$ replaced by $x$, is a function
+of $x$ analytic in $1/x$ near $x = \infty$. It vanishes at the points $1/k \to 0$, so it vanishes identically, and
+$F(x)$ satisfies the difference equation. It also satisfies a linear differential equation, and it lies in
+$\CC[[1/x]]$. By a theorem of Sch\"afke and Singer \cite[Corollary~5]{SS19}, a series in $\CC[[1/x]][x]$ that
+satisfies both a linear differential equation and a linear difference equation $x \mapsto x+1$ over $\CC(x)$ is
+rational.
+\end{proof}
 
 \subsubsection{Analytic, non-holonomic summands} Some summands are analytic at infinity but not holonomic, although
 their zeta-value expansions converge geometrically. Examples are the logarithm of the Kepler--Bouwkamp constant and
@@ -3403,26 +3417,11 @@ $\CT_{s=0}\sum_{k\ge k_0}k^{-s}(k+a)^{-1}$, the same for all $m$.
 \end{proof}
 
 So for rational $F$ the moments are combinations of finitely many Hurwitz--Lerch values at algebraic shifts, such as
-$\psi(a)$ and $\log(1-z)$. One might look for other summands with this property among those whose values $F(k)$
-satisfy a linear recurrence with polynomial coefficients: multiplying the recurrence by $k^mz^k$ and summing relates
-moments of different orders. Within the class $\Reg$ this gives nothing new.
-
-\begin{proposition}\label{prop:precursive}
-If $F \in \Reg$ is analytic at infinity and the sequence $F(k)$ is P-recursive, then $F(k)$ agrees for large $k$ with a
-rational function of $k$.
-\end{proposition}
-
-\begin{proof}
-Suppose $\sum_{i=0}^dc_i(k)F(k+i) = 0$ for large integers $k$. The left side, with $k$ replaced by $x$, is a function
-of $x$ analytic in $1/x$ near $x = \infty$. It vanishes at the points $1/k \to 0$, so it vanishes identically, and
-$F(x)$ satisfies the difference equation. It also satisfies a linear differential equation, and it lies in
-$\CC[[1/x]]$. By a theorem of Sch\"afke and Singer \cite[Corollary~5]{SS19}, a series in $\CC[[1/x]][x]$ that
-satisfies both a linear differential equation and a linear difference equation $x \mapsto x+1$ over $\CC(x)$ is
-rational.
-\end{proof}
-
-For other $F$ we know of no mechanism that would confine the moments to a finite-dimensional space, and we expect
-none to exist.
+$\psi(a)$ and $\log(1-z)$. Another natural source of such finiteness would be a linear recurrence with polynomial
+coefficients for the values $F(k)$, since multiplying it by $k^mz^k$ and summing relates moments of different orders.
+But within $\Reg$ the only summands with P-recursive values are the rational ones
+(Proposition~\ref{prop:precursive}). For other $F$ we know of no mechanism that would confine the moments to a
+finite-dimensional space, and we expect none to exist.
 
 \begin{conjecture}\label{conj:algebraic}
 If $F$ is not eventually a rational function of $k$, then $V_F(z)$ is infinite-dimensional. In particular, the
