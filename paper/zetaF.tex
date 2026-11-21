@@ -3281,7 +3281,7 @@ Corollary~\ref{cor:egf} does not cover. Others give Dirichlet series with P-recu
 harmonic zeta function $\sum_kH_kk^{-s}$ \cite{AV84,CC20}. P-recursive sequences of polynomial growth typically have
 divergent asymptotic expansions ($H_k = \psi(k+1) + \gamma$, or $\binom{2k}{k}4^{-k}$), so they are not values of a
 function regular at infinity; conversely $\log k$ and $\sqrt k$ are not P-recursive \cite{FGS05}. The overlap of the
-two classes consists of the rational functions (Proposition~\ref{prop:rationalF}(2)).
+two classes consists of the rational functions (Proposition~\ref{prop:precursive}).
 
 \subsubsection{Analytic, non-holonomic summands} Some summands are analytic at infinity but not holonomic, although
 their zeta-value expansions converge geometrically. Examples are the logarithm of the Kepler--Bouwkamp constant and
@@ -3371,59 +3371,73 @@ reduced to single polylogarithms $\Li_w$, as functional equations of polylogarit
 search would amount to creative telescoping for functions regular at infinity, modulo dilations.
 
 \subsection{Closed forms and algebraic values}
-Are there identities relating $Z'(0)$, i.e.\ $\log K$, to other periods or special values? The derivatives
-$Z^{(j)}(0)$, $j \ge 1$, are the moments of $\log a_1$ under the Gauss measure.
+When does $\zeta_F$ have closed-form values? For rational $F$ at integer $s$, partial fractions reduce $\zeta_F(s)$
+to polygamma and log-gamma values at algebraic points (Section~\ref{sec:rational}). For other summands we know of no
+such reductions: Khinchin's constant $\log K = -Z'(0)$, where the derivatives $Z^{(j)}(0)$ are the moments of
+$\log a_1$ under the Gauss measure, and most constants of Table~\ref{tab:constants} are not known to be related to
+other periods or special values. Are there identities that relate them?
 
-Every sequence in Table~\ref{tab:sequences} comes from $F = 1$, with a periodic weight or a geometric factor. Is there
-an integer sequence of this kind for a nontrivial $F$? We expect not (Conjecture~\ref{conj:algebraic} below).
-
-\emph{Algebraic values.} Let $F \in \RegQ$ be analytic at infinity, and let $z \in \Qbar$
-with $0 < |z| < 1$, or $z = 1$. Let $V_F(z)$ be the $\Qbar$-vector space spanned by $1$ and the values
-$\Li_F(-m, z)$, $m \ge 0$; for $z = 1$ we take instead the constant terms $\CT_{s=-m}\zeta_F(s)$. These are the
-zeta-regularized moments $\sum_kF(k)k^mz^k$. Up to the factors $(-1)^m/m!$, they are the Taylor coefficients of the
-regular part of $\sum_kF(k)e^{-kt}$ at $t = -\log z$ (Section~\ref{sec:ogf}).
+A sharper version of the question concerns the negative integers. For $F = 1$ the values $\zeta(-m) = -B_{m+1}/(m+1)$
+are rational, and every sequence in Table~\ref{tab:sequences} comes from $F = 1$, with a periodic weight or a geometric
+factor. Is there an integer sequence of this kind for a nontrivial $F$? To make this precise, let $F \in \RegQ$ be
+analytic at infinity, let $z \in \Qbar$ with $0 < |z| < 1$ or $z = 1$, and consider the regularized moments
+\[
+  M_m = \sum_{k=1}^{\infty}F(k)\,k^mz^k \qquad (m \ge 0),
+\]
+that is, $M_m = \Li_F(-m, z)$ for $|z| < 1$ and $M_m = \CT_{s=-m}\zeta_F(s)$ for $z = 1$. Up to the factors
+$(-1)^m/m!$ they are the Taylor coefficients of the regular part of $\sum_{k=1}^{\infty}F(k)e^{-kt}$ at $t = -\log z$
+(Section~\ref{sec:ogf}). Let $V_F(z)$ be the $\Qbar$-vector space spanned by $1$ and the $M_m$. For $F = 1$ the sums
+$\sum_kk^mz^k$ are rational functions of $z$, so $V_1(z) = \Qbar$.
 
 \begin{proposition}\label{prop:rationalF}
-\begin{enumerate}
-\item If $F(k)$ agrees for large $k$ with a rational function of $k$, then $\dim V_F(z) < \infty$.
-\item If the sequence $F(k)$ is P-recursive, then it agrees for large $k$ with a rational function of $k$.
-\end{enumerate}
+If $F(k)$ agrees for large $k$ with a rational function of $k$, then $\dim V_F(z) < \infty$.
 \end{proposition}
 
 \begin{proof}
-(1) The finitely many terms with $k < k_0$ are algebraic. Write $F(k) = c + \sum_{a,i}c_{a,i}(k+a)^{-i}$ for
-$k \ge k_0$, with algebraic $a$ and $c_{a,i}$. Then $k^m(k+a)^{-i} = Q_{m}(k) + \sum_{l=1}^{i}d_{m,l}(k+a)^{-l}$, with
-a polynomial $Q_m$ and numbers $d_{m,l}$, all algebraic. The polynomial parts contribute values $\Li_{-j}(z)$, which
-are rational functions of $z$, or $\zeta(-j) \in \QQ$ for $z = 1$. The other parts contribute the finitely many
-constants $\sum_{k\ge k_0}z^k(k+a)^{-l}$, $l \le \max i$. For $z = 1$ and $l = 1$ the constant is
+The finitely many terms with $k < k_0$ are algebraic. For $k \ge k_0$ write $F(k) = c + \sum_{a,i}c_{a,i}(k+a)^{-i}$
+with algebraic $a$ and $c_{a,i}$. Division with remainder gives $k^m(k+a)^{-i} = Q_m(k) + \sum_{l=1}^{i}d_{m,l}(k+a)^{-l}$,
+with a polynomial $Q_m$ and numbers $d_{m,l}$, all algebraic. The polynomial parts contribute values $\Li_{-j}(z)$,
+which are rational functions of $z$, or $\zeta(-j) \in \QQ$ for $z = 1$. The other parts contribute the finitely many
+constants $\sum_{k\ge k_0}z^k(k+a)^{-l}$, $l \le \max i$; for $z = 1$ and $l = 1$ the constant is
 $\CT_{s=0}\sum_{k\ge k_0}k^{-s}(k+a)^{-1}$, the same for all $m$.
+\end{proof}
 
-(2) Suppose $\sum_{i=0}^dc_i(k)F(k+i) = 0$ for large integers $k$. The left side, with $k$ replaced by $x$, is a
-function of $x$ analytic in $1/x$ near $x = \infty$. It vanishes at the points $1/k \to 0$, so it vanishes
-identically, and $F(x)$ satisfies the difference equation. It also satisfies a linear differential equation, and it
-lies in $\CC[[1/x]]$. By a theorem of Sch\"afke and Singer \cite[Corollary~5]{SS19}, a series in $\CC[[1/x]][x]$
-that satisfies both a linear differential equation and a linear difference equation $x \mapsto x+1$ over $\CC(x)$ is
+So for rational $F$ the moments are combinations of finitely many Hurwitz--Lerch values at algebraic shifts, such as
+$\psi(a)$ and $\log(1-z)$. One might look for other summands with this property among those whose values $F(k)$
+satisfy a linear recurrence with polynomial coefficients: multiplying the recurrence by $k^mz^k$ and summing relates
+moments of different orders. Within the class $\Reg$ this gives nothing new.
+
+\begin{proposition}\label{prop:precursive}
+If $F \in \Reg$ is analytic at infinity and the sequence $F(k)$ is P-recursive, then $F(k)$ agrees for large $k$ with a
+rational function of $k$.
+\end{proposition}
+
+\begin{proof}
+Suppose $\sum_{i=0}^dc_i(k)F(k+i) = 0$ for large integers $k$. The left side, with $k$ replaced by $x$, is a function
+of $x$ analytic in $1/x$ near $x = \infty$. It vanishes at the points $1/k \to 0$, so it vanishes identically, and
+$F(x)$ satisfies the difference equation. It also satisfies a linear differential equation, and it lies in
+$\CC[[1/x]]$. By a theorem of Sch\"afke and Singer \cite[Corollary~5]{SS19}, a series in $\CC[[1/x]][x]$ that
+satisfies both a linear differential equation and a linear difference equation $x \mapsto x+1$ over $\CC(x)$ is
 rational.
 \end{proof}
 
-So rational $F$, with P-recursive values $F(k)$, are exactly the summands for which the moments have the finite
-structure behind Table~\ref{tab:sequences}. These moments are Hurwitz--Lerch values at algebraic shifts, up to a
-finite set of constants such as $\psi(a)$ and $\log(1-z)$. Any other mechanism would have to make infinitely many
-values of a non-holonomic function algebraic.
+For other $F$ we know of no mechanism that would confine the moments to a finite-dimensional space, and we expect
+none to exist.
 
 \begin{conjecture}\label{conj:algebraic}
 If $F$ is not eventually a rational function of $k$, then $V_F(z)$ is infinite-dimensional. In particular, the
-values
-$\Li_F(-m,z)$, respectively $\CT_{s=-m}\zeta_F(s)$, are not all algebraic for large $m$.
+moments $M_m$ are not all algebraic for large $m$.
 \end{conjecture}
 
-For $F(k) = \log(1+\frac1k)$ and $z = 1$, PSLQ suggests that $\CT_{s=-m}\zeta_F(s)$ lies in the span of $1$,
-$\log 2\pi$ and $\zeta'(-j)$, $1 \le j < m$ (for instance $\frac12(1 - \log2\pi)$ at $m = 1$). Since
-$\zeta'(-2n) = (-1)^n(2n)!\,\zeta(2n+1)/(2(2\pi)^{2n})$, the space $V_F(1)$ then contains
-$\zeta(3)/\pi^2, \zeta(5)/\pi^4, \dots$, and the conjecture for this $F$ follows from Grothendieck's period conjecture;
-unconditionally it is not even known that $\dim V_F(1) \ge 3$. For summands such as $e^{1/k}$ the values are not
-obviously periods. Rational values of $L$-functions of higher degree do occur, for instance the Hurwitz numbers from
-Eisenstein series of the Gaussian lattice, but these are two-dimensional lattice sums, outside the subquadratic class
+The conjecture is out of reach even in simple cases. For $F(k) = \log(1+\frac1k)$ and $z = 1$, PSLQ suggests that
+$M_m$ lies in the span of $1$, $\log 2\pi$ and $\zeta'(-j)$, $1 \le j < m$; for instance $M_1 = \frac12(1 - \log2\pi)$.
+Since $\zeta'(-2n) = (-1)^n(2n)!\,\zeta(2n+1)/(2(2\pi)^{2n})$, the space $V_F(1)$ would then contain
+$\zeta(3)/\pi^2$, $\zeta(5)/\pi^4$, and so on. The conjecture for this $F$ would follow from Grothendieck's period
+conjecture, but unconditionally it is not even known that $\dim V_F(1) \ge 3$. For summands such as $e^{1/k}$ the
+moments are not obviously periods at all.
+
+Rational values do occur for $L$-functions of higher degree, for instance the Hurwitz numbers that come from the
+Eisenstein series of the Gaussian lattice. But these are two-dimensional lattice sums, outside the subquadratic class
 (Section~\ref{sec:limits}).
 
 %======================================================================
