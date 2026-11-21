@@ -1417,6 +1417,22 @@ floating-point evaluation of $M$, the functions $P(a,x)$ for $k < k_0$ must be c
 series and not as $1 - Q(a,x)$, since they are multiplied by $a_nk^{-n}$, which may be exponentially large.
 \end{remark}
 
+\begin{remark}[Where the factor $\pi$ goes]\label{rem:wherepi}
+The $k$-terms depend only on $k$ and $x = k^2u_0$, which are rational for rational $u_0$. The dual terms depend on
+$c = \pi^2m^2$ and $u_0$: with $y = c/u_0$,
+\[
+  J_m(s) = \sum_{n=0}^{\infty}a_n\,u_0^{(s+n-1)/2}\,\frac{y^{(s+n-1)/2}\,\Gamma(\frac{1-s-n}2, y)}{\Gamma(\frac{s+n}2)},
+\]
+so $u_0^{1/2}$ sets the scale of the kernel. Since $yu_0 = \pi^2m^2$, the dual side contains $\pi$ for every choice
+of $u_0$: in the point $c$ when $u_0$ is rational, as above, or in the coefficients when $u_0 \in \pi^2\QQ$. The latter
+choice makes $y$ rational, but $J_m$ then combines one incomplete gamma value and $e^{-y}$ with coefficients that are
+values at $\pi$ of entire holonomic functions with rational coefficients, which again need the bit-burst algorithm;
+and the $k$-terms become series at the transcendental points $x = k^2u_0$. Rational $u_0$ is the only choice that
+keeps one side free of $\pi$. For $f = 1$ the kernel $u^{s/2-1}$ has no scale and $J_m$ depends on $y$ alone; then
+the factor $\pi$ can be put on either side, or split between them as in Riemann's choice $u_0 = \pi$, at the same
+cost.
+\end{remark}
+
 \subsection{Uniformity}\label{sec:uniform}
 In Theorem~\ref{thm:complexity} everything is fixed except $p$. Its proof only uses that there are $O(\sqrt p)$
 pieces, that their series have $O(p)$ terms and recurrences with $O(\log p)$-bit coefficients, and that all
