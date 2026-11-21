@@ -3273,18 +3273,19 @@ sums covered by Theorem~\ref{thm:geometric}; we do not know whether this leads t
 
 \subsection{Other summands}\label{sec:openother}
 Is there any other natural class of summands, not holonomic or not regular at infinity in any of the senses above,
-for which both sides of a splitting are cheap (compare Section~\ref{sec:limits})? Candidates include the following.
-\begin{itemize}
-\item Summands that are P-recursive in $k$ but not holonomic as functions of a continuous variable, such as $k^n/k!$
-in Dobinski's formula $B_n = e^{-1}\sum_kk^n/k!$ for the Bell numbers, which Corollary~\ref{cor:egf} does not
-cover, or Dirichlet series with P-recursive coefficients, such as the harmonic zeta function
-$\sum_kH_kk^{-s}$ \cite{AV84,CC20}. P-recursive sequences of polynomial growth typically have divergent asymptotic
-expansions ($H_k = \psi(k+1) + \gamma$, or $\binom{2k}{k}4^{-k}$), so they are not values of a function regular at
-infinity; conversely $\log k$ and $\sqrt k$ are not P-recursive \cite{FGS05}. The overlap of the two classes consists
-of the rational functions (Proposition~\ref{prop:rationalF}(2)).
-\item Summands that are analytic at infinity but not holonomic, although their zeta-value expansions converge
-geometrically. Examples are the logarithm of the Kepler--Bouwkamp constant and two constants from the OEIS (A342680,
-A336405),
+for which both sides of a splitting are cheap (compare Section~\ref{sec:limits})? We list three candidates.
+
+\subsubsection{P-recursive summands} Some summands are P-recursive in $k$ but not holonomic as functions of a
+continuous variable, such as $k^n/k!$ in Dobinski's formula $B_n = e^{-1}\sum_kk^n/k!$ for the Bell numbers, which
+Corollary~\ref{cor:egf} does not cover. Others give Dirichlet series with P-recursive coefficients, such as the
+harmonic zeta function $\sum_kH_kk^{-s}$ \cite{AV84,CC20}. P-recursive sequences of polynomial growth typically have
+divergent asymptotic expansions ($H_k = \psi(k+1) + \gamma$, or $\binom{2k}{k}4^{-k}$), so they are not values of a
+function regular at infinity; conversely $\log k$ and $\sqrt k$ are not P-recursive \cite{FGS05}. The overlap of the
+two classes consists of the rational functions (Proposition~\ref{prop:rationalF}(2)).
+
+\subsubsection{Analytic, non-holonomic summands} Some summands are analytic at infinity but not holonomic, although
+their zeta-value expansions converge geometrically. Examples are the logarithm of the Kepler--Bouwkamp constant and
+two constants from the OEIS (A342680, A336405),
 \[
   \sum_{k=3}^{\infty}\log\cos\frac\pi k, \qquad \sum_{n=1}^{\infty}\Bigl(\tan\frac1n - \sin\frac1n\Bigr), \qquad
   \sum_{n=1}^{\infty}\log\Bigl(n\sin\frac1n\Bigr)
@@ -3292,8 +3293,10 @@ A336405),
 (the derivative of $\log\cos$ is $-\tan$, which has infinitely many poles), sums of Clausen functions
 $\operatorname{Cl}_2(2\pi/n)$, and sums involving $(1 - \frac2{n+1})^{2n}$, such as the oscillator strengths of the
 hydrogen atom.
-\item Sums with divisor-function weights, $\sum_{k=1}^{\infty}d(k)F(k)$ with $F \in \RegQ$, that is, double sums
-$\sum_{m=1}^{\infty}\sum_{n=1}^{\infty}F(mn)$. An example is the mean number of divisors of a partial quotient (Section~\ref{sec:khinchinzeta}),
+
+\subsubsection{Divisor-weighted sums} These are the sums $\sum_{k=1}^{\infty}d(k)F(k)$ with $F \in \RegQ$, that is,
+the double sums $\sum_{m=1}^{\infty}\sum_{n=1}^{\infty}F(mn)$. An example is the mean number of divisors of a partial
+quotient (Section~\ref{sec:khinchinzeta}),
 \[
   \mathbb E[d(a_1)] = \sum_{k=1}^{\infty}d(k)\mu_k
   = \sum_{n=1}^{\infty}\log_2\frac{\Gamma(1+\frac2n)}{\Gamma(1+\frac1n)^2} = 2.09285796492039431020\ldots,
@@ -3303,10 +3306,20 @@ for which we found no closed form. Since $\sum_{k=1}^{\infty}d(k)k^{-j} = \zeta(
   \mathbb E[d(a_1)]\log2 = \log\frac43 + 2\log\frac98
   + \sum_{j=2}^{\infty}(-1)^j\,\frac{2^j-2}{j}\bigl(\zeta(j)^2 - 1 - 2^{1-j}\bigr),
 \]
-which gives $\widetilde O(p^2)$. The inner sums over $m$ are holonomic, but the outer summand is not: its expansion in
-$1/n$ has zeta values as coefficients. Voronoi summation, the analogue of theta splitting for the coefficients $d(k)$,
-needs about $p$ terms, as for other $L$-functions of degree $2$ (Section~\ref{sec:limits}).
-\end{itemize}
+which gives $\widetilde O(p^2)$. Malmsten's formula and a Mellin transform,
+\[
+  \log\frac{\Gamma(1+2x)}{\Gamma(1+x)^2} = \int_0^\infty\frac{(1-e^{-xt})^2}{t(e^t-1)}\dd t, \qquad
+  \int_0^\infty\log\Bigl(1+\frac ax\Bigr)x^{s-1}\dd x = \frac{\pi a^s}{s\sin\pi s},
+\]
+give the integral representations
+\begin{align*}
+  \mathbb E[d(a_1)]\log2 &= \int_0^\infty\sum_{n=1}^{\infty}\bigl(1-e^{-t/n}\bigr)^2\frac{\dd t}{t(e^t-1)} \\
+  &= \frac1{2\pi i}\int_{c-i\infty}^{c+i\infty}\frac{\pi(2-2^s)\,\zeta(s)^2}{s\sin\pi s}\dd s
+\end{align*}
+with $1 < c < 2$. The inner sums over $m$ are holonomic, but the outer summand is not: its expansion in $1/n$ has
+zeta values as coefficients. The factor $\zeta(s)^2$ shows the degree-$2$ structure: Voronoi summation, the analogue
+of theta splitting for the coefficients $d(k)$, needs about $p$ terms, as for other $L$-functions of degree $2$
+(Section~\ref{sec:limits}).
 
 \subsection{Damped zeta functions and large height}
 For $\Lambda_F$ with general $F \in \Reg$ (Appendix~\ref{app:stretched}), make the cost analysis explicit, with the orders
