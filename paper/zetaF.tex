@@ -662,45 +662,47 @@ polynomial coefficients. The cost bounds for the classical methods in Section~\r
 the $a_n$, and the Taylor coefficients of $F$, are P-recursive.
 
 \subsection{Operations on summands}\label{sec:twists}
-Three operations relate the functions $L_F(s,\chi)$ as functions of $s$, and two more preserve only the value at a
-fixed point.
+A constant can often be written in several ways as a value of one of the functions \eqref{eq:functions}, and the
+cost of computing it depends on the choice (Sections~\ref{sec:khinchin} and~\ref{sec:generalize}). We use five
+operations that rewrite a summand. Three of them, dilations, twists and functional equations, give identities between
+functions of $s$. The other two, shifts and telescoping, preserve only the value at a fixed point.
 
 \emph{Dilations.} For an integer $m \ge 1$ let $F_m(k) = F(mk)$, again analytic, respectively regular. Then
 \[
-  \sum_{k=1,\ m\mid k}^{\infty}\chi(k)F(k)k^{-s} = m^{-s}L_{F_m}(s,\chi_m), \qquad \chi_m(k) = \chi(mk),
+  \sum_{k=1,\ m\mid k}^{\infty}\chi(k)F(k)k^{-s} = m^{-s}L_{F_m}(s,\chi_m), \qquad \chi_m(k) = \chi(mk).
 \]
-an identity of functions of $s$.
 
 \emph{Twists.} Every function $\chi$ of period $q$ is a combination of the functions $k \mapsto [d \mid k]\,\psi(k/d)$
 with $d \mid q$ and $\psi$ a Dirichlet character modulo $q/d$ (group the $k$ by $\gcd(k,q) = d$ and expand $\chi(dj)$,
 as a function on $(\ZZ/(q/d))^\times$, in characters). Hence
 \[
-  L_F(s,\chi) = \sum_{d\mid q}\sum_{\psi \bmod q/d}c_{d,\psi}\,d^{-s}L_{F_d}(s,\psi),
+  L_F(s,\chi) = \sum_{d\mid q}\sum_{\psi \bmod q/d}c_{d,\psi}\,d^{-s}L_{F_d}(s,\psi).
 \]
-again as functions of $s$: periodic weights reduce to dilations and twists by Dirichlet characters, but the
-characters cannot be removed.
+Periodic weights thus reduce to dilations and twists by Dirichlet characters, but the characters cannot be removed
+as long as $s$ is a variable.
 
-\emph{Shifts.} Summing over residue classes removes the weight altogether: for $1 \le a \le q$,
+\emph{Functional equations.} Identities of the special functions in $F$, such as the duplication and Landen identities
+of the dilogarithm, rewrite the summand without changing its values.
+
+\emph{Shifts.} Summing over residue classes removes a periodic weight altogether: for $1 \le a \le q$,
 \[
   \sum_{k=1,\ k\equiv a \bmod q}^{\infty}F(k)k^{-s} = q^{-s}\sum_{j=0}^{\infty}F(qj+a)\Bigl(j + \frac aq\Bigr)^{-s},
 \]
-and $F(qx+a)$ is regular at infinity; but now $s$ enters the summand through $(j+a/q)^{-s} = j^{-s}(1+\frac{a}{qj})^{-s}$,
-as in the Hurwitz zeta function. At a \emph{fixed} point $s_0$ the left-hand side is, up to the term $j = 0$, a value
-$\zeta_{F'}(s_0)$ with $F'(j) = q^{-s_0}F(qj+a)(1+\frac a{qj})^{-s_0}$, which suffices for computing it, but as a function of $s$ it is not a function $\zeta_{F'}$, since the summand
-depends on $s$. When only the value at a fixed point matters, as for the sums of Table~\ref{tab:constants}, periodic weights can
-therefore be removed; here we keep them, and
-Theorem~\ref{thm:split} handles them directly (Remark~\ref{rem:twist}).
+and $F(qx+a)$ is regular at infinity. Now $s$ enters the summand through
+$(j+a/q)^{-s} = j^{-s}(1+\frac{a}{qj})^{-s}$, as in the Hurwitz zeta function. At a fixed point $s_0$ the left-hand side
+is, up to the term $j = 0$, the value $\zeta_{F'}(s_0)$ with
+\[
+  F'(j) = q^{-s_0}F(qj+a)\Bigl(1+\frac a{qj}\Bigr)^{-s_0},
+\]
+which suffices for computing it; but as a function of $s$ it is not of the form $\zeta_{F'}$, since the summand
+depends on $s$. When only the value at a fixed point matters, as for the sums of Table~\ref{tab:constants}, periodic
+weights can therefore be removed. We keep them nevertheless, since Theorem~\ref{thm:split} handles them directly
+(Remark~\ref{rem:twist}).
 
 \emph{Telescoping.} For a constant $\sum_{k=k_0}^{\infty}F(k) = \zeta_F(0)$, the summands $F(k)$ and
 $F(k) + H(k+1) - H(k)$ have the same sum, up to $H(k_0)$ and the limit of $H$ at infinity, for any $H$ regular at
 infinity. This holds only at $s = 0$, since $k^{-s}$ does not commute with the shift. Summation by parts is of this
 kind.
-
-\emph{Functional equations.} Identities of the special functions in $F$, such as the duplication and Landen identities
-of the dilogarithm, rewrite the summand without changing its value.
-
-These operations relate different representatives of the same constant, whose costs can differ considerably
-(Sections~\ref{sec:khinchin} and~\ref{sec:generalize}).
 
 \subsection{Notation}\label{sec:notation}
 Table~\ref{tab:notation} lists the notation used throughout. Symbols that occur only in one example (in
@@ -1090,25 +1092,38 @@ $\alpha$, and the dual terms are the same moments at the points $c = \pi^2(n-\al
 \section{Damped functions: polylogarithms and damped zeta functions}\label{sec:beyond}
 
 The proof of Theorem~\ref{thm:split} uses two facts: that the summand is a superposition of Gaussians,
-$F(x)x^{-s} = \int_0^\infty e^{-x^2u}h_s(u)\dd u$ for $x \ge k_0$, and the theta transformation. The algorithm
-needs a third: that the truncated Laplace transform $\mathcal L[h_s](\kappa)$ and the dual moment $Z_{1/2}[h_s](c)$
-(Section~\ref{sec:twosides}) are holonomic in $\kappa$ and $c$, with series at rational points whose terms are
-P-recursive. This section extends the splitting, and with it the algorithm, to the damped functions $\Li_F$, $\Phi_F$
-and $\Lambda_F$ of \eqref{eq:functions}, whose summands are a regular function times an exponential factor. There are
-two ways to add such a factor. A geometric factor $z^k$ can be kept
-on the theta side, as a twist with a complex characteristic, at the price of complex dual points
-(Section~\ref{sec:geometric}); this generalizes Crandall's splitting of the Lerch transcendent. A stretched
-exponential $e^{-\tau k^r}$ has no such interpretation, but it can be moved into the kernel, whose expansion is then
-at $u = \infty$ instead of $u = 0$ (Sections~\ref{sec:stretched} and~\ref{sec:products}).
+\[
+  F(x)x^{-s} = \int_0^\infty e^{-x^2u}h_s(u)\dd u \qquad (x \ge k_0),
+\]
+and the theta transformation. The algorithm needs a third: that the truncated Laplace transform $\mathcal L[h_s](\kappa)$
+and the dual moment $Z_{1/2}[h_s](c)$ (Section~\ref{sec:twosides}) are holonomic in $\kappa$ and $c$, with series at
+rational points whose terms are P-recursive.
 
-At $s = 0$ the polylogarithm $\Li_F(0,z) = \sum_kF(k)z^k$ is the generating function of a sequence $F \in \Reg$, and its
-derivatives in $s$ give the weights $(\log k)^j$. Examples in Table~\ref{tab:constants} are Somos's quadratic
-recurrence constant and the generalized Euler-constant function of Sondow and Hadjicostas (Section~\ref{sec:somos});
-polylogarithms and Lerch transcendents of non-integer order inside the unit disk, such as the Bose--Einstein functions
-$g_{3/2} = \Li_{3/2}$ and $g_{5/2} = \Li_{5/2}$ and the Fermi--Dirac integrals $F_j(\eta) = -\Li_{j+1}(-e^\eta)$ with
-half-integer $j$ and $\eta < 0$; the moments $\sum_kq^{k-1}(1-q)(\log k)^j$ of the logarithm of a geometric random
-variable; and the entropy of Fisher's logarithmic series distribution $P(k) = -z^k/(k\log(1-z))$, which involves
-$\sum_kz^k\log(k)/k$. The damped zeta function contains sums such as $\sum_ke^{-\sqrt k}$ (Section~\ref{sec:expsqrt}).
+This section extends the splitting, and with it the algorithm, to the damped functions $\Li_F$, $\Phi_F$ and
+$\Lambda_F$ of \eqref{eq:functions}, whose summands are a regular function times an exponential factor. There are two
+ways to add such a factor. A geometric factor $z^k$ can be kept on the theta side, as a twist with a complex
+characteristic, at the price of complex dual points (Section~\ref{sec:geometric}); this generalizes Crandall's
+splitting of the Lerch transcendent. A stretched exponential $e^{-\tau k^r}$ has no such interpretation, but it can be
+moved into the kernel, whose expansion is then at $u = \infty$ instead of $u = 0$ (Sections~\ref{sec:stretched}
+and~\ref{sec:products}).
+
+Sums of these kinds arise in several ways (see also Table~\ref{tab:constants}).
+\begin{itemize}
+\item At $s = 0$, $\Li_F(0,z) = \sum_kF(k)z^k$ is the generating function of a sequence $F \in \Reg$, and the
+derivatives in $s$ give the weights $(\log k)^j$. Examples are Somos's quadratic recurrence constant and the
+generalized Euler-constant function of Sondow and Hadjicostas (Section~\ref{sec:somos}).
+\item Polylogarithms and Lerch transcendents of non-integer order inside the unit disk include the Bose--Einstein
+functions $g_{3/2} = \Li_{3/2}$ and $g_{5/2} = \Li_{5/2}$, and the Fermi--Dirac integrals
+$F_j(\eta) = -\Li_{j+1}(-e^\eta)$ with half-integer $j$ and $\eta < 0$.
+\item In probability, there are the moments $\sum_kq^{k-1}(1-q)(\log k)^j$ of the logarithm of a geometric random
+variable, and the entropy of Fisher's logarithmic series distribution $P(k) = -z^k/(k\log(1-z))$, which involves
+$\sum_kz^k\log(k)/k$.
+\item The damped zeta function contains sums such as $\sum_ke^{-\sqrt k}$ (Section~\ref{sec:expsqrt}).
+\end{itemize}
+
+We have checked each splitting identity of this section numerically, by summing every piece as a series and comparing
+with an independent evaluation; the scripts are in the directory \texttt{paper/checks} of the repository
+(\url{https://github.com/fredrik-johansson/holonomic-sums}).
 
 \subsection{The polylogarithm: geometric factors}\label{sec:geometric}
 Let $F$ satisfy \eqref{eq:f} and let $0 < |z| < 1$. Write $z = e^{2\pi i\alpha}$ with $\alpha = \alpha_1 + i\alpha_2$,
@@ -1125,8 +1140,8 @@ for $\delta \in \{0,1\}$ and $\operatorname{Re}c > 0$. By \eqref{eq:startvals},
 \[
   J^{(\delta)}_w(c) = \sum_{n=0}^{\infty}\frac{a_n}{\Gamma(\frac{w+n}2)}D_{(w+n-1)/2-\delta}(c), \qquad
   D_a(c) = c^a\Gamma\Bigl(-a, \frac c{u_0}\Bigr).
-\] Each $D_a$ is analytic on $\CC\setminus(-\infty,0]$, being $c^a\Gamma(-a)$ minus an
-entire function, and the series converges locally uniformly there, since its terms are
+\]
+Each $D_a$ is analytic on $\CC\setminus(-\infty,0]$, being $c^a\Gamma(-a)$ minus an entire function, and the series converges locally uniformly there, since its terms are
 $O(R^n(|c|+u_0)^{n/2}e^{|c|/u_0}/\Gamma(\frac n2))$. Hence $J^{(\delta)}_w$ continues analytically to
 $\CC\setminus(-\infty,0]$. All $c_n$ lie in this domain except $c_0 = -\pi^2\alpha_2^2$ when $\alpha_1 = 0$, i.e.\
 $0 < z < 1$; there $J^{(\delta)}_w(c_0)$ denotes the boundary value from $\operatorname{Im}c > 0$.
@@ -1169,21 +1184,20 @@ $\operatorname{Re}a > 0$.
 (2) See Appendix~\ref{app:geometric}.
 \end{proof}
 
-For $F = 1$ and $k_0 = 1$, where $I_k(s) = k^{-s}Q(\frac s2,k^2u_0)$, $kI_k(s+1) = k^{-s}Q(\frac{s+1}2,k^2u_0)$,
-$J^{(0)}_s(c) = c^{(s-1)/2}\Gamma(\frac{1-s}2,\frac c{u_0})/\Gamma(\frac s2)$,
-$J^{(1)}_{s+1}(c) = c^{s/2-1}\Gamma(1-\frac s2,\frac c{u_0})/\Gamma(\frac{s+1}2)$ and $H(s) = 2u_0^{s/2}/(s\Gamma(\frac s2))$,
-part~(1) is Crandall's formula for $\Li_s(z)$ \cite[(34)]{Cra12} with $\lambda = u_0$, and with a shift of the
-lattice (Section~\ref{sec:twistshift}) it is his formula for the Lerch transcendent \cite[(14)]{Cra12}, which at
-$z = 1$ is his series for the Hurwitz zeta function \cite[(30)]{Cra12}; see also \cite{BB15}. Crandall states it for
-$\operatorname{Re}z \in [0,1)$, as an analytic continuation. What the theorem adds
-is the general regular factor $F$, for which the incomplete gamma functions become the holonomic functions $I_k$ and
-$J^{(\delta)}_w$, and the bound in~(2).
-
-Numerically, with $u_0 = \frac14$, part~(1) reproduces $\sum_{k=2}^{\infty}z^k\log(1+\frac1k)k^{-0.3}$ at
-$z = e^{-1+0.6\pi i}$ to $41$ digits, and, at $z = \frac12$ (where $c_0$ is on the cut) and $s = 0$, the logarithm
-of Somos's quadratic recurrence constant (Section~\ref{sec:somos}),
-$\log\sigma = \sum_{k=1}^{\infty}2^{-k}\log(1+\frac1k)$, to $41$ digits. An implementation of the case $F = 1$,
-differentiated in $s$, computes $\sigma$ to $10^6$ digits (Section~\ref{sec:somos}).
+For $F = 1$ and $k_0 = 1$ the pieces are incomplete gamma functions:
+\begin{gather*}
+  I_k(s) = k^{-s}Q\Bigl(\frac s2,k^2u_0\Bigr), \qquad kI_k(s+1) = k^{-s}Q\Bigl(\frac{s+1}2,k^2u_0\Bigr), \\
+  J^{(0)}_s(c) = \frac{c^{(s-1)/2}}{\Gamma(\frac s2)}\Gamma\Bigl(\frac{1-s}2,\frac c{u_0}\Bigr), \qquad
+  H(s) = \frac{2u_0^{s/2}}{s\Gamma(\frac s2)}, \\
+  J^{(1)}_{s+1}(c) = \frac{c^{s/2-1}}{\Gamma(\frac{s+1}2)}\Gamma\Bigl(1-\frac s2,\frac c{u_0}\Bigr).
+\end{gather*}
+Then part~(1) is Crandall's formula for $\Li_s(z)$ \cite[(34)]{Cra12} with $\lambda = u_0$. With a shift of the lattice
+(Section~\ref{sec:twistshift}) it is his formula for the Lerch transcendent \cite[(14)]{Cra12}, which at $z = 1$ is
+his series for the Hurwitz zeta function \cite[(30)]{Cra12}; see also \cite{BB15}. Crandall states it for
+$\operatorname{Re}z \in [0,1)$, as an analytic continuation. What the theorem adds is the general regular factor $F$,
+for which the incomplete gamma functions become the holonomic functions $I_k$ and $J^{(\delta)}_w$, and the bound
+in~(2). An implementation of the case $F = 1$, differentiated in $s$, computes Somos's quadratic recurrence constant
+to $10^6$ digits (Section~\ref{sec:somos}).
 
 \subsection{The damped zeta function of $F = 1$}\label{sec:stretched}
 For $\tau > 0$ and $0 < r < 2$ let
@@ -1197,8 +1211,10 @@ terms. Expanding $e^{-\tau x^r}x^{-s}$ at $x = 0$ and transforming termwise give
   h_s(u) = \sum_{j=0}^{\infty}c_ju^{a_j-1}, \qquad a_j = \frac{s - rj}{2}, \qquad c_j = \frac{(-\tau)^j}{j!\,\Gamma(a_j)},
 \]
 which is $u^{s/2-1}$ times an entire function of $u^{-r/2}$, since $1/|\Gamma(a_j)| \ll \Gamma(rj/2)$ and $r < 2$. Let
-$D_a(c) = \int_0^{u_0}u^{a-1}e^{-c/u}\dd u$ as in Section~\ref{sec:twosides}, and $M_\tau(z) = \int_0^\infty
-x^{z-1}e^{-\tau x^r}\dd x = \Gamma(z/r)\tau^{-z/r}/r$.
+$D_a(c) = \int_0^{u_0}u^{a-1}e^{-c/u}\dd u$ as in Section~\ref{sec:twosides}, and
+\[
+  M_\tau(z) = \int_0^\infty x^{z-1}e^{-\tau x^r}\dd x = \frac{\Gamma(z/r)\,\tau^{-z/r}}{r}.
+\]
 
 \begin{proposition}\label{prop:expsplit}
 For $u_0 > 0$ and $s \notin \{rj, 1+rj : j \ge 0\}$ (where single terms have poles that cancel),
@@ -1227,9 +1243,6 @@ the tails $T_{1/2}$ and $T_1$, integrated termwise. Both sides are analytic in $
 \end{proof}
 
 The series for $J_m$ converges geometrically with ratio about $\tau/(2\pi m)$ when $r = 1$, and faster when $r < 1$.
-With $s = 0.3$, $\tau = 1$ and $u_0 = \frac14$, the proposition, with every piece summed as a series, reproduces
-$\Li_{0.3}(e^{-1})$ to $50$ digits ($k \le 39$, $m \le 5$), and $\Lambda(0.3;1,\frac12)$ to the $31$ digits of a
-reference value obtained by summing $20\,000$ terms.
 
 \subsection{The damped zeta function of a regular $F$}\label{sec:products}
 Now let $F$ satisfy \eqref{eq:f}, let $r = 1/q$ with an integer $q \ge 1$, and consider the damped zeta function
@@ -1242,14 +1255,16 @@ Expanding $F(x) = \sum_na_nx^{-n}$ and using the kernels of $e^{-\tau x^r}x^{-s-
   h_s(u) = \sum_{\ell\in\ZZ}b_\ell\,\frac{u^{w_\ell-1}}{\Gamma(w_\ell)}, \qquad w_\ell = \frac{s+\ell/q}{2}, \qquad
   b_\ell = \sum_{n \ge \max(0,\ell/q)}a_n\frac{(-\tau)^{qn-\ell}}{(qn-\ell)!},
 \]
-so that $b_\ell$ is the coefficient of $t^{\ell/q}$ in the Laurent expansion of $f(t)e^{-\tau t^{-1/q}}$ on
+where $b_\ell$ is the coefficient of $t^{\ell/q}$ in the Laurent expansion of $f(t)e^{-\tau t^{-1/q}}$ on
 $0 < t < 1/R$. The series converges for every $u > 0$, infinitely in both directions: for $\ell \to \infty$ like the
-kernel of Section~\ref{sec:splitting}, and for $\ell \to -\infty$ like that of Proposition~\ref{prop:expsplit}. Write
-$h_s = h_+ + h_-$, where $h_+$ collects the terms with $\ell \ge 0$. Then $h_-$ is the kernel of $x^{-s}V(x)$, where
+kernel of Section~\ref{sec:splitting}, and for $\ell \to -\infty$ like that of Proposition~\ref{prop:expsplit}.
+
+Write $h_s = h_+ + h_-$, where $h_+$ collects the terms with $\ell \ge 0$. Then $h_-$ is the kernel of $x^{-s}V(x)$,
+where
 \[
   V(x) = \sum_{\ell<0}b_\ell x^{-\ell/q} = \sum_{n=0}^{\infty}a_nx^{-n}\Bigl(e^{-\tau x^r} - \sum_{j=0}^{qn}\frac{(-\tau x^r)^j}{j!}\Bigr)
 \]
-is an entire function of $x^r$, and by the Cauchy--Saalschütz representation of $\Gamma$ \cite[(5.9.5)]{DLMF},
+is an entire function of $x^r$. By the Cauchy--Saalschütz representation of $\Gamma$ \cite[(5.9.5)]{DLMF},
 \begin{multline*}
   M_V(z) = \int_0^\infty x^{z-s-1}V(x)\dd x = \sum_{n=0}^{\infty}a_n\,q\,\Gamma\bigl(q(z-s-n)\bigr)\,\tau^{-q(z-s-n)} \\
   \Bigl(-\frac1q < \operatorname{Re}(z-s) < 0\Bigr),
@@ -1280,39 +1295,41 @@ which is $2M_V(1)/\sqrt\pi$ at $z = 1$ and $0$ at $z = 0$, and $\int_0^\infty e^
 $k > 0$, since $V$ is entire.
 \end{proof}
 
-Numerically, with $F(k) = \log(1+\frac1k)$, $k_0 = 2$, $s = 0.3$, $\tau = 1$ and $u_0 = \frac14$, the proposition
-reproduces $\sum_{k=2}^{\infty}e^{-k}\log(1+\frac1k)k^{-0.3}$ to $45$ digits, and with $q = 2$ the sum
-$\sum_{k=2}^{\infty}e^{-\sqrt k}\log(1+\frac1k)k^{-0.3}$ to the $33$ digits of the working precision.
-
 \subsection{Twists, shifts and the Lerch transcendent}\label{sec:twistshift}
 A periodic weight $\chi(k)$ acts only on the theta side (Remark~\ref{rem:twist}) and combines with both mechanisms:
 the kernels are unchanged, the odd part uses the kernel of the summand divided by $x$, and the dual points are shifted
-as in Remark~\ref{rem:twist}. In the kernel route, complex $z$ can also be handled by putting $|z|^k$ into the kernel
-and treating $(z/|z|)^k = e^{2\pi i\alpha_1k}$ as an additive twist, with real dual points $\pi^2(n-\alpha_1)^2$; with
-$s = 0.3$, $z = e^{-1+0.6\pi i}$ and $u_0 = \frac14$ this reproduces $\Li_{0.3}(z)$ to $41$ digits.
+as in Remark~\ref{rem:twist}. In the kernel route, a complex $z$ can also be handled by putting $|z|^k$ into the kernel
+and treating $(z/|z|)^k = e^{2\pi i\alpha_1k}$ as an additive twist, with the real dual points $\pi^2(n-\alpha_1)^2$.
 
-The power may also be shifted: $z^k(k+a)^{-s}F(k) = z^{-a}\psi(k+a)$ with $\psi(y) = z^yF(y-a)y^{-s}$, and $F(y-a)$
-is again regular at infinity. Poisson summation over the shifted lattice $n + a$ (a theta function with
+The power may also be shifted:
+\[
+  z^k(k+a)^{-s}F(k) = z^{-a}\psi(k+a), \qquad \psi(y) = z^yF(y-a)y^{-s},
+\]
+and $F(y-a)$ is again regular at infinity. Poisson summation over the shifted lattice $n + a$ (a theta function with
 characteristic), applied to the even and the odd part of $\psi$ (the latter written as $y$ times the kernel of
-$\psi(y)/y$), gives dual terms with the factors $\cos 2\pi ma$ and $\sin 2\pi ma$, and the lattice points with
+$\psi(y)/y$), gives dual terms with the factors $\cos 2\pi ma$ and $\sin 2\pi ma$. The lattice points with
 $|n+a| < k_0$ are treated like the terms $k < k_0$ in Theorem~\ref{thm:split}. This is Crandall's sign trick
-\cite[\S2.4]{Cra12}. For $F = 1$ it gives the Lerch transcendent $\Phi(z,s,a) = \sum_{k=0}^{\infty}z^k(k+a)^{-s}$;
-with $z = e^{-1}$ (in the kernel route), $s = 0.3$ and $a = 0.3$ we reproduced it to $41$ digits.
+\cite[\S2.4]{Cra12}. For $F = 1$ it gives the Lerch transcendent $\Phi(z,s,a) = \sum_{k=0}^{\infty}z^k(k+a)^{-s}$.
 
 \subsection{Limits}\label{sec:limits}
 The splitting gains nothing when the kernel is itself a theta series: then each $k$-term is a rapidly convergent sum
-and the method sees a two-dimensional lattice. For instance, $\operatorname{sech}(\pi x)$ has the kernel
-$\pi^{-1}\sum_n(-1)^n(2n+1)e^{-(n+1/2)^2u}$ (by its partial fraction expansion), and the Lambert series
-$\sum_kk^{-s}/(e^{\tau k}-1) = \sum_{j\ge1}\Lambda(s;j\tau,1)$ needs $p/\tau$ polylogarithms. Then about $p$ terms
-are needed, and nothing is gained over direct summation. The same happens for $L$-functions of degree $d \ge 2$, whose
-dual kernels decay like $e^{-c(n/\sqrt N)^{2/d}}$, and for lattice sums $\sum_{k\in\ZZ^d}F(Q(k))$ with a positive definite
-quadratic form $Q$: replacing $e^{-k^2u}$ by $e^{-Q(k)u}$ and using Ewald's theta transformation gives a splitting, but
-with $O(p^{d/2})$ terms. Functions with AGM-type algorithms (theta, elliptic and modular
-functions) enter the splitting only through truncated Laplace transforms and Gaussian moments of the kernel, not
-through point values; complete Laplace transforms of theta functions are elementary (Mittag-Leffler), but truncated
-ones lead back to the two-dimensional sums. We know no class of summands, beyond periodic twists and the
-exponential factors above (and their products with regular functions), for which both sides of the splitting are
-cheap; Section~\ref{sec:open} lists some candidates.
+and the method sees a two-dimensional lattice. For instance, by its partial fraction expansion,
+$\operatorname{sech}(\pi x)$ has the kernel
+\[
+  \frac1\pi\sum_{n=0}^{\infty}(-1)^n(2n+1)e^{-(n+1/2)^2u},
+\]
+and the Lambert series $\sum_kk^{-s}/(e^{\tau k}-1) = \sum_{j=1}^{\infty}\Lambda(s;j\tau,1)$ needs $p/\tau$
+polylogarithms. Then about $p$ terms are needed, and nothing is gained over direct summation.
+
+The same happens for $L$-functions of degree $d \ge 2$, whose dual kernels decay like $e^{-c(n/\sqrt N)^{2/d}}$, and
+for lattice sums $\sum_{k\in\ZZ^d}F(Q(k))$ with a positive definite quadratic form $Q$: replacing $e^{-k^2u}$ by
+$e^{-Q(k)u}$ and using Ewald's theta transformation gives a splitting, but with $O(p^{d/2})$ terms.
+
+Functions with AGM-type algorithms (theta, elliptic and modular functions) enter the splitting only through truncated
+Laplace transforms and Gaussian moments of the kernel, not through point values. Complete Laplace transforms of theta
+functions are elementary (Mittag-Leffler), but truncated ones lead back to the two-dimensional sums. We know no class
+of summands, beyond periodic twists and the exponential factors above (and their products with regular functions),
+for which both sides of the splitting are cheap; Section~\ref{sec:open} lists some candidates.
 
 %======================================================================
 \section{Algorithms and complexity bounds}\label{sec:complexity}
