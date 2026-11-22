@@ -249,11 +249,13 @@ such as the generalized hypergeometric function $G(z) = {}_pF_{p-1}(\ldots; z)$.
 The underlying class of holonomic functions is
 also closed under integration, and contains the periods of
 families of algebraic curves depending algebraically on $k$ such as complete elliptic, hyperelliptic and abelian integrals.
-Further examples are integrals $\int_0^\infty G(t)\,(e^t-1)^{-1}\dd t$ of an entire holonomic $G$ of finite exponential type against the Bose--Einstein weight (or the Fermi--Dirac weight
-$(e^t+1)^{-1}$), which are sums $\sum_k\int_0^\infty G(t)e^{-kt}\dd t$ of Laplace transforms, for instance
+Integrals against the Bose--Einstein weight also give rise to such sums: for an entire holonomic function $G$ with
+$|G(t)| \le Ce^{ct}$, $c < 1$, on the positive axis,
 \[
-  \int_0^\infty\frac{t\,J_0(at)}{e^t-1}\dd t = \sum_{k=1}^{\infty}\frac{k}{(k^2+a^2)^{3/2}}.
+  \int_0^\infty\frac{G(t)}{e^t-1}\dd t = \sum_{k=1}^{\infty}F(k), \qquad F(k) = \int_0^\infty G(t)e^{-kt}\dd t,
 \]
+where the Laplace transform $F$ is again holonomic, and the Fermi--Dirac weight $(e^t+1)^{-1}$ gives the
+corresponding alternating sum. For instance, $G(t) = t\,J_0(at)$ gives $F(k) = k/(k^2+a^2)^{3/2}$.
 
 Table~\ref{tab:constants} lists constants from classical analysis, number theory and mathematical physics expressed in
 this way, including examples from the tables of Flajolet and Vardi~\cite{FV96} and of Finch~\cite{Fin03},
