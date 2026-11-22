@@ -226,22 +226,21 @@ algorithms and are treated in a companion note \cite{Joh26}.
 
 Euler's constant is the constant term of $\zeta(s)$ at its pole $s = 1$, and by \eqref{eq:twoconstants} also
 $\zeta_{F_1}(0)$ with $F_1(k) = \frac1k - \log(1+\frac1k)$; we will similarly express Khinchin's constant, and many other
-constants, as values of $\zeta_F$ for various $F$. The functions \eqref{eq:functions} cover the familiar ways in which sums of holonomic functions arise:
+constants, as values of $\zeta_F$ for various $F$. The functions \eqref{eq:functions} cover familiar ways in which sums of holonomic functions arise:
 \begin{itemize}
 \item a sum $\sum_{k=1}^{\infty} F(k)$ is the value $\zeta_F(0)$, and an alternating sum $\sum_{k=1}^{\infty} (-1)^k F(k)$ is the value $L_F(0, \chi)$ where $\chi(k) = (-1)^k$;
 \item a sum $\sum_{k=1}^{\infty}(\log k)^jF(k)$ is $(-1)^j\zeta_F^{(j)}(0)$;
 \item a product $\prod_k \exp(F(k))$ is $\exp(\zeta_F(0))$;
 \item a product $\prod_k k^{F(k)}$ is $\exp(-\zeta_F'(0))$;
 \item a divergent sum $\sum_{k=1}^{\infty} k^m F(k)$ has the regularized value $\zeta_F(-m)$;
-\item the Dirichlet generating function of a sequence $F \in \Reg$ is $\zeta_F(s)$, and its ordinary generating
+\item the Dirichlet generating function of $F$ is $\zeta_F(s)$, and its ordinary generating
 function $\sum_kF(k)z^k$ is $\Li_F(0,z)$; weights $(\log k)^j$ and powers $k^{-s}$ in a generating function are
 derivatives and values in $s$;
-\item shifts of the power, $\sum_kF(k)(k+a)^{-s}$, are Lerch transcendents, and at a fixed $s$ reduce to the other
-functions (Section~\ref{sec:twistshift});
-\item summands with stretched-exponential decay are values of damped zeta functions.
+\item shifts of the power, $\sum_kF(k)(k+a)^{-s}$, are Lerch transcendents, and at fixed $s$ reduce to the other
+functions (Section~\ref{sec:twistshift}); summands with stretched-exponential decay are values of damped zeta functions.
 \end{itemize}
 
-The class $\Reg$ is large. It is closed under sums and products, and
+The class $\Reg$ of admissible sequences is large. It is closed under sums and products, and
 contains every algebraic function $A(k)$,
 the compositions $\log A(k)$ and $\arctan A(k)$,
 and more generally $G(A(k))$ where $G$ is any holonomic function that is
@@ -255,6 +254,7 @@ $(e^t+1)^{-1}$), which are sums $\sum_k\int_0^\infty G(t)e^{-kt}\dd t$ of Laplac
 \[
   \int_0^\infty\frac{t\,J_0(at)}{e^t-1}\dd t = \sum_{k=1}^{\infty}\frac{k}{(k^2+a^2)^{3/2}}.
 \]
+
 Table~\ref{tab:constants} lists constants from classical analysis, number theory and mathematical physics expressed in
 this way, including examples from the tables of Flajolet and Vardi~\cite{FV96} and of Finch~\cite{Fin03},
 Sloane's OEIS~\cite{OEIS}, and other sources. By Theorem~B and Claim~C, all of them can be computed in
@@ -332,6 +332,8 @@ $2\pi p_t(0) - 1$, $0 < \alpha < 2$ & $1$ & $2\Lambda(0;t,\alpha)$ \\
 \bottomrule
 \end{tabular*}
 \end{table}
+
+\subsubsection{Special cases with faster algorithms}
 
 Special cases of such sums were already known to be efficiently computable. Among the constants of Table~\ref{tab:constants},
 Euler's constant $\gamma$ and closed forms involving $\pi$ can be computed
@@ -480,7 +482,7 @@ example in full, proves Theorem~A and shows that both sides are holonomic. Secti
 function, and discusses the limits of the method. Section~\ref{sec:complexity} proves Theorem~B, states the
 uniform bounds and their consequences for integer sequences, and compares the theta splitting with classical
 methods. Section~\ref{sec:khinchin} defines the Khinchin zeta function and gives three algorithms for Khinchin's
-constant, with an implementation and a computation to $10^7$ digits. Section~\ref{sec:other} treats the other
+constant, with an implementation and a computation to $10^7$ digits. Section~\ref{sec:other} treats other
 constants of Table~\ref{tab:constants}, and Section~\ref{sec:open} lists open problems. Appendix~\ref{app:cost} contains the
 cost analysis and Appendix~\ref{sec:khpseudo} an annotated reference implementation for Khinchin's constant.
 
@@ -2558,7 +2560,7 @@ $K e^{\pm2\sigma/\sqrt n}$ (left) and $\pm2\sigma$ (right), with $\sigma = 1.10$
 %======================================================================
 \section{Other constants}\label{sec:other}
 
-This section treats the other constants of Table~\ref{tab:constants}. For the constants of Euler, Stieltjes, Stirling and
+This section treats several other constants of Table~\ref{tab:constants}. For the constants of Euler, Stieltjes, Stirling and
 Glaisher (Section~\ref{sec:stieltjes}) we only compare the splitting with the classical formulas. For
 $\mathcal A$, $\mathcal C$, $K_{-1}$, the constant of Theodorus, the Hardy--Littlewood function and the vortex sum
 (Sections~\ref{sec:AG}--\ref{sec:vortex}), and for two values of damped functions, Somos's constant and
