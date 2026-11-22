@@ -214,7 +214,10 @@ $\Lambda_F(s;\tau,r)$ at $s_0$ can be computed to $p$ bits in $p^{3/2+o(1)}$ bit
 
 Here $\Mul(p)$ is the cost of $p$-bit integer multiplication, so the bound is $p^{3/2+o(1)}$, against
 $p^{2+o(1)}$ for the classical methods (Euler--Maclaurin summation, the expansion in zeta values, and, for the
-functions with exponential decay, direct summation, which needs $p^{1+1/r+o(1)}$ for $\Lambda_F$).
+functions with exponential decay, direct summation, which needs $p^{1+1/r+o(1)}$ for $\Lambda_F$). We write
+$\widetilde O(X)$ for $X(\log X)^{O(1)}$; all bounds of the form $p^{c+o(1)}$ in this paper are in fact
+$\widetilde O(p^c)$. We use the exponent form when comparing methods, and $\widetilde O$ for quasilinear costs and for
+costs measured against the size of the output, such as $\widetilde O(p^2)$ for $\Theta(p)$ numbers of $p$ bits.
 
 The expansion $\zeta_F(s) = \sum_{k<k_0}F(k)k^{-s} + \sum_{n=0}^{\infty}a_n\zeta(s+n,k_0)$ in Hurwitz zeta values
 \cite{FV96}, the \emph{zeta-value expansion}, gives the meromorphic continuation, with simple poles at $s = 1-n$ of residue $a_n$ and the
@@ -435,21 +438,27 @@ Lavrik \cite{Lav68} and Chandrasekharan and Narasimhan \cite{CN62}, and is the b
 \cite{Rub05} and Dokchitser \cite{Dok04}; for the Lerch zeta function see \cite{GLS03}. In mathematical physics the
 same device is Ewald summation of lattice sums \cite{Ewa21}, the Chowla--Selberg formula for Epstein zeta functions
 \cite{CS67} (see \cite{BGMWZ13}), and the proper-time and heat-kernel representations of sums $\sum_kF(k^2)$ in quantum
-field theory \cite{Sch51,Eli95,Kir02}; Crandall used such splittings as computational tools for $\zeta$
-\cite{BBC00} and for polylogarithms and Lerch transcendents \cite{Cra12} (see also \cite{Cof12}).
-For $\Lambda(s) = N^{s/2}\gamma(s)L(s)$ with $\gamma$ a product of $d$ factors
-$\Gamma_{\RR}(s+\mu_j) = \pi^{-(s+\mu_j)/2}\Gamma(\frac{s+\mu_j}2)$, its weights are incomplete Mellin transforms of
-the inverse Mellin transform of $\gamma$, a Meijer $G$-function, and are therefore holonomic: incomplete gamma
-functions in degree $d = 1$ and for $\Gamma_{\RR}(s)\Gamma_{\RR}(s+1)$, and Bessel and Meijer $G$-functions in
-general. These methods are analysed by the number of terms, about $\sqrt N$ at fixed precision. As a function of
-$p$, about $\sqrt N\,p^{d/2}$ terms are needed, so only degree~$1$ gives $p^{3/2+o(1)}$ at algebraic $s$ (see below
-and Section~\ref{sec:limits}); products of functions of degree~$1$, such as Dedekind zeta functions of abelian fields,
-can be computed factor by factor.
+field theory \cite{Sch51,Eli95,Kir02}. Crandall used such splittings systematically as computational tools for $\zeta$
+\cite{BBC00} and for polylogarithms, Lerch transcendents and related functions \cite{Cra12} (see also
+\cite{Cof12,BB15}), without a complexity analysis.
+
+The $L$-function algorithms and the present results overlap only in part. Both contain the Dirichlet $L$-functions and
+the Hurwitz and Lerch zeta functions; there Theorem~\ref{thm:split} with $F = 1$, and its twisted form
+(Remark~\ref{rem:twist}), is the smoothed approximate functional equation. Beyond this intersection neither contains the other. The $L$-function algorithms allow arbitrary arithmetic
+coefficients and gamma factors of any degree, but they need a functional equation. Theta splitting needs no functional
+equation and allows any coefficients $F \in \Reg$, but its theta function is that of the integers, with a gamma factor
+of degree~$1$. For a completed $L$-function $\Lambda(s)$ of degree $d$ and conductor $N$, the weights of the smoothed
+approximate functional equation are incomplete Mellin transforms of a Meijer $G$-function, and are therefore
+holonomic: incomplete gamma functions in degree $1$, and Bessel and Meijer $G$-functions in general. These methods are
+usually analysed by the number of terms, about $\sqrt N$ at fixed precision. As a function of $p$, about
+$\sqrt N\,p^{d/2}$ terms are needed, so only degree~$1$ gives $p^{3/2+o(1)}$ at algebraic $s$ (see below and
+Section~\ref{sec:limits}); products of functions of degree~$1$, such as Dedekind zeta functions of abelian fields, can
+be computed factor by factor.
 
 For $F = 1$ every term of the theta splitting is a single incomplete gamma value, and the method then
 gives $p^{3/2+o(1)}$ at algebraic $s$ by fast evaluation of the incomplete gamma function \cite{CC90,vdH99}.
 This result is folklore. Borwein and Borwein~\cite{BB88} claimed this bound for computing $\zeta(s)$ but without stating the algorithm
-and without the important qualification that $s$ needs to be algebraic (they likely had the same method and mind,
+and without the important qualification that $s$ needs to be algebraic (they likely had the same method in mind,
 but there is no subquadratic complexity bound for transcendental $s$).
 To our knowledge it was first stated explicitly, for Dirichlet $L$-functions and with applications to
 Stieltjes constants and Bernoulli and Euler numbers, in the author's preprint \cite{Joh21}. That preprint is
@@ -457,9 +466,7 @@ preliminary work, subsumed by the present paper, which generalizes it substantia
 $F = 1$ to all $F \in \RegQ$ and to polylogarithms and Lerch transcendents (Claim~C adds the damped zeta functions), and Theorem~\ref{thm:uniform} proves the uniformity in $s$
 that \cite{Joh21} argued only briefly.
 
-Crandall \cite{Cra12} developed the splitting systematically for polylogarithms, Lerch transcendents and
-related functions (see also \cite{BB15}), without a complexity analysis. To our knowledge Dirichlet series for holonomic $F$
-have not been studied as such. What holonomy adds is that every piece of the splitting is again holonomic, which is
+To our knowledge Dirichlet series for holonomic $F$ have not been studied as such. What holonomy adds is that every piece of the splitting is again holonomic, which is
 what makes the fast evaluation possible.
 
 %In physics, sums of the class are usually truncated and the tail estimated by its leading term;
@@ -538,9 +545,11 @@ the understanding that $F(1) = 0$.
 Membership in $\RegQ$ concerns the operator and the expansion at infinity, and hence also the exponents $\sigma$,
 which are roots of an indicial polynomial with algebraic coefficients: ${}_2F_1(\frac32,\frac32;2;-\frac4{k^2})$ is in $\RegQ$, and so is $\sin(x/k)$
 for algebraic $x$, but not for $x = \pi$, when its expansion has the coefficients $\pm\pi^{2n+1}/(2n+1)!$. Both
-conditions are needed: $k^{-\pi}$ has the single expansion coefficient $1$, but its exponent is transcendental. Some
-such condition is needed for any complexity bound, since otherwise $F$ could be a hard-to-compute constant times a
-simple function.
+conditions are needed: $k^{-\pi}$ has the single expansion coefficient $1$, but its exponent is transcendental.
+Algebraic data are what allow binary splitting, and hence the bound of Theorem~B. Without such a condition, a
+complexity bound needs some other model of the data, since $F$ could be a hard-to-compute constant times a simple
+function. Section~\ref{sec:complexity} also treats generic data, given by $p$-bit approximations, and obtains weaker
+bounds for them (Table~\ref{tab:methods}).
 
 The two conditions of Definition~\ref{def:regular} are independent. A regular $F$ need not be analytic at infinity
 (it may involve $x^{-\sigma}$ and $\log x$), and a holonomic $F$ that is analytic at infinity need not be regular
@@ -642,9 +651,8 @@ The constructions of Sections~\ref{sec:splitting}--\ref{sec:complexity} are carr
 analytic at infinity. Where this is assumed, we write
 \begin{equation}\label{eq:f}
   F(k) = f(1/k) \quad (k \ge k_0), \qquad f(x) = \sum_{n=0}^{\infty}a_nx^n, \qquad |a_n| \le C R^n,
-  \quad R < k_0,
 \end{equation}
-and let $n_0 = \min\{n : a_n \ne 0\}$ (we exclude $f = 0$). General $F \in \Reg$, of the form \eqref{eq:frob},
+with $R < k_0$, and let $n_0 = \min\{n : a_n \ne 0\}$ (we exclude $f = 0$). General $F \in \Reg$, of the form \eqref{eq:frob},
 reduce to this case by Lemma~\ref{lem:reduction}, at the price of shifts and derivatives in $s$; this is how
 Theorem~\ref{thm:complexity} is proved in that generality. For $F$ as in \eqref{eq:f}, the splitting identity
 (Theorem~\ref{thm:split}) needs nothing more. That its two sides are holonomic (Lemma~\ref{lem:kernelhol}, Proposition~\ref{prop:dual}), and hence
@@ -676,7 +684,7 @@ characters cannot be removed.
   \sum_{k=1,\ k\equiv a \bmod q}^{\infty}F(k)k^{-s} = q^{-s}\sum_{j=0}^{\infty}F(qj+a)\Bigl(j + \frac aq\Bigr)^{-s},
 \]
 and $F(qx+a)$ is regular at infinity; but now $s$ enters the summand through $(j+a/q)^{-s} = j^{-s}(1+\frac{a}{qj})^{-s}$,
-as in the Hurwitz zeta function. So at a \emph{fixed} point $s_0$ the left-hand side is, up to the term $j = 0$, a value
+as in the Hurwitz zeta function. At a \emph{fixed} point $s_0$ the left-hand side is, up to the term $j = 0$, a value
 $\zeta_{F'}(s_0)$ with $F'(j) = q^{-s_0}F(qj+a)(1+\frac a{qj})^{-s_0}$, which suffices for computing it, but as a function of $s$ it is not a function $\zeta_{F'}$, since the summand
 depends on $s$. When only the value at a fixed point matters, as for the sums of Table~\ref{tab:constants}, periodic weights can
 therefore be removed; here we keep them, and
@@ -700,6 +708,7 @@ $\zeta_F$, $L_F$, $\Li_F$, $\Phi_F$, $\Lambda_F$ & the functions \eqref{eq:funct
 $\chi$, $q$ & periodic weight and its period \\
 $s$, $s_0$ & complex variable; evaluation point \\
 $p$, $\Mul(p)$ & precision in bits; cost of $p$-bit multiplication \\
+$\widetilde O(X)$ & $X(\log X)^{O(1)}$ \\
 $u_0$ & split point of the theta splitting \\
 $h_s$, $g_0$, $g_1$, $G_0$, $G_1$ & kernel and its even and odd parts \eqref{eq:kernel}, \eqref{eq:kernelparts} \\
 $I_k$, $J_m$, $M$ & $k$-terms, dual terms and main term (Theorem~\ref{thm:split}) \\
@@ -777,7 +786,7 @@ $E = e^{-c/u_0}$,
   c\,\nu_{t+1} &= Eu_0^{1-t}h(u_0) - (\tfrac12 - t)\nu_t - Y_t, \\
   c\,Y_{t+1} &= Eu_0^{1-t}e^{u_0} - (1-t)Y_t - Y_{t-1},
 \end{align*}
-and $\partial_c\nu_t = -\nu_{t+1}$, $\partial_cY_t = -Y_{t+1}$. So $(\nu_{1/2}, Y_{1/2}, Y_{-1/2})$ satisfies a linear
+and $\partial_c\nu_t = -\nu_{t+1}$, $\partial_cY_t = -Y_{t+1}$. Hence $(\nu_{1/2}, Y_{1/2}, Y_{-1/2})$ satisfies a linear
 differential system in $c$ with coefficients linear in $c$, forced by $E$, and $J_m$ is the value of a holonomic
 function at $c = \pi^2m^2$. The bit-burst algorithm computes it from starting values at a nearby rational point,
 which are series in $\erfc$ and $E$.
@@ -819,7 +828,7 @@ $f(x) = A_0(x^2) + xA_1(x^2)$,
 \]
 a sum of two functions of $k^2$ times powers of $k$, which is the form the Gaussians $e^{-k^2u}$ can handle.
 Within one class the factors $1/\Gamma(m+\sigma)$ change by the rational factor $m+\sigma$ from one term to the next,
-whereas $\Gamma(w)/\Gamma(w+\frac12)$ is not rational in $w$. So each part has a power series with P-recursive
+whereas $\Gamma(w)/\Gamma(w+\frac12)$ is not rational in $w$. Each part therefore has a power series with P-recursive
 coefficients (Lemma~\ref{lem:kernelhol}), and each needs its own incomplete gamma values below, since the recurrences
 for $Q(a,x)$ and for the moments $D_a$ only relate exponents $a$ in the same class modulo $\ZZ$. For $f = 1$ only the
 even part occurs.
@@ -846,7 +855,7 @@ $b \in \mathbb K(s)[u]^\ell$ such that $\mathbf G = (G, \vartheta G, \dots, \var
 First, $A_0$ and $A_1$ are annihilated by operators satisfying (H). Let $L$ be the
 operator of $f$ and $L^-$ the operator obtained by $x \mapsto -x$, which also satisfies (H). The least common left
 multiple of $L$ and $L^-$ annihilates $f(x) \pm f(-x)$; its solution space is the sum of those of $L$ and $L^-$, so by
-Fuchs's criterion it is regular singular at $0$ and satisfies (H). So the even part $A_0(x^2)$ is annihilated by an
+Fuchs's criterion it is regular singular at $0$ and satisfies (H). In particular, the even part $A_0(x^2)$ is annihilated by an
 operator $\sum_jx^jq_j(\vartheta)$ with (H). Split it as $L_{\mathrm{ev}} + L_{\mathrm{od}}$, where $L_{\mathrm{ev}}$
 collects the even powers $x^j$; since $\vartheta$ preserves parity, $L_{\mathrm{ev}}A_0(x^2)$ is even and
 $L_{\mathrm{od}}A_0(x^2)$ is odd, so both vanish. With $y = x^2$ and $\vartheta_x = 2\vartheta_y$ this reads
@@ -919,7 +928,7 @@ The last sum gives the $J_m$. The first three terms give $M$, by termwise integr
 $\int_0^{u_0}u^{w-3/2}\dd u = u_0^{w-1/2}/(w-\frac12)$, $\int_0^{u_0}u^{w-1}\dd u = u_0^w/w$ and
 $\int_0^{u_0}e^{-\kappa u}u^{w-1}\dd u = \kappa^{-w}\Gamma(w)P(w,\kappa u_0)$ with $w = (s+n)/2$.
 
-Now the continuation. $I_k$ is entire since $u \ge u_0$, and $|h_s(u)| \ll e^{R^2u}$ there gives the bound.
+It remains to continue both sides analytically. $I_k$ is entire since $u \ge u_0$, and $|h_s(u)| \ll e^{R^2u}$ there gives the bound.
 $J_m$ is entire since $e^{-\pi^2m^2/u}$ kills any power of $u$ at $0$, and
 $e^{-\pi^2m^2/u} \le e^{-\pi^2(m^2-1)/u_0}e^{-\pi^2/u}$ gives the bound. In $M$, $\Gamma(w)^{-1}$ cancels the
 pole of $u_0^w/w$, and $k^{-s-n}P(\frac{s+n}2,k^2u_0) \ll (k^2u_0)^{n/2}k^{-n}/\Gamma(\frac n2) = u_0^{n/2}/\Gamma(\frac n2)$
@@ -1106,7 +1115,7 @@ for $\delta \in \{0,1\}$ and $\operatorname{Re}c > 0$. By \eqref{eq:startvals},
   D_a(c) = c^a\Gamma\Bigl(-a, \frac c{u_0}\Bigr).
 \] Each $D_a$ is analytic on $\CC\setminus(-\infty,0]$, being $c^a\Gamma(-a)$ minus an
 entire function, and the series converges locally uniformly there, since its terms are
-$O(R^n(|c|+u_0)^{n/2}e^{|c|/u_0}/\Gamma(\frac n2))$. So $J^{(\delta)}_w$ continues analytically to
+$O(R^n(|c|+u_0)^{n/2}e^{|c|/u_0}/\Gamma(\frac n2))$. Hence $J^{(\delta)}_w$ continues analytically to
 $\CC\setminus(-\infty,0]$. All $c_n$ lie in this domain except $c_0 = -\pi^2\alpha_2^2$ when $\alpha_1 = 0$, i.e.\
 $0 < z < 1$; there $J^{(\delta)}_w(c_0)$ denotes the boundary value from $\operatorname{Im}c > 0$.
 
@@ -1355,7 +1364,7 @@ a combination of terms $(k+b)^{-m}$. At an integer $s$, $F(k)k^{-s}$ is again of
 $\sum_{k\ge1}(k+b)^{-m} = \zeta(m, 1+b) = (-1)^m\psi^{(m-1)}(1+b)/(m-1)!$ for $m \ge 2$, while the terms with $m = 1$
 combine to $-\sum_bc_b\psi(1+b)$ (their coefficients $c_b$ sum to zero when the sum converges) and the polynomial part
 gives values $\zeta(-j)$ in the regularized case. In the same way, $\sum_k\log R(k)$ for rational $R$ is a combination
-of values $\log\Gamma(1+b)$ at the zeros and poles of $R$, by the Weierstrass product. So these values cost
+of values $\log\Gamma(1+b)$ at the zeros and poles of $R$, by the Weierstrass product. These values therefore cost
 $\widetilde O(p)$ when $F$ has algebraic coefficients, and $p^{3/2+o(1)}$ when its coefficients are arbitrary complex
 numbers, the zeros and poles being computed to $p$ bits in $\widetilde O(p)$. No such reduction exists at
 non-integer $s$, or for derivatives in $s$: the constants $\mathcal A$ and $\mathcal C$ of Table~\ref{tab:constants} are
@@ -1403,7 +1412,7 @@ the real axis, in quasilinear time \cite{CC90,vdH99}, so they do not affect the 
 faster than Gaussians) suggests that no other smoothing weight does essentially better than the Gaussian; we do not
 make this precise (compare Remark~\ref{rem:whyk2}). If a $k$-term costs $C_I$ and a dual term $C_J$ bit
 operations, the total is of order $\sqrt{p/u_0}\,C_I + \sqrt{pu_0}\,C_J \ge 2\sqrt{p\,C_IC_J}$, with equality at
-$u_0 = C_I/C_J$. So the method is subquadratic as soon as $C_IC_J = O(p^{3-\delta})$: the two sides need not be of
+$u_0 = C_I/C_J$. The method is therefore subquadratic as soon as $C_IC_J = O(p^{3-\delta})$: the two sides need not be of
 the same kind, and one of them may cost up to $p^{2-\delta}$ per term if the other costs $\widetilde O(p)$.
 
 \begin{remark}[Practical points]\label{rem:practical}
@@ -1597,7 +1606,7 @@ With $L \approx p\log 2$ and $T \approx eL$,
 \]
 truncating the lower incomplete gamma series of $\Gamma(1+x) = \gamma(1+x,L) + \Gamma(1+x,L)$, and the sum is evaluated by
 binary splitting with polynomials in $x$ truncated to degree $N$; the numbers at the top of the product tree have
-$\widetilde O(Np)$ bits, so the cost is $\widetilde O(Np)$. (Equivalently one can apply Euler--Maclaurin summation to
+$\widetilde O(Np)$ bits, so the cost is $\widetilde O(Np)$ \cite{Joh14}. (Equivalently one can apply Euler--Maclaurin summation to
 $\log\Gamma(1+x)$ or $\psi(1+x)$ over $\RR[[x]]$, forming $\prod_{k<L}(k+x)$ or $\sum_{k<L}1/(k+x)$ by a product tree.) In
 particular all $\zeta(n)$, $n \le N$, even and odd, cost $\widetilde O(N^2)$ at precision $N$, which is quasi-optimal;
 the classical alternatives (Bernoulli numbers for the even values \cite{Har10}, Borwein's algorithm \cite{Bor00} or
@@ -1613,7 +1622,7 @@ product tree; the integral is $\sum_ny^nM^{1-s-n}/(s+n-1)$; and the Bernoulli co
 \]
 form a single convolution with the sequence $\Gamma(s+m)$. This needs only $p$-bit approximations of $s$.
 
-So the zeta-value expansion costs $\widetilde O(p^2)$ bit operations at any $s$, provided that the $a_n$ are available
+In summary, the zeta-value expansion costs $\widetilde O(p^2)$ bit operations at any $s$, provided that the $a_n$ are available
 (for holonomic $F$ they are P-recursive, and $a_0, \dots, a_N$ to $p$ bits cost $\widetilde O(p^2)$ as well). This is optimal for the method since
 the $\Theta(p)$ values to $p$ bits have total size $\Theta(p^2)$. It is the natural reference method for checking
 other algorithms.
@@ -1644,9 +1653,9 @@ subtraction costs relative but not absolute precision.
 \end{itemize}
 No algorithm for the Hurwitz zeta function is needed, and only $n_1$ zeta values. In a column, by a dilation (Section~\ref{sec:twists}),
 only $K_0 \le k < 2K_0$ and the odd $k \ge 2K_0$ need to be summed: if $X$ is that
-partial sum, then $\zeta(s+n, K_0) = X/(1 - 2^{-s-n})$. The rows cost $\widetilde O(pK_0)$ and the
-$\Theta(p/\log(K_0/R))$ columns $\widetilde O(p^2/\log(K_0/R))$, so peeling off rows saves at most a factor $\log p$
-(with $K_0 \approx p/\log p$), and the cost remains $p^{2+o(1)}$. In practice the gain is a constant factor. The
+partial sum, then $\zeta(s+n, K_0) = X/(1 - 2^{-s-n})$. The rows cost $O(K_0\Mul(p)\log^2p)$, while the
+number $\Theta(p/\log(K_0/R))$ of columns decreases only logarithmically in $K_0$. Peeling off rows therefore saves at most a
+factor $\log p$ (with $K_0 \approx p/\log p$), and the cost remains $p^{2+o(1)}$. In practice the gain is a constant factor. The
 implementation for Khinchin's constant in FLINT (Section~\ref{sec:khimpl}) uses $K_0$ between $6$ and $12$, so
 about three times fewer columns than with $K_0 = 2$, and $K(n_1)$ between $2^3$ and $2^{17}$, so no zeta values for
 $n \ge n_1$. Its rows are products of logarithms, all obtained from $\log q$ for the primes $q \le K_0$.
@@ -1756,7 +1765,7 @@ $O(p)$ terms. For $\zeta_F$ the corresponding identity is
 \[
   \sum_{k=1}^{\infty}(-1)^{k+1}F(k)k^{-s} = \zeta_F(s) - 2^{1-s}\zeta_{F(2\,\cdot)}(s),
 \]
-which relates $\zeta_F$ to the different function $\zeta_{F(2\,\cdot)}$ unless $F$ is a power. So these methods apply
+which relates $\zeta_F$ to the different function $\zeta_{F(2\,\cdot)}$ unless $F$ is a power. These methods therefore apply
 to twisted functions such as $L_G(s,\chi)$ in \eqref{eq:K3}, provided the terms are moments of a positive measure, but
 not to $\zeta_F$ itself; in either case they need $\Theta(p)$ values $F(k)$ to $p$ bits, hence $p^{2+o(1)}$, also
 for generic data.
@@ -2010,7 +2019,7 @@ $-\frac13$ & $1.53570106170602789125\ldots$ & $K_{1/3} = 3.62176321599942938889\
 
 By Theorem~\ref{thm:complexity} all H\"older means
 $K_q$ with rational $q < 1$, not only the $K_{-n}$ computed by Bailey, Borwein and Crandall \cite{BBC97}, can be
-computed to $p$ bits in time $\widetilde O(p^{3/2})$. 
+computed to $p$ bits in $p^{3/2+o(1)}$ bit operations.
 The series expansion at infinity is
 \[
   f(x) = \frac{2\log(1+x) - \log(1+2x)}{\log 2}, \qquad a_n = \frac{(-1)^n(2^n - 2)}{n\log 2},
@@ -2143,7 +2152,7 @@ $G(2j) = \Li_2(1/j^2)$, so
   \frac12\sum_{k=2}^{\infty}(-1)^k\Li_2\Bigl(\frac4{k^2}\Bigr)
   = \frac{\pi^2}{6} + \sum_{k=2}^{\infty}\Bigl(\Li_2\Bigl(\frac1{k^2}\Bigr) - \frac12\Li_2\Bigl(\frac4{k^2}\Bigr)\Bigr).
 \]
-So it suffices to show that $\sum_{k=2}^{\infty} g(k) = \log^22 + \Li_2(-\frac12) + \frac{\pi^2}6$, where
+It therefore suffices to show that $\sum_{k=2}^{\infty} g(k) = \log^22 + \Li_2(-\frac12) + \frac{\pi^2}6$, where
 \[
   g(k) = f\Bigl(\frac1k\Bigr) - \Li_2\Bigl(\frac1{k^2}\Bigr) + \frac12\Li_2\Bigl(\frac4{k^2}\Bigr).
 \]
@@ -2340,7 +2349,7 @@ $19$ against K3. $\log K$ is a
 derivative in $s$, and differentiating $1/\Gamma(\frac{s+n}2)$ introduces $\psi(\frac n2)$, that is, harmonic numbers
 again, while the weight $\log u$ doubles the dual states. In addition the coefficients
 $(-1)^n(2^n-2)/n$ combine two exponential scales, which doubles the states once more, and each term needs extra
-incomplete gamma values. So the logarithm $\log k$, whether as a weight in \eqref{eq:K1} or after summation by parts
+incomplete gamma values. In short, the logarithm $\log k$, whether as a weight in \eqref{eq:K1} or after summation by parts
 as a product of logarithms in \eqref{eq:K2}, shows up as harmonic numbers in the coefficients; the dilogarithm
 identity removes it. The second identity of
 \cite[\S3]{BBC97},
@@ -2725,7 +2734,7 @@ the double sums are geometric in $1/k^2$ with ratio $x/k^2 = u_0$, and
   I_k = \frac{1}{k^2-1}\Bigl(k^{1/2}Q(\tfrac34, k^2u_0) - k^{-1/2}Q(\tfrac14, k^2u_0) + C_0e^{-k^2u_0}\Bigr), \\
   C_0 = \frac{u_0^{3/4}\Phi_{3/4}}{\Gamma(\frac74)} - \frac{u_0^{1/4}\Phi_{1/4}}{\Gamma(\frac54)},
 \end{gather*}
-with $\Phi_b = \sum_{i=0}^{\infty}u_0^i/(b+1)_i$. So each $k$-term costs two incomplete gamma functions and no series.
+with $\Phi_b = \sum_{i=0}^{\infty}u_0^i/(b+1)_i$. Each $k$-term thus costs two incomplete gamma functions and no series.
 
 \emph{The dual terms.} They are $J_m = Z_{3/4}[G_1](c) + Z_{5/4}[G_0](c)$ at $c = \pi^2m^2$. With $D_t = Z_t[1]$,
 the states are
@@ -2817,7 +2826,7 @@ $\beta = 4/\lambda^2$,
 \]
 where $F(k) = f(1/k)$ with $f(x) = {}_2F_1(\frac32,\frac32;2;-\beta x^2)$, a holonomic function with radius of convergence
 $\rho = \lambda/2$. Theorem~\ref{thm:complexity} applies with $k_0 > 2/\lambda$, the terms $n \le 2/\lambda$ being added
-separately, so $U(\lambda)$ can be computed to $p$ bits in time $\widetilde O(p^{3/2})$ for every rational $\lambda$ (and,
+separately, so $U(\lambda)$ can be computed to $p$ bits in $p^{3/2+o(1)}$ bit operations for every rational $\lambda$ (and,
 with algebraic $\beta$, for every algebraic $\lambda$). The leading term gives $U(\lambda) \sim \zeta(3)\lambda^{-3}$ as
 $\lambda \to \infty$ \cite{MS22}. The zeta-value expansion of the terms $n \ge k_0$,
 \[
@@ -3145,7 +3154,7 @@ $k$-side is dominated by the two incomplete gamma functions per term, and the gr
 digits is $58$. Euler--Maclaurin summation is unusually cheap here, since the summand costs only a square root and a
 division: at $10^5$ digits it needs $2.6$ times less CPU time than the theta splitting, though $1.9$ times more wall
 time. It grew by a factor of $184$ from $10^4$ to $10^5$ digits; extrapolating, it would need about $3\cdot10^4$ CPU
-seconds at $10^6$ digits, about as much as the theta splitting, and some six times more wall time. So for
+seconds at $10^6$ digits, about as much as the theta splitting, and some six times more wall time. For
 $\mathcal T$ the crossover in CPU time should be near $10^6$ digits.
 
 For the damped constants the theta splitting grows by factors of $64$ ($\sigma$) and $65$ ($S$) from $10^5$ to $10^6$
@@ -3266,8 +3275,8 @@ $J_\nu(kx)$ is a combination of $e^{\pm ikx}k^{-1/2}$ times divergent series in 
 \item Relativistic Boltzmann sums $\sum_ke^{-\beta\sqrt{k^2+m^2}}$. The summand is $e^{-\beta k}F(k)$ with
 $F(x) = e^{\beta(x-\sqrt{x^2+m^2})}$, which is analytic at infinity but not regular there: as for the example in Section~\ref{sec:defs}, every
 operator annihilating $F$ also annihilates the conjugate
-$e^{\beta(x+\sqrt{x^2+m^2})}$. So Theorem~\ref{thm:geometric}(1) gives a splitting, but condition~(H) fails and
-the proof of Proposition~\ref{prop:dual} does not apply. By Poisson summation, these sums are dual to sums of values
+$e^{\beta(x+\sqrt{x^2+m^2})}$. Theorem~\ref{thm:geometric}(1) still gives a splitting, but condition~(H) fails,
+and the proof of Proposition~\ref{prop:dual} does not apply. By Poisson summation, these sums are dual to sums of values
 $K_1(m\sqrt{\beta^2+4\pi^2\ell^2})/\sqrt{\beta^2+4\pi^2\ell^2}$. Such sums of Bessel functions $K_\nu$ give the
 finite-size and finite-temperature corrections for massive fields, and with divisor weights they appear in the
 Chowla--Selberg formula for Epstein zeta functions \cite{Eli95,Kir02}. Since
@@ -3421,7 +3430,7 @@ constants $\sum_{k\ge k_0}z^k(k+a)^{-l}$, $l \le \max i$; for $z = 1$ and $l = 1
 $\CT_{s=0}\sum_{k\ge k_0}k^{-s}(k+a)^{-1}$, the same for all $m$.
 \end{proof}
 
-So for rational $F$ the moments are combinations of finitely many Hurwitz--Lerch values at algebraic shifts, such as
+For rational $F$, then, the moments are combinations of finitely many Hurwitz--Lerch values at algebraic shifts, such as
 $\psi(a)$ and $\log(1-z)$. Another natural source of such finiteness would be a linear recurrence with polynomial
 coefficients for the values $F(k)$, since multiplying it by $k^mz^k$ and summing relates moments of different orders.
 But within $\Reg$ the only summands with P-recursive values are the rational ones
@@ -3511,7 +3520,7 @@ $x^{-\sigma}\sum_j(\log x - 2\pi im)^jf_{\sigma,j}(1/x)$, $0 \le m \le J$, are s
 coefficients of the powers of $m$ expresses each $f_{\sigma,j}(t)$ as a polynomial in $\log t$ whose coefficients are
 of the form $t^{-\sigma}y(1/t)$ with $y$ a solution of $L$. Moderate growth at $t = 0$ is preserved by sums and
 products, so $f_{\sigma,j}$ is annihilated by an operator with a regular singular point at $t = 0$, i.e.\ satisfying (H).
-So we assume from now on that $\chi$ is even (the odd case only changes $u^{-1/2}$ into $u^{-3/2}$ in the dual
+We may therefore assume from now on that $\chi$ is even (the odd case only changes $u^{-1/2}$ into $u^{-3/2}$ in the dual
 terms), and, to simplify the notation, $\chi = 1$; the weights $w(k)$ and $c_\delta\hat\chi(n)n^\delta$ lie in a fixed
 number field (containing $\pi^{1/2+\delta}$ as a factor that is computed once) and do not change the analysis. We take
 $u_0$ to be the square of a fixed rational number.
@@ -3546,7 +3555,7 @@ number field. Their terms are bounded by $|a_n|\kappa^{-n/2}$ times $e^{x}$, whi
 $O(p/\log(k/R))$ terms suffice, with $O(\log p)$-bit coefficients since $\kappa, x = O(p)$. The values $A_0(1/\kappa)$ and
 $A_1(1/\kappa)$ are holonomic functions at a rational point inside the disk of convergence, $k^{-s} = e^{-s\log k}$ costs
 $O(\Mul(p)\log^2p)$, and the incomplete gamma values are needed only to absolute precision $2^{-p}|k^s|$
-(Section~\ref{app:gamma}). So each $I_k$ costs $O(\Mul(p)\log^2p)$.
+(Section~\ref{app:gamma}). Each $I_k$ therefore costs $O(\Mul(p)\log^2p)$.
 
 \subsection{Incomplete gamma functions}\label{app:gamma}
 Let $a$ be algebraic and $y > 0$ rational with $y = O(p)$. If $a \in \ZZ_{\le0}$ then $Q(a,y) = 0$ and $P(a,y) = 1$.
@@ -3589,21 +3598,21 @@ with P-recursive terms. Individually, each $D_a = \alpha_aD_{a_*} + \beta_aE$ ca
 weighted sums this does not accumulate: since $|g_j| \le CR^{2j}/|\Gamma(j+\sigma_0)|$ and
 $|\alpha_a| \le c_0^{\operatorname{Re}a+O(1)}/|\Gamma(a+1)|$, the terms of $\sum_jg_j\alpha_{j-t+1}$ are of size
 $(R^2c_0)^j/(j!)^2 \cdot c_0^{O(1)} \le e^{2R\sqrt{c_0}}c_0^{O(1)}$, and $E\beta_a = D_a - \alpha_aD_{a_*}$ gives the same
-for the $\beta$-series, while the result is of size $E$ times a factor polynomial in $c_0$. So
+for the $\beta$-series, while the result is of size $E$ times a factor polynomial in $c_0$. Hence
 $O(\sqrt{c_0} + \log p) = O(\sqrt p)$ guard bits suffice, and the starting values cost $O(\Mul(p)\log^2p)$.
 
 \emph{Cost of a dual term.} The system has fixed dimension, its matrices do not depend on $m$, and $c_0$ has $O(1)$
 significant bits and $O(\log p)$ bits in all. Since $c_0 \le c$, the factor $E(c)/E(c_0) \le 1$ does not amplify errors
 in the starting values; the other solutions of \eqref{eq:fuchsys} grow at most like $e^{O(\sqrt c)}$ along the path,
 which costs $O(\sqrt p)$ guard bits. The a priori bound needed for the Taylor tails holds since $|Y(c)| \le Ce^{O(1)}$
-on $|c - c_0| \le \frac34c_0$. So each $J_m$ costs $O(\Mul(p)\log^2p)$, and $\pi^2$ is computed once.
+on $|c - c_0| \le \frac34c_0$. Each $J_m$ therefore costs $O(\Mul(p)\log^2p)$, and $\pi^2$ is computed once.
 
 \subsection{Main term}
 $M(s)$ is a series in $n$ whose terms are products of $a_n$, powers of $u_0^{1/2}$, $1/\Gamma(\frac{s+n}2)$ or
 $1/\Gamma(\frac{s+n}2+1)$, rational functions of $n$ and $s$, and the values $k^{-s-n}P(\frac{s+n}2, k^2u_0)$ for
 $k < k_0$, which for each $k$ satisfy a first-order inhomogeneous recurrence in $n$ (in steps of $2$). Splitting by the
 parity of $n$, these are binary splitting series with terms decaying like $u_0^{n/2}/\Gamma(\frac n2)$. At a pole
-$s_0 = 1-n_1$ only the term $n = n_1$ of the first sum is singular, and its Laurent expansion is explicit. So $M$ and its
+$s_0 = 1-n_1$ only the term $n = n_1$ of the first sum is singular, and its Laurent expansion is explicit. Hence $M$ and its
 Laurent coefficients cost $O(\Mul(p)\log^2p)$.
 
 \subsection{Derivatives in $s$}\label{app:jets}
@@ -3679,7 +3688,7 @@ latter, a number fixed with $L$: the values $y_i(k)$ at these fixed points are c
 analytic continuation from $x = k_0$, in quasilinear time \cite{CC90,vdH99}, and $|k^{-s_0}| \le k_0^{S} = 2^{O(p)}$. Here $f$ and $\sigma$ range over fixed
 finite sets. The coefficients have $O(p)$ bits and absolute value $e^{O(p)}$, so each piece is needed with absolute
 error $2^{-O(p)}$, and the $O(1)$ multiplications by coefficients cost $O(\Mul(p))$. The points $s_0 + \sigma$ satisfy
-the hypotheses on $s_0$ with a larger $c$. So we may assume that $F = f(1/k)$ is fixed and that $\chi$ is a fixed
+the hypotheses on $s_0$ with a larger $c$. We may therefore assume that $F = f(1/k)$ is fixed and that $\chi$ is a fixed
 indicator function. The weights $w(k)$, the Gauss sums and the dual points of Remark~\ref{rem:twist} are then fixed.
 
 \emph{Truncation.} Let $s = s_0$. In the kernel
@@ -3703,7 +3712,7 @@ $j_1 = O(S)$ the least index for which $\operatorname{Re}(\frac s2 + j_1 + 1) \g
 part. The terms with $j \ge j_1$ then follow a recurrence that divides only by numbers $\frac s2 + j + 1$ of real part
 at least $\frac12$. These are units of $\mathbb K[\varepsilon]/(\varepsilon^{j+1})$ when $s = s_0 + \varepsilon$. The
 $O(S)$ terms with $j < j_1$ are polynomials in $s$ times that factor. By (G1) and (G2),
-$\sum_j x^j|1/\Gamma(\frac s2+j+1)| \le 2^{O(p)}x^{S}e^x$, and $x^S = 2^{O(p)}$ since $x = k^2u_0 = O(p)$. So the
+$\sum_j x^j|1/\Gamma(\frac s2+j+1)| \le 2^{O(p)}x^{S}e^x$, and $x^S = 2^{O(p)}$ since $x = k^2u_0 = O(p)$. Hence the
 terms of the double sums are at most $2^{O(p)}|a_{2m}|\kappa^{-m}$, which gives (b) and (d). The coefficients are
 polynomials in $s$, $m$ and $j$ of bounded degree, hence (c). Further, $|k^{-s}| \le k^S = 2^{O(p)}$, and $A_0(1/\kappa)$,
 $A_1(1/\kappa)$ do not depend on $s$.
@@ -3717,12 +3726,12 @@ and $|\Gamma(w)| \ge 0.88\,e^{-\pi S/2}$ by (G1), so $O(p)$ guard bits give $1/\
 
 \emph{Dual terms.} After the normalization of the dual terms in Section~\ref{app:cost}, the entries of $B_0$ and
 $B_1$ in \eqref{eq:fuchsys} are polynomials in $s$ of bounded degree with fixed coefficients. Their dimension does not
-depend on $s$. So their entries have $O(\log p)$ bits and $\|B_0\| + \|B_1\| \le p^{A_0}$ for a fixed $A_0$. For
+depend on $s$. Their entries therefore have $O(\log p)$ bits and $\|B_0\| + \|B_1\| \le p^{A_0}$ for a fixed $A_0$. For
 $\operatorname{Re}c' \ge \frac12\pi^2$ the components of $Y(c')$ are at most $2^{O(p)}$, by the bounds on $h_s$ and
 $|u^{-t}| \le u^{-S}$. We now take the starting point $c_0 \le c$ much closer to $c$ than before. Let
 $\rho = cp^{-A}$ with $A = A_0 + 2$, and take $c - c_0 \le \rho/2$; this still leaves $c_0$ with $O(\log p)$ bits. On
 the disk $|c' - c_0| \le \rho$, Gronwall's inequality bounds the transition matrices of \eqref{eq:fuchsys} and their
-inverses by $\exp\bigl(\rho(\|B_0\|/(c_0-\rho) + \|B_1\|)\bigr) = O(1)$, since $c = O(p)$. So errors in $Y(c_0)$ are not
+inverses by $\exp\bigl(\rho(\|B_0\|/(c_0-\rho) + \|B_1\|)\bigr) = O(1)$, since $c = O(p)$. Errors in $Y(c_0)$ are therefore not
 amplified, and on this disk $|Y| = O(|Y(c_0)|)$, which bounds the Taylor tails by Cauchy's estimate. In the
 bit-burst, the first step goes from $c_0$ to a point at distance at most $\rho/2$. It has $O(p)$ terms with
 $O(\log p)$-bit coefficients. The later steps have $|c_{i+1} - c_i| \le c\,2^{-b_i}$ with
@@ -3772,7 +3781,7 @@ modifications above.
 The reduction to $\chi = 1$ replaces $z$ by the fixed numbers $ze^{2\pi ib/q}$, and the reduction to $f$ satisfying
 (H) is as above. The $k$-terms are those of Theorem~\ref{thm:split} at $s$ and $s+1$. Their weights $C_k$, $S_k$ lie
 in $\mathbb K$, have $O(k) = O(\sqrt p)$ bits, are computed incrementally, and are at most $|z|^{-k} = 2^{O(\sqrt p)}$.
-So the truncation bound becomes $2^{O(p)}|z|^{-k}e^{-(k^2-R^2)u_0}$, and $O(\sqrt p)$ terms still suffice.
+The truncation bound becomes $2^{O(p)}|z|^{-k}e^{-(k^2-R^2)u_0}$, and $O(\sqrt p)$ terms still suffice.
 
 The dual points $c_n = \pi^2(n-\alpha)^2$ are now complex and $|c_n| \ge \pi^2\alpha_2^2 > 0$. If
 $\operatorname{Re}c_n \ge 1$, the bound on $h_s$ on $(0,u_0]$ gives
@@ -3781,7 +3790,7 @@ which $J^{(\delta)}_w(c_n)$ is defined by the series of Section~\ref{sec:geometr
 $D_a(c) = c^a(\Gamma(-a) - \gamma(-a, c/u_0))$. For these, $|c_n| = O(1)$. Write $c^a\gamma(-a,c/u_0)$ as
 $u_0^a\sum_i(-c/u_0)^i/(i!\,(i-a))$ and use (G1)--(G3) and Liouville's inequality for the factors $1/(i-a)$ and
 $\Gamma(-a)$. This bounds the $n$-th term of that series by $2^{O(p)}$ for $n \le 2S+2$, and by
-$2^{O(p)}(R^2(|c_n|+u_0))^{n/2}/\Gamma(\frac n2 - S)$ for larger $n$. So the values are $2^{O(p)}$.
+$2^{O(p)}(R^2(|c_n|+u_0))^{n/2}/\Gamma(\frac n2 - S)$ for larger $n$. Hence the values are $2^{O(p)}$.
 
 Take Gaussian rational starting points $c_n'$ with $O(\log p)$ bits, $|c_n - c_n'| \le |c_n|p^{-A}/2$, and
 $\operatorname{Im}c_n' > 0$ if $c_n$ lies on the cut. On the disk of radius $|c_n|p^{-A}$ about $c_n'$, Gronwall's
@@ -3815,7 +3824,7 @@ $\operatorname{Re}s > 1$,
 and $\zeta(1-n, x) = -B_n(x)/n$, so $B_n(x) = -nf'^{\,1-n}L_1(1-n, \mathbf 1_{b+f'\ZZ})$. Write
 $B_n(x) = \sum_k\binom nkB_kx^{n-k}$. By von Staudt--Clausen the denominator of $B_k$ divides $\prod_{\ell\le k+1}\ell$
 over primes $\ell$, so $D_nB_n(x) \in \ZZ$ with $D_n = f'^{\,n}\prod_{\ell\le n+1}\ell = e^{O(n)}$. From
-$|B_k| \le 4k!/(2\pi)^k$ we get $|B_n(x)| \le 4n!\sum_k(2\pi)^{-k}/(n-k)! \le 4e\cdot n!$ for $0 \le x \le 1$. So
+$|B_k| \le 4k!/(2\pi)^k$ we get $|B_n(x)| \le 4n!\sum_k(2\pi)^{-k}/(n-k)! \le 4e\cdot n!$ for $0 \le x \le 1$. Hence
 $p = n\log_2n + O(n)$ bits of $L_1(1-n, \mathbf 1_{b+f'\ZZ})$ determine $B_n(x)$. Theorem~\ref{thm:uniform} applies
 with $F = 1$ ($L = \partial_x$), $\mathbb K = \QQ$, $j = 0$ and $s_0 = 1 - n$: $H(s_0) \le n \le p$ and
 $|s_0| \le n = O(p/\log p)$. The cost is $O(p^{1/2}\Mul(p)\log^2p)$ with $p = \Theta(n\log n)$, and
@@ -3843,7 +3852,7 @@ choose $d \ge 1$ with $d\lambda \in \mathcal O_{\mathbb K}$. The series $\sum_ne
 $e_n \in d^{-n}\mathcal O_{\mathbb K}$ form a ring that contains $e^{\pm j\lambda t}$, and
 $1/Q(e^{\lambda t}) = \sum_{i\ge0}(Q(1) - Q(e^{\lambda t}))^i/Q(1)^{i+1}$, where only $i \le n$ contribute to the $n$-th
 coefficient. With $N = |N_{\mathbb K/\QQ}(Q(1))|$ we get
-$d^{\,n}N^{n+1}a_n \in \mathcal O_{\mathbb K} \cap \QQ = \ZZ$. So $p = n\log_2n + O(n)$ bits determine $a_n$.
+$d^{\,n}N^{n+1}a_n \in \mathcal O_{\mathbb K} \cap \QQ = \ZZ$. Hence $p = n\log_2n + O(n)$ bits determine $a_n$.
 \end{proof}
 
 \subsection{Geometric factors}\label{app:geometric}
@@ -3887,7 +3896,7 @@ $|1/\Gamma(a)| \le \Gamma(1-\operatorname{Re}a)\cosh(\pi\operatorname{Im}a)/\pi$
 
 \emph{$k$-terms.} The $j$-th term of $I_k$ is at most
 $e^{-k^2u_0}\,O(1)\,(\tau u_0^{-r/2})^j\,\Gamma(1+\frac{rj}2-\frac{\operatorname{Re}s}2)/j!$, which decays like
-$(j!)^{r/2-1}$ since $r < 2$. So $O(p/\log p)$ terms suffice, and within each class they are P-recursive by
+$(j!)^{r/2-1}$ since $r < 2$. Hence $O(p/\log p)$ terms suffice, and within each class they are P-recursive by
 $Q(a+1,x) = Q(a,x) + x^ae^{-x}/\Gamma(a+1)$: binary splitting, $O(\Mul(p)\log^2p)$ per $k$.
 
 \emph{Dual terms.} For $c > 0$ and $\operatorname{Re}a < 0$, $|D_a(c)| \le c^{\operatorname{Re}a}\Gamma(-\operatorname{Re}a)$,
@@ -3917,7 +3926,7 @@ recurrences.
 \input{khinchin_listing}
 
 %======================================================================
-% CHECK bibliographic details of Hur99 (title spelling), AIK14, Kat97, Zag06, HL23, AdR11, Bor00, Har10, Bal00, vdH07, BC21, Bri12, Dav93, Hla80, Gau10, RG12, SKRS02, KZ01, Joh15, KZ08, Mor21, Nol90, Bor87, Joh23, and the entries carried over from zetaseries.tex: BBC00, BGMWZ13, BGS07, Boy19, CC20, CHTZZ07, CN62, CS67, Cof12, EKR11, Ewa21, FGS05, Fin18, GLS03, HLS24, Joh17, Kar95, Kar98, Mez10, Mez16, Pet02, SW59, Sch51 (added from memory/web search).
+% CHECK bibliographic details of Joh14, Hur99 (title spelling), AIK14, Kat97, Zag06, HL23, AdR11, Bor00, Har10, Bal00, vdH07, BC21, Bri12, Dav93, Hla80, Gau10, RG12, SKRS02, KZ01, Joh15, KZ08, Mor21, Nol90, Bor87, Joh23, and the entries carried over from zetaseries.tex: BBC00, BGMWZ13, BGS07, Boy19, CC20, CHTZZ07, CN62, CS67, Cof12, EKR11, Ewa21, FGS05, Fin18, GLS03, HLS24, Joh17, Kar95, Kar98, Mez10, Mez16, Pet02, SW59, Sch51 (added from memory/web search).
 \begin{thebibliography}{99}
 \bibitem{AdR11} J.~Arias de Reyna, High precision computation of Riemann's zeta function by the Riemann--Siegel formula, I, Math.\ Comp.\ 80 (2011), 995--1009.
 \bibitem{AIK14} T.~Arakawa, T.~Ibukiyama and M.~Kaneko, \emph{Bernoulli Numbers and Zeta Functions}, Springer
@@ -3977,6 +3986,8 @@ Monographs in Mathematics, Springer, 2014.
 (1899), 196--226.
 \bibitem{IK02} M.~Iosifescu and C.~Kraaikamp, \emph{Metrical Theory of Continued Fractions}, Kluwer, 2002.
 \bibitem{Inc26} E.~L.~Ince, \emph{Ordinary Differential Equations}, Longmans, Green and Co., 1926.
+\bibitem{Joh14} F.~Johansson, \emph{Fast and rigorous computation of special functions to high precision}, PhD thesis,
+RISC, Johannes Kepler University Linz, 2014.
 \bibitem{Joh15} F.~Johansson, Rigorous high-precision computation of the Hurwitz zeta function and its derivatives, Numer.\ Algorithms 69 (2015), 253--270.
 \bibitem{Joh17} F.~Johansson, Arb: efficient arbitrary-precision midpoint-radius interval arithmetic, IEEE Trans.\ Comput.\ 66 (2017), 1281--1292.
 \bibitem{Joh21} F.~Johansson, Rapid computation of special values of Dirichlet $L$-functions, arXiv:2110.10583, 2021.
