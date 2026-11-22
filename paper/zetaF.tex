@@ -1519,8 +1519,12 @@ $B_n(x)$ or $B_{n,\chi}$.
 
 These results are of theoretical interest. For $B_n$ the case $F = 1$ was implemented in \cite{Joh21}: the
 subquadratic scaling is visible, barely, over the range tested, but the method was about $100$ times slower than the
-quadratic algorithms there. The regime $s_0 = 1 - n$, with $p \approx n\log_2n$ and large cancellation, is where the
-constants of the method are least favourable. With $F \ne 1$ the theorem gives, in the same way, the constant terms
+quadratic algorithms there. For $F = 1$ the point $s_0 = 1 - n$ is equivalent to $s_0 = n$ by the functional
+equation, and Riemann's formula, which is Theorem~\ref{thm:split} with $F = 1$ and $u_0 = \pi$
+(Example~\ref{ex:riemann}), is symmetric under $s \mapsto 1-s$, so the theta splitting does the same work in both
+cases. What makes this regime unfavourable is the competition: at $s = n$, with $p \approx n\log_2n$, the Euler
+product for $\zeta(n)$ converges after about $n/\log n$ primes, so the classical algorithms are quadratic with very
+small constants. With $F \ne 1$ the theorem gives, in the same way, the constant terms
 of $\zeta_F$ at $s = 1-n$, the zeta-regularized values of the divergent sums $\sum_kk^{n-1}F(k)$, at uniform cost for
 $n = O(p/\log p)$. These are convergent sums of the same type plus Bernoulli corrections \cite{Joh26}, and in general
 transcendental.
