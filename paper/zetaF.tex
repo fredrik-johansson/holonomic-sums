@@ -238,13 +238,7 @@ function $\sum_kF(k)z^k$ is $\Li_F(0,z)$; weights $(\log k)^j$ and powers $k^{-s
 derivatives and values in $s$;
 \item shifts of the power, $\sum_kF(k)(k+a)^{-s}$, are Lerch transcendents, and at a fixed $s$ reduce to the other
 functions (Section~\ref{sec:twistshift});
-\item summands with stretched-exponential decay are values of damped zeta functions; for example, the density of
-the wrapped symmetric $\alpha$-stable distribution on the circle \cite{MJ00}, which is also the heat kernel of the
-fractional Laplacian $(-\Delta)^{\alpha/2}$ there, is
-\[
-  p_t(x) = \frac1{2\pi}\Bigl(1 + 2\sum_{k=1}^{\infty}e^{-tk^\alpha}\cos kx\Bigr) \qquad (0 < \alpha < 2),
-\]
-a value of $\Lambda$ with a periodic weight when $x/2\pi$ is rational (Section~\ref{sec:twistshift}).
+\item summands with stretched-exponential decay are values of damped zeta functions.
 \end{itemize}
 
 The class $\Reg$ is large. It is closed under sums and products, and
@@ -335,7 +329,7 @@ log-series entropy $H(z)$ & $1$ & $\partial_s\Li_s(z)|_{s=1}$ \\
 Hurwitz--Lerch sums & $F(k)$ & $\Phi_F(z,s,a)$ \\
 \midrule
 \multicolumn{3}{@{}p{\textwidth}@{}}{\emph{Stretched exponentials: damped zeta functions} (Sections~\ref{sec:stretched}, \ref{sec:products}
-and~\ref{sec:expsqrt}); wrapped stable density $p_t$.} \\
+and~\ref{sec:expsqrt}); wrapped stable density $p_t$ (Section~\ref{sec:beyond}).} \\
 \midrule
 $\sum_{k=1}^{\infty}e^{-\sqrt k}$ & $1$ & $\Lambda(0;1,\frac12)$ \\
 $2\pi p_t(0) - 1$, $0 < \alpha < 2$ & $1$ & $2\Lambda(0;t,\alpha)$ \\
@@ -1127,6 +1121,14 @@ entropy
   H(z) = -\sum_{k=1}^{\infty}P(k)\log P(k) = \log L - \frac{z\log z}{(1-z)L} - \frac1L\,\partial_s\Li_s(z)\big|_{s=1},
 \]
 where $-\partial_s\Li_s(z)|_{s=1} = \sum_kz^k\log(k)/k$.
+
+Damped zeta functions occur, for example, in the density of the wrapped symmetric $\alpha$-stable distribution on the
+circle \cite{MJ00}, which is also the heat kernel of the fractional Laplacian $(-\Delta)^{\alpha/2}$ there:
+\[
+  p_t(x) = \frac1{2\pi}\Bigl(1 + 2\sum_{k=1}^{\infty}e^{-tk^\alpha}\cos kx\Bigr) \qquad (0 < \alpha < 2).
+\]
+At $x = 0$ this is $(1 + 2\Lambda(0;t,\alpha))/(2\pi)$, and when $x/2\pi$ is rational it is a value of $\Lambda$ with
+a periodic weight (Section~\ref{sec:twistshift}).
 
 We have checked each splitting identity of this section numerically, by summing every piece as a series and comparing
 %with an independent evaluation; the scripts are in the directory \texttt{paper/checks} of the repository
@@ -3007,7 +3009,7 @@ $\log q = \operatorname{arctanh}\frac1{2q^2-1} + \frac12\log\frac{q^2-1}{4} + \l
 
 \subsection{A stretched-exponential sum}\label{sec:expsqrt}
 Let $S = \sum_{k=1}^{\infty}e^{-\sqrt k} = \Lambda(0;1,\frac12)$. It is related to the density of the wrapped stable
-distribution with $\alpha = \frac12$ (Section~\ref{sec:sums}) by $p_1(0) = (1+2S)/(2\pi)$. For $S$ we use
+distribution with $\alpha = \frac12$ (Section~\ref{sec:beyond}) by $p_1(0) = (1+2S)/(2\pi)$. For $S$ we use
 Proposition~\ref{prop:expsplit} with $r = \frac12$, $\tau = 1$ and $s = 0$. Then $a_j = -j/4$, and the class $j \equiv 0 \pmod 4$ drops out at $s = 0$.
 
 \emph{The kernel.} For $j = 4m+\varrho$, $\varrho \in \{1,2,3\}$, the kernel is $\omega_\varrho w^{1+\varrho/4}H_\varrho(w)$
