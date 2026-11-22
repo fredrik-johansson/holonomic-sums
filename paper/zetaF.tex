@@ -457,10 +457,17 @@ be computed factor by factor.
 
 For $F = 1$ every term of the theta splitting is a single incomplete gamma value, and the method then
 gives $p^{3/2+o(1)}$ at algebraic $s$ by fast evaluation of the incomplete gamma function \cite{CC90,vdH99}.
-This result is folklore. Borwein and Borwein~\cite{BB88} claimed this bound for computing $\zeta(s)$ but without stating the algorithm
-and without the important qualification that $s$ needs to be algebraic (they likely had the same method in mind,
-but there is no subquadratic complexity bound for transcendental $s$).
-To our knowledge it was first stated explicitly, for Dirichlet $L$-functions and with applications to
+This bound is folklore, but it has rarely been stated precisely. Table~1 of Borwein and Borwein \cite{BB88} lists
+the bit complexity $p^{1/2+o(1)}\Mul(p)$ for the gamma and zeta functions on a compact region, and
+$O(\Mul(p)\log^2p)$ for their values at rational points. As justification it cites only Riemann's integral
+representation of $\pi^{-s/2}\Gamma(\frac s2)\zeta(s)$, which leads to \eqref{eq:riemann}, with the remark ``We
+truncate both the integral and the sum''; the algorithm is not described further. For $\Gamma$ both bounds are
+correct. For $\zeta$, the truncated formula is the theta splitting with $F = 1$, whose terms are incomplete gamma
+values at the transcendental points $\pi k^2$. At rational, or algebraic, $s$ this gives $p^{3/2+o(1)}$; no
+quasilinear algorithm is known. At a generic $s$, given by a $p$-bit approximation, each of the $\Theta(\sqrt p)$
+incomplete gamma values already costs $p^{3/2+o(1)}$, and no subquadratic bound is known (Table~\ref{tab:methods}).
+To our knowledge the bound $p^{3/2+o(1)}$ at algebraic $s$, with a complete algorithm, was first stated, for
+Dirichlet $L$-functions and with applications to
 Stieltjes constants and Bernoulli and Euler numbers, in the author's preprint \cite{Joh21}. That preprint is
 preliminary work, subsumed by the present paper, which generalizes it substantially: Theorem~B extends it from
 $F = 1$ to all $F \in \RegQ$ and to polylogarithms and Lerch transcendents (Claim~C adds the damped zeta functions), and Theorem~\ref{thm:uniform} proves the uniformity in $s$
