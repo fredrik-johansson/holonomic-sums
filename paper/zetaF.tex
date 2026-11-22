@@ -382,7 +382,7 @@ For constants of Table~\ref{tab:constants} other than the above exceptions, and 
 algebraic functions that are not rational, we know of no quasilinear
 algorithm, and no earlier subquadratic algorithm
 except the restriction of this paper's method to $F = 1$
-which is classical (see comments below in Section~\ref{sec:related}).
+which is classical (see comments in Section~\ref{sec:related}).
 
 \subsection{Further results}
 
@@ -482,7 +482,7 @@ Section~\ref{sec:defs} defines the classes $\Reg$ and $\RegQ$ of summands and th
 \eqref{eq:functions}, and recalls the fast evaluation of holonomic functions. Section~\ref{sec:splitting} works out one
 example in full, proves Theorem~A and shows that both sides are holonomic. Section~\ref{sec:beyond} gives the splittings of the polylogarithm, the Lerch transcendent and the damped zeta
 function, and discusses the limits of the method. Section~\ref{sec:complexity} proves Theorem~B, states the
-uniform bounds and their consequences for integer sequences, and compares the theta splitting with the classical
+uniform bounds and their consequences for integer sequences, and compares the theta splitting with classical
 methods. Section~\ref{sec:khinchin} defines the Khinchin zeta function and gives three algorithms for Khinchin's
 constant, with an implementation and a computation to $10^7$ digits. Section~\ref{sec:other} treats the other
 constants of Table~\ref{tab:constants}, and Section~\ref{sec:open} lists open problems. Appendix~\ref{app:cost} contains the
@@ -1121,9 +1121,9 @@ $\sum_kz^k\log(k)/k$.
 \item The damped zeta function contains sums such as $\sum_ke^{-\sqrt k}$ (Section~\ref{sec:expsqrt}).
 \end{itemize}
 
-We have checked each splitting identity of this section numerically, by summing every piece as a series and comparing
-with an independent evaluation; the scripts are in the directory \texttt{paper/checks} of the repository
-(\url{https://github.com/fredrik-johansson/holonomic-sums}).
+%We have checked each splitting identity of this section numerically, by summing every piece as a series and comparing
+%with an independent evaluation; the scripts are in the directory \texttt{paper/checks} of the repository
+%(\url{https://github.com/fredrik-johansson/holonomic-sums}).
 
 \subsection{The polylogarithm: geometric factors}\label{sec:geometric}
 Let $F$ satisfy \eqref{eq:f} and let $0 < |z| < 1$. Write $z = e^{2\pi i\alpha}$ with $\alpha = \alpha_1 + i\alpha_2$,
