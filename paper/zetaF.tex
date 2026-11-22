@@ -238,7 +238,13 @@ function $\sum_kF(k)z^k$ is $\Li_F(0,z)$; weights $(\log k)^j$ and powers $k^{-s
 derivatives and values in $s$;
 \item shifts of the power, $\sum_kF(k)(k+a)^{-s}$, are Lerch transcendents, and at a fixed $s$ reduce to the other
 functions (Section~\ref{sec:twistshift});
-\item summands with stretched-exponential decay, such as $e^{-\sqrt k}$, are values of damped zeta functions.
+\item summands with stretched-exponential decay are values of damped zeta functions; for example, the density of
+the wrapped symmetric $\alpha$-stable distribution on the circle \cite{MJ00}, which is also the heat kernel of the
+fractional Laplacian $(-\Delta)^{\alpha/2}$ there, is
+\[
+  p_t(x) = \frac1{2\pi}\Bigl(1 + 2\sum_{k=1}^{\infty}e^{-tk^\alpha}\cos kx\Bigr) \qquad (0 < \alpha < 2),
+\]
+a value of $\Lambda$ with a periodic weight when $x/2\pi$ is rational (Section~\ref{sec:twistshift}).
 \end{itemize}
 
 The class $\Reg$ is large. It is closed under sums and products, and
@@ -325,14 +331,14 @@ Somos's $\sigma_2$; $\sigma_t = \prod_kk^{t^{-k}}$ & $1$; or $F_2$ ($t = 2$) & $
 Sondow--Hadjicostas $\gamma(z)$ & $F_1$ & $z^{-1}\Li_{F_1}(0,z)$ \\
 Bose--Einstein $g_{j}(z)$ & $1$ & $\Li_j(z)$ \\
 Fermi--Dirac $F_{j-1}(\eta)$, $\eta < 0$ & $1$ & $-\Li_j(-e^\eta)$ \\
-log-series entropy & $1$ & $\partial_s\Li_s(z)|_{s=1}$ \\
+log-series entropy $H(z)$ & $1$ & $\partial_s\Li_s(z)|_{s=1}$ \\
 Hurwitz--Lerch sums & $F(k)$ & $\Phi_F(z,s,a)$ \\
 \midrule
 \multicolumn{3}{@{}p{\textwidth}@{}}{\emph{Stretched exponentials: damped zeta functions} (Sections~\ref{sec:stretched}, \ref{sec:products}
-and~\ref{sec:expsqrt}).} \\
+and~\ref{sec:expsqrt}); wrapped stable density $p_t$.} \\
 \midrule
 $\sum_{k=1}^{\infty}e^{-\sqrt k}$ & $1$ & $\Lambda(0;1,\frac12)$ \\
-$\sum_ke^{-\tau k^{1/q}}F(k)$ & $F(k)$ & $\Lambda_F(0;\tau,\frac1q)$ \\
+$2\pi p_t(0) - 1$, $0 < \alpha < 2$ & $1$ & $2\Lambda(0;t,\alpha)$ \\
 \bottomrule
 \end{tabular*}
 \end{table}
@@ -589,7 +595,8 @@ analytic questions concern the tails; the splittings below are applied to a tail
 enough for the expansion of $F$ at infinity to converge at $k_0$, and the terms with $k < k_0$ are added directly. We call $\Li_F$ and $\Lambda_F$ \emph{damped}, as opposed to
 $\zeta_F$ and $L_F$, since the factors $z^k$ and $e^{-\tau k^r}$ make the series converge; for $r = 1$ the two
 coincide, $\Lambda_F(s;\tau,1) = \Li_F(s,e^{-\tau})$. The name \emph{damped zeta function} is ours; for
-$r = \frac12$ and real $\tau$ these are sums of Boltzmann factors over energy levels $E_k \propto \sqrt k$.
+$r = \frac12$ and real $\tau$ these are sums of Boltzmann factors over energy levels $E_k \propto \sqrt k$, such as
+the relativistic Landau levels of graphene.
 
 \begin{lemma}\label{lem:reduction}
 If $F$ is given for $x \ge k_0$ by \eqref{eq:frob} (with any power series $f_{\sigma,j}$ convergent for
@@ -1107,21 +1114,21 @@ splitting of the Lerch transcendent. A stretched exponential $e^{-\tau k^r}$ has
 moved into the kernel, whose expansion is then at $u = \infty$ instead of $u = 0$ (Sections~\ref{sec:stretched}
 and~\ref{sec:products}).
 
-Sums of these kinds arise in several ways (see also Table~\ref{tab:constants}).
-\begin{itemize}
-\item At $s = 0$, $\Li_F(0,z) = \sum_kF(k)z^k$ is the generating function of a sequence $F \in \Reg$, and the
-derivatives in $s$ give the weights $(\log k)^j$. Examples are Somos's quadratic recurrence constant and the
-generalized Euler-constant function of Sondow and Hadjicostas (Section~\ref{sec:somos}).
-\item Polylogarithms and Lerch transcendents of non-integer order inside the unit disk include the Bose--Einstein
-functions $g_{3/2} = \Li_{3/2}$ and $g_{5/2} = \Li_{5/2}$, and the Fermi--Dirac integrals
-$F_j(\eta) = -\Li_{j+1}(-e^\eta)$ with half-integer $j$ and $\eta < 0$.
-\item In probability, there are the moments $\sum_kq^{k-1}(1-q)(\log k)^j$ of the logarithm of a geometric random
-variable, and the entropy of Fisher's logarithmic series distribution $P(k) = -z^k/(k\log(1-z))$, which involves
-$\sum_kz^k\log(k)/k$.
-\item The damped zeta function contains sums such as $\sum_ke^{-\sqrt k}$ (Section~\ref{sec:expsqrt}).
-\end{itemize}
+Examples with $F \ne 1$ are the logarithm of Somos's quadratic recurrence constant and the generalized
+Euler-constant function of Sondow and Hadjicostas (Section~\ref{sec:somos}),
+\[
+  \log\sigma = \sum_{k=1}^{\infty}\frac{1}{2^k}\log\Bigl(1+\frac1k\Bigr), \qquad
+  \gamma(z) = \sum_{k=1}^{\infty}z^{k-1}\Bigl(\frac1k - \log\Bigl(1+\frac1k\Bigr)\Bigr).
+\]
+Derivatives in $s$ give logarithmic weights. For instance, Fisher's logarithmic series distribution
+$P(k) = z^k/(kL)$, $L = -\log(1-z)$, $0 < z < 1$, a classical model of species abundance \cite{FCW43}, has the
+entropy
+\[
+  H(z) = -\sum_{k=1}^{\infty}P(k)\log P(k) = \log L - \frac{z\log z}{(1-z)L} - \frac1L\,\partial_s\Li_s(z)\big|_{s=1},
+\]
+where $-\partial_s\Li_s(z)|_{s=1} = \sum_kz^k\log(k)/k$.
 
-%We have checked each splitting identity of this section numerically, by summing every piece as a series and comparing
+We have checked each splitting identity of this section numerically, by summing every piece as a series and comparing
 %with an independent evaluation; the scripts are in the directory \texttt{paper/checks} of the repository
 %(\url{https://github.com/fredrik-johansson/holonomic-sums}).
 
@@ -2999,8 +3006,9 @@ with the logarithms of all primes up to $p$ (the precision) computed from
 $\log q = \operatorname{arctanh}\frac1{2q^2-1} + \frac12\log\frac{q^2-1}{4} + \log 2$.
 
 \subsection{A stretched-exponential sum}\label{sec:expsqrt}
-For $S = \sum_{k=1}^{\infty}e^{-\sqrt k} = \Lambda(0;1,\frac12)$ we use Proposition~\ref{prop:expsplit} with $r = \frac12$,
-$\tau = 1$ and $s = 0$. Then $a_j = -j/4$, and the class $j \equiv 0 \pmod 4$ drops out at $s = 0$.
+Let $S = \sum_{k=1}^{\infty}e^{-\sqrt k} = \Lambda(0;1,\frac12)$. It is related to the density of the wrapped stable
+distribution with $\alpha = \frac12$ (Section~\ref{sec:sums}) by $p_1(0) = (1+2S)/(2\pi)$. For $S$ we use
+Proposition~\ref{prop:expsplit} with $r = \frac12$, $\tau = 1$ and $s = 0$. Then $a_j = -j/4$, and the class $j \equiv 0 \pmod 4$ drops out at $s = 0$.
 
 \emph{The kernel.} For $j = 4m+\varrho$, $\varrho \in \{1,2,3\}$, the kernel is $\omega_\varrho w^{1+\varrho/4}H_\varrho(w)$
 with $w = 1/u$ and $\omega_\varrho = 1/\Gamma(-\varrho/4)$, where
@@ -3988,7 +3996,7 @@ recurrences.
 \input{khinchin_listing}
 
 %======================================================================
-% CHECK bibliographic details of Joh14, Hur99 (title spelling), AIK14, Kat97, Zag06, HL23, AdR11, Bor00, Har10, Bal00, vdH07, BC21, Bri12, Dav93, Hla80, Gau10, RG12, SKRS02, KZ01, Joh15, KZ08, Mor21, Nol90, Bor87, Joh23, and the entries carried over from zetaseries.tex: BBC00, BGMWZ13, BGS07, Boy19, CC20, CHTZZ07, CN62, CS67, Cof12, EKR11, Ewa21, FGS05, Fin18, GLS03, HLS24, Joh17, Kar95, Kar98, Mez10, Mez16, Pet02, SW59, Sch51 (added from memory/web search).
+% CHECK bibliographic details of FCW43, MJ00, Joh14, Hur99 (title spelling), AIK14, Kat97, Zag06, HL23, AdR11, Bor00, Har10, Bal00, vdH07, BC21, Bri12, Dav93, Hla80, Gau10, RG12, SKRS02, KZ01, Joh15, KZ08, Mor21, Nol90, Bor87, Joh23, and the entries carried over from zetaseries.tex: BBC00, BGMWZ13, BGS07, Boy19, CC20, CHTZZ07, CN62, CS67, Cof12, EKR11, Ewa21, FGS05, Fin18, GLS03, HLS24, Joh17, Kar95, Kar98, Mez10, Mez16, Pet02, SW59, Sch51 (added from memory/web search).
 \begin{thebibliography}{999}
 \bibitem{AdR11} J.~Arias de Reyna, High precision computation of Riemann's zeta function by the Riemann--Siegel formula, I, Math.\ Comp.\ 80 (2011), 995--1009.
 \bibitem{AG77} K.~Alladi and C.~Grinstead, On the decomposition of $n!$ into prime powers, J.\ Number Theory 9 (1977), 452--458.
@@ -4027,6 +4035,7 @@ Monographs in Mathematics, Springer, 2014.
 \bibitem{Eli95} E.~Elizalde, \emph{Ten Physical Applications of Spectral Zeta Functions}, Lecture Notes in Physics m35, Springer, 1995.
 \bibitem{Ess97} D.~Essouabri, Singularit\'es des s\'eries de Dirichlet associ\'ees \`a des polyn\^omes de plusieurs variables et applications en th\'eorie analytique des nombres, Ann.\ Inst.\ Fourier 47 (1997), 429--483.
 \bibitem{Ewa21} P.~P.~Ewald, Die Berechnung optischer und elektrostatischer Gitterpotentiale, Ann.\ Phys.\ 369 (1921), 253--287.
+\bibitem{FCW43} R.~A.~Fisher, A.~S.~Corbet and C.~B.~Williams, The relation between the number of species and the number of individuals in a random sample of an animal population, J.\ Anim.\ Ecol.\ 12 (1943), 42--58.
 \bibitem{FGD95} P.~Flajolet, X.~Gourdon and P.~Dumas, Mellin transforms and asymptotics: harmonic sums, Theoret.\ Comput.\ Sci.\ 144 (1995), 3--58.
 \bibitem{FGS05} P.~Flajolet, S.~Gerhold and B.~Salvy, On the non-holonomic character of logarithms, powers, and the $n$th prime function, Electron.\ J.\ Combin.\ 11(2) (2004--2005), \#A2.
 \bibitem{Fin03} S.~R.~Finch, \emph{Mathematical Constants}, Cambridge University Press, 2003.
@@ -4073,6 +4082,7 @@ Hamburg 27 (1964), 142--144.
 \bibitem{Mah28} K.~Mahler, \"Uber einen Satz von Mellin, Math.\ Ann.\ 100 (1928).
 \bibitem{Mez10} M.~Mezzarobba, NumGfun: a package for numerical and analytic computation with D-finite functions, Proc.\ ISSAC 2010, 139--146.
 \bibitem{Mez16} M.~Mezzarobba, Rigorous multiple-precision evaluation of D-finite functions in SageMath, arXiv:1607.01967, 2016.
+\bibitem{MJ00} K.~V.~Mardia and P.~E.~Jupp, \emph{Directional Statistics}, Wiley, 2000.
 \bibitem{Mon10} H.~Monien, Gaussian quadrature for sums: a rapidly convergent summation scheme, Math.\ Comp.\ 79 (2010), 857--869.
 \bibitem{Mor21} G.~Moroz, New data structure for univariate polynomial approximation and applications to root isolation, numerical multipoint evaluation, and other problems, in \emph{Proc.\ 62nd IEEE Symposium on Foundations of Computer Science (FOCS)}, 2021, 1090--1099.
 \bibitem{MS22} E.~Masroor and M.~A.~Stremler, On the topology of the atmosphere advected by a periodic array of axisymmetric thin-cored vortex rings, Regul.\ Chaotic Dyn.\ 27 (2022), 183--197.
