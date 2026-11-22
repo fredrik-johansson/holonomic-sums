@@ -255,11 +255,6 @@ $(e^t+1)^{-1}$), which are sums $\sum_k\int_0^\infty G(t)e^{-kt}\dd t$ of Laplac
 \[
   \int_0^\infty\frac{t\,J_0(at)}{e^t-1}\dd t = \sum_{k=1}^{\infty}\frac{k}{(k^2+a^2)^{3/2}}.
 \]
-In physics such sums are usually truncated and the tail estimated by its leading term; besides the examples of
-Table~\ref{tab:constants}, they include Matsubara-frequency sums of one-loop integrals at finite temperature
-\cite{HLS24}, with arctangents of algebraic functions of the frequency index, and sums over Kaluza--Klein towers
-\cite{Pet02}.
-
 Table~\ref{tab:constants} lists constants from classical analysis, number theory and mathematical physics expressed in
 this way, including examples from the tables of Flajolet and Vardi~\cite{FV96} and of Finch~\cite{Fin03},
 Sloane's OEIS~\cite{OEIS}, and other sources. By Theorem~B and Claim~C, all of them can be computed in
@@ -267,7 +262,7 @@ $p^{3/2+o(1)}$ bit operations at algebraic values of their parameters.
 
 \begin{table}[p]
 \centering\footnotesize
-\renewcommand{\arraystretch}{1.05}
+\renewcommand{\arraystretch}{1.03}
 \setlength{\aboverulesep}{0.25ex}\setlength{\belowrulesep}{0.35ex}
 \caption{Constants and families of constants as special values of the functions \eqref{eq:functions}.}
 \label{tab:constants}
@@ -316,6 +311,7 @@ ring resonators $S_\lambda(\theta)$ & ${}_2F_1(\frac32,\frac32;3;-\frac{4}{\lamb
 Epstein--Hurwitz $E_a(t)$, $t > \frac12$ & $(1+\frac{a^2}{k^2})^{-t}$ & $\zeta_F(2t)$ \\
 Planck--Larkin $\sigma(T)$ & $e^{\xi/k^2} - 1 - \xi/k^2$ & $\zeta_F(-2)$ \\
 Casimir-type sums & $F(k)$ & $\zeta_F(-m)$ (regularized) \\
+KK top tower \cite[(27)]{Pet02} & $(m_H^2 - 4m_k^2)C_0 - 2$ & $\zeta_F(0)$; $C_0$ at $m_k^2 = m_t^2 + k^2/R^2$ \\
 \midrule
 \multicolumn{3}{@{}p{\textwidth}@{}}{\emph{Geometric factors: polylogarithms and Lerch transcendents} (Sections~\ref{sec:geometric},
 \ref{sec:somos}); $F_1$, $F_2$ as above;
@@ -3998,7 +3994,7 @@ recurrences.
 \input{khinchin_listing}
 
 %======================================================================
-% CHECK bibliographic details of FCW43, MJ00, Joh14, Hur99 (title spelling), AIK14, Kat97, Zag06, HL23, AdR11, Bor00, Har10, Bal00, vdH07, BC21, Bri12, Dav93, Hla80, Gau10, RG12, SKRS02, KZ01, Joh15, KZ08, Mor21, Nol90, Bor87, Joh23, and the entries carried over from zetaseries.tex: BBC00, BGMWZ13, BGS07, Boy19, CC20, CHTZZ07, CN62, CS67, Cof12, EKR11, Ewa21, FGS05, Fin18, GLS03, HLS24, Joh17, Kar95, Kar98, Mez10, Mez16, Pet02, SW59, Sch51 (added from memory/web search).
+% CHECK bibliographic details of FCW43, MJ00, Joh14, Hur99 (title spelling), AIK14, Kat97, Zag06, HL23, AdR11, Bor00, Har10, Bal00, vdH07, BC21, Bri12, Dav93, Hla80, Gau10, RG12, SKRS02, KZ01, Joh15, KZ08, Mor21, Nol90, Bor87, Joh23, and the entries carried over from zetaseries.tex: BBC00, BGMWZ13, BGS07, Boy19, CC20, CHTZZ07, CN62, CS67, Cof12, EKR11, Ewa21, FGS05, Fin18, GLS03, Joh17, Kar95, Kar98, Mez10, Mez16, Pet02, SW59, Sch51 (added from memory/web search).
 \begin{thebibliography}{999}
 \bibitem{AdR11} J.~Arias de Reyna, High precision computation of Riemann's zeta function by the Riemann--Siegel formula, I, Math.\ Comp.\ 80 (2011), 995--1009.
 \bibitem{AG77} K.~Alladi and C.~Grinstead, On the decomposition of $n!$ into prime powers, J.\ Number Theory 9 (1977), 452--458.
@@ -4052,7 +4048,6 @@ Monographs in Mathematics, Springer, 2014.
 \bibitem{Har14} D.~Harvey, A subquadratic algorithm for computing the $n$-th Bernoulli number, Math.\ Comp.\ 83 (2014), 2471--2477.
 \bibitem{HL23} G.~H.~Hardy and J.~E.~Littlewood, The approximate functional equation in the theory of the zeta-function, with applications to the divisor-problems of Dirichlet and Piltz, Proc.\ London Math.\ Soc.\ (2) 21 (1923), 39--74.
 \bibitem{Hla80} E.~Hlawka, Gleichverteilung und Quadratwurzelschnecke, Monatsh.\ Math.\ 89 (1980), 19--44.
-\bibitem{HLS24} D.~Harnett, S.~Li and T.~G.~Steele, Numerically computing finite temperature loop integrals using pySecDec, Eur.\ Phys.\ J.\ A (2024), arXiv:2401.05258.
 \bibitem{HP98} B.~Haible and T.~Papanikolaou, Fast multiprecision evaluation of series of rational numbers, Proc.\ ANTS-III, LNCS 1423, Springer, 1998, 338--350.
 \bibitem{Hur99} A.~Hurwitz, Ueber die Entwickelungscoefficienten der lemniscatischen Functionen, Math.\ Ann.\ 51
 (1899), 196--226.
