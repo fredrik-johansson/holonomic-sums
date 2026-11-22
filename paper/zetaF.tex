@@ -147,9 +147,6 @@ transcendent $\Phi(z,s,a)$, and sums $\sum_ke^{-\tau k^r}k^{-s}$ of stretched ex
 $\Lambda(s;\tau,1) = \Li_s(e^{-\tau})$, where $\Lambda = \Lambda_1$.
 Rational $F$ give the Dirichlet series attached to rational functions
 studied since Mellin and Mahler \cite{Mah28,CN81,Sar84,Pet98,Ess97}.
-The periodic weight $\chi$ and the factors $z^k$
-and $e^{-\tau k^r}$ are kept separate from $F$ because they are not regular at infinity
-(Section~\ref{sec:defs}).
 
 Sums of holonomic functions are values and derivatives of these functions (Section~\ref{sec:sums}). We compute them
 in subquadratic time by an extension of Riemann's theta splitting of $\zeta(s)$, the formula behind his second proof
@@ -265,8 +262,8 @@ Table~\ref{tab:constants}, they include Matsubara-frequency sums of one-loop int
 
 Table~\ref{tab:constants} lists constants from classical analysis, number theory and mathematical physics expressed in
 this way, including examples from the tables of Flajolet and Vardi~\cite{FV96} and of Finch~\cite{Fin03},
-Sloane's OEIS~\cite{OEIS}, and other sources; by Theorem~B all of them can be computed in $p^{3/2+o(1)}$ bit
-operations.
+Sloane's OEIS~\cite{OEIS}, and other sources. By Theorem~B and Claim~C, all of them can be computed in
+$p^{3/2+o(1)}$ bit operations at algebraic values of their parameters.
 
 \begin{table}[p]
 \centering\footnotesize
@@ -357,7 +354,7 @@ and for algebraic $x$ these too can be computed in quasilinear time, from the in
 (\cite{BZ10}; Section~\ref{sec:rational}).
 For rational $A$, the sum $\sum_k A(k)$
 reduces by partial fractions to polygamma values, and sums of logarithms or inverse trigonometric or hyperbolic
-functions of a rational function of $k$ reduce to logarithms of gamma values at algebraic points, as in (OEIS A352619, A393668)
+functions of a rational function of $k$ reduce to logarithms of gamma values at algebraic points, as in
 %\[
 %  \sum_{k=1}^{\infty}\Bigl(\frac1k - \arctan\frac1k\Bigr) = \gamma + \arg\Gamma(1+i),
 %\]
@@ -365,8 +362,8 @@ functions of a rational function of $k$ reduce to logarithms of gamma values at 
 %  \sum_{k=2}^{\infty}\arctanh\frac1{k^2} = \frac12\log\frac{\sinh\pi}{\pi};
 %\]
 $\sum_{k=1}^{\infty} (\frac1k - \arctan(\frac1k)) = \gamma + \arg\Gamma(1+i)$ and
-$\sum_{k=2}^{\infty}\arctanh(1/k^2) = \tfrac{1}{2} \log(\sinh(\pi)/\pi)$,
-all computable in quasilinear time. When the coefficients of the rational function are arbitrary complex numbers,
+$\sum_{k=2}^{\infty}\arctanh(1/k^2) = \tfrac{1}{2} \log(\sinh(\pi)/\pi)$
+(OEIS A352619, A393668), all computable in quasilinear time. When the coefficients of the rational function are arbitrary complex numbers,
 the same reductions still give $p^{3/2+o(1)}$ (Section~\ref{sec:rational}).
 
 On the level of summands, the structure leading to such quasilinear-time algorithms is fragile:
@@ -447,7 +444,7 @@ the Hurwitz and Lerch zeta functions; there Theorem~\ref{thm:split} with $F = 1$
 (Remark~\ref{rem:twist}), is the smoothed approximate functional equation. Beyond this intersection neither contains the other. The $L$-function algorithms allow arbitrary arithmetic
 coefficients and gamma factors of any degree, but they need a functional equation. Theta splitting needs no functional
 equation and allows any coefficients $F \in \Reg$, but its theta function is that of the integers, with a gamma factor
-of degree~$1$. For a completed $L$-function $\Lambda(s)$ of degree $d$ and conductor $N$, the weights of the smoothed
+of degree~$1$. For a completed $L$-function of degree $d$ and conductor $N$, the weights of the smoothed
 approximate functional equation are incomplete Mellin transforms of a Meijer $G$-function, and are therefore
 holonomic: incomplete gamma functions in degree $1$, and Bessel and Meijer $G$-functions in general. These methods are
 usually analysed by the number of terms, about $\sqrt N$ at fixed precision. As a function of $p$, about
@@ -611,9 +608,8 @@ The same reduction, with the same proof, holds for $L_F$, $\Li_F$ and $\Lambda_F
 and $e^{-\tau k^r}$ are not affected.
 
 \begin{remark}[Puiseux expansions]\label{rem:puiseux}
-Regularity at infinity in Definition~\ref{def:regular} is a condition on the operator $L$, namely that $x = \infty$ is
-an ordinary or regular singular point in the sense of Fuchs, and not on the solution $F$ itself: $F$ need not be
-single-valued or analytic at infinity. In particular, a convergent Puiseux series $\sum_{n=0}^{\infty}a_nx^{-n/q}$
+Since regularity at infinity is a condition on the operator, $F$ need not be single-valued or analytic at
+infinity. In particular, a convergent Puiseux series $\sum_{n=0}^{\infty}a_nx^{-n/q}$
 annihilated by such an operator is of the form \eqref{eq:frob}, with $\Sigma \subseteq \{0, \frac1q, \dots,
 \frac{q-1}q\}$, by grouping the terms according to $n \bmod q$, and Lemma~\ref{lem:reduction} reduces it to $q$
 functions that are analytic at infinity. For example, $F(k) = 1/(k^{3/2}+1) = \sum_{n=0}^{\infty}(-1)^nk^{-3(n+1)/2}$
@@ -665,8 +661,9 @@ infinity; condition~(H) of Section~\ref{sec:splitting} is what gives the dual si
 polynomial coefficients. The cost bounds for the classical methods in Section~\ref{sec:complexity} need only that
 the $a_n$, and the Taylor coefficients of $F$, are P-recursive.
 
-\subsection{Twists, dilations and shifts}\label{sec:twists}
-Three operations relate the functions $L_F(s,\chi)$.
+\subsection{Operations on summands}\label{sec:twists}
+Three operations relate the functions $L_F(s,\chi)$ as functions of $s$, and two more preserve only the value at a
+fixed point.
 
 \emph{Dilations.} For an integer $m \ge 1$ let $F_m(k) = F(mk)$, again analytic, respectively regular. Then
 \[
@@ -693,6 +690,17 @@ $\zeta_{F'}(s_0)$ with $F'(j) = q^{-s_0}F(qj+a)(1+\frac a{qj})^{-s_0}$, which su
 depends on $s$. When only the value at a fixed point matters, as for the sums of Table~\ref{tab:constants}, periodic weights can
 therefore be removed; here we keep them, and
 Theorem~\ref{thm:split} handles them directly (Remark~\ref{rem:twist}).
+
+\emph{Telescoping.} For a constant $\sum_{k=k_0}^{\infty}F(k) = \zeta_F(0)$, the summands $F(k)$ and
+$F(k) + H(k+1) - H(k)$ have the same sum, up to $H(k_0)$ and the limit of $H$ at infinity, for any $H$ regular at
+infinity. This holds only at $s = 0$, since $k^{-s}$ does not commute with the shift. Summation by parts is of this
+kind.
+
+\emph{Functional equations.} Identities of the special functions in $F$, such as the duplication and Landen identities
+of the dilogarithm, rewrite the summand without changing its value.
+
+These operations relate different representatives of the same constant, whose costs can differ considerably
+(Sections~\ref{sec:khinchin} and~\ref{sec:generalize}).
 
 \subsection{Notation}\label{sec:notation}
 Table~\ref{tab:notation} lists the notation used throughout. Symbols that occur only in one example (in
@@ -1028,7 +1036,7 @@ $c\,\partial_cE = -(c/u_0)E$. The integrals converge locally uniformly for $\ope
 
 Similarly $\mathcal L[h_s](\kappa)$ is holonomic in $\kappa$, and on the $k$-side the series in $n$
 for $I_k(s)$ has terms satisfying a linear recurrence in $n$ with coefficients in $\QQ(s,k,u_0)$, since
-$Q(a+1,x) = Q(a,x) + x^ae^{-x}/\Gamma(a+1)$. The algorithms sum this series for each $k$ (Appendix~\ref{app:cost}).
+$Q(a+1,x) = Q(a,x) + x^ae^{-x}/\Gamma(a+1)$. The algorithms sum this series for each $k$ (Section~\ref{app:kterms}).
 
 \emph{Starting values.} The point $c = \pi^2m^2$ is transcendental, so binary splitting does not apply there
 directly. Instead we compute $Y$ at a nearby rational point $c_0$ by expanding $g$ termwise, and the bit-burst algorithm
@@ -1124,6 +1132,7 @@ $\CC\setminus(-\infty,0]$. All $c_n$ lie in this domain except $c_0 = -\pi^2\alp
 $0 < z < 1$; there $J^{(\delta)}_w(c_0)$ denotes the boundary value from $\operatorname{Im}c > 0$.
 
 \begin{theorem}\label{thm:geometric}
+With the notation above, the following hold.
 \begin{enumerate}
 \item For all $s \in \CC$,
 \begin{multline*}
@@ -1863,7 +1872,7 @@ is proved and the cost analysis sketched.}
 \label{tab:expclass}
 \begin{tabular}{lllll}
 \toprule
-sum & direct & zeta values & splitting & \\
+sum & direct & zeta values & splitting & bound \\
 \midrule
 $\sum_k\chi(k)z^kF(k)k^{-s}$, $|z| < 1$ & $p^{2}$ & $p^{2}$ & $p^{3/2}$ & Thm.~\ref{thm:geometric} \\
 \quad e.g.\ $\Li_s(z)$, $\log\sigma$, $\gamma(z)$ & & & & \\
@@ -1894,13 +1903,13 @@ where $Z(s)$ is the Khinchin zeta function introduced below in Section~\ref{sec:
 \[
   F(k) = -\log\Bigl(1-\frac1k\Bigr)\log\Bigl(1+\frac1k\Bigr) \quad (k \ge 2),
 \]
-is the formula \eqref{eq:twoconstants} from the introduction, and
+so that \eqref{eq:K2} is the formula \eqref{eq:twoconstants} of the introduction, and
 \[
   G(k) = \Li_2\Bigl(\frac{4}{k^2}\Bigr) \quad (k \ge 2),
 \]
 twisted by $\chi(k) = (-1)^k$. The sums for both K2 and K3 start at $k = 2$; at $k = 1$, $\Li_2(4)$ is not real.
 
-The three formulas for $K$ are linked by the operations of Section~\ref{sec:generalize}.
+The three formulas for $K$ are linked by the operations of Section~\ref{sec:twists}.
 Summation by parts turns $-Z'(0)$ into the product of logarithms in \eqref{eq:K2}; this holds only at $s = 0$, so $Z$
 and $\zeta_F$ are different functions that share one value. A dilation and a telescoping identity then turn
 \eqref{eq:K2} into \eqref{eq:K3} (Lemma~\ref{lem:dilog}). Each representation gives an algorithm with the complexity
@@ -1945,7 +1954,7 @@ gamma values, dual term & $\Gamma(\frac12)$, $E_1$; $\partial_b$ of both & $\Gam
 Let $x = [a_0; a_1, a_2, \dots]$ be the continued fraction of a real number $x$. For almost every $x$, the partial
 quotients follow the Gauss--Kuzmin law: the proportion of the $a_i$ equal to $k$ is
 \[
-\mu_k = \log_2\Bigl(1 + \frac1{k(k+2)}\Bigr)
+\mu_k = \log_2\Bigl(1 + \frac1{k(k+2)}\Bigr),
 \]
 the probability that
 $a_1 = k$ when $x$ is drawn from the Gauss measure $\dd x/((1+x)\log2)$ on $(0,1)$, which is invariant under the
@@ -1993,7 +2002,7 @@ $s = -1$ with value $\sum_{k=1}^{\infty}(k\mu_k - \frac1{k\log 2})$, and $\zeta(
 is $-1/\log 2$.
 \end{proof}
 
-Table~\ref{tab:Zvalues} collects special values of $K$.
+Table~\ref{tab:Zvalues} collects special values of $Z$.
 Apart from the value at $0$, the constant term at the first pole
 and the residues, we know of no other elementary values.
 Numerical values of the complex zeros of $Z$
@@ -2127,12 +2136,12 @@ with the $k$-terms
   I_k = e^{-x}\sum_{n=0}^{\infty}\frac{A_{n+1}}{n+1}\,\frac{e_{n+1}(x)}{\kappa^{n+1}}, \qquad \kappa = k^2,\ x = \kappa u_0,
 \]
 where $e_n(x) = \sum_{i=0}^{n-1}x^i/i!$. The terms satisfy a $4\times4$ triangular recurrence (for the truncated
-exponential, the powers of $x$ and $K$, and their products with $A_n$), summed by binary splitting. The moments
+exponential, the powers of $x$ and $\kappa$, and their products with $A_n$), summed by binary splitting. The moments
 $Z_t[H](c)$ satisfy a scalar recurrence of order $6$ in $t$ with coefficients of degree up to $4$ in $c$ and five
 forcing constants $(\vartheta^iH)(u_0)$, $i < 4$, and $1$. As a first-order system in $c$
 (Proposition~\ref{prop:dual}), for the moments of $(H, \vartheta H, \vartheta^2H, \vartheta^3H)$ and their shifts by
 $u$ and $u^2$, it is linear in $c$, of dimension $12$. The starting values at a rational $c_0$ are the series
-$Z_t[H](c_0) = \sum_jh_jD_{j-t+1}(c_0)$ of \eqref{eq:startvals}, with $t = \frac12$, so that all $D_s$ are reduced to
+$Z_t[H](c_0) = \sum_jh_jD_{j-t+1}(c_0)$ of \eqref{eq:startvals}, with $t = \frac12$, so that all $D_a$ are reduced to
 $D_{-1/2} = \sqrt{\pi/c}\erfc\sqrt{c/u_0}$ and $E = e^{-c/u_0}$. Since $H$ has type $1$, the $k$-terms decay like
 $e^{-(k^2-1)u_0}$ and the dual terms like $e^{-\pi^2m^2/u_0}$, and $O(\sqrt p)$ terms of each kind suffice for $p$ bits.
 
@@ -2146,7 +2155,7 @@ $e^{-(k^2-1)u_0}$ and the dual terms like $e^{-\pi^2m^2/u_0}$, and $O(\sqrt p)$ 
 
 In \cite{BBC97} this is attributed to Zagier and derived from an integral representation of $\log K$ via the Euler
 product for $\sinc z$. We give a proof from \eqref{eq:K2} that uses only the three kinds of operations of
-Section~\ref{sec:generalize}: a dilation, functional equations of the dilogarithm (the duplication formula and
+Section~\ref{sec:twists}: a dilation, functional equations of the dilogarithm (the duplication formula and
 Landen's identity), and telescoping.
 
 \begin{proof}
@@ -2326,7 +2335,7 @@ Only the representations differ, and each is run at its best split point.
 \caption{Khinchin's constant by the three algorithms:
 CPU time (summed over $8$ threads, on the machine of Section~\ref{sec:khresults}), at the best split point
 $u_0$ of each, with the fraction spent on the $k$-side in parentheses.
-Here all three algorithm were implemented using the same generic backend of Section~\ref{sec:appcomp}
+Here all three algorithms were implemented using the same generic backend of Section~\ref{sec:appcomp}
 for a fair comparison; a further optimized implementation of K3 is discussed below in Section~\ref{sec:khimpl}.}
 \label{tab:khcompare}
 \begin{tabular}{lrrr}
@@ -2615,13 +2624,13 @@ and the denominators $k \pm 1$ do not match. In this subsection and the next, $\
 \[
   \Theta(u) = \sum_{k=2}^{\infty}e^{-k^2u} = \frac12\sqrt{\frac\pi u} - \frac12 - e^{-u} + \sqrt{\frac\pi u}\sum_{m=1}^{\infty}e^{-\pi^2m^2/u}
 \]
-and
+and a sum $S = \sum_{k=2}^{\infty}F(k)$ splits as
 \[
   S = \sum_{k=2}^{\infty} I_k + \sqrt\pi\sum_{m=1}^{\infty}J_m + M, \qquad
-  M = \int_0^{u_0}\bigl(\tfrac12\sqrt{\pi/u} - \tfrac12 - e^{-u}\bigr)h(u)\dd u,
+  M = \int_0^{u_0}\bigl(\tfrac12\sqrt{\pi/u} - \tfrac12 - e^{-u}\bigr)h(u)\dd u.
 \]
-with $J_m = Z_{1/2}[h_0](\pi^2m^2) + Z_1[h_1](\pi^2m^2)$, where at $s = 0$ we write $h_0 = g_0$ and $h_1 = g_1$
-for the even and odd kernels \eqref{eq:kernelparts}.
+Here $h = h_0 + u^{-1/2}h_1$ is the kernel at $s = 0$, where we write $h_0 = g_0$ and $h_1 = g_1$ for the even and odd
+kernels \eqref{eq:kernelparts}, and $J_m = Z_{1/2}[h_0](\pi^2m^2) + Z_1[h_1](\pi^2m^2)$.
 
 The constant
 \[
@@ -2633,7 +2642,7 @@ $-\sum_{i=1}^{\infty}\zeta'(2i)$ and also
   \mathcal A = \tfrac12\log2 + \tfrac12 S_A, \qquad
   S_A = \sum_{k=2}^{\infty}\frac{2}{k}\arctanh\frac1k = \sum_{m=1}^{\infty}\frac{2(\zeta(2m)-1)}{2m-1}
 \]
-(the second form by summation by parts, Section~\ref{sec:generalize}, or from the zeta-value expansion). The
+(the second form by summation by parts, Section~\ref{sec:twists}, or from the zeta-value expansion). The
 splitting of $S_A$ is the example of Section~\ref{sec:workedexample}: the kernel is
 $h_0 = \sqrt{\pi/u}\,\erfi\sqrt u$, the dual state $(\nu_t, Y_t, Y_{t-1})$ has dimension $3$ with two forcing
 constants and $t_0 = \frac12$, and the $k$-terms are a $2\times2$ recurrence as for Khinchin's constant.
@@ -2669,7 +2678,7 @@ a state of dimension $4$ ($\nu_t, \Phi_t, \Phi_{t-1}, C_{t-1}$) with three forci
 starting values involve $E_1(c_0/u_0)$. The $k$-terms are, by \eqref{eq:Ik},
 \[
   \frac1k\biggl[-\frac12\log\Bigl(1-\frac1{k^2}\Bigr)\erfc(k\sqrt{u_0})
-  + \frac{2}{\sqrt\pi}e^{-x}\sqrt x\sum_{m=1}^{\infty} \frac{K^{-m}}{2m}\sum_{j=0}^{m-1}\frac{(2x)^j}{3\cdots(2j+1)}\biggr].
+  + \frac{2}{\sqrt\pi}e^{-x}\sqrt x\sum_{m=1}^{\infty} \frac{\kappa^{-m}}{2m}\sum_{j=0}^{m-1}\frac{(2x)^j}{3\cdots(2j+1)}\biggr].
 \]
 One run computes $S_A$ and $\mathcal O$ together.
 
@@ -2735,19 +2744,19 @@ coefficients ($P$ and $Q$ continued analytically in the first argument). In all,
 \]
 the double sums are geometric in $1/k^2$ with ratio $x/k^2 = u_0$, and
 \begin{gather*}
-  I_k = \frac{1}{k^2-1}\Bigl(k^{1/2}Q(\tfrac34, k^2u_0) - k^{-1/2}Q(\tfrac14, k^2u_0) + C_0e^{-k^2u_0}\Bigr), \\
-  C_0 = \frac{u_0^{3/4}\Phi_{3/4}}{\Gamma(\frac74)} - \frac{u_0^{1/4}\Phi_{1/4}}{\Gamma(\frac54)},
+  I_k = \frac{1}{k^2-1}\Bigl(k^{1/2}Q(\tfrac34, k^2u_0) - k^{-1/2}Q(\tfrac14, k^2u_0) + C_*e^{-k^2u_0}\Bigr), \\
+  C_* = \frac{u_0^{3/4}\Phi_{3/4}}{\Gamma(\frac74)} - \frac{u_0^{1/4}\Phi_{1/4}}{\Gamma(\frac54)},
 \end{gather*}
 with $\Phi_b = \sum_{i=0}^{\infty}u_0^i/(b+1)_i$. Each $k$-term thus costs two incomplete gamma functions and no series.
 
-\emph{The dual terms.} They are $J_m = Z_{3/4}[G_1](c) + Z_{5/4}[G_0](c)$ at $c = \pi^2m^2$. With $D_t = Z_t[1]$,
+\emph{The dual terms.} They are $J_m = Z_{3/4}[G_1](c) + Z_{5/4}[G_0](c)$ at $c = \pi^2m^2$. With $C_t = Z_t[1]$,
 the states are
 \[
-  \bigl(Z_t[\widehat G_1], Z_{t-1}[\widehat G_1], D_t\bigr), \qquad
-  \bigl(Z_t[\widehat G_0], Z_{t-1}[\widehat G_0], D_t, D_{t-1}\bigr),
+  \bigl(Z_t[\widehat G_1], Z_{t-1}[\widehat G_1], C_t\bigr), \qquad
+  \bigl(Z_t[\widehat G_0], Z_{t-1}[\widehat G_0], C_t, C_{t-1}\bigr),
 \]
 of dimensions $3$ and $4$, at $t_0 = \frac34$ and $t_0 = \frac54$; the starting values need $\Gamma(\frac34,y)$ and
-$\Gamma(\frac14,y)$. The main term and $C_0$ are eight hypergeometric series in $u_0$.
+$\Gamma(\frac14,y)$. The main term and $C_*$ are eight hypergeometric series in $u_0$.
 
 \begin{remark}[Algebraic summands]\label{rem:algebraic}
 For algebraic $F$ the pieces of the theta splitting are not of a special type in general: the kernel parts satisfy the
@@ -2817,7 +2826,7 @@ a formula found independently by Vasilev (1916) and by Levy and Forsdyke (1928),
 form \eqref{eq:f}: the summand is a complete elliptic integral, and \cite{MS22} sums it by truncating after $500$ terms.
 
 \subsubsection{The series}
-Substituting $s = \sin^2(\varphi/2)$, expanding the integrand binomially and using Wallis's integrals gives, for $a > 2$,
+Substituting $v = \sin^2(\varphi/2)$, expanding the integrand binomially and using Wallis's integrals gives, for $a > 2$,
 \[
   \frac1{2\pi}\int_0^{2\pi}\frac{(1-\cos\varphi)\dd\varphi}{(2(1-\cos\varphi)+a^2)^{3/2}}
   = a^{-3}\,{}_2F_1\Bigl(\frac32,\frac32;2;-\frac4{a^2}\Bigr),
@@ -2903,7 +2912,7 @@ $P_t = Z_t[y]$ and $Q_t = Z_t[w]$ (Section~\ref{sec:splitting}), \eqref{eq:ibp} 
 \end{align*}
 and $J_m = P_0(\pi^2m^2)$: a system of order $4$ (state $P_t, Q_t, P_{t-1}, Q_{t-1}$) with coefficients linear in $c$ and
 two forcing constants. The moment indices are integers, so the starting values at $c_0$ are combinations of
-$E_1(c_0/u_0)$ and $e^{-c_0/u_0}$: with $y = \sum_{j=0}^{\infty}y_ju^j$ and $D_s = \alpha_sE_1(c_0/u_0) + \beta_sE$ as in
+$E_1(c_0/u_0)$ and $e^{-c_0/u_0}$: with $y = \sum_{j=0}^{\infty}y_ju^j$ and $D_a = \alpha_aE_1(c_0/u_0) + \beta_aE$ as in
 Section~\ref{sec:splitting},
 \begin{align*}
   P_0 &= \sum_{j=0}^{\infty}y_jD_{j+1}, & Q_0 &= \sum_{j=0}^{\infty} jy_jD_{j+1}, \\
@@ -2972,8 +2981,8 @@ $\log q = \operatorname{arctanh}\frac1{2q^2-1} + \frac12\log\frac{q^2-1}{4} + \l
 For $S = \sum_{k=1}^{\infty}e^{-\sqrt k} = \Lambda(0;1,\frac12)$ we use Proposition~\ref{prop:expsplit} with $r = \frac12$,
 $\tau = 1$ and $s = 0$. Then $a_j = -j/4$, and the class $j \equiv 0 \pmod 4$ drops out at $s = 0$.
 
-\emph{The kernel.} For $j = 4m+\varrho$, $\varrho \in \{1,2,3\}$, the kernel is $\kappa_\varrho w^{1+\varrho/4}H_\varrho(w)$
-with $w = 1/u$ and $\kappa_\varrho = 1/\Gamma(-\varrho/4)$, where
+\emph{The kernel.} For $j = 4m+\varrho$, $\varrho \in \{1,2,3\}$, the kernel is $\omega_\varrho w^{1+\varrho/4}H_\varrho(w)$
+with $w = 1/u$ and $\omega_\varrho = 1/\Gamma(-\varrho/4)$, where
 \begin{gather*}
   H_\varrho(w) = \sum_{m=0}^{\infty}g_mw^m, \qquad g_0 = \frac{(-1)^\varrho}{\varrho!}, \\
   \frac{g_{m+1}}{g_m} = -\frac{m+1+\varrho/4}{(4m+\varrho+1)(4m+\varrho+2)(4m+\varrho+3)(4m+\varrho+4)},
@@ -2994,7 +3003,7 @@ where
 \]
 three incomplete gamma values and two rational series per class.
 
-\emph{The dual terms.} The dual term is $\sum_\varrho\kappa_\varrho Z_\varrho(\pi^2m^2)$ with
+\emph{The dual terms.} The dual term is $\sum_\varrho\omega_\varrho Z_\varrho(\pi^2m^2)$ with
 $Z_\varrho(c) = \sum_mg_mD_{-1/2-\varrho/4-m}(c)$. Let $t = \frac32 + \frac\varrho4$ and
 \[
   Z = \bigl(Z_t[\vartheta^iH_\varrho]\bigr)_{i<4}, \qquad
@@ -3186,8 +3195,8 @@ The values are, to $50$ digits (the $10^6$-digit files are in
 To our knowledge $\mathcal A$, $\mathcal C$ and $K_{-1}$ had previously been published to about $10^2$--$10^3$ digits
 (OEIS b-files), except $K_{-1}$, which Bailey, Borwein and Crandall computed to $7\,350$ digits with the zeta-value
 expansion of their Corollary~7 \cite{BBC97}; the OEIS lists $\mathcal T$ and $\sigma$ to about $1\,000$ digits
-\cite[A226317, A112302]{OEIS}. For other spacings of the vortex rings ($\lambda = 2/s$ with integer $s$,
-so that $\beta = s^2$),
+\cite[A226317, A112302]{OEIS}. For other spacings of the vortex rings ($\lambda = 2/n$ with integer $n$,
+so that $\beta = n^2$),
 \begin{align*}
   U(2) &= 0.07770257288078689394748426153469590197848\ldots, \\
   U(\tfrac23) &= 0.48599721401691389437533080303387632179\ldots, \\
@@ -3214,7 +3223,7 @@ annihilating differential operator and generalized series coordinates at infinit
 and automatically performs all applicable optimizations
 including series rewriting (see also Section~\ref{sec:generalize} below),
 parameter tuning, and dispatch to different algorithms
-(zeta expansion, Euler-Maclaurin summation, theta splitting)
+(zeta-value expansion, Euler--Maclaurin summation, theta splitting)
 depending on the regime.
 In principle an implementation should be able to match the speed of
 our hand-optimized FLINT implementation of Khinchin's constant
@@ -3222,7 +3231,8 @@ while being completely general.
 
 \subsection{The exponent}\label{sec:openexp}
 Can $\zeta_F(s)$ be computed in quasilinear time for $F \in \RegQ$ and algebraic $s$? This is open even for
-$\zeta(s)$ at algebraic $s \notin \ZZ$. The exponent $\frac32$ comes from the uncertainty principle of the Gaussian
+$\zeta(s)$ at algebraic $s \notin \ZZ$. The exponent $\frac32$ comes from the balance $k_{\max}m_{\max} \asymp p$
+between the two sides, which the uncertainty principle suggests cannot be improved by another smoothing weight
 (Section~\ref{sec:complexity}); lowering it would require evaluating a sum of many terms at once, or an entirely
 different method.
 
@@ -3238,59 +3248,71 @@ At an irregular singularity at infinity, the formal solutions are
 with $Q$ a polynomial and $\phi$ a power series (possibly with logarithms) that is in general divergent but multisummable
 \cite{Bal00}. The exponential factors are rarely the problem. If the sum converges, the leading term of $Q$ is either
 damped, which gives a stretched exponential when its degree $r$ is less than $2$ (up to routine extensions, such as
-several terms or complex $\tau$) and is harmless when $r \ge 2$, or purely oscillatory, which gives a twist when
-$r = 1$. Only oscillatory factors with $r \ne 1$, such as $e^{i\sqrt k}$, are excluded; for these, as for $k^{-it}$ at
-large height, the Poisson dual of a chirp is again a chirp: by stationary phase, the Fourier transform of
-$e^{i\tau x^r}$ is, up to a slowly varying amplitude, $e^{i\tau'|\xi|^{r'}}$ with $r' = r/(r-1)$, which does not decay
-either, so that smoothing one side lengthens the other and no splitting shortens both.
+several terms) and is harmless when $r \ge 2$, or purely oscillatory. Oscillatory factors with $r < 1$, such as
+$e^{i\sqrt k}$, are stretched exponentials with imaginary $\tau$, and Proposition~\ref{prop:expsplit} continues
+analytically in $\tau$: with $\tau = -i$, $r = \frac12$ and $s = 2.3$ it reproduces $\sum_{k=1}^{\infty}e^{i\sqrt k}k^{-s}$
+to $25$ digits, with the same value for $u_0 = \frac14$ and $u_0 = 1$. For $r = 1$ an oscillatory factor is a twist.
+Only oscillatory factors with $r > 1$ are excluded (for $r = 2$, apart from the periodic case); for these, as for
+$k^{-it}$ at large height, the Poisson dual of a chirp is again a chirp. By stationary phase, the Fourier transform of
+$e^{i\tau x^r}$ is, up to a slowly varying amplitude, $e^{i\tau'|\xi|^{r'}}$ with $r' = r/(r-1) > 1$, which does not
+decay either, so that smoothing one side lengthens the other and no splitting shortens both. For $r < 1$ the exponent
+$r'$ is negative, and the dual side decays.
 
 The problem is the divergence of $\phi$, and the threshold is set by the Gaussian kernel. If $\phi$ has Gevrey order
-$1/r$ (coefficients of size $(n!)^{1/r}$ up to geometric factors), as it does when another solution of the operator has an exponential factor of degree $r$, the coefficients of
-$E_s$ in \eqref{eq:kernel} grow like $\Gamma(n/r)/\Gamma(n/2)$. For $r > 2$ the kernel is still entire. For $r = 2$
-it has a finite radius of convergence, as in the first of
+$1/\rho$ (coefficients of size $(n!)^{1/\rho}$ up to geometric factors), as it does when another solution of the
+operator has an exponential factor of degree $\rho$, the coefficients of $E_s$ in \eqref{eq:kernel} grow like
+$\Gamma(n/\rho)/\Gamma(n/2)$. For $\rho > 2$ the kernel is still entire. For $\rho = 2$ it has a finite radius of
+convergence, as in the first of
 \begin{gather*}
   e^{k^2}\erfc(k) = \frac1\pi\int_0^\infty e^{-k^2u}\frac{u^{-1/2}}{1+u}\dd u, \\
   e^{-qk} = \frac{q}{2\sqrt\pi}\int_0^\infty e^{-k^2u}u^{-3/2}e^{-q^2/(4u)}\dd u.
 \end{gather*}
-For $r < 2$ its series diverges, and $h_s$ has an irregular singular point at $u = 0$, where the other exponentials
+For $\rho < 2$ its series diverges, and $h_s$ has an irregular singular point at $u = 0$, where the other exponentials
 reappear: by the second formula, a factor $e^{-qk}$ becomes $e^{-q^2/(4u)}$. The $k$-side needs $h_s$ only on $[u_0,\infty)$, but the dual side integrates it over $(0,u_0]$. The
 starting values \eqref{eq:startvals} integrate the Taylor series of the kernel at $0$ termwise, which now diverges for
-every $u_0$, and condition~(H) is exactly the regularity of the kernel's equation at $u = 0$. For $\Lambda_F$ the
+every $u_0$, and condition~(H) is what makes the kernel's equation regular at $u = 0$. For $\Lambda_F$ the
 kernel also has an essential singularity at $u = 0$, but it is a convergent series in $u^{-r/2}$, because the
 exponential is an explicit factor. The other exponentials of an irregular $F$ are present on the positive axis only
 through the divergence of $\phi$ (in the language of resurgence, as the singularities of its Borel transform), and
 cannot be factored out in this way.
 
-We do not think this obstruction is fundamental. Writing $F(k) = \int_0^\infty e^{-kt}\hat\phi(t)\dd t$ as a
-Borel--Laplace integral, with $\hat\phi$ holonomic, gives
+We do not think this obstruction is fundamental. When $F$ is Borel summable in the direction of the positive real
+axis, writing $F(k) = \int_0^\infty e^{-kt}\hat\phi(t)\dd t$ as a Borel--Laplace integral, with $\hat\phi$ holonomic,
+gives
 $\zeta_F(s) = \int_0^\infty\hat\phi(t)\Li_s(e^{-t})\dd t$, a superposition of the splittings of
 Theorem~\ref{thm:geometric}; alternatively, the starting values of the dual side could be obtained by effective
-resummation at $u = 0$ \cite{vdH07}. Whether the cost then remains $p^{3/2+o(1)}$ is open. The case $r = 2$ also
+resummation at $u = 0$ \cite{vdH07}. Whether the cost then remains $p^{3/2+o(1)}$ is open. The case $\rho = 2$ also
 suggests that (H) is stronger than necessary: what the proof of Lemma~\ref{lem:kernelhol} uses is that the operator
 rescaled by $1/\Gamma$ is regular at $u = 0$, which should allow other solutions with exponential factors of degree at
 least $2$.
 
-Examples from the literature include the following.
-\begin{itemize}
-\item Schl\"omilch series $\sum_ka_kJ_\nu(kx)$ \cite{Wat44}, such as $\sum_kJ_0(kx)k^{-s}$, or
-$\sum_ke^{-kz}J_0(kr)$, a solution of Laplace's equation in cylindrical coordinates. By Hankel's expansion,
+Examples from the literature are the Schl\"omilch series $\sum_ka_kJ_\nu(kx)$ \cite{Wat44}, such as
+$\sum_kJ_0(kx)k^{-s}$, and $\sum_ke^{-kz}J_0(kr)$, which solves Laplace's equation in cylindrical coordinates. By Hankel's expansion,
 $J_\nu(kx)$ is a combination of $e^{\pm ikx}k^{-1/2}$ times divergent series in $1/k$, so it is not a twist
 (Remark~\ref{rem:twist}) of a regular function.
-\item Relativistic Boltzmann sums $\sum_ke^{-\beta\sqrt{k^2+m^2}}$. The summand is $e^{-\beta k}F(k)$ with
-$F(x) = e^{\beta(x-\sqrt{x^2+m^2})}$, which is analytic at infinity but not regular there: as for the example in Section~\ref{sec:defs}, every
-operator annihilating $F$ also annihilates the conjugate
-$e^{\beta(x+\sqrt{x^2+m^2})}$. Theorem~\ref{thm:geometric}(1) still gives a splitting, but condition~(H) fails,
-and the proof of Proposition~\ref{prop:dual} does not apply. By Poisson summation, these sums are dual to sums of values
-$K_1(m\sqrt{\beta^2+4\pi^2\ell^2})/\sqrt{\beta^2+4\pi^2\ell^2}$. Such sums of Bessel functions $K_\nu$ give the
-finite-size and finite-temperature corrections for massive fields, and with divisor weights they appear in the
-Chowla--Selberg formula for Epstein zeta functions \cite{Eli95,Kir02}. Since
-$K_0(y) = \int_1^\infty e^{-yt}(t^2-1)^{-1/2}\dd t$, a sum of values $K_0(kx)$ is an integral over $z = e^{-xt}$ of
-sums covered by Theorem~\ref{thm:geometric}; we do not know whether this leads to a fast algorithm.
-\end{itemize}
+
+Some summands with irregular singularities nevertheless have explicit kernels. In the relativistic Boltzmann sums
+$\sum_ke^{-\beta\sqrt{k^2+m^2}}$, the summand is $e^{-\beta k}F(k)$ with $F(x) = e^{\beta(x-\sqrt{x^2+m^2})}$, which is
+analytic at infinity but not regular there: as for the example in Section~\ref{sec:defs}, every operator annihilating
+$F$ also annihilates the conjugate $e^{\beta(x+\sqrt{x^2+m^2})}$. But the summand is a function of $k^2$ with an
+elementary kernel,
+\[
+  e^{-\beta\sqrt{k^2+m^2}} = \frac{\beta}{2\sqrt\pi}\int_0^\infty e^{-k^2u}\,u^{-3/2}e^{-\beta^2/(4u)}e^{-m^2u}\dd u.
+\]
+The factor $e^{-\beta^2/(4u)}$ merges with the theta exponent, so the dual terms are moments of $e^{-m^2u}$ at the
+shifted points $\pi^2\ell^2 + \beta^2/4$, to which Proposition~\ref{prop:dual} applies, as for the Epstein--Hurwitz sums
+(Remark~\ref{rem:algebraic}). The same holds for sums $\sum_kK_0(kx)$, with the kernel $\frac12u^{-1}e^{-x^2/(4u)}$;
+each dual term is then a single value of $\erfc$. With $\beta = m = x = 1$ both splittings reproduce the sums to
+$26$ digits. We expect the cost $p^{3/2+o(1)}$ at algebraic parameters, but have not worked out the details. Such sums
+of Bessel functions $K_\nu$ give the finite-size and finite-temperature corrections for massive fields, and with
+divisor weights they appear in the Chowla--Selberg formula for Epstein zeta functions \cite{Eli95,Kir02}. With a
+factor $k^{-s}$ the kernel becomes a convolution and is no longer explicit; that case remains open, like the
+Schl\"omilch series.
 
 \subsection{Other summands}\label{sec:openother}
 Is there any other natural class of summands, not holonomic or not regular at infinity in any of the senses above,
-for which both sides of a splitting are cheap (compare Section~\ref{sec:limits})? We list three candidates.
+whose sums can be computed in subquadratic time, by a splitting (compare Section~\ref{sec:limits}) or otherwise? We
+list two candidates.
 
 \subsubsection{P-recursive summands} Some summands are P-recursive in $k$ but not holonomic as functions of a
 continuous variable, such as $k^n/k!$ in Dobinski's formula $B_n = e^{-1}\sum_kk^n/k!$ for the Bell numbers, which
@@ -3298,36 +3320,43 @@ Corollary~\ref{cor:egf} does not cover. Others give Dirichlet series with P-recu
 harmonic zeta function $\sum_kH_kk^{-s}$ \cite{AV84,CC20}. P-recursive sequences of polynomial growth typically have
 divergent asymptotic expansions ($H_k = \psi(k+1) + \gamma$, or $\binom{2k}{k}4^{-k}$), so they are not values of a
 function regular at infinity; conversely $\log k$ and $\sqrt k$ are not P-recursive \cite{FGS05}. By the following
-proposition, the overlap of the two classes consists of the rational functions.
+proposition, P-recursive sequences and holonomic functions analytic at infinity overlap only in the rational
+functions.
 
 \begin{proposition}\label{prop:precursive}
-If $F \in \Reg$ is analytic at infinity and the sequence $F(k)$ is P-recursive, then $F(k)$ agrees for large $k$ with a
-rational function of $k$.
+If $F$ is holonomic and analytic at infinity and the sequence $F(k)$ is P-recursive, then $F(k)$ agrees for large $k$
+with a rational function of $k$.
 \end{proposition}
 
 \begin{proof}
-Suppose $\sum_{i=0}^dc_i(k)F(k+i) = 0$ for large integers $k$. The left side, with $k$ replaced by $x$, is a function
-of $x$ analytic in $1/x$ near $x = \infty$. It vanishes at the points $1/k \to 0$, so it vanishes identically, and
-$F(x)$ satisfies the difference equation. It also satisfies a linear differential equation, and it lies in
+Suppose $\sum_{i=0}^dc_i(k)F(k+i) = 0$ for large integers $k$, with polynomials $c_i$. The left side, with $k$
+replaced by $x$, is a function of $x$ meromorphic at $x = \infty$. It vanishes at the points $x = k$, which accumulate
+at $\infty$, so it vanishes identically, and $F(x)$ satisfies the difference equation. It also satisfies a linear differential equation, and it lies in
 $\CC[[1/x]]$. By a theorem of Sch\"afke and Singer \cite[Corollary~5]{SS19}, a series in $\CC[[1/x]][x]$ that
 satisfies both a linear differential equation and a linear difference equation $x \mapsto x+1$ over $\CC(x)$ is
 rational.
 \end{proof}
 
-\subsubsection{Analytic, non-holonomic summands} Some summands are analytic at infinity but not holonomic, although
-their zeta-value expansions converge geometrically. Examples are the logarithm of the Kepler--Bouwkamp constant and
-two constants from the OEIS (A342680, A336405),
+\subsubsection{Non-holonomic summands and divisor-weighted sums} Some summands are analytic at infinity but not
+holonomic, although their zeta-value expansions converge geometrically. Examples are the logarithm of the
+Kepler--Bouwkamp constant and two constants from the OEIS (A342680, A336405),
 \[
   \sum_{k=3}^{\infty}\log\cos\frac\pi k, \qquad \sum_{n=1}^{\infty}\Bigl(\tan\frac1n - \sin\frac1n\Bigr), \qquad
   \sum_{n=1}^{\infty}\log\Bigl(n\sin\frac1n\Bigr)
 \]
-(the derivative of $\log\cos$ is $-\tan$, which has infinitely many poles), sums of Clausen functions
-$\operatorname{Cl}_2(2\pi/n)$, and sums involving $(1 - \frac2{n+1})^{2n}$, such as the oscillator strengths of the
-hydrogen atom.
+(the derivative of $\log\cos$ is $-\tan$, which has infinitely many poles), and sums involving
+$(1 - \frac2{n+1})^{2n}$, such as the oscillator strengths of the hydrogen atom. Sums of Clausen functions
+$\operatorname{Cl}_2(2\pi/n)$ are similar, but their expansion at infinity contains a term $(\log n)/n$.
 
-\subsubsection{Divisor-weighted sums} These are the sums $\sum_{k=1}^{\infty}d(k)F(k)$ with $F \in \RegQ$, that is,
-the double sums $\sum_{n=1}^{\infty}\sum_{m=1}^{\infty}F(mn)$. An example is the mean number of divisors of a partial
-quotient (Section~\ref{sec:khinchinzeta}),
+Several of these are double sums of holonomic functions. By the product formulas for the cosine and the sine,
+\begin{gather*}
+  \log\cos\frac\pi k = \sum_{m=1}^{\infty}\log\Bigl(1 - \frac{4}{(2m-1)^2k^2}\Bigr), \\
+  \log\Bigl(n\sin\frac1n\Bigr) = \sum_{m=1}^{\infty}\log\Bigl(1 - \frac{1}{\pi^2m^2n^2}\Bigr),
+\end{gather*}
+so the first and third constants are sums of a function of the product of the two indices, weighted by the number of
+(odd) divisors; in the third the function contains the transcendental parameter $\pi$. The simplest sums of this kind
+are $\sum_{k=1}^{\infty}d(k)F(k) = \sum_{n=1}^{\infty}\sum_{m=1}^{\infty}F(mn)$ with $F \in \RegQ$. An example is the
+mean number of divisors of a partial quotient (Section~\ref{sec:khinchinzeta}),
 \[
   \mathbb E[d(a_1)] = \sum_{k=1}^{\infty}d(k)\mu_k
   = \sum_{n=1}^{\infty}\log_2\frac{\Gamma(1+\frac2n)}{\Gamma(1+\frac1n)^2} = 2.09285796492039431020\ldots,
@@ -3349,38 +3378,36 @@ give the integral representations
 \end{align*}
 with $1 < c < 2$. In the double sum $\sum_{n=1}^{\infty}\sum_{m=1}^{\infty}F(mn)$, the inner sum is, for each fixed
 $n$, a sum of a holonomic function of $m$, which theta splitting handles; for $F(k) = \mu_k$ it is
-$\Pr[n \mid a_1]$, given in closed form above. As a function of $n$, however, the inner sum is not holonomic: its expansion
-in $1/n$ has zeta values as coefficients. The factor $\zeta(s)^2$ shows the degree-$2$ structure: Voronoi summation, the analogue
-of theta splitting for the coefficients $d(k)$, needs about $p$ terms, as for other $L$-functions of degree $2$
-(Section~\ref{sec:limits}).
+$\Pr[n \mid a_1]$, given in closed form above. As a function of $n$, however, the inner sum is not holonomic: its
+derivative in $1/n$ involves the digamma function, which has infinitely many poles. The factor $\zeta(s)^2$ shows the
+degree-$2$ structure. Voronoi summation, the analogue of theta splitting for the coefficients $d(k)$, needs about $p$
+terms, as for other $L$-functions of degree $2$ (Section~\ref{sec:limits}), so the question is whether these sums can
+be computed in subquadratic time by any method.
 
-\subsection{Damped zeta functions and large height}
+\subsection{Damped zeta functions}
 For $\Lambda_F$ with general $F \in \Reg$ (Appendix~\ref{app:stretched}), make the cost analysis explicit, with the orders
-and degrees of the recurrences, and treat irrational $r$ and $r$ not of the form $1/q$. At large height, give an exact,
-smoothed Riemann--Siegel formula for $\zeta_F$ with $O(\sqrt t)$ terms (Remark~\ref{rem:complexu0}), and an algorithm
-uniform in $\operatorname{Im}s$.
+and degrees of the recurrences, and treat irrational $r$ and $r$ not of the form $1/q$.
+
+\subsection{Large height}
+Give an exact, smoothed Riemann--Siegel formula for $\zeta_F$ with $O(\sqrt t)$ terms at height $t$
+(Remark~\ref{rem:complexu0}), and an algorithm uniform in $\operatorname{Im}s$.
 
 \subsection{Uniformity in the operator}\label{sec:openuniform}
-Theorem~\ref{thm:uniform} is uniform in $s_0$ and in the coordinates of $F$, but the operator $L$ is fixed
-(Appendix~\ref{app:uniform}). Make the bound explicit in the order, degree and height of $L$ and in the degree of
-the number field. Besides the sizes of the recurrences, this involves the radius $R$, which can be exponential in the
-height of $L$, and with it the number of terms added directly, the analytic continuation to them and the growth
-$e^{R^2u}$ of the kernel. Families of interest where $R$ grows with a parameter include the Epstein--Hurwitz sums with
+Theorem~\ref{thm:uniform} is uniform in $s_0$ and in the coordinates of $F$, but the operator $L$ is fixed. Make the
+bound explicit in the order, degree and height of $L$ and in the degree of the number field. Besides the sizes of the
+recurrences, this involves the radius $R$, which can be exponential in the height of $L$, since a polynomial of height
+$h$ can have roots of size $e^h$, and with it the number $k_0 - k_1$ of terms added directly, the analytic
+continuation to them and the growth $e^{R^2u}$ of the kernel. A version uniform in $L$ would need, among other
+things, a bound such as $R = O(\sqrt p)$, which keeps the $O(R)$ direct terms within the bound. Families of interest where $R$ grows with a parameter include the Epstein--Hurwitz sums with
 large $a$ ($R = a$) and the vortex sums with small spacing $\lambda$ ($R = 2/\lambda$, Section~\ref{sec:vortex}).
 
 \subsection{Good representatives}\label{sec:generalize}
 Given a constant $\sum_{k=1}^{\infty}F(k)$, find a representative that minimizes the cost of
-Theorem~\ref{thm:complexity}. A sum $\sum_{k=1}^{\infty}F(k) = \zeta_F(0)$ can be rewritten without changing its value (up to explicit constants) by three
-kinds of operations, which generate an equivalence relation on summands:
-\begin{enumerate}
-\item \emph{Dilations and twists} (Section~\ref{sec:twists}). These hold for all $s$, so they relate whole
-functions. The first step of the proof of Lemma~\ref{lem:dilog} is of this kind:
-$\sum_{k=2}^{\infty}(-1)^kG(k) = -\sum_{k=2}^{\infty}G(k) + 2\sum_{k=1}^{\infty}G(2k)$. Shifts to residue classes also preserve the value at a fixed $s$.
-\item \emph{Telescoping}: $F(k)$ and $F(k) + H(k+1) - H(k)$ have the same sum (up to $H(k_0)$ and the limit at
-infinity) for any $H$ regular at infinity. This holds only at $s = 0$, since $k^{-s}$ does not commute with the shift.
-Summation by parts, which turns \eqref{eq:K1} into \eqref{eq:K2}, is of this kind.
-\item \emph{Functional equations} of the special functions in $F$, such as the duplication and Landen identities used in Section~\ref{sec:dilog}.
-\end{enumerate}
+Theorem~\ref{thm:complexity}. The operations of Section~\ref{sec:twists} (dilations, twists and shifts, telescoping,
+and functional equations) generate an equivalence relation on summands that preserves the value at $s = 0$. For
+instance, the first step of the proof of Lemma~\ref{lem:dilog} is a dilation,
+$\sum_{k=2}^{\infty}(-1)^kG(k) = -\sum_{k=2}^{\infty}G(k) + 2\sum_{k=1}^{\infty}G(2k)$, and summation by parts turns
+\eqref{eq:K1} into \eqref{eq:K2}.
 The cost of Theorem~\ref{thm:complexity}, on the other hand, depends on the representative: on the order and degree of
 the recurrence of the coefficients $a_n$ (which determine the $k$-side recurrences), on the dimension and degree of
 the dual system, and on the exponential type of the kernel. For Khinchin's constant the best known representative has
@@ -3397,9 +3424,12 @@ numbers for two exponential scales: it splits into the pieces $x\log(1+x)$ and $
 types $1$ and $4$, each with dual states like those of $\mathcal A$ and $\mathcal C$. The total dimension of the dual
 states is about the same as for the second form, so it is not clear which is faster in practice.
 \end{itemize}
-This suggests the question whether every constant $\sum_{k=k_0}^{\infty}\log k\cdot\log R(k)$ with $R$ rational (``weight two'') can be
-brought, by these operations, to a combination of sums $\sum_{k=k_0}^{\infty}\chi(k)\Li_2(c/k^d)$ with hypergeometric coefficients
-plus classical constants, and more generally whether sums of products of $w$ logarithms of rational functions can be
+This suggests the question whether every constant $\sum_{k=k_0}^{\infty}\log k\cdot\log R(k)$ (``weight two'') with
+$R(k) = S(k+1)/S(k)$ for a rational function $S$, so that summation by parts applies as for Khinchin's constant, can be
+brought by these operations to a combination of sums $\sum_{k=k_0}^{\infty}\chi(k)\Li_2(c/k^d)$ with hypergeometric
+coefficients plus classical constants. For other rational $R$ the antidifference of $\log R(k)$ involves log-gamma
+functions, such as $\log\Gamma(k \pm i)$ for $R(k) = 1 + k^{-2}$, which are outside the class. More generally, one can
+ask whether sums of products of $w$ logarithms of rational functions can be
 reduced to single polylogarithms $\Li_w$, as functional equations of polylogarithms would suggest. A systematic
 search would amount to creative telescoping for functions regular at infinity, modulo dilations.
 
@@ -3418,7 +3448,8 @@ analytic at infinity, let $z \in \Qbar$ with $0 < |z| < 1$ or $z = 1$, and consi
 \]
 that is, $M_m = \Li_F(-m, z)$ for $|z| < 1$ and $M_m = \CT_{s=-m}\zeta_F(s)$ for $z = 1$. Up to the factors
 $(-1)^m/m!$ they are the Taylor coefficients of the regular part of $\sum_{k=1}^{\infty}F(k)e^{-kt}$ at $t = -\log z$
-(Section~\ref{sec:ogf}). Let $V_F(z)$ be the $\Qbar$-vector space spanned by $1$ and the $M_m$. For $F = 1$ the sums
+(Section~\ref{sec:ogf}), except that for $z = 1$ at a pole $s = -m$ of $\zeta_F$ the coefficient is
+$M_m + a_{m+1}\psi(m+1)$. Let $V_F(z)$ be the $\Qbar$-vector space spanned by $1$ and the $M_m$. For $F = 1$ the sums
 $\sum_kk^mz^k$ are rational functions of $z$, so $V_1(z) = \Qbar$.
 
 \begin{proposition}\label{prop:rationalF}
@@ -3437,20 +3468,27 @@ $\CT_{s=0}\sum_{k\ge k_0}k^{-s}(k+a)^{-1}$, the same for all $m$.
 For rational $F$, then, the moments are combinations of finitely many Hurwitz--Lerch values at algebraic shifts, such as
 $\psi(a)$ and $\log(1-z)$. Another natural source of such finiteness would be a linear recurrence with polynomial
 coefficients for the values $F(k)$, since multiplying it by $k^mz^k$ and summing relates moments of different orders.
-But within $\Reg$ the only summands with P-recursive values are the rational ones
-(Proposition~\ref{prop:precursive}). For other $F$ we know of no mechanism that would confine the moments to a
+But among the summands considered here, which are holonomic and analytic at infinity, the only ones with
+P-recursive values are the rational ones (Proposition~\ref{prop:precursive}). For other $F$ we know of no mechanism that would confine the moments to a
 finite-dimensional space, and we expect none to exist.
 
 \begin{conjecture}\label{conj:algebraic}
-If $F$ is not eventually a rational function of $k$, then $V_F(z)$ is infinite-dimensional. In particular, the
-moments $M_m$ are not all algebraic for large $m$.
+Let $F \in \RegQ$ be analytic at infinity, and let $z \in \Qbar$ with $0 < |z| < 1$ or $z = 1$. If $F(k)$ does not
+agree for large $k$ with a rational function of $k$, then $V_F(z)$ is infinite-dimensional. In particular,
+infinitely many of the moments $M_m$ are transcendental.
 \end{conjecture}
 
-The conjecture is out of reach even in simple cases. For $F(k) = \log(1+\frac1k)$ and $z = 1$, PSLQ suggests that
-$M_m$ lies in the span of $1$, $\log 2\pi$ and $\zeta'(-j)$, $1 \le j < m$; for instance $M_1 = \frac12(1 - \log2\pi)$.
-Since $\zeta'(-2n) = (-1)^n(2n)!\,\zeta(2n+1)/(2(2\pi)^{2n})$, the space $V_F(1)$ would then contain
-$\zeta(3)/\pi^2$, $\zeta(5)/\pi^4$, and so on. The conjecture for this $F$ would follow from Grothendieck's period
-conjecture, but unconditionally it is not even known that $\dim V_F(1) \ge 3$. For summands such as $e^{1/k}$ the
+The conjecture does not settle the question about integer sequences: moments $M_m \in \omega^m\Qbar$ for a
+transcendental $\omega$, as for $\zeta(2n) \in \pi^{2n}\QQ$, would be consistent with it.
+
+The conjecture is out of reach even in simple cases. For $F(k) = \log(1+\frac1k)$ and $z = 1$, shifting the index in
+$\sum_{k=1}^{\infty}\log(k+1)k^{-s} = \sum_{j=2}^{\infty}\log j\,(j-1)^{-s}$ and expanding $(j-1)^{-s}$ in powers of
+$1/j$ shows that $M_m$ is a rational linear combination of $1$, $\log 2\pi$ and $\zeta'(-j)$, $1 \le j < m$; for
+instance $M_0 = 0$ and $M_1 = \frac12(1 - \log2\pi)$. Since $\zeta'(-2n) = (-1)^n(2n)!\,\zeta(2n+1)/(2(2\pi)^{2n})$,
+the space $V_F(1)$ contains combinations of $\zeta(3)/\pi^2$, $\zeta(5)/\pi^4$, and so on. The conjecture for this $F$
+would follow from Grothendieck's period conjecture, but unconditionally it does not even seem to be known that
+$\dim V_F(1) \ge 2$, which would require the irrationality of one of these combinations, for instance of
+$\log 2\pi$. For summands such as $e^{1/k}$ the
 moments are not obviously periods at all.
 
 Values that are rational up to a period do occur for $L$-functions of degree~$2$. The Eisenstein series of the
@@ -3464,18 +3502,21 @@ $\zeta(2n) \in \pi^{2n}\QQ$. But these are two-dimensional lattice sums, outside
 (Section~\ref{sec:limits}).
 
 %======================================================================
-\section{Acknowledgements}
+\section*{Acknowledgements}
 
 This research was done in collaboration with Claude Opus 5.5.
 The author thanks Drew Sutherland for the extremely generous donation of a
-Claude subscription which enabled this work.
-We thank Vincent Neiger for running an additional
+Claude subscription which enabled this work, and Vincent Neiger for running an additional
 verification computation of Khinchin's constant.
 
 %======================================================================
 \appendix
 
-\section{Proof of Theorem~\ref{thm:complexity}}\label{app:cost}
+\section{Proofs of the complexity bounds}\label{app:cost}
+
+This appendix proves Theorem~\ref{thm:complexity} (Sections~\ref{app:tools}--\ref{app:jets}), Theorem~\ref{thm:uniform}
+and Corollaries~\ref{cor:bernoulli} and~\ref{cor:egf} (Sections~\ref{app:uniform} and~\ref{app:sequences}),
+Theorem~\ref{thm:geometric}(2) (Section~\ref{app:geometric}), and sketches Claim~C (Section~\ref{app:stretched}).
 
 The following proof text is LLM-generated and unedited by the author.
 The ingredients are holonomy of all terms,
@@ -3509,7 +3550,7 @@ the steps with $2^j \ge \log p$ cost $O(\Mul(p)\log p)$ each, and the others for
 $O(\Mul(p\log p)\log p)$. The constants depend on $D$, on $B_0, B_1$, on $|c_0|$ and on an a priori bound $2^{O(p)}$ for
 $|Y|$ on the disk $|c - c_0| \le \frac34|c_0|$.
 
-\subsection{Reduction}
+\subsection{Reduction}\label{app:reduction}
 By Lemma~\ref{lem:reduction}, Remark~\ref{rem:twist}, and the decomposition of $\chi$ into parts of parity $\delta$, the
 $j$-th Laurent coefficient of $L_F(s,\chi)$ at $s_0$ is a finite combination of Laurent coefficients of order at most
 $j + J$ of functions $\sum_{k\ge k_0}\chi(k)f(1/k)k^{-s}$ at the algebraic points $s_0 + \sigma + \delta$, with $f$
@@ -3529,7 +3570,7 @@ terms), and, to simplify the notation, $\chi = 1$; the weights $w(k)$ and $c_\de
 number field (containing $\pi^{1/2+\delta}$ as a factor that is computed once) and do not change the analysis. We take
 $u_0$ to be the square of a fixed rational number.
 
-\subsection{Truncation}
+\subsection{Truncation}\label{app:truncation}
 By the bounds in Theorem~\ref{thm:split}, the tails beyond the first neglected $k$-term and dual term are bounded by
 geometric series, so $p$ bits need
 \begin{equation}\label{eq:counts}
@@ -3538,14 +3579,14 @@ geometric series, so $p$ bits need
 that is, $O(\sqrt p)$ terms on each side ($q$ the period of $\chi$); the choice of $u_0$ only balances the two sides
 (Section~\ref{sec:complexity}).
 
-\subsection{The $k$-terms}
+\subsection{The $k$-terms}\label{app:kterms}
 Let $k \ge k_0$, $\kappa = k^2$ and $x = \kappa u_0$. With $Q(\sigma_0+m, x) = Q(\sigma_0, x) + e^{-x}\sum_{j=0}^{m-1}x^{\sigma_0+j}/\Gamma(\sigma_0+j+1)$,
 the series for $I_k(s)$ in Theorem~\ref{thm:split} becomes, for $f(x) = A_0(x^2) + xA_1(x^2)$,
 \begin{equation}\label{eq:Ik}
 \begin{split}
   I_k(s) &= k^{-s}\Bigl(Q\bigl(\tfrac s2, x\bigr)A_0\bigl(\tfrac1\kappa\bigr) + Q\bigl(\tfrac{s+1}2, x\bigr)\frac{A_1(1/\kappa)}{k}\Bigr) \\
-  &\quad + e^{-x}u_0^{s/2}\sum_{m=1}^{\infty}\frac{a_{2m}}{K^m}\sum_{j=0}^{m-1}\frac{x^j}{\Gamma(\frac s2+j+1)} \\
-  &\quad + e^{-x}u_0^{(s+1)/2}\sum_{m=1}^{\infty}\frac{a_{2m+1}}{K^m}\sum_{j=0}^{m-1}\frac{x^j}{\Gamma(\frac{s+1}2+j+1)},
+  &\quad + e^{-x}u_0^{s/2}\sum_{m=1}^{\infty}\frac{a_{2m}}{\kappa^m}\sum_{j=0}^{m-1}\frac{x^j}{\Gamma(\frac s2+j+1)} \\
+  &\quad + e^{-x}u_0^{(s+1)/2}\sum_{m=1}^{\infty}\frac{a_{2m+1}}{\kappa^m}\sum_{j=0}^{m-1}\frac{x^j}{\Gamma(\frac{s+1}2+j+1)},
 \end{split}
 \end{equation}
 since
@@ -3577,7 +3618,7 @@ the same series are evaluated over truncated power series $\mathbb K[\varepsilon
 which multiplies the cost by a constant. In particular nothing changes for $\operatorname{Re}a \le 0$: the pieces of
 Theorem~\ref{thm:split} are entire in $s$, and so are the series that compute them.
 
-\subsection{The dual terms}
+\subsection{The dual terms}\label{app:dual}
 With \eqref{eq:kernelparts},
 \[
   J_m(s) = Z_{1/2}[h_s](c) = Z_{(3-s)/2}[G_0](c) + Z_{1-s/2}[G_1](c), \qquad c = \pi^2m^2
@@ -3611,7 +3652,7 @@ in the starting values; the other solutions of \eqref{eq:fuchsys} grow at most l
 which costs $O(\sqrt p)$ guard bits. The a priori bound needed for the Taylor tails holds since $|Y(c)| \le Ce^{O(1)}$
 on $|c - c_0| \le \frac34c_0$. Each $J_m$ therefore costs $O(\Mul(p)\log^2p)$, and $\pi^2$ is computed once.
 
-\subsection{Main term}
+\subsection{Main term}\label{app:main}
 $M(s)$ is a series in $n$ whose terms are products of $a_n$, powers of $u_0^{1/2}$, $1/\Gamma(\frac{s+n}2)$ or
 $1/\Gamma(\frac{s+n}2+1)$, rational functions of $n$ and $s$, and the values $k^{-s-n}P(\frac{s+n}2, k^2u_0)$ for
 $k < k_0$, which for each $k$ satisfy a first-order inhomogeneous recurrence in $n$ (in steps of $2$). Splitting by the
@@ -3714,7 +3755,7 @@ Taylor coefficients of every piece at $s_0$ by $2^{O(p)}$, by Cauchy's estimate.
 \emph{$k$-terms.} In \eqref{eq:Ik}, factor out $1/\Gamma(\frac s2 + j_1 + 1)$ instead of $1/\Gamma(\frac s2 + 1)$, with
 $j_1 = O(S)$ the least index for which $\operatorname{Re}(\frac s2 + j_1 + 1) \ge \frac12$, and likewise for the odd
 part. The terms with $j \ge j_1$ then follow a recurrence that divides only by numbers $\frac s2 + j + 1$ of real part
-at least $\frac12$. These are units of $\mathbb K[\varepsilon]/(\varepsilon^{j+1})$ when $s = s_0 + \varepsilon$. The
+at least $\frac12$. These are units of the ring of truncated power series in $\varepsilon = s - s_0$. The
 $O(S)$ terms with $j < j_1$ are polynomials in $s$ times that factor. By (G1) and (G2),
 $\sum_j x^j|1/\Gamma(\frac s2+j+1)| \le 2^{O(p)}x^{S}e^x$, and $x^S = 2^{O(p)}$ since $x = k^2u_0 = O(p)$. Hence the
 terms of the double sums are at most $2^{O(p)}|a_{2m}|\kappa^{-m}$, which gives (b) and (d). The coefficients are
@@ -3728,7 +3769,7 @@ $1/\Gamma(w)$ with $\operatorname{Re}w \ge \frac12$, $|w| \le 3S$, of which $O(1
 $\Gamma(w) = \gamma(w,N) + \Gamma(w,N)$ with $N = O(p)$. Here $|\Gamma(w,N)| \le N^{3S}e^{-N} \le 2^{-\Omega(p)}$
 and $|\Gamma(w)| \ge 0.88\,e^{-\pi S/2}$ by (G1), so $O(p)$ guard bits give $1/\Gamma(w)$.
 
-\emph{Dual terms.} After the normalization of the dual terms in Section~\ref{app:cost}, the entries of $B_0$ and
+\emph{Dual terms.} After the normalization of the dual terms in Section~\ref{app:dual}, the entries of $B_0$ and
 $B_1$ in \eqref{eq:fuchsys} are polynomials in $s$ of bounded degree with fixed coefficients. Their dimension does not
 depend on $s$. Their entries therefore have $O(\log p)$ bits and $\|B_0\| + \|B_1\| \le p^{A_0}$ for a fixed $A_0$. For
 $\operatorname{Re}c' \ge \frac12\pi^2$ the components of $Y(c')$ are at most $2^{O(p)}$, by the bounds on $h_s$ and
@@ -3747,11 +3788,11 @@ $a = a_* + n \ne 0$, and $|a| \ge p^{-O(1)}$ by Liouville's inequality. Going do
 Going up, the coefficients are $\alpha_a = (-c_0)^n/(a_*+1)_n$, bounded by
 $2^{O(p)}c_0^n/\Gamma(\operatorname{Re}a_* + n + 1)$ by (G1)--(G3). Going down from $0$ they are at most
 $n!\,c_0^{-n}u_0^{O(1)} = 2^{O(p)}$, since $n = O(S)$. The estimate
-for the cancellation in Section~\ref{app:cost} becomes $2^{O(p)}e^{2R\sqrt{c_0}}c_0^{O(S)} = 2^{O(p)}$, so
+for the cancellation in Section~\ref{app:dual} becomes $2^{O(p)}e^{2R\sqrt{c_0}}c_0^{O(S)} = 2^{O(p)}$, so
 $O(p)$ guard bits suffice. The base values $D_{a_*}(c_0) = c_0^{a_*}(\Gamma(-a_*) - \gamma(-a_*, c_0/u_0))$ need
 $\Gamma(-a_*) \le 2^{O(p)}$ (G3), or $E_1$, and the series of the previous paragraph. With $s = s_0 + \varepsilon$
 the exponents are $a + \frac\varepsilon2$, and the divisions by $a + \frac\varepsilon2$ with $a \ne 0$ are by units
-whose inverses have coefficients of size $p^{O(j)}$. The base values are then computed as jets in $a$, as in
+whose inverses have coefficients of size $p^{O(1)}$, since the order of the jets is fixed. The base values are then computed as jets in $a$, as in
 Section~\ref{app:jets}.
 
 \emph{Main term and jets.} The terms of $M(s)$ are bounded as those of $h_s$, with $u_0^{n/2}$ in place of $u^{n/2}$.
@@ -3812,11 +3853,7 @@ itself may have more than $p$ bits before the point. For rational $s_0$, and for
 field, $|s_0| \le H(s_0)$, so the hypothesis of the second case is just $H(s_0) \le cp$. In a general number field a
 bound on $H(s_0)$ does not bound $|s_0|$ (consider the units of a real quadratic field).
 
-The constants grow with the order and degree of $L$, with the size of its coefficients and with the degree of
-$\mathbb K$. In particular $R$, and with it the number $k_0 - k_1$ of terms added directly and the length of the
-analytic continuation to them, can grow exponentially with the height of $L$, since a polynomial of height $h$ can
-have roots of size $e^{h}$; a version uniform in $L$ would need, among other things, a bound such as
-$R = O(\sqrt p)$, which keeps the $O(R)$ direct terms within the bound.
+The constants depend on the operator $L$; see Section~\ref{sec:openuniform}.
 
 \subsection{Bernoulli numbers and exponential generating functions}\label{app:sequences}
 \begin{proof}[Proof of Corollary~\ref{cor:bernoulli}]
@@ -3869,7 +3906,7 @@ $j = 0$ and $F$ as in \eqref{eq:f} with $f$ satisfying~(H), and we use Theorem~\
 terms are $O(e^{-\operatorname{Re}c_n/u_0})$, the sums can be truncated after $O(\sqrt p)$ terms; the cancellation
 between terms is bounded by $e^{(\log|z|)^2/(4u_0)}$, so $p + O(1)$ bits suffice.
 
-\emph{$k$-terms and main term.} $I_k(s)$ and $I_k(s+1)$ are computed as in Section~\ref{app:cost}, $C_k$ and $S_k$
+\emph{$k$-terms and main term.} $I_k(s)$ and $I_k(s+1)$ are computed as in Section~\ref{app:kterms}, $C_k$ and $S_k$
 incrementally in the number field generated by $z$, and the finitely many $L_k(w)$ and $H(w)$ are convergent series
 with P-recursive terms, like the main term of Theorem~\ref{thm:split}.
 
@@ -3884,7 +3921,7 @@ algebraic point (once) and $\gamma(-a, y)$ at the Gaussian rational $y = c_n'/u_
 everywhere convergent series, which has $O(|y| + p) = O(p)$ terms that are P-recursive with coefficients of
 $O(\log p)$ bits, so binary splitting costs $O(\Mul(p)\log^2p)$. The series \eqref{eq:startvals} at $c_n'$ is of
 the same kind, and the cancellation in it is at most $e^{O(|c_n'|/u_0)} = 2^{O(p)}$, absorbed by $O(p)$ guard bits as in
-Section~\ref{app:cost}. Finally the bit-burst (Section~\ref{app:tools}) takes $Y$ from $c_n'$ to $c_n$ in
+Section~\ref{app:dual}. Finally the bit-burst (Section~\ref{app:tools}) takes $Y$ from $c_n'$ to $c_n$ in
 $O(\Mul(p)\log^2p)$, with $|Y| \le 2^{O(p)}$ on $|c - c_n'| \le \frac34|c_n'|$. When $c_n$ lies on the cut, the Taylor
 series at $c_n'$ continues $Y$ along the segment from $c_n'$ to $c_n$, which gives the boundary value from above.
 
@@ -3912,7 +3949,7 @@ coefficients satisfy $c_{j+2r_2}/c_j = \tau^{2r_2}(a_j-1)(a_j-2)\cdots(a_j-r_1)/
 denominator exceeds the degree $r_1$ of the numerator, so $H$ satisfies an equation with property~(H), and the proofs
 of Lemma~\ref{lem:kernelhol} and Proposition~\ref{prop:dual}, with $t$ shifted in steps of $1/(2r_2)$, give a
 first-order system in $c$ with $c = 0$ as only finite singular point. The bit-burst then takes the moments from a
-rational $c_0$ to $\pi^2m^2$, as in Section~\ref{app:cost}.
+rational $c_0$ to $\pi^2m^2$, as in Section~\ref{app:dual}.
 
 \emph{Main term.} $M_\tau(1-s) = \Gamma(\frac{1-s}r)\tau^{(s-1)/r}/r$ needs one value of $\Gamma$ at an algebraic point
 and one exponential and logarithm; the tails $T_w$ are convergent series with P-recursive terms.
@@ -3931,11 +3968,11 @@ recurrences.
 
 %======================================================================
 % CHECK bibliographic details of Joh14, Hur99 (title spelling), AIK14, Kat97, Zag06, HL23, AdR11, Bor00, Har10, Bal00, vdH07, BC21, Bri12, Dav93, Hla80, Gau10, RG12, SKRS02, KZ01, Joh15, KZ08, Mor21, Nol90, Bor87, Joh23, and the entries carried over from zetaseries.tex: BBC00, BGMWZ13, BGS07, Boy19, CC20, CHTZZ07, CN62, CS67, Cof12, EKR11, Ewa21, FGS05, Fin18, GLS03, HLS24, Joh17, Kar95, Kar98, Mez10, Mez16, Pet02, SW59, Sch51 (added from memory/web search).
-\begin{thebibliography}{99}
+\begin{thebibliography}{999}
 \bibitem{AdR11} J.~Arias de Reyna, High precision computation of Riemann's zeta function by the Riemann--Siegel formula, I, Math.\ Comp.\ 80 (2011), 995--1009.
+\bibitem{AG77} K.~Alladi and C.~Grinstead, On the decomposition of $n!$ into prime powers, J.\ Number Theory 9 (1977), 452--458.
 \bibitem{AIK14} T.~Arakawa, T.~Ibukiyama and M.~Kaneko, \emph{Bernoulli Numbers and Zeta Functions}, Springer
 Monographs in Mathematics, Springer, 2014.
-\bibitem{AG77} K.~Alladi and C.~Grinstead, On the decomposition of $n!$ into prime powers, J.\ Number Theory 9 (1977), 452--458.
 \bibitem{AV84} T.~M.~Apostol and T.~H.~Vu, Dirichlet series related to the Riemann zeta function, J.\ Number Theory 19 (1984), 85--102.
 \bibitem{Bal00} W.~Balser, \emph{Formal Power Series and Linear Systems of Meromorphic Ordinary Differential Equations}, Universitext, Springer, 2000.
 \bibitem{BB15} D.~H.~Bailey and J.~M.~Borwein, Crandall's computation of the incomplete gamma function and the Hurwitz zeta function, with applications to Dirichlet $L$-series, Appl.\ Math.\ Comput.\ 268 (2015), 462--477.
@@ -3950,6 +3987,7 @@ Monographs in Mathematics, Springer, 2014.
 \bibitem{Bor00} P.~Borwein, An efficient algorithm for the Riemann zeta function, in \emph{Constructive, Experimental, and Nonlinear Analysis}, CMS Conf.\ Proc.\ 27, 2000, 29--34.
 \bibitem{Bor87} P.~B.~Borwein, Reduced complexity evaluation of hypergeometric functions, J.\ Approx.\ Theory 50 (1987), 193--199.
 \bibitem{Boy19} K.~N.~Boyadzhiev, A special constant and series with zeta values and harmonic numbers, arXiv:1903.11141, 2019.
+\bibitem{Bri12} D.~Brink, The spiral of Theodorus and sums of zeta-values at the half-integers, Amer.\ Math.\ Monthly 119 (2012), 779--786.
 \bibitem{BZ10} R.~P.~Brent and P.~Zimmermann, \emph{Modern Computer Arithmetic}, Cambridge University Press, 2010.
 \bibitem{CC20} B.~Candelpergher and M.-A.~Coppo, Laurent expansion of harmonic zeta functions, preprint, HAL hal-02444740.
 \bibitem{CC90} D.~V.~Chudnovsky and G.~V.~Chudnovsky, Computer algebra in the service of mathematical physics and number theory, in \emph{Computers in Mathematics}, Lecture Notes in Pure and Appl.\ Math.\ 125, Dekker, 1990, 109--232.
@@ -3958,7 +3996,6 @@ Monographs in Mathematics, Springer, 2014.
 \bibitem{CN81} P.~Cassou-Nogu\`es, Applications arithm\'etiques de l'\'etude des valeurs aux entiers n\'egatifs des s\'eries de Dirichlet associ\'ees \`a un polyn\^ome, Ann.\ Inst.\ Fourier 31 (1981), no.~4.
 \bibitem{Cof12} M.~W.~Coffey, Series representation of the Riemann zeta function and other results: complements to a paper of Crandall, Math.\ Comp.\ 83 (2014), 1383--1395.
 \bibitem{Cof14} M.~W.~Coffey, Series representations for the Stieltjes constants, Rocky Mountain J.\ Math.\ 44 (2014), 443--477.
-\bibitem{Bri12} D.~Brink, The spiral of Theodorus and sums of zeta-values at the half-integers, Amer.\ Math.\ Monthly 119 (2012), 779--786.
 \bibitem{Cra12} R.~E.~Crandall, Unified algorithms for polylogarithm, $L$-series, and zeta variants, preprint, 2012.
 \bibitem{CRVZ00} H.~Cohen, F.~Rodriguez Villegas and D.~Zagier, Convergence acceleration of alternating series, Experiment.\ Math.\ 9 (2000), 3--12.
 \bibitem{CS67} S.~Chowla and A.~Selberg, On Epstein's zeta-function, J.\ Reine Angew.\ Math.\ 227 (1967), 86--110.
@@ -3982,12 +4019,12 @@ Monographs in Mathematics, Springer, 2014.
 \bibitem{Har10} D.~Harvey, A multimodular algorithm for computing Bernoulli numbers, Math.\ Comp.\ 79 (2010), 2361--2370.
 \bibitem{Har14} D.~Harvey, A subquadratic algorithm for computing the $n$-th Bernoulli number, Math.\ Comp.\ 83 (2014), 2471--2477.
 \bibitem{HL23} G.~H.~Hardy and J.~E.~Littlewood, The approximate functional equation in the theory of the zeta-function, with applications to the divisor-problems of Dirichlet and Piltz, Proc.\ London Math.\ Soc.\ (2) 21 (1923), 39--74.
+\bibitem{Hla80} E.~Hlawka, Gleichverteilung und Quadratwurzelschnecke, Monatsh.\ Math.\ 89 (1980), 19--44.
 \bibitem{HLS24} D.~Harnett, S.~Li and T.~G.~Steele, Numerically computing finite temperature loop integrals using pySecDec, Eur.\ Phys.\ J.\ A (2024), arXiv:2401.05258.
 \bibitem{HP98} B.~Haible and T.~Papanikolaou, Fast multiprecision evaluation of series of rational numbers, Proc.\ ANTS-III, LNCS 1423, Springer, 1998, 338--350.
-\bibitem{HvdH21} D.~Harvey and J.~van der Hoeven, Integer multiplication in time $O(n\log n)$, Ann.\ of Math.\ 193 (2021), 563--617.
-\bibitem{Hla80} E.~Hlawka, Gleichverteilung und Quadratwurzelschnecke, Monatsh.\ Math.\ 89 (1980), 19--44.
 \bibitem{Hur99} A.~Hurwitz, Ueber die Entwickelungscoefficienten der lemniscatischen Functionen, Math.\ Ann.\ 51
 (1899), 196--226.
+\bibitem{HvdH21} D.~Harvey and J.~van der Hoeven, Integer multiplication in time $O(n\log n)$, Ann.\ of Math.\ 193 (2021), 563--617.
 \bibitem{IK02} M.~Iosifescu and C.~Kraaikamp, \emph{Metrical Theory of Continued Fractions}, Kluwer, 2002.
 \bibitem{Inc26} E.~L.~Ince, \emph{Ordinary Differential Equations}, Longmans, Green and Co., 1926.
 \bibitem{Joh14} F.~Johansson, \emph{Fast and rigorous computation of special functions to high precision}, PhD thesis,
@@ -4005,8 +4042,8 @@ to this paper, 2026, \url{https://github.com/fredrik-johansson/holonomic-sums}.
 \bibitem{Khi35} A.~Khintchine, Metrische Kettenbruchprobleme, Compositio Math.\ 1 (1935), 361--382.
 \bibitem{Khi64} A.~Ya.~Khinchin, \emph{Continued Fractions}, University of Chicago Press, 1964.
 \bibitem{Kir02} K.~Kirsten, \emph{Spectral Functions in Mathematics and Physics}, Chapman \& Hall/CRC, 2002.
-\bibitem{KZ08} S.~K\"ohler and M.~Ziegler, On the stability of fast polynomial arithmetic, in \emph{Proc.\ 8th Conference on Real Numbers and Computers}, Santiago de Compostela, 2008, 147--156.
 \bibitem{KZ01} M.~Kontsevich and D.~Zagier, Periods, in \emph{Mathematics Unlimited---2001 and Beyond}, Springer, 2001, 771--808.
+\bibitem{KZ08} S.~K\"ohler and M.~Ziegler, On the stability of fast polynomial arithmetic, in \emph{Proc.\ 8th Conference on Real Numbers and Computers}, Santiago de Compostela, 2008, 147--156.
 \bibitem{Lav68} A.~F.~Lavrik, Approximate functional equations of Dirichlet functions, Izv.\ Akad.\ Nauk SSSR Ser.\ Mat.\ 32 (1968), 134--185.
 \bibitem{Lev36} P.~L\'evy, Sur le d\'eveloppement en fraction continue d'un nombre choisi au hasard, Compositio
 Math.\ 3 (1936), 286--303.
@@ -4016,14 +4053,16 @@ Hamburg 27 (1964), 142--144.
 \bibitem{Mez10} M.~Mezzarobba, NumGfun: a package for numerical and analytic computation with D-finite functions, Proc.\ ISSAC 2010, 139--146.
 \bibitem{Mez16} M.~Mezzarobba, Rigorous multiple-precision evaluation of D-finite functions in SageMath, arXiv:1607.01967, 2016.
 \bibitem{Mon10} H.~Monien, Gaussian quadrature for sums: a rapidly convergent summation scheme, Math.\ Comp.\ 79 (2010), 857--869.
+\bibitem{Mor21} G.~Moroz, New data structure for univariate polynomial approximation and applications to root isolation, numerical multipoint evaluation, and other problems, in \emph{Proc.\ 62nd IEEE Symposium on Foundations of Computer Science (FOCS)}, 2021, 1090--1099.
 \bibitem{MS22} E.~Masroor and M.~A.~Stremler, On the topology of the atmosphere advected by a periodic array of axisymmetric thin-cored vortex rings, Regul.\ Chaotic Dyn.\ 27 (2022), 183--197.
-\bibitem{OAI26} OpenAI, Integer multiplication below $n\log n$, OpenAI Math Release preprint, September 2026, \url{https://github.com/openai/math/tree/main/preprints/Integer-multiplication-below-n-log-n-September-23-2026}.
+\bibitem{MWKdigits} E.~W.~Weisstein, Khinchin's constant digits, MathWorld, \url{https://mathworld.wolfram.com/KhinchinsConstantDigits.html}, accessed November 2026.
 \bibitem{Nol90} V.~N.~Nolte, Some probabilistic results on the convergents of continued fractions, Indag.\ Math.\ (N.S.) 1 (1990), 381--389.
+\bibitem{OAI26} OpenAI, Integer multiplication below $n\log n$, OpenAI Math Release preprint, September 2026, \url{https://github.com/openai/math/tree/main/preprints/Integer-multiplication-below-n-log-n-September-23-2026}.
 \bibitem{OEIS} OEIS Foundation Inc., The On-Line Encyclopedia of Integer Sequences, \url{https://oeis.org}.
 \bibitem{Pet02} F.~J.~Petriello, Kaluza--Klein effects on Higgs physics in universal extra dimensions, arXiv:hep-ph/0204067, 2002.
 \bibitem{Pet98} M.~Peter, Dirichlet series associated with polynomials, Acta Arith.\ 84 (1998), 245--278.
-\bibitem{Rie59} B.~Riemann, Ueber die Anzahl der Primzahlen unter einer gegebenen Gr\"osse, Monatsber.\ Berliner Akad., 1859.
 \bibitem{RG12} E.~B.~Rosa and F.~W.~Grover, Formulas and tables for the calculation of mutual and self-inductance, Bull.\ Bureau of Standards 8 (1912), 1--237.
+\bibitem{Rie59} B.~Riemann, Ueber die Anzahl der Primzahlen unter einer gegebenen Gr\"osse, Monatsber.\ Berliner Akad., 1859.
 \bibitem{Rub05} M.~Rubinstein, Computational methods and experiments in analytic number theory, in \emph{Recent Perspectives in Random Matrix Theory and Number Theory}, LMS Lecture Note Ser.\ 322, Cambridge University Press, 2005, 425--506.
 \bibitem{Sar84} P.~Sargos, Prolongement m\'eromorphe des s\'eries de Dirichlet associ\'ees \`a des fractions rationnelles de plusieurs variables, Ann.\ Inst.\ Fourier 34 (1984), no.~3, 83--123.
 \bibitem{Sch51} J.~Schwinger, On gauge invariance and vacuum polarization, Phys.\ Rev.\ 82 (1951), 664--679.
@@ -4033,11 +4072,9 @@ Hamburg 27 (1964), 142--144.
 J.\ Eur.\ Math.\ Soc.\ 21 (2019), 2751--2792.
 \bibitem{Sta80} R.~P.~Stanley, Differentiably finite power series, European J.\ Combin.\ 1 (1980), 175--188.
 \bibitem{SW59} D.~Shanks and J.~W.~Wrench, Khintchine's constant, Amer.\ Math.\ Monthly 66 (1959), 276--279.
-\bibitem{vdH99} J.~van der Hoeven, Fast evaluation of holonomic functions, Theoret.\ Comput.\ Sci.\ 210 (1999), 199--215.
 \bibitem{vdH07} J.~van der Hoeven, Efficient accelero-summation of holonomic functions, J.\ Symbolic Comput.\ 42 (2007), 389--428.
+\bibitem{vdH99} J.~van der Hoeven, Fast evaluation of holonomic functions, Theoret.\ Comput.\ Sci.\ 210 (1999), 199--215.
 \bibitem{Wat44} G.~N.~Watson, \emph{A Treatise on the Theory of Bessel Functions}, 2nd ed., Cambridge University Press, 1944.
-\bibitem{Mor21} G.~Moroz, New data structure for univariate polynomial approximation and applications to root isolation, numerical multipoint evaluation, and other problems, in \emph{Proc.\ 62nd IEEE Symposium on Foundations of Computer Science (FOCS)}, 2021, 1090--1099.
-\bibitem{MWKdigits} E.~W.~Weisstein, Khinchin's constant digits, MathWorld, \url{https://mathworld.wolfram.com/KhinchinsConstantDigits.html}, accessed November 2026.
 \bibitem{Zag06} D.~Zagier, The Mellin transform and related analytic techniques, appendix to E.~Zeidler, \emph{Quantum Field Theory I}, Springer, 2006, 305--323.
 \bibitem{Zei90} D.~Zeilberger, A holonomic systems approach to special functions identities, J.\ Comput.\ Appl.\ Math.\ 32 (1990), 321--368.
 \end{thebibliography}
