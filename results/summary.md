@@ -82,3 +82,13 @@
 | theodorus | theta | 100000 | 38 | 1918 | 167 / 21.59 | 308 / 38.55 | 476 / 60.39 | 277 | ok | agrees with 6 other runs |
 | theodorus | em | 100000 |  |  |  |  | 181 / 115 | 318 | ok | agrees with 6 other runs |
 | theodorus | theta | 1000000 | 120 | 6068 | 10505 / 1316 | 17295 / 2163 | 27804 / 3482 | 1693 | ok | agrees with 6 other runs |
+| sphere | theta | 1000 | 3 | 194 | 0.04 / 0.02 | 0.04 / 0.01 | 0.08 / 0.04 | 13 | ok | agrees with 9 other runs |
+| sphere | zeta | 1000 |  |  |  |  | 0.02 / 0.02 | 17 | ok | agrees with 9 other runs |
+| sphere | em | 1000 |  |  |  |  | 0.02 / 0.01 | 17 | ok | agrees with 9 other runs |
+| sphere | theta | 10000 | 12 | 607 | 2.86 / 0.44 | 1.20 / 0.15 | 4.12 / 0.65 | 55 | ok | agrees with 9 other runs |
+| sphere | zeta | 10000 |  |  |  |  | 2.38 / 2.38 | 52 | ok | agrees with 9 other runs |
+| sphere | em | 10000 |  |  |  |  | 1.31 / 0.54 | 30 | ok | agrees with 9 other runs |
+| sphere | theta | 100000 | 38 | 1919 | 176 / 22.67 | 78.77 / 9.85 | 255 / 32.67 | 310 | ok | agrees with 9 other runs |
+| sphere | zeta | 100000 |  |  |  |  | 663 / 663 | 4204 | ok | agrees with 9 other runs |
+| sphere | em | 100000 |  |  |  |  | 233 / 124 | 318 | ok | agrees with 9 other runs |
+| sphere | theta | 1000000 | 120 | 6069 | 11445 / 1432 | 4698 / 587 | 16144 / 2021 | 2154 | ok | agrees with 9 other runs |
