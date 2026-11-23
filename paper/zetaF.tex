@@ -64,14 +64,18 @@ $\zeta_F(s) = \sum_{k=1}^{\infty} F(k)k^{-s}$.
 %holonomic functions.
 We show that when the expansion of $F$ at infinity has algebraic coefficients, the
 values and derivatives of $\zeta_F$ at algebraic $s$ can be computed
-to $p$ bits in $p^{3/2+o(1)}$ bit operations.
-%The same holds for polylogarithm-type generalizations of $\zeta_F$.
+to $p$ bits in $p^{3/2+o(1)}$ bit operations
+using a version of Riemann's theta splitting
+combined with bit-burst evaluation of holonomic functions.
+The same holds for polylogarithm-type generalizations of $\zeta_F$.
 This gives subquadratic algorithms for a large class of numbers,
 including every sum $\sum_{k=1}^{\infty} A(k)$ or $\sum_{k=1}^{\infty} \log A(k)$ where $A$ is an
 algebraic function with algebraic coefficients, most of which had no previously known algorithm with better than
 quadratic complexity.
-We give several examples, including the first subquadratic algorithm for
+For example, we obtain the first subquadratic algorithm for
 Khinchin's constant which we compute to $10^7$ digits.
+We demonstrate the method and its speedup on many other examples taken from analysis,
+geometry, number theory and physics.
 \end{abstract}
 
 
@@ -118,7 +122,8 @@ notoriously difficult to calculate to high precision''.
 
 In this work, we show that both sums \eqref{eq:twoconstants} and many others
 belong to a common class which can be computed in subquadratic time.
-We demonstrate with several examples that the method is practical for computing millions of digits.
+We demonstrate with several examples that the method is practical
+and readily scales to millions of digits.
 
 \subsection{Zeta functions of holonomic functions}
 
@@ -140,7 +145,6 @@ functions:
 \end{aligned}
 \end{equation}
 with $\chi$ periodic, $|z| < 1$, $\tau > 0$ and $0 < r < 2$ in the last.
-
 For $F = 1$ these are the classical
 Riemann zeta function $\zeta(s)$, Dirichlet $L$-functions (when $\chi$ is a Dirichlet character), polylogarithm $\Li_s(z)$, Lerch
 transcendent $\Phi(z,s,a)$, and sums $\sum_ke^{-\tau k^r}k^{-s}$ of stretched exponentials, with
@@ -148,14 +152,13 @@ $\Lambda(s;\tau,1) = \Li_s(e^{-\tau})$, where $\Lambda = \Lambda_1$.
 Rational $F$ give the Dirichlet series attached to rational functions
 studied since Mellin and Mahler \cite{Mah28,CN81,Sar84,Pet98,Ess97}.
 
-Sums of holonomic functions are values and derivatives of these functions (Section~\ref{sec:sums}). We compute them
-in subquadratic time by an extension of Riemann's theta splitting of $\zeta(s)$, the formula behind his second proof
+Sums of holonomic functions are values and derivatives of these functions (Section~\ref{sec:sums}). We compute them by an extension of Riemann's theta splitting of $\zeta(s)$, the formula behind his second proof
 of the functional equation.
 
 \subsection{Main results}
 Let $F$ be analytic at infinity, $F(k) = f(1/k)$ for $k \ge k_0$, where
 $f(x) = \sum_{n=0}^{\infty} a_nx^n$ has radius of convergence $\rho > 1/k_0$. The following formula needs only this;
-holonomy of $f$ is what makes its pieces computable (Theorem~B).
+holonomy of $f$ makes its pieces computable (Theorem~B).
 
 \begin{theoremA}[exact approximate functional equation; Theorem~\ref{thm:split}]
 For every $u_0 > 0$ and every $s \in \CC$ except the poles,
@@ -169,12 +172,12 @@ where the \emph{$k$-terms} and the \emph{dual terms}
   J_m(s) = \int_0^{u_0}u^{-1/2}e^{-\pi^2m^2/u}h_s(u)\dd u
 \]
 are entire in $s$ (and, when moreover $F \in \Reg$, values at $\kappa = k^2$ and $c = \pi^2m^2$ of holonomic functions of
-$\kappa$ and $c$),
+$\kappa$ and $c$), the \emph{kernel}
 \[
 h_s(u) = \sum_{n=0}^{\infty} a_n \frac{u^{(s+n)/2-1}}{\Gamma(\frac{s+n}{2})}
 \]
-is a Borel-type transform of $f$ (the \emph{kernel}), and the \emph{main term} $M$ is an
-explicit series of elementary functions and incomplete gamma functions carrying all the poles.
+is a Borel-type transform of $f$, and the \emph{main term} $M$ is an
+explicit sum~of elementary functions and incomplete gamma functions carrying all the poles.
 \end{theoremA}
 
 For $F = 1$, $k_0 = 1$ and $u_0 = \pi$ this is Riemann's formula, and the two infinite sums
@@ -228,7 +231,8 @@ Euler's constant is the constant term of $\zeta(s)$ at its pole $s = 1$, and by 
 $\zeta_{F_1}(0)$ with $F_1(k) = \frac1k - \log(1+\frac1k)$; we will similarly express Khinchin's constant, and many other
 constants, as values of $\zeta_F$ for various $F$. The functions \eqref{eq:functions} cover familiar ways in which sums of holonomic functions arise:
 \begin{itemize}
-\item a sum $\sum_{k=1}^{\infty} F(k)$ is the value $\zeta_F(0)$, and an alternating sum $\sum_{k=1}^{\infty} (-1)^k F(k)$ is the value $L_F(0, \chi)$ where $\chi(k) = (-1)^k$;
+\item a sum $\sum_{k=1}^{\infty} F(k)$ is the value $\zeta_F(0)$;
+\item an alternating sum $\sum_{k=1}^{\infty} (-1)^k F(k)$ is the value $L_F(0, \chi)$ where $\chi(k) = (-1)^k$;
 \item a sum $\sum_{k=1}^{\infty}(\log k)^jF(k)$ is $(-1)^j\zeta_F^{(j)}(0)$;
 \item a product $\prod_k \exp(F(k))$ is $\exp(\zeta_F(0))$;
 \item a product $\prod_k k^{F(k)}$ is $\exp(-\zeta_F'(0))$;
@@ -237,11 +241,22 @@ constants, as values of $\zeta_F$ for various $F$. The functions \eqref{eq:funct
 function $\sum_kF(k)z^k$ is $\Li_F(0,z)$; weights $(\log k)^j$ and powers $k^{-s}$ in a generating function are
 derivatives and values in $s$;
 \item shifts of the power, $\sum_kF(k)(k+a)^{-s}$, are Lerch transcendents, and at fixed $s$ reduce to the other
-functions (Section~\ref{sec:twistshift}); summands with stretched-exponential decay are values of damped zeta functions.
+functions (Section~\ref{sec:twistshift});
+\item summands with stretched-exponential decay are values of damped zeta functions.
 \end{itemize}
 
-Table~\ref{tab:constants} lists constants from classical analysis, number theory and mathematical physics expressed in
-this way, including examples from the tables of Flajolet and Vardi~\cite{FV96} and of Finch~\cite{Fin03},
+The class $\Reg$ of admissible sequences is large. It is closed under sums and products, and
+contains every algebraic function $A(k)$,
+the compositions $\log A(k)$ and $\arctan A(k)$,
+and more generally $G(A(k))$ where $G$ is any holonomic function that is
+analytic or regular singular at the limit of $A$ at infinity
+such as the generalized hypergeometric function $G(z) = {}_pF_{p-1}(\ldots; z)$.
+The underlying class of holonomic functions is
+also closed under integration, and contains the periods of
+families of algebraic curves depending algebraically on $k$ such as complete elliptic, hyperelliptic and abelian integrals.
+Bose--Einstein integrals lead to such sums (Section~\ref{sec:physics}).
+
+Table~\ref{tab:constants} lists constants from classical analysis, number theory and mathematical physics expressed in terms of $\zeta_F$ and its relatives, including examples from the tables of Flajolet and Vardi~\cite{FV96} and of Finch~\cite{Fin03},
 Sloane's OEIS~\cite{OEIS}, and other sources. By Theorem~B and Claim~C, all of them can be computed in
 $p^{3/2+o(1)}$ bit operations at algebraic values of their parameters.
 
@@ -318,25 +333,17 @@ $2\pi p_t(0) - 1$, $0 < \alpha < 2$ & $1$ & $2\Lambda(0;t,\alpha)$ \\
 \end{tabular*}
 \end{table}
 
-We observe that the class $\Reg$ of admissible sequences is large. It is closed under sums and products, and
-contains every algebraic function $A(k)$,
-the compositions $\log A(k)$ and $\arctan A(k)$,
-and more generally $G(A(k))$ where $G$ is any holonomic function that is
-analytic or regular singular at the limit of $A$ at infinity
-such as the generalized hypergeometric function $G(z) = {}_pF_{p-1}(\ldots; z)$.
-The underlying class of holonomic functions is
-also closed under integration, and contains the periods of
-families of algebraic curves depending algebraically on $k$ such as complete elliptic, hyperelliptic and abelian integrals.
-Bose--Einstein integrals lead to such sums (Section~\ref{sec:physics}).
 
 
 \subsubsection{Special cases with faster algorithms}
 
-Special cases of such sums were already known to be efficiently computable. Among the constants of Table~\ref{tab:constants},
-Euler's constant $\gamma$ and closed forms involving $\pi$ can be computed
-in quasilinear time. More generally, so can every number that is the value at an algebraic point of a holonomic function
+Special cases of sums in this class were already known to be efficiently computable.
+Among the constants of Table~\ref{tab:constants},
+Euler's constant $\gamma$ and the two closed forms involving $\pi$
+can be computed in quasilinar time.
+More generally, so can every number that is the value at an algebraic point of a holonomic function
 with algebraic coefficients and initial values \cite{CC90,vdH99}, such as the integer zeta values $\zeta(3), \zeta(5),
-\dots$ \cite{Kar95,Kar98}, polylogarithms at algebraic points and Catalan's constant; this includes many periods and
+\dots$ \cite{Kar95,Kar98}, ordinary polylogarithms at algebraic points and Catalan's constant; this includes many periods and
 exponential periods in the sense of Kontsevich and Zagier \cite{KZ01}.
 The Weierstrass products of the gamma function give sums of the same kind as the series for $\gamma$,
 \[
@@ -363,15 +370,6 @@ the same reductions still give $p^{3/2+o(1)}$ (Section~\ref{sec:rational}).
 
 On the level of summands, the structure leading to such quasilinear-time algorithms is fragile:
 an extra factor $\frac1k$, as in $\sum_k\frac1k\arctan\frac1k$, destroys it.
-To take another example, a Weierstrass product similar to those for $\psi$ and $\log \Gamma$
-gives the Barnes $G$-function
-\[
-  \log G(1+x) = \frac x2\log2\pi - \frac{x + (1+\gamma)x^2}2 + \sum_{k=1}^{\infty}\Bigl(k\log\Bigl(1+\frac xk\Bigr) - x
-  + \frac{x^2}{2k}\Bigr),
-\]
-which interpolates $G(n) = \prod_{i=0}^{n-2} i!$.
-This is computable in time $p^{3/2+o(1)}$ for algebraic $x$ by Theorem~B,
-but unlike $\psi$ and $\Gamma$ no better method is known when $x \in \Qbar \setminus \ZZ$.
 
 For constants of Table~\ref{tab:constants} other than the above exceptions, and for sums of
 algebraic functions that are not rational, we know of no quasilinear
@@ -2505,7 +2503,6 @@ $q(x_{10}) = 10q_N + q_{N-1}$. The bound for $p$ follows from $K > 2.685$.
 
 The proposition rests on the rigorous error bounds of Section~\ref{sec:khbounds} and on the agreement of two
 independent computations.
-% TODO(author): add commit hash of the code used.
 
 By Khinchin's theorem the geometric means $G_n = (a_1\cdots a_n)^{1/n}$ of almost every $x$ tend to $K$; whether
 $K$ itself has this property is not known. Its first $N$ partial quotients give $G_N = 2.686720\ldots$, and the
@@ -2592,8 +2589,7 @@ is a value of the class, although computing $\pi$ this way would be circular, as
 the dual points $\pi^2m^2$. Constants of this kind with $F \ne 1$ include Hlawka's constant of Table~\ref{tab:constants},
 the constant term of $\sum_{k<n}\arctan(1/\sqrt k) = 2\sqrt n + C_{\mathrm H} + o(1)$ (Section~\ref{sec:theodorus}).
 
-%with Glaisher's constant $A = (2^{1/24}e^{1/8}\pi^{-1/4}/G(\frac12))^{2/3}$
-%as a particular value.
+
 
 For $F = 1$ all of these are values of $\zeta$ and its derivatives: $\gamma$ can be computed in quasilinear time
 \cite{BM80}, and the $\gamma_m$ and $\zeta'(-m)$ in time $p^{3/2+o(1)}$ by Theorem~\ref{thm:complexity} with $F = 1$
@@ -2635,6 +2631,23 @@ in $f$, and the contributions of the terms $x^1$ of $x$ and $\log(1+x)$ cancel).
 special case of the monomial kernel at the self-dual point $u_0 = \pi$; the new ones exist because the $\gamma_n$ are
 also sums of holonomic functions. They are not meant to be competitive with the computation of the values of $\zeta$.
 %  \frac{\pi^2} 6  \left( 12 \ln A - \gamma-\ln 2\pi \right) &= \sum_{k=2}^\infty \frac{\log k}{k^2}, \\
+
+\begin{remark}[The Barnes $G$-function]
+Various factorial-like products can be extended to analytic functions
+via Weierstrass products similar to that for the gamma function.
+An example is the Barnes $G$-function
+\[
+  \log G(1+x) = \frac x2\log2\pi - \frac{x + (1+\gamma)x^2}2 + \zeta_{F_x}(0)
+\]
+with
+\[
+F_x(k) = k\log\Bigl(1+\frac xk\Bigr) - x + \frac{x^2}{2k}
+\]
+which interpolates $G(n) = \prod_{i=0}^{n-2} i!$, with Glaisher's constant
+as the particular value $A = (2^{1/24}e^{1/8}\pi^{-1/4}/G(\frac12))^{2/3}$.
+For algebraic $x$, the value $G(x)$ is thus computable in time $p^{3/2+o(1)}$;
+unlike $\psi(x)$ and $\Gamma(x)$ no better method is known when $x \in \Qbar \setminus \ZZ$.
+\end{remark}
 
 \subsection{The Alladi--Grinstead and L\"uroth constants}\label{sec:AG}
 The constants $\mathcal A$ and $\mathcal C$ are the values $-\zeta_F'(0)$ for the rational functions
@@ -2844,6 +2857,14 @@ than an isolated ring by $U(\lambda)\,\Gamma/r$, where
 \end{equation}
 a formula found independently by Vasilev (1916) and by Levy and Forsdyke (1928), see \cite{MS22}. It is a sum of the
 form \eqref{eq:f}: the summand is a complete elliptic integral, and \cite{MS22} sums it by truncating after $500$ terms.
+A few numerical values for different spacings are
+\begin{align*}
+  U(1)        &= 0.26882772504004215799420784633078761581\ldots, \\
+  U(2)        &= 0.07770257288078689394748426153469590197\ldots, \\
+  U(\tfrac23) &= 0.48599721401691389437533080303387632179\ldots, \\
+  U(\tfrac12) &= 0.71291908153312931408325016665401004450\ldots;
+\end{align*}
+we compute $U(1)$ to high precision below.
 
 \subsubsection{The series}
 Substituting $v = \sin^2(\varphi/2)$, expanding the integrand binomially and using Wallis's integrals gives, for $a > 2$,
@@ -3372,14 +3393,7 @@ The values are, to $50$ digits (the $10^6$-digit files are in
 To our knowledge $\mathcal A$, $\mathcal C$ and $K_{-1}$ had previously been published to about $10^2$--$10^3$ digits
 (OEIS b-files), except $K_{-1}$, which Bailey, Borwein and Crandall computed to $7\,350$ digits with the zeta-value
 expansion of their Corollary~7 \cite{BBC97}; the OEIS lists $\mathcal T$ and $\sigma$ to about $1\,000$ digits
-\cite[A226317, A112302]{OEIS}. For other spacings of the vortex rings ($\lambda = 2/n$ with integer $n$,
-so that $\beta = n^2$),
-\begin{align*}
-  U(2) &= 0.07770257288078689394748426153469590197848\ldots, \\
-  U(\tfrac23) &= 0.48599721401691389437533080303387632179\ldots, \\
-  U(\tfrac12) &= 0.71291908153312931408325016665401004450\ldots,
-\end{align*}
-which agree with direct summation of \eqref{eq:vortex} at $30$ digits.
+\cite[A226317, A112302]{OEIS}.
 
 The cross-checks are not a formality. A first version of the vortex program truncated the series for the starting
 values too early and the computations at different $u_0$ disagreed
