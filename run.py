@@ -24,7 +24,7 @@ import sys
 import time
 
 ALL_CONSTANTS = ["A340440", "A085361", "Kminus1", "vortex", "hardy_littlewood", "somos", "expsqrt",
-                 "khinchin_Z", "khinchin_log", "khinchin_dilog", "theodorus"]
+                 "khinchin_Z", "khinchin_log", "khinchin_dilog", "theodorus", "sphere"]
 ALL_METHODS = ["theta", "zeta", "em", "direct"]
 # methods implemented for each constant (default: theta, zeta, em)
 AVAILABLE = {"somos": ["theta", "direct"], "expsqrt": ["theta", "em"],

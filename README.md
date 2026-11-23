@@ -31,6 +31,7 @@ compare the three representations of Khinchin's constant in the paper with the s
 | `khinchin_log` | 2.6854520010653064453… | Khinchin's constant from $\log K \log 2 = -\sum_{k\ge2} \log(1 - 1/k)\log(1 + 1/k)$ |
 | `khinchin_dilog` | 2.6854520010653064453… | Khinchin's constant from $\log K\log 2 = \log^2 2 + \mathrm{Li}_2(-\tfrac12) + \tfrac12\sum_{k\ge2}(-1)^k\mathrm{Li}_2(4/k^2)$ |
 | `theodorus` | 1.8600250792211903071… | the constant of Theodorus $\sum_{k\ge1} 1/((k+1)\sqrt k)$ ([A226317](https://oeis.org/A226317)), a sum of an algebraic function: $\zeta_F(\tfrac12)$ with $F(k) = 1/(k+1)$ |
+| `sphere` | 2.0705444763216059050… | $\operatorname{Tr}\Delta^{-3/2} = \sum_{\ell\ge1}(2\ell+1)/(\ell(\ell+1))^{3/2}$ for the Laplacian on the unit sphere $S^2$, the spectral zeta function $\zeta_{S^2}(\tfrac32)$ |
 
 Two constants take a parameter from the environment: `HOLSUM_VORTEX_S=s` gives the vortex sum at
 $\lambda = 2/s$ (default $s = 2$), and `HOLSUM_HL_X=x` gives $H(x)$ for an integer $x$ (default 1).
@@ -69,6 +70,14 @@ $\Gamma(\tfrac14, k^2u_0)$, $\Gamma(\tfrac34, k^2u_0)$ and $e^{-k^2u_0}$. The tw
 have quarter-integer $t_0$ and starting values from $\Gamma(\tfrac14, y)$ and $\Gamma(\tfrac34, y)$. The reference is
 Euler–Maclaurin summation; the default split point is $u_0 = 1/16$.
 
+For `sphere` the sum is taken over the half-integers $y = \ell + \tfrac12$, with summand $2y(y^2 - \tfrac14)^{-3/2}$ and
+kernel $2\,{}_1F_1(\tfrac32; 1; u/4)$. The theta function of the half-integer lattice gives dual terms with signs
+$(-1)^m$. The $k$-terms are double series in the truncated exponential, without incomplete gamma functions; the dual
+system has order 4 with starting values from $\Gamma(\tfrac12, y)$. The references are Euler–Maclaurin summation and
+the zeta-value expansion $2\sum_n c_n\zeta(2n+2, \tfrac32)$, $c_n = (\tfrac32)_n/(n!\,4^n)$, which needs only even zeta
+values and converges like $9^{-n}$. The default split point is $u_0 = 1/16$ ($u_0 = 1/64$ is about as fast at $10^5$
+digits).
+
 **Zeta-value expansion** (`--method zeta`). Expanding $f$ in its Taylor series,
 $\sum_k f(1/k) = \sum_n a_n \zeta(n)$; the terms $k \le 31$ are taken out (summed in closed form) so that the
 series converges geometrically, like $32^{-n}$. The zeta values are computed with FLINT, in blocks of
@@ -104,7 +113,7 @@ With `FLINT_DIR`, the library is taken from the top directory of the FLINT tree 
 installed in a standard location, `make` is enough. Additional paths (for example for GMP and MPFR) can be given with
 `CPPFLAGS=-I...` and `LDFLAGS=-L...`. The build produces the single binary `holsum`.
 
-The paper is in `paper/` (`zetaseries.tex`; the figure data `khcf_gm.dat` and the scripts behind the continued
+The paper is in `paper/` (`zetaF.tex`; the figure data `khcf_gm.dat` and the scripts behind the continued
 fraction computations are in the same directory).
 
 ## Running
@@ -228,10 +237,11 @@ part evaluates one ${}_2F_1$ per term, so `run.py` stops it at $10^4$ digits.
   one binary splitting of the kernel coefficients times the recurrence of $D_a$; `khinchin_Z` also needs moments with
   a weight $\log u$ and $\partial_b\Gamma(b, y)$ at $b = \tfrac12$ and $b = 0$. The reference method (`--method zeta`)
   is FLINT's `arb_const_khinchin`.
-* `src/tsys.c`, `src/tsys.h`: the generic moment systems from $\vartheta$-relations used by `khinchin.c` and
-  `theodorus.c` ($t_0$ a multiple of $\tfrac12$ or of $\tfrac14$), the Kronecker sums for the starting values, and
+* `src/tsys.c`, `src/tsys.h`: the generic moment systems from $\vartheta$-relations used by `khinchin.c`,
+  `theodorus.c` and `sphere.c` ($t_0$ a multiple of $\tfrac12$ or of $\tfrac14$), the Kronecker sums for the starting values, and
   $\partial_b\Gamma(b, y)$.
 * `src/theodorus.c`: `theodorus`.
+* `src/sphere.c`: `sphere`.
 * `src/refs.c`: shared code for the reference methods.
 * `src/main.c`: the command-line program.
 * `run.py`: the benchmark script.

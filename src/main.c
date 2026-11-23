@@ -22,7 +22,8 @@
 
 static const constant_t * CONSTANTS[] = { &CONST_A340440, &CONST_A085361, &CONST_KMINUS1, &CONST_VORTEX, &CONST_HL,
                                           &CONST_SOMOS, &CONST_EXPSQRT,
-                                          &CONST_KHINCHIN_Z, &CONST_KHINCHIN_LOG, &CONST_KHINCHIN_DILOG, &CONST_THEODORUS };
+                                          &CONST_KHINCHIN_Z, &CONST_KHINCHIN_LOG, &CONST_KHINCHIN_DILOG, &CONST_THEODORUS,
+                                          &CONST_SPHERE };
 #define NUM_CONSTANTS (sizeof(CONSTANTS) / sizeof(CONSTANTS[0]))
 
 static void usage(void)

@@ -17,7 +17,7 @@ CPPFLAGS += -I$(FLINT_PREFIX)/include
 endif
 LDFLAGS += -L$(FLINT_LIBDIR) -Wl,-rpath,$(FLINT_LIBDIR)
 
-SRC = src/main.c src/engine.c src/refs.c src/logsums.c src/vortex.c src/hardy_littlewood.c src/somos.c src/expsqrt.c src/khinchin.c src/tsys.c src/theodorus.c
+SRC = src/main.c src/engine.c src/refs.c src/logsums.c src/vortex.c src/hardy_littlewood.c src/somos.c src/expsqrt.c src/khinchin.c src/tsys.c src/theodorus.c src/sphere.c
 OBJ = $(SRC:.c=.o)
 
 holsum: $(OBJ)

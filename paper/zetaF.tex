@@ -286,15 +286,14 @@ $\sum_{k=1}^{\infty}(k\arcsin\frac1k - 1)$ & $k\arcsin\frac1k - 1$ & $\zeta_F(0)
 $\sum_{k=2}^{\infty}\zeta''(k)$ \cite{Fin18} & $\frac1{k(k-1)}$ ($k\ge2$) & $\zeta_F''(0)$ \\
 Boyadzhiev's constant \cite{Boy19} & $\frac1k\log(1+\frac1k)$ & $\zeta_F(0)$ \\
 \midrule
-\multicolumn{3}{@{}p{\textwidth}@{}}{\emph{Mathematical physics} (Section~\ref{sec:vortex}):
+\multicolumn{3}{@{}p{\textwidth}@{}}{\emph{Mathematical physics} (Sections~\ref{sec:vortex}, \ref{sec:physics}):
 coaxial rings of unit radius spaced $\lambda$ apart ($\theta/2\pi \in \QQ$);
-hydrogen partition function \cite{EKR11}, $\xi = I/(k_BT)$; Laplacian $\Delta$ on the unit sphere
-$S^2$ \cite{Eli95,Kir02}.} \\
+hydrogen \cite{EKR11}, $\xi = I/(k_BT)$; Laplacian $\Delta$ on the unit sphere $S^2$ \cite{Eli95,Kir02}.} \\
 \midrule
 vortex rings $U(\lambda)$ & ${}_2F_1(\frac32,\frac32;2;-\frac{4}{\lambda^2k^2})$ & $\lambda^{-3}\zeta_F(3)$ \\
 ring resonators $S_\lambda(\theta)$ & ${}_2F_1(\frac32,\frac32;3;-\frac{4}{\lambda^2k^2})$ & $\frac{\pi}{2\lambda^3}L_F(3,\cos k\theta)$ \\
 Epstein--Hurwitz $E_a(t)$, $t > \frac12$ & $(1+\frac{a^2}{k^2})^{-t}$ & $\zeta_F(2t)$ \\
-Planck--Larkin $\sigma(T)$ & $e^{\xi/k^2} - 1 - \xi/k^2$ & $\zeta_F(-2)$ \\
+Planck--Larkin $\sigma(T)$ & $e^{\xi/k^2} - 1 - \xi/k^2$ & $2\zeta_F(-2)$ \\
 $\operatorname{Tr}\Delta^{-3/2}$ & $(2+\frac1k)(1+\frac1k)^{-3/2}$ & $\zeta_F(2)$ \\
 Casimir energy $\frac12\operatorname{Tr}\Delta^{1/2}$ & $(2+\frac1k)(1+\frac1k)^{1/2}$ & $\frac12\zeta_F(-2) + \frac1{48}$ \\
 KK top tower \cite[(27)]{Pet02} & $(\tau_k - 1)y_k^2 - 1$ & $\zeta_F(0)$, $y_k = \arcsin\tau_k^{-1/2}$, \\
@@ -328,13 +327,7 @@ such as the generalized hypergeometric function $G(z) = {}_pF_{p-1}(\ldots; z)$.
 The underlying class of holonomic functions is
 also closed under integration, and contains the periods of
 families of algebraic curves depending algebraically on $k$ such as complete elliptic, hyperelliptic and abelian integrals.
-Integrals against the Bose--Einstein weight also give rise to such sums: for an entire holonomic function $G$ with
-$|G(t)| \le Ce^{ct}$, $c < 1$, on the positive axis,
-\[
-  \int_0^\infty\frac{G(t)}{e^t-1}\dd t = \sum_{k=1}^{\infty}F(k), \qquad F(k) = \int_0^\infty G(t)e^{-kt}\dd t,
-\]
-where the Laplace transform $F$ is again holonomic, and the Fermi--Dirac weight $(e^t+1)^{-1}$ gives the
-corresponding alternating sum. For instance, $G(t) = t\,J_0(at)$ gives $F(k) = k/(k^2+a^2)^{3/2}$.
+Bose--Einstein integrals lead to such sums (Section~\ref{sec:physics}).
 
 
 \subsubsection{Special cases with faster algorithms}
@@ -2957,6 +2950,120 @@ becomes more expensive: there are about $2.8/\lambda$ terms $n < k_0$, and the p
 enter the main term and the starting values, have terms of size up to $e^{\beta u_0}$, so that about $5.8\,u_0/\lambda^2$ guard
 bits are needed. For $\lambda \ge p^{-1/2}$ these costs stay within the bound of Theorem~\ref{thm:complexity}.
 
+\subsection{Spectral sums and partition functions}\label{sec:physics}
+
+Many quantities in mathematical physics are traces $\sum_kd_k\,\phi(\lambda_k)$ over a discrete spectrum whose
+eigenvalues $\lambda_k$ and multiplicities $d_k$ are algebraic functions of a quantum number $k$. When
+$d_k\phi(\lambda_k) = k^{-s}F(k)$ with $F \in \Reg$, the trace is a value of $\zeta_F$, and weights $\log\lambda_k$
+come from derivatives in $s$. Sums of this kind include:
+\begin{itemize}
+\item spectral zeta functions $\zeta_A(s) = \operatorname{Tr}A^{-s} = \sum_kd_k\lambda_k^{-s}$ of Laplace-type operators $A$, with
+their values at special points: one-loop effective actions, Casimir energies $\frac12\zeta_A(-\frac12)$ and
+determinants $\exp(-\zeta_A'(0))$ \cite{Eli95,Kir02};
+\item Kaluza--Klein towers, where a field in an extra dimension compactified on a circle of radius $R$ gives modes of mass
+$m_k^2 = m^2 + k^2/R^2$, and a one-loop amplitude becomes a sum over $k$ of a loop function of $m_k$, such as the KK top
+tower of Table~\ref{tab:constants} \cite{Pet02} and the Epstein--Hurwitz sums $\sum_k(k^2+a^2)^{-t}$;
+\item partition functions $\operatorname{Tr}e^{-H/(k_BT)}$ and other thermal sums over bound states, regularized where
+they diverge;
+\item integrals against the Bose--Einstein and Fermi--Dirac weights, which become sums over the Boltzmann factors
+$e^{-kt}$.
+\end{itemize}
+The splitting itself has a familiar reading here. For $u > u_0$ the $k$-terms are a sum over the spectrum. For $u < u_0$
+Poisson summation turns the spectrum into periodic orbits: the main term is the Weyl term (the orbit $m = 0$), and the
+dual terms are the orbits of winding number $m$. Theorem~\ref{thm:split} is in this sense the simplest trace formula.
+
+\subsubsection{The sphere} The Laplacian $\Delta$ on the unit sphere $S^2$ has the eigenvalues $\ell(\ell+1)$ with
+multiplicities $2\ell+1$, so
+\[
+  \zeta_{S^2}(s) = \sum_{\ell=1}^{\infty}\frac{2\ell+1}{(\ell(\ell+1))^s} = \zeta_F(2s-1), \qquad
+  F(k) = \Bigl(2+\frac1k\Bigr)\Bigl(1+\frac1k\Bigr)^{-s},
+\]
+for $\operatorname{Re}s > 1$. Here $F$ depends on $s$, so the continuation in $s$ is not that of $\zeta_F$ at fixed $F$:
+where a pole of $\zeta(2s-1+j)$ meets a zero of the coefficient $c_j(s)$ of $k^{-j}$ in $F$, a rational correction appears.
+For integer $s$ the summand is rational, and $\zeta_{S^2}(s)$ reduces to zeta values; for instance
+$(2\ell+1)/(\ell(\ell+1))^2 = \ell^{-2} - (\ell+1)^{-2}$ telescopes to $\zeta_{S^2}(2) = 1$. Half-integer $s$ give algebraic
+summands:
+\begin{align*}
+  \zeta_{S^2}(\tfrac32) &= \operatorname{Tr}\Delta^{-3/2} = 2.07054447632160590509\ldots, \\
+  \zeta_{S^2}(\tfrac12) &= -1.75429230348530643626\ldots, \\
+  \zeta_{S^2}(-\tfrac12) &= \zeta_F(-2) + \tfrac1{24} = -0.26509554911885852545\ldots
+\end{align*}
+The correction $\frac1{24}$ comes from the term $c_3(s)\zeta(2s+2)$, where $c_3(s) = -s(s+1)(2s+1)/6$ vanishes at the
+pole $s = -\frac12$: the product tends to $c_3'(-\frac12)\cdot\frac12$. The last value gives the zeta-regularized Casimir
+energy $E_{S^2} = \frac12\sum_\ell(2\ell+1)\omega_\ell = \frac12\zeta_{S^2}(-\frac12) = -0.13254777455942926272\ldots$ of a
+massless, minimally coupled scalar field on $\mathbb R\times S^2$, with frequencies $\omega_\ell = \sqrt{\ell(\ell+1)}$. For the conformally coupled field, with
+$\omega_\ell = \ell+\frac12$, the sum is $\zeta(-2,\frac12) = 0$ instead. The determinant is a closed form,
+$\det{}'\Delta = \exp(-\zeta_{S^2}'(0)) = e^{1/2-4\zeta'(-1)} = 3.19531148605918608395\ldots$ \cite{Kir02}. In our
+setting $\zeta_{S^2}'(0) = 2\zeta_{F_0}'(-1) - \zeta_{F_1}(-1) + \frac12$ with $F_0 = 2+\frac1k$ and
+$F_1 = (2+\frac1k)\log(1+\frac1k)$, the $\frac12$ coming from $c_2(s)\zeta(2s+1)$ with $c_2(s) = s^2$, which gives a check.
+
+\subsubsection{Partition functions and Bose--Einstein integrals} The internal partition function
+$\sum_n2n^2e^{\xi/n^2}$ of the hydrogen atom, $\xi = I/(k_BT)$ with $I$ the ionization energy, diverges. The
+Planck--Larkin partition function removes the first two terms of each exponential \cite{EKR11},
+\[
+  \sigma(T) = \sum_{n=1}^{\infty}2n^2\Bigl(e^{\xi/n^2} - 1 - \frac{\xi}{n^2}\Bigr) = 2\zeta_F(-2), \qquad
+  F(k) = e^{\xi/k^2} - 1 - \frac{\xi}{k^2}.
+\]
+Since $F$ is entire in $1/k$, $\sigma(T) = 2\sum_{j=2}^{\infty}\zeta(2j-2)\xi^j/j!$, and, as for the Hardy--Littlewood
+function, the zeta-value expansion needs only even zeta values with factorially decaying coefficients. For example,
+\[
+  \sigma\big|_{\xi=1} = 2.1104548762585976160\ldots, \qquad \sigma\big|_{\xi=10} = 44148.268546579674\ldots,
+\]
+where $\xi = 1$ corresponds to about $1.58\cdot10^5$\,K.
+
+Integrals against the Bose--Einstein weight lead to sums of the same kind. For an entire holonomic function $G$ with
+$|G(t)| \le Ce^{ct}$, $c < 1$, on the positive axis,
+\[
+  \int_0^\infty\frac{G(t)}{e^t-1}\dd t = \sum_{k=1}^{\infty}F(k), \qquad F(k) = \int_0^\infty G(t)e^{-kt}\dd t,
+\]
+where the Laplace transform $F$ is again holonomic. The Fermi--Dirac weight $(e^t+1)^{-1}$ gives the corresponding
+alternating sum. For instance, $G(t) = t\,J_0(at)$ gives $F(k) = k/(k^2+a^2)^{3/2}$, and
+\[
+  \int_0^\infty\frac{t\,J_0(t)}{e^t-1}\dd t = \sum_{k=1}^{\infty}\frac{k}{(k^2+1)^{3/2}} = 0.90052473534812592430\ldots
+\]
+
+\subsubsection{\texorpdfstring{The splitting for $\operatorname{Tr}\Delta^{-3/2}$}{The splitting for the trace}} We use the half-integer quantum number $y = \ell+\frac12$,
+for which $\lambda_\ell = y^2-\frac14$ and
+\[
+  \operatorname{Tr}\Delta^{-3/2} = \sum_{\ell=1}^{\infty}G(\ell+\tfrac12), \qquad
+  G(y) = \frac{2y}{(y^2-\frac14)^{3/2}} = 2\sum_{n=0}^{\infty}\frac{c_n}{y^{2n+2}},
+\]
+with $c_n = (\frac32)_n/(n!\,4^n)$, a shifted sum in the sense of Section~\ref{sec:twistshift}. Termwise, $G(y) = \int_0^\infty e^{-y^2u}h(u)\dd u$ with the
+kernel
+\[
+  h(u) = 2\sum_{n=0}^{\infty}\frac{c_n}{n!}u^n = 2\,{}_1F_1\Bigl(\frac32;1;\frac u4\Bigr), \qquad
+  \vartheta^2h = \frac u4\Bigl(\vartheta+\frac32\Bigr)h,
+\]
+and the theta function of the half-integer lattice is
+\[
+  \sum_{y\in\ZZ+\frac12}e^{-y^2u} = \sqrt{\frac\pi u}\sum_{m\in\ZZ}(-1)^me^{-\pi^2m^2/u}.
+\]
+Splitting at $u_0$ gives
+\[
+  \operatorname{Tr}\Delta^{-3/2} = \sum_{y\ge3/2}I_y + M + \sqrt\pi\sum_{m=1}^{\infty}(-1)^mJ_m,
+\]
+where, with $x = y^2u_0$ and $e_n(x) = \sum_{i=0}^{n}x^i/i!$,
+\begin{align*}
+  I_y &= \int_{u_0}^\infty e^{-y^2u}h(u)\dd u = 2e^{-x}\sum_{n=0}^{\infty}c_ny^{-2n-2}e_n(x), \\
+  M &= \int_0^{u_0}\Bigl(\frac12\sqrt{\frac\pi u} - e^{-u/4}\Bigr)h(u)\dd u \\
+    &= \sqrt\pi\sum_{n=0}^{\infty}\frac{c_n}{n!}\frac{u_0^{n+1/2}}{n+\frac12}
+       - 2u_0\sum_{n=0}^{\infty}\frac{(-\frac12)_n}{n!^2(n+1)}\Bigl(-\frac{u_0}4\Bigr)^n, \\
+  J_m &= Z_{1/2}[h](\pi^2m^2).
+\end{align*}
+The term $e^{-u/4}$ in $M$ removes $y = \frac12$, the zero eigenvalue, and the second series in $M$ comes from Kummer's
+transformation $e^{-u/4}h(u) = 2\,{}_1F_1(-\frac12;1;-\frac u4)$. The half-integer lattice makes the dual terms
+alternate. The moments on the $k$-side have integer indices, so the $k$-terms need no incomplete gamma functions: each
+is a double series converging like $(4y^2)^{-n} \le 9^{-n}$, summed by binary splitting with the
+state $c_ny^{-2n-2}\cdot(e_n(x), x^{n+1}/(n+1)!)$. The dual terms use the moment system of $(h, \vartheta h)$ of
+order $4$, with starting values from $\Gamma(\frac12, c_0/u_0)$. The references are Euler--Maclaurin summation, with the
+Taylor coefficients of $F(x) = (2x+1)(x(x+1))^{-3/2}$ at the cutoff $N$ from $2x(x+1)(2x+1)F' = -(8x^2+8x+3)F$ and
+$\int_N^\infty F = 2(N(N+1))^{-1/2}$, and the zeta-value expansion
+\[
+  \operatorname{Tr}\Delta^{-3/2} = 2\sum_{n=0}^{\infty}c_n\zeta(2n+2,\tfrac32),
+\]
+where $\zeta(2n+2,\frac32) = (2^{2n+2}-1)\zeta(2n+2) - 2^{2n+2}$, which needs only even zeta values and converges like
+$9^{-n}$.
+
 \subsection{Somos's quadratic recurrence constant}\label{sec:somos}
 Somos's quadratic recurrence constant is
 \[
@@ -3071,13 +3178,13 @@ Theorem~\ref{thm:complexity} at $s = 0$ (at $s = \frac12$ for $\mathcal T$), the
 Section~\ref{sec:khimpl}: ball arithmetic
 throughout, FLINT's default matrix products, heuristic (but conservative) truncation of the
 series, the same growth factor $4$, and split point $u_0 = \frac1{16}$ for the constants of
-Sections~\ref{sec:AG}--\ref{sec:theodorus}, $u_0 = \frac14$ for the Hardy--Littlewood function and the vortex sum, and
+Sections~\ref{sec:AG}--\ref{sec:theodorus} and for $\operatorname{Tr}\Delta^{-3/2}$, $u_0 = \frac14$ for the Hardy--Littlewood function and the vortex sum, and
 the split points of Sections~\ref{sec:somos} and~\ref{sec:expsqrt} for the damped constants. (The program adds a margin of two terms
 to the counts \eqref{eq:counts}.)
 
 Tables~\ref{tab:apps} and~\ref{tab:appsref} show its timings with $8$ threads (on
 the machine of Section~\ref{sec:khresults}) for $\mathcal A$, $\mathcal C$, $T$ (for $K_{-1}$), $\mathcal T$, the vortex sum at
-$\lambda = 1$ ($\beta = 4$, $k_0 = 3$), $H(1)$, $\sigma$ and $S = \sum_ke^{-\sqrt k}$. Besides the theta splitting, the
+$\lambda = 1$ ($\beta = 4$, $k_0 = 3$), $H(1)$, $\operatorname{Tr}\Delta^{-3/2}$ on $S^2$, $\sigma$ and $S = \sum_ke^{-\sqrt k}$. Besides the theta splitting, the
 program implements the reference methods of Sections~\ref{sec:somos} and~\ref{sec:expsqrt} for $\sigma$ and $S$, Euler--Maclaurin
 summation for $\mathcal T$, and two reference methods for the others. The
 zeta-value expansion \eqref{eq:zetavalue} is applied after taking out the terms $k \le 31$, so that it converges
@@ -3085,7 +3192,8 @@ like $32^{-n}$, except for
 \[
   H(x) = \sum_{m=0}^{\infty}(-1)^m\zeta(2m+2)\frac{x^{2m+1}}{(2m+1)!},
 \]
-whose coefficients decay factorially; the zeta values come from FLINT, in blocks of consecutive arguments. Euler--Maclaurin summation uses the
+whose coefficients decay factorially, and for $\operatorname{Tr}\Delta^{-3/2}$, where only the term $y = \frac12$ is
+taken out and the expansion converges like $9^{-n}$ (Section~\ref{sec:physics}); the zeta values come from FLINT, in blocks of consecutive arguments. Euler--Maclaurin summation uses the
 cutoff $M \approx p/4$ for $p$ bits; the Taylor coefficients of the summand at $M$ come from a linear recurrence (from
 its differential equation), the Bernoulli numbers from FLINT's reverse iterator. All results agree to all digits
 where they overlap, and the $10^6$-digit values agree with the $10^5$-digit ones. At $10^5$ digits, the theta
@@ -3123,6 +3231,10 @@ $U(1)$ & $10^4$ & $303$/$24$ & $9.85$\,s ($0.52$) & $1.34$\,s & $73$\,MB \\
 $H(1)$ & $10^4$ & $303$/$24$ & $6.15$\,s ($0.35$) & $0.86$\,s & $73$\,MB \\
  & $10^5$ & $959$/$76$ & $419$\,s ($0.41$) & $52.8$\,s & $419$\,MB \\
  & $10^6$ & $3\,034$/$241$ & $28\,465$\,s ($0.36$) & $3\,564$\,s & $2.44$\,GB \\
+\midrule
+$\operatorname{Tr}\Delta^{-3/2}$ & $10^4$ & $607$/$12$ & \textcolor{red}{?} & \textcolor{red}{?} & \textcolor{red}{?} \\
+ & $10^5$ & $1\,919$/$38$ & \textcolor{red}{?} & \textcolor{red}{?} & \textcolor{red}{?} \\
+ & $10^6$ & \textcolor{red}{?} & \textcolor{red}{?} & \textcolor{red}{?} & \textcolor{red}{?} \\
 \midrule
 $\sigma$ & $10^4$ & $152$/$48$ & $10.4$\,s ($0.30$) & $1.41$\,s & $72$\,MB \\
  & $10^5$ & $480$/$152$ & $652$\,s ($0.29$) & $82.8$\,s & $148$\,MB \\
@@ -3164,6 +3276,9 @@ $U(1)$ & $10^4$ & $53.5$\,s & $8.58$\,s & $61.3$\,s & $8.16$\,s \\
 $H(1)$ & $10^4$ & $1.01$\,s & $0.15$\,s & $4.34$\,s & $0.93$\,s \\
  & $10^5$ & $304$\,s & $39.1$\,s & $1\,925$\,s & $345$\,s \\
 \midrule
+$\operatorname{Tr}\Delta^{-3/2}$ & $10^4$ & \textcolor{red}{?} & \textcolor{red}{?} & \textcolor{red}{?} & \textcolor{red}{?} \\
+ & $10^5$ & \textcolor{red}{?} & \textcolor{red}{?} & \textcolor{red}{?} & \textcolor{red}{?} \\
+\midrule
 $\sigma^\dagger$ & $10^4$ & -- & -- & $1.07$\,s & $0.18$\,s \\
  & $10^5$ & -- & -- & $142$\,s & $19.1$\,s \\
 \midrule
@@ -3203,6 +3318,10 @@ time. It grew by a factor of $184$ from $10^4$ to $10^5$ digits; extrapolating, 
 seconds at $10^6$ digits, about as much as the theta splitting, and some six times more wall time. For
 $\mathcal T$ the crossover in CPU time should be near $10^6$ digits.
 
+\todo{Timings for $\operatorname{Tr}\Delta^{-3/2}$ (\texttt{./run.py --constants sphere}). On a two-core test machine
+its theta splitting took $0.6$ times the time of $\mathcal T$ at $3\cdot10^4$ digits, and $285$ CPU seconds at $10^5$
+digits, with the $k$-side a third of the total; $u_0 = \frac1{64}$ was equally fast.}
+
 For the damped constants the theta splitting grows by factors of $64$ ($\sigma$) and $65$ ($S$) from $10^5$ to $10^6$
 digits, like the others. Their runs also agree with runs at $u_0 = \frac14$ and $u_0 = \frac1{16}$ ($\sigma$) and
 $u_0 = 1$ and $u_0 = \frac14$ ($S$) at $10^3$ and $10^4$ digits. For $S$ Euler--Maclaurin summation is slower already
@@ -3222,6 +3341,7 @@ The values are, to $50$ digits (the $10^6$-digit files are in
   \mathcal T &= 1.86002507922119030718069591571714332466652412152345\ldots, \\
   U(1) &= 0.26882772504004215799420784633078761581126503327691\ldots, \\
   H(1) &= 1.47282823195618529629494738382314582532386592787930\ldots, \\
+  \operatorname{Tr}\Delta^{-3/2} &= 2.07054447632160590509314982808257430800874099821595\ldots, \\
   \sigma &= 1.66168794963359412129581892274995074996441863502506\ldots, \\
   S &= 1.67040681796633972123962780986372002147147238406408\ldots
 \end{align*}
