@@ -1117,13 +1117,8 @@ entropy
 \]
 where $-\partial_s\Li_s(z)|_{s=1} = \sum_kz^k\log(k)/k$.
 
-Damped zeta functions occur, for example, in the density of the wrapped symmetric $\alpha$-stable distribution on the
-circle \cite{MJ00}, which is also the heat kernel of the fractional Laplacian $(-\Delta)^{\alpha/2}$ there:
-\[
-  p_t(x) = \frac1{2\pi}\Bigl(1 + 2\sum_{k=1}^{\infty}e^{-tk^\alpha}\cos kx\Bigr) \qquad (0 < \alpha < 2).
-\]
-At $x = 0$ this is $(1 + 2\Lambda(0;t,\alpha))/(2\pi)$, and when $x/2\pi$ is rational it is a value of $\Lambda$ with
-a periodic weight (Section~\ref{sec:twistshift}).
+Damped zeta functions occur, for example, in connection with differential equations and probability distributions with
+a fractional parameter; see Section~\ref{sec:expsqrt} for an example.
 
 %We have checked each splitting identity of this section numerically, by summing every piece as a series and comparing
 %with an independent evaluation; the scripts are in the directory \texttt{paper/checks} of the repository
@@ -2988,14 +2983,28 @@ summands:
   \zeta_{S^2}(\tfrac12) &= -1.75429230348530643626\ldots, \\
   \zeta_{S^2}(-\tfrac12) &= \zeta_F(-2) + \tfrac1{24} = -0.26509554911885852545\ldots
 \end{align*}
-The correction $\frac1{24}$ comes from the term $c_3(s)\zeta(2s+2)$, where $c_3(s) = -s(s+1)(2s+1)/6$ vanishes at the
-pole $s = -\frac12$: the product tends to $c_3'(-\frac12)\cdot\frac12$. The last value gives the zeta-regularized Casimir
-energy $E_{S^2} = \frac12\sum_\ell(2\ell+1)\omega_\ell = \frac12\zeta_{S^2}(-\frac12) = -0.13254777455942926272\ldots$ of a
-massless, minimally coupled scalar field on $\mathbb R\times S^2$, with frequencies $\omega_\ell = \sqrt{\ell(\ell+1)}$. For the conformally coupled field, with
-$\omega_\ell = \ell+\frac12$, the sum is $\zeta(-2,\frac12) = 0$ instead. The determinant is a closed form,
-$\det{}'\Delta = \exp(-\zeta_{S^2}'(0)) = e^{1/2-4\zeta'(-1)} = 3.19531148605918608395\ldots$ \cite{Kir02}. In our
-setting $\zeta_{S^2}'(0) = 2\zeta_{F_0}'(-1) - \zeta_{F_1}(-1) + \frac12$ with $F_0 = 2+\frac1k$ and
-$F_1 = (2+\frac1k)\log(1+\frac1k)$, the $\frac12$ coming from $c_2(s)\zeta(2s+1)$ with $c_2(s) = s^2$, which gives a check.
+The correction $\frac1{24}$ comes from the term $c_3(s)\zeta(2s+2)$ of the expansion, where
+$c_3(s) = -s(s+1)(2s+1)/6$ vanishes at the pole $s = -\frac12$ of $\zeta(2s+2)$:
+\[
+  \lim_{s\to-1/2}c_3(s)\zeta(2s+2) = \frac{c_3'(-\frac12)}{2} = \frac1{24}.
+\]
+The last value gives the Casimir energy of a massless, minimally coupled scalar field on $\mathbb R\times S^2$, whose
+modes have the frequencies $\omega_\ell = \sqrt{\ell(\ell+1)}$: the zeta-regularized value of
+$\frac12\sum_\ell(2\ell+1)\,\omega_\ell$ is
+\[
+  E_{S^2} = \frac12\zeta_{S^2}(-\tfrac12) = -0.13254777455942926272\ldots
+\]
+For the conformally coupled field, with $\omega_\ell = \ell+\frac12$, the energy is $\zeta(-2,\frac12) = 0$ instead.
+The determinant is a closed form \cite{Kir02},
+\[
+  \det{}'\Delta = \exp(-\zeta_{S^2}'(0)) = e^{1/2-4\zeta'(-1)} = 3.19531148605918608395\ldots,
+\]
+which gives a check: in our setting
+\begin{gather*}
+  \zeta_{S^2}'(0) = 2\zeta_{F_0}'(-1) - \zeta_{F_1}(-1) + \frac12, \\
+  F_0(k) = 2+\frac1k, \qquad F_1(k) = \Bigl(2+\frac1k\Bigr)\log\Bigl(1+\frac1k\Bigr),
+\end{gather*}
+where the $\frac12$ comes from the term $c_2(s)\zeta(2s+1)$ with $c_2(s) = s^2$.
 
 \subsubsection{Partition functions and Bose--Einstein integrals} The internal partition function
 $\sum_n2n^2e^{\xi/n^2}$ of the hydrogen atom, $\xi = I/(k_BT)$ with $I$ the ionization energy, diverges. The
@@ -3117,8 +3126,17 @@ with the logarithms of all primes up to $p$ (the precision) computed from
 $\log q = \operatorname{arctanh}\frac1{2q^2-1} + \frac12\log\frac{q^2-1}{4} + \log 2$.
 
 \subsection{A stretched-exponential sum}\label{sec:expsqrt}
-Let $S = \sum_{k=1}^{\infty}e^{-\sqrt k} = \Lambda(0;1,\frac12)$. It is related to the density of the wrapped stable
-distribution with $\alpha = \frac12$ (Section~\ref{sec:beyond}) by $p_1(0) = (1+2S)/(2\pi)$. For $S$ we use
+The wrapped symmetric $\alpha$-stable distribution on the circle \cite{MJ00}, which is also the heat kernel of the
+fractional Laplacian $(-\Delta)^{\alpha/2}$ there, has the density
+\[
+  p_t(x) = \frac1{2\pi}\Bigl(1 + 2\sum_{k=1}^{\infty}e^{-tk^\alpha}\cos kx\Bigr) \qquad (0 < \alpha < 2).
+\]
+At $x = 0$ this is $(1 + 2\Lambda(0;t,\alpha))/(2\pi)$, and when $x/2\pi$ is rational it is a value of $\Lambda$ with
+a periodic weight (Section~\ref{sec:twistshift}). We compute the peak density for $\alpha = \frac12$ and $t = 1$,
+\[
+  p_1(0) = \frac{1+2S}{2\pi} = 0.69086194719938\ldots, \qquad S = \sum_{k=1}^{\infty}e^{-\sqrt k} = \Lambda(0;1,\tfrac12).
+\]
+For $S$ we use
 Proposition~\ref{prop:expsplit} with $r = \frac12$, $\tau = 1$ and $s = 0$. Then $a_j = -j/4$, and the class $j \equiv 0 \pmod 4$ drops out at $s = 0$.
 
 \emph{The kernel.} For $j = 4m+\varrho$, $\varrho \in \{1,2,3\}$, the kernel is $\omega_\varrho w^{1+\varrho/4}H_\varrho(w)$
@@ -3232,9 +3250,9 @@ $H(1)$ & $10^4$ & $303$/$24$ & $6.15$\,s ($0.35$) & $0.86$\,s & $73$\,MB \\
  & $10^5$ & $959$/$76$ & $419$\,s ($0.41$) & $52.8$\,s & $419$\,MB \\
  & $10^6$ & $3\,034$/$241$ & $28\,465$\,s ($0.36$) & $3\,564$\,s & $2.44$\,GB \\
 \midrule
-$\operatorname{Tr}\Delta^{-3/2}$ & $10^4$ & $607$/$12$ & \textcolor{red}{?} & \textcolor{red}{?} & \textcolor{red}{?} \\
- & $10^5$ & $1\,919$/$38$ & \textcolor{red}{?} & \textcolor{red}{?} & \textcolor{red}{?} \\
- & $10^6$ & \textcolor{red}{?} & \textcolor{red}{?} & \textcolor{red}{?} & \textcolor{red}{?} \\
+$\operatorname{Tr}\Delta^{-3/2}$ & $10^4$ & $607$/$12$ & $4.12$\,s ($0.29$) & $0.65$\,s & $55$\,MB \\
+ & $10^5$ & $1\,919$/$38$ & $255$\,s ($0.31$) & $32.7$\,s & $310$\,MB \\
+ & $10^6$ & $6\,069$/$120$ & $16\,144$\,s ($0.29$) & $2\,021$\,s & $2.10$\,GB \\
 \midrule
 $\sigma$ & $10^4$ & $152$/$48$ & $10.4$\,s ($0.30$) & $1.41$\,s & $72$\,MB \\
  & $10^5$ & $480$/$152$ & $652$\,s ($0.29$) & $82.8$\,s & $148$\,MB \\
@@ -3250,40 +3268,42 @@ $\sum_ke^{-\sqrt k}$ & $10^4$ & $608$/$12$ & $15.9$\,s ($0.57$) & $2.11$\,s & $7
 \begin{table}[tp]
 \centering\small
 \caption{Timings of the reference methods in \texttt{holsum} with $8$ threads (CPU time summed over the threads, and
-wall time). ${}^\dagger$For $\sigma$, direct summation over prime powers instead of Euler--Maclaurin summation.}
+wall time), and the speedup of the theta splitting: the time of the faster reference method divided by that of the
+theta splitting (Table~\ref{tab:apps}), for CPU and for wall time separately. ${}^\dagger$For $\sigma$, direct
+summation over prime powers instead of Euler--Maclaurin summation.}
 \label{tab:appsref}
-\begin{tabular}{llrrrr}
+\begin{tabular}{llrrrrrr}
 \toprule
-& & \multicolumn{2}{c}{zeta values} & \multicolumn{2}{c}{Euler--Maclaurin} \\
-\cmidrule(lr){3-4}\cmidrule(lr){5-6}
-constant & digits & CPU & wall & CPU & wall \\
+& & \multicolumn{2}{c}{zeta values} & \multicolumn{2}{c}{Euler--Maclaurin} & \multicolumn{2}{c}{speedup} \\
+\cmidrule(lr){3-4}\cmidrule(lr){5-6}\cmidrule(l){7-8}
+constant & digits & CPU & wall & CPU & wall & CPU & wall \\
 \midrule
-$\mathcal A$ & $10^4$ & $4.26$\,s & $0.81$\,s & $2.51$\,s & $0.82$\,s \\
- & $10^5$ & $1\,059$\,s & $134$\,s & $1\,695$\,s & $353$\,s \\
+$\mathcal A$ & $10^4$ & $4.26$\,s & $0.81$\,s & $2.51$\,s & $0.82$\,s & $1.1$ & $2.1$ \\
+ & $10^5$ & $1\,059$\,s & $134$\,s & $1\,695$\,s & $353$\,s & $7.7$ & $7.5$ \\
 \midrule
-$\mathcal C$ & $10^4$ & $29.8$\,s & $3.89$\,s & $2.49$\,s & $0.79$\,s \\
- & $10^5$ & $27\,817$\,s & $3\,481$\,s & $1\,888$\,s & $389$\,s \\
+$\mathcal C$ & $10^4$ & $29.8$\,s & $3.89$\,s & $2.49$\,s & $0.79$\,s & $0.36$ & $0.78$ \\
+ & $10^5$ & $27\,817$\,s & $3\,481$\,s & $1\,888$\,s & $389$\,s & $4.0$ & $6.5$ \\
 \midrule
-$T$ ($K_{-1}$) & $10^4$ & $31.9$\,s & $4.12$\,s & $3.36$\,s & $1.16$\,s \\
- & $10^5$ & $30\,050$\,s & $3\,762$\,s & $2\,287$\,s & $569$\,s \\
+$T$ ($K_{-1}$) & $10^4$ & $31.9$\,s & $4.12$\,s & $3.36$\,s & $1.16$\,s & $0.23$ & $0.57$ \\
+ & $10^5$ & $30\,050$\,s & $3\,762$\,s & $2\,287$\,s & $569$\,s & $2.3$ & $4.5$ \\
 \midrule
-$\mathcal T$ & $10^4$ & -- & -- & $0.98$\,s & $0.50$\,s \\
- & $10^5$ & -- & -- & $181$\,s & $115$\,s \\
+$\mathcal T$ & $10^4$ & -- & -- & $0.98$\,s & $0.50$\,s & $0.14$ & $0.46$ \\
+ & $10^5$ & -- & -- & $181$\,s & $115$\,s & $0.38$ & $1.9$ \\
 \midrule
-$U(1)$ & $10^4$ & $53.5$\,s & $8.58$\,s & $61.3$\,s & $8.16$\,s \\
- & $10^5$ & $53\,348$\,s & $6\,905$\,s & -- & -- \\
+$U(1)$ & $10^4$ & $53.5$\,s & $8.58$\,s & $61.3$\,s & $8.16$\,s & $5.4$ & $6.1$ \\
+ & $10^5$ & $53\,348$\,s & $6\,905$\,s & -- & -- & $79$ & $81$ \\
 \midrule
-$H(1)$ & $10^4$ & $1.01$\,s & $0.15$\,s & $4.34$\,s & $0.93$\,s \\
- & $10^5$ & $304$\,s & $39.1$\,s & $1\,925$\,s & $345$\,s \\
+$H(1)$ & $10^4$ & $1.01$\,s & $0.15$\,s & $4.34$\,s & $0.93$\,s & $0.16$ & $0.17$ \\
+ & $10^5$ & $304$\,s & $39.1$\,s & $1\,925$\,s & $345$\,s & $0.73$ & $0.74$ \\
 \midrule
-$\operatorname{Tr}\Delta^{-3/2}$ & $10^4$ & \textcolor{red}{?} & \textcolor{red}{?} & \textcolor{red}{?} & \textcolor{red}{?} \\
- & $10^5$ & \textcolor{red}{?} & \textcolor{red}{?} & \textcolor{red}{?} & \textcolor{red}{?} \\
+$\operatorname{Tr}\Delta^{-3/2}$ & $10^4$ & $2.38$\,s & $2.38$\,s & $1.31$\,s & $0.54$\,s & $0.32$ & $0.83$ \\
+ & $10^5$ & $663$\,s & $663$\,s & $233$\,s & $124$\,s & $0.91$ & $3.8$ \\
 \midrule
-$\sigma^\dagger$ & $10^4$ & -- & -- & $1.07$\,s & $0.18$\,s \\
- & $10^5$ & -- & -- & $142$\,s & $19.1$\,s \\
+$\sigma^\dagger$ & $10^4$ & -- & -- & $1.07$\,s & $0.18$\,s & $0.10$ & $0.13$ \\
+ & $10^5$ & -- & -- & $142$\,s & $19.1$\,s & $0.22$ & $0.23$ \\
 \midrule
-$\sum_ke^{-\sqrt k}$ & $10^4$ & -- & -- & $2.92$\,s & $0.69$\,s \\
- & $10^5$ & -- & -- & $1\,703$\,s & $302$\,s \\
+$\sum_ke^{-\sqrt k}$ & $10^4$ & -- & -- & $2.92$\,s & $0.69$\,s & $0.18$ & $0.33$ \\
+ & $10^5$ & -- & -- & $1\,703$\,s & $302$\,s & $1.7$ & $2.3$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -3318,9 +3338,13 @@ time. It grew by a factor of $184$ from $10^4$ to $10^5$ digits; extrapolating, 
 seconds at $10^6$ digits, about as much as the theta splitting, and some six times more wall time. For
 $\mathcal T$ the crossover in CPU time should be near $10^6$ digits.
 
-\todo{Timings for $\operatorname{Tr}\Delta^{-3/2}$ (\texttt{./run.py --constants sphere}). On a two-core test machine
-its theta splitting took $0.6$ times the time of $\mathcal T$ at $3\cdot10^4$ digits, and $285$ CPU seconds at $10^5$
-digits, with the $k$-side a third of the total; $u_0 = \frac1{64}$ was equally fast.}
+For $\operatorname{Tr}\Delta^{-3/2}$ the theta splitting is cheaper than for $\mathcal T$: its $k$-terms need no
+incomplete gamma functions, and the $k$-side takes $0.29$ of the time against $0.62$. It grows by a factor of $63$ from
+$10^5$ to $10^6$ digits, and $u_0 = \frac1{64}$ is about as fast as $u_0 = \frac1{16}$. As for $\mathcal T$, the summand
+costs only a square root, and Euler--Maclaurin summation is cheap: at $10^5$ digits it needs slightly less CPU time than the
+theta splitting ($233$ against $255$ seconds), but $3.8$ times more wall time. The zeta-value expansion needs only even
+zeta values, but converges only like $9^{-n}$; our implementation computes them in a single thread, with peak memory
+$4.1$\,GB at $10^5$ digits.
 
 For the damped constants the theta splitting grows by factors of $64$ ($\sigma$) and $65$ ($S$) from $10^5$ to $10^6$
 digits, like the others. Their runs also agree with runs at $u_0 = \frac14$ and $u_0 = \frac1{16}$ ($\sigma$) and
