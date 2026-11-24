@@ -52,3 +52,8 @@ import ZetaF.Khinchin.Dilog
 import ZetaF.Khinchin.BBC
 import ZetaF.Khinchin.K1
 import ZetaF.Khinchin.K3Split
+import ZetaF.Damped.Product
+import ZetaF.Damped.ProductSplit
+import ZetaF.Applications.Bernoulli
+import ZetaF.Khinchin.StartVals
+import ZetaF.Khinchin.K3Closed

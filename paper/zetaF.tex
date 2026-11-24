@@ -1292,7 +1292,7 @@ is an entire function of $x^r$. By the Cauchy--Saalschütz representation of $\G
 continued meromorphically by the same series.
 
 \begin{proposition}\label{prop:prodsplit}
-For $u_0 > 0$ and $s$ outside a discrete set,
+For $u_0 > 0$, $k_0 > R$ and $s$ outside a discrete set,
 \[
   \Lambda_F^{\ge k_0}(s;\tau,r) = \sum_{k=k_0}^{\infty}I_k + \sqrt\pi\sum_{m=1}^{\infty}J_m + M_+ + M_-,
 \]
@@ -1308,7 +1308,10 @@ where, with $I^-_k$ the part of $I_k$ with $\ell < 0$, and the restriction of $h
 \end{proposition}
 
 As in Proposition~\ref{prop:expsplit}, the series for $J_m$ converges for $q \ge 2$, but for $q = 1$ only when
-$\tau < 2\pi m$; in general $J_m$ is the integral $\int_0^{u_0}u^{-1/2}e^{-\pi^2m^2/u}h_s(u)\dd u$.
+$\tau < 2\pi m$; in general $J_m$ is the integral $\int_0^{u_0}u^{-1/2}e^{-\pi^2m^2/u}h_s(u)\dd u$. The series for
+$I_k$ needs $k > R$. The termwise integrals behind $M_+$ and $M_-$ converge only for $\operatorname{Re}w_\ell > \frac12$
+and $\operatorname{Re}w_\ell < 0$ respectively, so the terms of $M_\pm$ are their continuations in $s$; their poles
+lie in the discrete exceptional set.
 
 \begin{proof}
 For $x > R$ the summand is $\int_0^\infty e^{-x^2u}h_s(u)\dd u$, and the proof of Theorem~\ref{thm:split} applies to
