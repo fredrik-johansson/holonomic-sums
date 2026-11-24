@@ -116,6 +116,16 @@ installed in a standard location, `make` is enough. Additional paths (for exampl
 The paper is in `paper/` (`zetaF.tex`; the figure data `khcf_gm.dat` and the scripts behind the continued
 fraction computations are in the same directory).
 
+## Formal verification
+
+The directory `lean/` contains a Lean 4 / Mathlib formalization of much of the mathematics of the paper (about
+20,000 lines): Theorem 3.2 (theta splitting) for all $s$ and the meromorphic continuation of $\zeta_F$, the twisted
+and geometric-factor splittings of Section 4, the Khinchin section (Section 6, including the error bounds of the
+evaluation), and every estimate used in the complexity proofs (Appendix A.2). There are no `sorry`s and no added
+axioms. Bit complexity itself is not formalized; Appendix A of the paper explains what is and is not covered and
+what the formalization changed in the text. `lean/README.md` maps the results of the paper to their Lean names and
+explains how to build (`cd lean && lake exe cache get && lake build`; one file needs more than 7 GB of RAM).
+
 ## Running
 
 ```
@@ -245,6 +255,8 @@ part evaluates one ${}_2F_1$ per term, so `run.py` stops it at $10^4$ digits.
 * `src/refs.c`: shared code for the reference methods.
 * `src/main.c`: the command-line program.
 * `run.py`: the benchmark script.
+* `lean/`: the Lean formalization (see *Formal verification* above).
+* `paper/`: the paper and the scripts of its numerical checks (`paper/checks/`).
 
 The formulas (kernels, moment systems, starting values) are derived in the paper, Section 6; each source file
 starts with a summary.
