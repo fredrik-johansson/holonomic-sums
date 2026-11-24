@@ -3,7 +3,7 @@
 This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 2026 draft), built on Mathlib
 (`master`, Lean `v4.37.0-rc1`).
 
-* To build: run `lake exe cache get && lake build` in this directory (about 14,700 lines in 53 files; building `Polylog/Slit.lean` needs more than 7 GB of RAM).
+* To build: run `lake exe cache get && lake build` in this directory (about 15,000 lines in 54 files; building `Polylog/Slit.lean` needs more than 7 GB of RAM).
 * There is no `sorry`, `admit` or `axiom`. The main theorems depend only on `propext`,
   `Classical.choice` and `Quot.sound`.
 * `ZetaF/Open.lean` records statements as named `Prop`s and says which of them are proved.
@@ -45,6 +45,7 @@ This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 20
 | **Khinchin's constant, (K1) and (K2)**: `log K = ∑ μ_k log k` converges; `log K · log 2 = ∑_{k≥2} -log(1-1/k) log(1+1/k)` (summation by parts); `log K = -Z'(0)` | `logK`, `logK_mul_log_two`, `hasSum_khF` (`Khinchin/LogK.lean`); `hasDerivAt_khinchinZ_zero`, `logK_eq_neg_deriv_khinchinZ` (`Khinchin/K1.lean`) | proved |
 | **Real dilogarithm** `Li₂ x = -∫₀^x log(1-t)/t dt` on `(-∞,1]`: power series on `[-1,1]`, duplication, Landen's identity (for all `z < 1`), inversion, `Li₂(1) = π²/6`, `Li₂(-1)`, `Li₂(1/2)`, `Li₂(1/4)`, `Li₂(-2)` | `Li₂`, `hasSum_Li₂`, `Li₂_add_Li₂_neg`, `Li₂_landen`, `Li₂_inversion`, `Li₂_one`, `Li₂_neg_one`, `Li₂_half`, `Li₂_quarter`, `Li₂_neg_two` (`Khinchin/Dilog.lean`) | proved |
 | **Lemma 6.2** (Bailey–Borwein–Crandall, formula (K3)): `log K · log 2 = log²2 + Li₂(-1/2) + ½∑_{k≥2}(-1)^k Li₂(4/k²)`, following the paper's proof (dilation, duplication, Landen, telescoping; every intermediate formula checked) | `logK_mul_log_two_eq_dilog`, `dilation`, `bbcG_succ`, `sum_bbcG`, `bbcG_zero`, `hasSum_bbcG` (`Khinchin/BBC.lean`) | proved |
+| **Theorem 6.3** (the splitting behind Algorithm K3): for every `U > 0`, `log K log 2 = log²2 + Li₂(-1/2) + π²/12 + ½(M + ∑_{k≥3}(-1)^k I_k + ∑_{m≥0} J_m)`, with `I_k`, `J_m = √π Z_{1/2}[G](π²(m+½)²)`, `M` as integrals; uses `Li₂(4/k²) = ∫₀^∞ e^{-k²u}G` and `θ₄(u) = 2√(π/u)∑_m e^{-π²(m+½)²/u}` | `khinchin_K3_split`, `laplace_kerG`, `theta4_half`, `mainK3` (`Khinchin/K3Split.lean`) | proved (the closed forms of `I_k`, `M` and of `J_m` via `erfc`, `Ci` are not formalized) |
 | **Section 6.4.2, error bounds for Algorithm K3** (kernel `G(u) = Ein(4u)/u`): `G(u) ≤ e^{4u}/u`, `G` nondecreasing; `0 < I_k ≤ e^{-(k²-4)U}/((k²-4)U)` (`k ≥ 3`); `J_m ≤ 2√(πU) G(U) e^{-c/U}`; the evaluation-point error `|J(c) - J(c')| ≤ √π G(U) U^{1/2} e^{-ξ/U}/ξ · |c-c'|` for `c, c' ≥ ξ` (the paper's `|J'(ξ)|` bound, which has an extra, harmless, factor `2`) | `kerG_le`, `kerG_mono`, `kTermK_pos`, `kTermK_le`, `dualTermK_le`, `integral_inv_sq_exp`, `dualTermK_lipschitz` (`Khinchin/Bounds.lean`) | proved |
 | **Proposition 6.4** (denominator bound for a rational `K`): a rational strictly between Farey neighbours `a/b < c/e` has denominator `≥ b+e`; every rational strictly between `x_{T₀}` and `x_{T₁}`, `x_t = (tp_N+p_{N-1})/(tq_N+q_{N-1})`, has denominator `≥ (T₀+1)q_N + q_{N-1}` | `farey_denom_ge`, `den_xt`, `xt_strictMono`, `den_ge_of_between` (`Khinchin/Farey.lean`) | proved (the numerical inputs are not formalized) |
 | Binary-splitting cost (App. A.1): `≤ S` bits per level, cost `≤ d·M(S)`; **bit-burst cost sum**: steps with `n_j 2^j ≤ p` terms of `≤ 2^j + L` bits cost `≤ D·M(Jp + 2Lp)` in total | `treeCost_le`, `bitBurst_cost_le` (`Bounds/BinarySplitting.lean`) | proved (scalar cost model) |
@@ -108,3 +109,6 @@ This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 20
 * The damped splittings: the kernel representation for Proposition 4.2 (Wright functions), the main term
   `M` via complete Mellin integrals, and Proposition 4.3. `split_theta_lin` and the `Continuation/` files are the templates.
 * `FuchsianAddClosed` (Fuchs's criterion for the LCLM), kept as an explicit hypothesis.
+* Section 6: the closed forms in Theorem 6.3 (`erfc`, `Ci`), the remaining error bounds of Section 6.4.2
+  (`k`-series tails, Taylor stages, starting values), Algorithms K1/K2 in the form of Theorem 3.2.
+* Sections 5 and 7–8 (complexity theorems, Corollaries 5.4–5.5, the applications) beyond the cost model.

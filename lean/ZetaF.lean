@@ -51,3 +51,4 @@ import ZetaF.Khinchin.LogK
 import ZetaF.Khinchin.Dilog
 import ZetaF.Khinchin.BBC
 import ZetaF.Khinchin.K1
+import ZetaF.Khinchin.K3Split
