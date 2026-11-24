@@ -3982,14 +3982,14 @@ $j_1 = O(S)$ the least index for which $\operatorname{Re}(\frac s2 + j_1 + 1) \g
 part. The terms with $j \ge j_1$ then follow a recurrence that divides only by numbers $\frac s2 + j + 1$ of real part
 at least $\frac12$. These are units of the ring of truncated power series in $\varepsilon = s - s_0$. The
 $O(S)$ terms with $j < j_1$ are polynomials in $s$ times that factor. By (G1) and (G2),
-$\sum_j x^j|1/\Gamma(\frac s2+j+1)| \le 2^{O(p)}x^{S}e^x$, and $x^S = 2^{O(p)}$ since $x = k^2u_0 = O(p)$. Hence the
+$\sum_j x^j|1/\Gamma(\frac s2+j+1)| \le 2^{O(p)}(1+x)^{S}e^x$, and $(1+x)^S = 2^{O(p)}$ since $x = k^2u_0 = O(p)$. Hence the
 terms of the double sums are at most $2^{O(p)}|a_{2m}|\kappa^{-m}$, which gives (b) and (d). The coefficients are
 polynomials in $s$, $m$ and $j$ of bounded degree, hence (c). Further, $|k^{-s}| \le k^S = 2^{O(p)}$, and $A_0(1/\kappa)$,
 $A_1(1/\kappa)$ do not depend on $s$.
 
 \emph{Incomplete gamma functions.} For $|a| \le 2S$ and rational $0 < y = O(p)$ write
 $P(a,y) = y^ae^{-y}\sum_iy^i/\Gamma(a+i+1)$ and factor out $1/\Gamma(a+i_1+1)$ as above. The terms are at most
-$2^{O(p)}y^{S}e^{y}\cdot 2^{-i}$ for $i \ge 2y + 2S$, so $O(p)$ terms and $O(p)$ guard bits suffice. The factors
+$2^{O(p)}(1+y)^{S}e^{y}4^y\cdot 2^{-i}$ for $i \ge 2y + 2S$ (the factor $4^y$ is needed, and is $2^{O(p)}$), so $O(p)$ terms and $O(p)$ guard bits suffice. The factors
 $1/\Gamma(w)$ with $\operatorname{Re}w \ge \frac12$, $|w| \le 3S$, of which $O(1)$ are needed, come from
 $\Gamma(w) = \gamma(w,N) + \Gamma(w,N)$ with $N = O(p)$. Here $|\Gamma(w,N)| \le N^{3S}e^{-N} \le 2^{-\Omega(p)}$
 and $|\Gamma(w)| \ge 0.88\,e^{-3\pi S/2}$ by (G1), so $O(p)$ guard bits give $1/\Gamma(w)$.
