@@ -12,6 +12,7 @@ import ZetaF.Holonomic.DualSystem
 import ZetaF.Bounds.Truncation
 import ZetaF.Bounds.BinarySplitting
 import ZetaF.Bounds.TaylorRec
+import ZetaF.Bounds.ErrorProp
 import ZetaF.IncompleteGamma
 import ZetaF.Open
 import ZetaF.GammaUniform
@@ -27,6 +28,8 @@ import ZetaF.Continuation.Regular
 import ZetaF.Continuation.Hurwitz
 import ZetaF.Continuation.Twisted
 import ZetaF.Continuation.Geometric
+import ZetaF.Analysis.Boundary
+import ZetaF.Polylog.Disk
 import ZetaF.Twisted.Theta
 import ZetaF.Twisted.Split
 import ZetaF.Twisted.Odd

@@ -206,4 +206,38 @@ theorem taylor_rec_summable {c₀ : ℂ} (B₀ B₁ : Matrix (Fin D) (Fin D) ℂ
   calc ‖h‖ ^ n * ‖Y n‖ ≤ ‖h‖ ^ n * (C * t ^ n) := mul_le_mul_of_nonneg_left (hC n) (by positivity)
     _ = C * (t ^ n * ‖h‖ ^ n) := by ring
 
+/-- **Truncation error of a Taylor stage**: for `t > 1/|c₀|` with `t|h| < 1`, the remainder after
+`L` terms is `O((t|h|)^L / (1 - t|h|))` (the paper's `ρ^L/(1-ρ)` with `ρ = |δ|/c₀`, for any
+`ρ > |h|/|c₀|`). -/
+theorem taylor_rec_tail_le {c₀ : ℂ} (B₀ B₁ : Matrix (Fin D) (Fin D) ℂ) (Y : ℕ → Fin D → ℂ)
+    (hrec : ∀ n i, c₀ * (n + 1) * Y (n + 1) i =
+      ∑ j, (B₀ i j + c₀ * B₁ i j) * Y n j - n * Y n i +
+        ∑ j, B₁ i j * (if n = 0 then 0 else Y (n - 1) j))
+    {t : ℝ} (ht : 1 < t * ‖c₀‖) {h : ℂ} (hth : t * ‖h‖ < 1) :
+    ∃ C, ∀ L, Summable (fun k => h ^ (L + k) • Y (L + k)) ∧
+      ‖∑' k, h ^ (L + k) • Y (L + k)‖ ≤ C * (t * ‖h‖) ^ L / (1 - t * ‖h‖) := by
+  obtain ⟨C, hC⟩ := taylor_rec_growth B₀ B₁ Y hrec ht
+  have hC0 : 0 ≤ C := by
+    have := (norm_nonneg _).trans (hC 0); simpa using this
+  have hc0 : 0 < ‖c₀‖ := by
+    rcases (norm_nonneg c₀).lt_or_eq with h | h
+    · exact h
+    · rw [← h, mul_zero] at ht; linarith
+  have ht0 : 0 ≤ t := by
+    by_contra hh; push Not at hh; nlinarith
+  have hr0 : 0 ≤ t * ‖h‖ := by positivity
+  refine ⟨C, fun L => ?_⟩
+  have hb : ∀ k, ‖h ^ (L + k) • Y (L + k)‖ ≤ C * (t * ‖h‖) ^ L * (t * ‖h‖) ^ k := by
+    intro k
+    rw [norm_smul, norm_pow]
+    calc ‖h‖ ^ (L + k) * ‖Y (L + k)‖ ≤ ‖h‖ ^ (L + k) * (C * t ^ (L + k)) :=
+          mul_le_mul_of_nonneg_left (hC _) (by positivity)
+      _ = _ := by rw [mul_pow, mul_pow, pow_add, pow_add]; ring
+  have hs : Summable fun k => C * (t * ‖h‖) ^ L * (t * ‖h‖) ^ k :=
+    (summable_geometric_of_lt_one hr0 hth).mul_left _
+  refine ⟨Summable.of_norm_bounded hs hb, ?_⟩
+  calc ‖∑' k, h ^ (L + k) • Y (L + k)‖ ≤ ∑' k, C * (t * ‖h‖) ^ L * (t * ‖h‖) ^ k :=
+        tsum_of_norm_bounded hs.hasSum hb
+    _ = _ := by rw [tsum_mul_left, tsum_geometric_of_lt_one hr0 hth, div_eq_mul_inv]
+
 end ZetaF

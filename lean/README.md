@@ -3,7 +3,7 @@
 This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 2026 draft), built on Mathlib
 (`master`, Lean `v4.37.0-rc1`).
 
-* To build: run `lake exe cache get && lake build` in this directory (about 9,000 lines in 36 files).
+* To build: run `lake exe cache get && lake build` in this directory (about 9,900 lines in 39 files).
 * There is no `sorry`, `admit` or `axiom`. The main theorems depend only on `propext`,
   `Classical.choice` and `Quot.sound`.
 * `ZetaF/Open.lean` records statements as named `Prop`s and says which of them are proved.
@@ -28,6 +28,7 @@ This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 20
 | **Remark 3.7**, twisted splitting with the paper's `J^χ_n = Z_{1/2+δ}[h_{s+δ}](π²n²/q²)` and `M^χ`: even part (`Re s > 1`), odd part (`Re s > 2`), arbitrary periodic `χ` (`Re s > 2`) | `theta_split_char`, `zetaTail_split_char` (`Twisted/Split.lean`); `theta_split_char_odd`, `zetaTail_split_char_odd`, `zetaTail_split_periodic` (`Twisted/SplitOdd.lean`) | proved for `Re s` large; continued below |
 | **Theorem 4.1(1) on `|z| = 1`**: `Li_F^{≥k₀}(s,z) = ∑(C_k I_k(s) + k S_k I_k(s+1)) + (√π/2)∑_{n∈ℤ}(J^{(0)}_s(c_n) - iπ(n-α)J^{(1)}_{s+1}(c_n)) - ½H(s) - ∑_{k<k₀}(…)`, `c_n = π²(n-α)²` | `tsum_geo_theta`, `tsum_geo_theta_odd`, `tsum_geoC_theta`, `tsum_geoS_theta` (`Polylog/Theta.lean`); `split_theta_lin` (`Polylog/Split.lean`); `polylogTail_split` (`Polylog/Geometric.lean`) | proved for real `α` and `Re s > 2`; the paper then continues in `α` to `|z| < 1` (not formalized) |
 | **Theorem 4.1(1) on `|z| = 1`, `z ≠ 1`, for all `s`**: with `H` and `L_k` replaced by their termwise series, the right-hand side is entire and equals `Li_F^{≥k₀}(s,z)` for `Re s > 2` (the dual points `c_n` stay `≥ c₁ > 0`, so the `J`-sums converge locally uniformly) | `polylogTail_entire`, `differentiable_lSeries`, `hasSum_lSeries`, `dualJ_local_bound`, `dualJOdd_local_bound` (`Continuation/Geometric.lean`) | proved |
+| **Theorem 4.1(1) inside the disc**: for `z = e^{2πiα}` with `0 < Im α < min(Re α, 1 - Re α)` (i.e. `e^{-2π min(α₁,1-α₁)} < |z| < 1`, where all `Re c_n > 0`) and `Re s > 2`, `Li_F^{≥k₀}(s,z)` equals the splitting with complex dual points `c_n = π²(n-α)²`. Proof as in the paper: both sides holomorphic in `α`, equal on `0 < α < 1`; the reflection step is replaced by a boundary-uniqueness theorem proved via Morera (Painlevé for a line) | `polylogTail_split_disk`, `differentiableOn_polylogRHSC`, `differentiableOn_dualSum`, `differentiable_kSumC`, `differentiableOn_geoJC`, `continuousOn_lhs`, `differentiableOn_lhs` (`Polylog/Disk.lean`); `differentiableOn_ball_of_line`, `eqOn_zero_of_boundary` (`Analysis/Boundary.lean`) | proved; the rest of the disc needs `J` for `Re c ≤ 0` (continuation of `D_a`), not formalized |
 | **Odd `χ`: the twisted `L`-tail is entire** (main term `-∑ c_k L_k(s+1)` through the `L_k` series) | `zetaTail_char_odd_entire`, `mainTermOdd_eq_sum` (`Continuation/Geometric.lean`) | proved |
 | **Proposition 5.7**: `ζ_F^{≥k₀}(s) = ∑_n a_n ζ(s+n, k₀)` (Mathlib's `riemannZeta`), holomorphic on `ℂ ∖ {1,0,-1,…}`, simple poles at `1-n` with residue `a_n`; agrees with the continuation of Theorem 3.2 | `hurwitzTail`, `zetaTail_eq_tsum_hurwitz`, `differentiableOn_hurwitzSeries`, `hurwitzSeries_residue`, `hurwitzSeries_eq_splitRHS`, `splitRHS_residue` (`Continuation/Hurwitz.lean`) | proved (for `F` analytic at `∞`) |
 | **Remark 3.7, "then by continuation"**: the right-hand side of the twisted splitting is holomorphic on `ℂ ∖ {1,0,-1,…}` for every periodic `χ` (weighted `k`-sums, dual sums with `λ = π²/q²` and weights `u^{-1/2}`, `u^{-3/2}`, and the main terms through `M_k(s)` and `H(s) = ∫₀^{u₀}h_s`); for even `χ` it is independent of `u₀` and has residue `a_n χ̂(0)/q` at `1-n` | `zetaTail_periodic_continuation`, `zetaTail_char_continuation`, `twistedEvenRHS_indep`, `twistedEvenRHS_residue`, `mainSeries_residue`, `hasSum_hSeries`, `hasSum_dSeriesOdd` (`Continuation/Twisted.lean`) | proved (odd part shown holomorphic on `ℂ ∖ {0,-1,…}` only, which suffices) |
@@ -44,6 +45,7 @@ This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 20
 | **(G3)**: `|Γ(w)| ≤ Γ(Re w + N) 2^N/min(δ,1)` if `Re w + N ≥ 1` and `|w+j| ≥ δ` for `j < N` (all factors of `(w)_N` but one are `≥ 1/2`) | `norm_Gamma_le_G3`, `prod_norm_add_nat_ge` | proved (Liouville's inequality for `δ` not formalized) |
 | Bit-burst Taylor recurrence `c₀(l+1)Y_{l+1} = (B₀ + c₀B₁ - l)Y_l + B₁Y_{l-1}` ⇔ `cY' = (B₀ + cB₁)Y` (formal power series at `c₀`) | `taylor_rec_iff` (`Bounds/TaylorRec.lean`) | proved |
 | **Bit-burst radius of convergence**: solutions of that recurrence satisfy `‖Y_l‖ ≤ C t^l` for every `t > 1/|c₀|`, so `∑ h^l Y_l` converges for `|h| < |c₀|` | `taylor_rec_growth`, `taylor_rec_summable` (`Bounds/TaylorRec.lean`) | proved |
+| **Bit-burst error analysis**: truncation error of a Taylor stage `≤ C(t|h|)^L/(1-t|h|)`; global error of a chain of steps with Lipschitz constants `M_j` and local errors `ε_j` is `∏M_j·‖y₀-x₀‖ + ∑ε_j∏_{i>j}M_i` (`≤ M^n(‖y₀-x₀‖ + ∑ε_j)` uniformly, operator norms for linear steps); "every tail is at most twice its first term" once terms halve; the error from the evaluation point is `δ·max|J'|` | `taylor_rec_tail_le` (`Bounds/TaylorRec.lean`); `error_propagation`, `error_propagation_uniform`, `error_propagation_linear`, `tail_le_of_ratio`, `tail_le_two_mul`, `point_error_le` (`Bounds/ErrorProp.lean`) | proved |
 | Γ bounds: monotone ratio, uniform (G1)-type bound on `{Re w ≥ 1, |Im w| ≤ Y}`, `y^x ≤ e^y Γ(x+1)` | `GammaBounds.lean`, `GammaUniform.lean` | proved |
 
 ## Design notes
@@ -78,8 +80,7 @@ This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 20
 
 ## Roadmap (not done)
 
-* The continuation of the geometric splitting in `α` to `|z| < 1` (needs `J^{(δ)}_w` on the slit plane and a boundary-uniqueness argument);
-  the damped splittings (Propositions 4.2–4.3, which need the inverse Laplace transform of
+* Theorem 4.1(1) on the rest of the disc (`J^{(δ)}_w(c)` for `Re c ≤ 0`, via `D_a` on the slit plane) and for `Re s ≤ 2` when `|z| < 1` (complex-`c` versions of the termwise series for `J`).
+* The damped splittings (Propositions 4.2–4.3, which need the inverse Laplace transform of
   `e^{-τx^r}x^{-s}`). `split_theta_lin` and the `Continuation/` files are the templates.
-* Error propagation in the bit-burst step (the convergence radius is done).
 * `EvenPartFuchsian`, `OddPartFuchsian` (Fuchs's criterion).
