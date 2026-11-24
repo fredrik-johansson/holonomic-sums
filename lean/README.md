@@ -3,7 +3,7 @@
 This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 2026 draft), built on Mathlib
 (`master`, Lean `v4.37.0-rc1`).
 
-* To build: run `lake exe cache get && lake build` in this directory (about 3,700 lines in 21 files).
+* To build: run `lake exe cache get && lake build` in this directory (about 4,400 lines in 24 files).
 * There is no `sorry`, `admit` or `axiom`. The main theorems depend only on `propext`,
   `Classical.choice` and `Quot.sound`.
 * `ZetaF/Open.lean` records statements as named `Prop`s and says which of them are proved.
@@ -23,6 +23,9 @@ This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 20
 | **Theorem 3.2** for `Re s > 1` | `zetaTail_split` | proved |
 | **Theorem 3.2 for all `s`**: `I_k`, `J_m` entire; `∑I_k`, `∑J_m` entire; `M` meromorphic with poles only at `1-n`; the identity | `kTermEntire`, `dualTermEntire`, `differentiable_sum_kTerm`, `differentiable_sum_dualTerm`, `differentiableOn_mainSeries`, `differentiableOn_splitRHS`, `zetaTail_eq_splitRHS`, `zetaTailContinuation` (`Continuation/`) | proved |
 | The split point `u₀` is a free parameter (the paper's self-check) | `splitRHS_indep` | proved, by the identity theorem on `ℂ ∖ {1,0,-1,…}` |
+| **Meromorphic continuation of `ζ_F` for `F ∈ 𝓡`** (Lemma 2.3 + Theorem 3.2): holomorphic on `ℂ ∖ {1-σ-n}` | `zetaF_continuation`, `regularRHS`, `regularDomain` (`Continuation/Regular.lean`) | proved |
+| Twisted theta transformation, even `q`-periodic `χ` (Remark 3.7, `δ = 0`) | `gaussSum`, `tsum_char_theta`, `gaussSum_neg`, `tsum_char_theta_half` (`Twisted/Theta.lean`) | proved |
+| **Remark 3.7**, twisted splitting, `δ = 0`: abstract form and `L_F(s,χ)` tail for `Re s > 1`, with the paper's `M^χ` | `theta_split_gen`, `theta_split_char`, `zetaTail_split_char` (`Twisted/Split.lean`) | proved |
 | Series forms `I_k = ∑ a_n k^{-s-n} Q((s+n)/2, k²u₀)`, `M = ∑ a_n(…)`, `J_m = ∑ a_n D_{(s+n-1)/2}/Γ` | `hasSum_kTerm_gammaQ`, `hasSum_mainSeries`, `hasSum_dSeries` | proved (`I_k`, `J_m` for all `s`; `M` for `Re s > 1`, then by continuation) |
 | **Lemma 3.1** (recurrence part): Γ-twist, (H) preserved, constant top θ-coefficient | `annihilatesEventually_gammaTwist`, `IsFuchsian.gammaTwist`, `gammaTwist_top_coeff` | proved |
 | (3.5), `Z_t[u^j g] = Z_{t-j}[g]`, `C_t` recurrence, (3.7), `-∂_c Z_t = Z_{t+1}` | `dualMoment_ibp`, `dualMoment_mul_pow`, `dualMoment_one_rec`, `momentD_rec`, `hasDerivAt_dualMoment` | proved |
@@ -60,8 +63,10 @@ This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 20
 
 ## Roadmap (not done)
 
-* Lemma 2.3 for all `s`; the twisted, polylogarithm and damped splittings (Remark 3.6, Theorem 4.1,
-  Propositions 4.2–4.3). `theta_split` and the `Continuation/` files are the templates.
+* The odd twist (`δ = 1`, which needs Poisson summation for `x e^{-ux²}`; the constant
+  `c₁ = -iπ^{3/2}q^{-2}` was checked numerically only) and the continuation of the twisted splitting;
+  the polylogarithm and damped splittings (Theorem 4.1, Propositions 4.2–4.3).
+  `theta_split_gen` and the `Continuation/` files are the templates.
 * Assembling `B₀`, `B₁` of Proposition 3.3; the bit-burst cost sum.
 * The sharp form of (G1) (Euler product for `|Γ(x)/Γ(x+iy)|²`), and (G2)–(G3).
 * `EvenPartFuchsian`, `OddPartFuchsian` (Fuchs's criterion).

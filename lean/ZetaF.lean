@@ -19,3 +19,6 @@ import ZetaF.Continuation.Sums
 import ZetaF.Continuation.MainTerm
 import ZetaF.Continuation.MainTermEq
 import ZetaF.Continuation.Theorem
+import ZetaF.Continuation.Regular
+import ZetaF.Twisted.Theta
+import ZetaF.Twisted.Split
