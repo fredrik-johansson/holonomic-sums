@@ -148,4 +148,52 @@ lemma superadditive_of_div_mono {M : ℕ → ℕ} (hM0 : M 0 = 0)
   have : (M a + M b) * (a + b) ≤ M (a + b) * (a + b) := by nlinarith
   exact Nat.le_of_mul_le_mul_right this (by omega)
 
+/-! ### The bit-burst cost sum (Appendix A.1, "Bit-burst")
+
+Step `j` of the bit-burst algorithm sums `n_j` Taylor terms with `n_j 2^j ≤ p` (the `j`-th step has
+`O(p/2^j)` terms) whose coefficients have at most `2^j + L` bits (`L = O(log p)`), by a product tree
+of depth at most `D`.  Superadditivity of `M` gives the total `D · M(J p + 2 L p)`, i.e.
+`O(M(p log p) log p)` for `J, L, D = O(log p)`: the paper's split into steps with `2^j ≥ log p`
+(each `O(M(p) log p)`) and the geometric sum of the others is not needed. -/
+
+lemma sum_div_two_pow_le (p J : ℕ) : ∑ j ∈ range J, p / 2 ^ j ≤ 2 * p := by
+  have h : (∑ j ∈ range J, p / 2 ^ j : ℕ) ≤ (2 * p : ℝ) := by
+    push_cast
+    calc ∑ j ∈ range J, ((p / 2 ^ j : ℕ) : ℝ) ≤ ∑ j ∈ range J, (p : ℝ) * (1 / 2) ^ j := by
+          apply sum_le_sum; intro j _
+          refine Nat.cast_div_le.trans (le_of_eq ?_)
+          rw [one_div_pow, mul_one_div]; push_cast; rfl
+      _ = p * ∑ j ∈ range J, (1 / 2 : ℝ) ^ j := by rw [mul_sum]
+      _ ≤ p * 2 := mul_le_mul_of_nonneg_left (sum_geometric_two_le J) (Nat.cast_nonneg _)
+      _ = 2 * p := by ring
+  exact_mod_cast h
+
+/-- **Bit-burst cost sum.** -/
+theorem bitBurst_cost_le {M : ℕ → ℕ} (hmono : Monotone M) (hsup : ∀ a b, M a + M b ≤ M (a + b))
+    {p L J D : ℕ} (x : ℕ → ℕ → ℕ) (d : ℕ → ℕ) (hd : ∀ j, d j ≤ D)
+    (hterms : ∀ j, 2 ^ d j * 2 ^ j ≤ p) (hbits : ∀ j k, Nat.size (x j k) ≤ 2 ^ j + L) :
+    ∑ j ∈ range J, treeCost M (x j) (d j) ≤ D * M (J * p + 2 * L * p) := by
+  calc ∑ j ∈ range J, treeCost M (x j) (d j)
+      ≤ ∑ j ∈ range J, D * M (2 ^ d j * (2 ^ j + L)) := by
+        apply sum_le_sum; intro j _
+        exact (treeCost_le_of_size_le hmono hsup (x j) (d j) _ (hbits j)).trans
+          (Nat.mul_le_mul_right _ (hd j))
+    _ = D * ∑ j ∈ range J, M (2 ^ d j * (2 ^ j + L)) := by rw [mul_sum]
+    _ ≤ D * M (∑ j ∈ range J, 2 ^ d j * (2 ^ j + L)) :=
+        Nat.mul_le_mul_left _ (sum_le_of_superadditive hsup _ _)
+    _ ≤ D * M (J * p + 2 * L * p) := by
+        refine Nat.mul_le_mul_left _ (hmono ?_)
+        have hn : ∀ j, 2 ^ d j ≤ p / 2 ^ j := fun j =>
+          (Nat.le_div_iff_mul_le (by positivity)).2 (hterms j)
+        calc ∑ j ∈ range J, 2 ^ d j * (2 ^ j + L)
+            = ∑ j ∈ range J, (2 ^ d j * 2 ^ j + L * 2 ^ d j) := by
+              apply sum_congr rfl; intro j _; ring
+          _ ≤ ∑ j ∈ range J, (p + L * (p / 2 ^ j)) := by
+              apply sum_le_sum; intro j _
+              exact Nat.add_le_add (hterms j) (Nat.mul_le_mul_left _ (hn j))
+          _ = J * p + L * ∑ j ∈ range J, p / 2 ^ j := by rw [sum_add_distrib, mul_sum]; simp
+          _ ≤ J * p + 2 * L * p := by
+              have := sum_div_two_pow_le p J
+              nlinarith
+
 end ZetaF.BinarySplitting

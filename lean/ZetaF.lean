@@ -14,6 +14,8 @@ import ZetaF.Bounds.BinarySplitting
 import ZetaF.IncompleteGamma
 import ZetaF.Open
 import ZetaF.GammaUniform
+import ZetaF.GammaG1
+import ZetaF.IncompleteGammaSeries
 import ZetaF.Continuation.Basic
 import ZetaF.Continuation.Entire
 import ZetaF.Continuation.Sums

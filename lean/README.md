@@ -3,7 +3,7 @@
 This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 2026 draft), built on Mathlib
 (`master`, Lean `v4.37.0-rc1`).
 
-* To build: run `lake exe cache get && lake build` in this directory (about 6,300 lines in 30 files).
+* To build: run `lake exe cache get && lake build` in this directory (about 6,700 lines in 32 files).
 * There is no `sorry`, `admit` or `axiom`. The main theorems depend only on `propext`,
   `Classical.choice` and `Quot.sound`.
 * `ZetaF/Open.lean` records statements as named `Prop`s and says which of them are proved.
@@ -33,7 +33,10 @@ This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 20
 | **Proposition 3.6**: `c Y' = (B₀ + c B₁) Y` for `Y = (W_{t-i}, C_{t-i}, E, E·𝐆(u₀))` | `dualMoment_system_rec`, `dualB0`, `dualB1`, `dual_system` (`Holonomic/DualSystem.lean`) | proved for real `c > 0`, with `B₀`, `B₁` given explicitly |
 | `Q(a+1,x) = Q(a,x) + x^a e^{-x}/Γ(a+1)` | `gammaQ_add_one` | proved for all `a ∈ ℂ` |
 | Truncation, term counts (18), balancing `p log2/π ≤ KM`, `(K-1)(M-1) < p log2/π` | `Bounds/Truncation.lean` | proved |
-| Binary-splitting cost (App. A.1): `≤ S` bits per level, cost `≤ d·M(S)` | `Bounds/BinarySplitting.lean` | proved (scalar version) |
+| Binary-splitting cost (App. A.1): `≤ S` bits per level, cost `≤ d·M(S)`; **bit-burst cost sum**: steps with `n_j 2^j ≤ p` terms of `≤ 2^j + L` bits cost `≤ D·M(Jp + 2Lp)` in total | `treeCost_le`, `bitBurst_cost_le` (`Bounds/BinarySplitting.lean`) | proved (scalar cost model) |
+| **App. A.5**: `P(a,y) = 1 - Q(a,y) = ∑_i y^{a+i}e^{-y}/Γ(a+i+1)` for all `a ∈ ℂ` (including `a ∈ ℤ_{≤0}`), and the tail from `N` is `≤ 2|t_N|` once `Re a + N + 1 ≥ 2y` | `hasSum_gammaPTerm`, `norm_tail_gammaPTerm_le` (`IncompleteGammaSeries.lean`) | proved |
+| **(G1)** (App. A.9): `|1/Γ(x+iy)| ≤ e^{π|y|/2}/Γ(x)` for `x ≥ 1/2`, and `|Γ(x+iy)| ≤ Γ(x)`, via `|Γ(x)/Γ(x+iy)|² = ∏(1 + y²/(x+n)²)` and `cosh πy` at `x = 1/2` | `norm_inv_Gamma_le_G1`, `norm_Gamma_le_Gamma_re`, `tendsto_gProd`, `ratio_half` (`GammaG1.lean`) | proved |
+| **(G2)**, explicit: `|w| ≤ T ⇒ |1/Γ(w)| ≤ e^{1+πT/2}(2T+2)^{⌈T⌉+1}`, via `1/Γ(w) = (w)_N/Γ(w+N)`, (G1) and `Γ ≥ 1/e` on `[1,∞)` | `norm_inv_Gamma_le_G2`, `inv_Gamma_eq_prod_mul`, `realGamma_ge_exp_neg_one` | proved |
 | Γ bounds: monotone ratio, uniform (G1)-type bound on `{Re w ≥ 1, |Im w| ≤ Y}`, `y^x ≤ e^y Γ(x+1)` | `GammaBounds.lean`, `GammaUniform.lean` | proved |
 
 ## Design notes
@@ -72,6 +75,5 @@ This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 20
   `α` to `|z| < 1` (needs `J^{(δ)}_w` on the slit plane and a boundary-uniqueness argument);
   the damped splittings (Propositions 4.2–4.3, which need the inverse Laplace transform of
   `e^{-τx^r}x^{-s}`). `split_theta_lin` and the `Continuation/` files are the templates.
-* The bit-burst cost sum.
-* The sharp form of (G1) (Euler product for `|Γ(x)/Γ(x+iy)|²`), and (G2)–(G3).
+* (G3); the analytic content of the bit-burst step (Taylor recurrence, radius of convergence).
 * `EvenPartFuchsian`, `OddPartFuchsian` (Fuchs's criterion).
