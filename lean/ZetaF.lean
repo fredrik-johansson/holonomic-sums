@@ -26,6 +26,7 @@ import ZetaF.Continuation.Theorem
 import ZetaF.Continuation.Regular
 import ZetaF.Continuation.Hurwitz
 import ZetaF.Continuation.Twisted
+import ZetaF.Continuation.Geometric
 import ZetaF.Twisted.Theta
 import ZetaF.Twisted.Split
 import ZetaF.Twisted.Odd
