@@ -3,7 +3,7 @@
 This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 2026 draft), built on Mathlib
 (`master`, Lean `v4.37.0-rc1`).
 
-* To build: run `lake exe cache get && lake build` in this directory (about 7,200 lines in 34 files).
+* To build: run `lake exe cache get && lake build` in this directory (about 8,200 lines in 35 files).
 * There is no `sorry`, `admit` or `axiom`. The main theorems depend only on `propext`,
   `Classical.choice` and `Quot.sound`.
 * `ZetaF/Open.lean` records statements as named `Prop`s and says which of them are proved.
@@ -25,9 +25,10 @@ This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 20
 | The split point `u₀` is a free parameter (the paper's self-check) | `splitRHS_indep` | proved, by the identity theorem on `ℂ ∖ {1,0,-1,…}` |
 | **Meromorphic continuation of `ζ_F` for `F ∈ 𝓡`** (Lemma 2.3 + Theorem 3.2): holomorphic on `ℂ ∖ {1-σ-n}` | `zetaF_continuation`, `regularRHS`, `regularDomain` (`Continuation/Regular.lean`) | proved |
 | Twisted theta transformation (Remark 3.7): even `χ` (`δ = 0`) and odd `χ` (`δ = 1`, `c₁ = -iπ^{3/2}q^{-2}`) | `gaussSum`, `tsum_char_theta_half` (`Twisted/Theta.lean`); `tsum_mul_cexp_shifted_sq`, `tsum_char_theta_odd_half`, `gaussSum_neg_of_odd` (`Twisted/Odd.lean`) | proved; the odd case by differentiating the shifted theta identity in a complex shift |
-| **Remark 3.7**, twisted splitting with the paper's `J^χ_n = Z_{1/2+δ}[h_{s+δ}](π²n²/q²)` and `M^χ`: even part (`Re s > 1`), odd part (`Re s > 2`), arbitrary periodic `χ` (`Re s > 2`) | `theta_split_char`, `zetaTail_split_char` (`Twisted/Split.lean`); `theta_split_char_odd`, `zetaTail_split_char_odd`, `zetaTail_split_periodic` (`Twisted/SplitOdd.lean`) | proved for `Re s` large (the continuation is not done) |
+| **Remark 3.7**, twisted splitting with the paper's `J^χ_n = Z_{1/2+δ}[h_{s+δ}](π²n²/q²)` and `M^χ`: even part (`Re s > 1`), odd part (`Re s > 2`), arbitrary periodic `χ` (`Re s > 2`) | `theta_split_char`, `zetaTail_split_char` (`Twisted/Split.lean`); `theta_split_char_odd`, `zetaTail_split_char_odd`, `zetaTail_split_periodic` (`Twisted/SplitOdd.lean`) | proved for `Re s` large; continued below |
 | **Theorem 4.1(1) on `|z| = 1`**: `Li_F^{≥k₀}(s,z) = ∑(C_k I_k(s) + k S_k I_k(s+1)) + (√π/2)∑_{n∈ℤ}(J^{(0)}_s(c_n) - iπ(n-α)J^{(1)}_{s+1}(c_n)) - ½H(s) - ∑_{k<k₀}(…)`, `c_n = π²(n-α)²` | `tsum_geo_theta`, `tsum_geo_theta_odd`, `tsum_geoC_theta`, `tsum_geoS_theta` (`Polylog/Theta.lean`); `split_theta_lin` (`Polylog/Split.lean`); `polylogTail_split` (`Polylog/Geometric.lean`) | proved for real `α` and `Re s > 2`; the paper then continues in `α` to `|z| < 1` (not formalized) |
 | **Proposition 5.7**: `ζ_F^{≥k₀}(s) = ∑_n a_n ζ(s+n, k₀)` (Mathlib's `riemannZeta`), holomorphic on `ℂ ∖ {1,0,-1,…}`, simple poles at `1-n` with residue `a_n`; agrees with the continuation of Theorem 3.2 | `hurwitzTail`, `zetaTail_eq_tsum_hurwitz`, `differentiableOn_hurwitzSeries`, `hurwitzSeries_residue`, `hurwitzSeries_eq_splitRHS`, `splitRHS_residue` (`Continuation/Hurwitz.lean`) | proved (for `F` analytic at `∞`) |
+| **Remark 3.7, "then by continuation"**: the right-hand side of the twisted splitting is holomorphic on `ℂ ∖ {1,0,-1,…}` for every periodic `χ` (weighted `k`-sums, dual sums with `λ = π²/q²` and weights `u^{-1/2}`, `u^{-3/2}`, and the main terms through `M_k(s)` and `H(s) = ∫₀^{u₀}h_s`); for even `χ` it is independent of `u₀` and has residue `a_n χ̂(0)/q` at `1-n` | `zetaTail_periodic_continuation`, `zetaTail_char_continuation`, `twistedEvenRHS_indep`, `twistedEvenRHS_residue`, `mainSeries_residue`, `hasSum_hSeries`, `hasSum_dSeriesOdd` (`Continuation/Twisted.lean`) | proved (odd part shown holomorphic on `ℂ ∖ {0,-1,…}` only, which suffices) |
 | Series forms `I_k = ∑ a_n k^{-s-n} Q((s+n)/2, k²u₀)`, `M = ∑ a_n(…)`, `J_m = ∑ a_n D_{(s+n-1)/2}/Γ` | `hasSum_kTerm_gammaQ`, `hasSum_mainSeries`, `hasSum_dSeries` | proved (`I_k`, `J_m` for all `s`; `M` for `Re s > 1`, then by continuation) |
 | **Lemma 3.1** (recurrence part): Γ-twist, (H) preserved, constant top θ-coefficient | `annihilatesEventually_gammaTwist`, `IsFuchsian.gammaTwist`, `gammaTwist_top_coeff` | proved |
 | (11), `Z_t[u^j g] = Z_{t-j}[g]`, `C_t` recurrence, (14), `-∂_c Z_t = Z_{t+1}` | `dualMoment_ibp`, `dualMoment_mul_pow`, `dualMoment_one_rec`, `momentD_rec`, `hasDerivAt_dualMoment` | proved |
@@ -74,8 +75,7 @@ This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 20
 
 ## Roadmap (not done)
 
-* The continuation of the twisted and geometric splittings to all `s`, and of the geometric one in
-  `α` to `|z| < 1` (needs `J^{(δ)}_w` on the slit plane and a boundary-uniqueness argument);
+* The continuation of the geometric splitting to all `s`, and in `α` to `|z| < 1` (needs `J^{(δ)}_w` on the slit plane and a boundary-uniqueness argument);
   the damped splittings (Propositions 4.2–4.3, which need the inverse Laplace transform of
   `e^{-τx^r}x^{-s}`). `split_theta_lin` and the `Continuation/` files are the templates.
 * The analytic content of the bit-burst step (convergence radius, error propagation).
