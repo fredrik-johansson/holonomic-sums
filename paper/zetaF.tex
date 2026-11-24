@@ -3736,464 +3736,324 @@ verification computation of Khinchin's constant.
 
 \section{Proofs of the complexity bounds}\label{app:cost}
 
-This appendix proves Theorem~\ref{thm:complexity} (Sections~\ref{app:tools}--\ref{app:jets}), Theorem~\ref{thm:uniform}
-and Corollaries~\ref{cor:bernoulli} and~\ref{cor:egf} (Sections~\ref{app:uniform} and~\ref{app:sequences}),
-Theorem~\ref{thm:geometric}(2) (Section~\ref{app:geometric}), and sketches Claim~C (Section~\ref{app:stretched}).
+This appendix proves Theorems~\ref{thm:complexity} and~\ref{thm:uniform} (Sections~\ref{app:tools}--\ref{app:uniform}),
+Corollaries~\ref{cor:bernoulli} and~\ref{cor:egf} (Section~\ref{app:sequences}), Theorem~\ref{thm:geometric}(2)
+(Section~\ref{app:geometric}), and sketches Claim~C (Section~\ref{app:stretched}). The proof is organized in three
+layers: a cost model, stated as assumptions (Section~\ref{app:tools}); a list of estimates, which are pure mathematics
+and are proved in the accompanying Lean formalization, in the directory \texttt{lean/} of the repository of this paper (Section~\ref{app:estimates}); and an account of the algorithm
+that combines them (Sections~\ref{app:pieces} and~\ref{app:uniform}). Theorem~\ref{thm:complexity} is the special
+case of Theorem~\ref{thm:uniform} in which all data are fixed, so only the latter is proved.
 
 The following proof text is LLM-generated and unedited by the author.
-The ingredients are holonomy of all terms,
-standard bounds, and standard techniques
-for fast evaluation of holonomic functions.
-Everything else is tedious bookkeeping; we do not believe
-the details offer any insights for human readers,
-and include the full proof only for completeness.
 
 \begin{small}
 
-\subsection{Tools}\label{app:tools}
-\emph{Binary splitting.} Let $X_{n+1} = q_n^{-1}A_nX_n$ and $s_n = s_{n-1} + q_n^{-1}B_nX_n$, where $A_n$, $B_n$ are matrices of
-fixed size whose entries, like $q_n$, are integers (or integers of a fixed number field) of $O(\log p)$ bits for
-$n \le N = O(p)$. Then $X_N$ and $s_N$ can be computed by the product tree of the matrices
-$\bigl[\begin{smallmatrix}A_n & 0\\ B_n & q_n\end{smallmatrix}\bigr]$ \cite{HP98}. Each of its $O(\log p)$ levels has
-entries of total size $O(p\log p)$, so by the regularity of $\Mul$ the cost is
-$O(\Mul(p\log p)\log p) = O(\Mul(p)\log^2p)$. This applies to every series whose terms are P-recursive with algebraic
-coefficients and decay geometrically: holonomic functions with algebraic power series coefficients at algebraic
-points inside the disk of convergence, $\exp$ and $\log$ at algebraic points, and $\erfc$, $E_1$ and $\Gamma(a,y)$ for
-algebraic $a$ and rational $y = O(p)$ (Section~\ref{app:gamma}).
+\subsection{Cost model}\label{app:tools}
+Costs are bit operations on a multitape Turing machine. We use the following standard facts as assumptions.
+\begin{itemize}
+\item[(M)] $\Mul(n)/n$ is nondecreasing and $\Mul(n\log n) = O(\Mul(n)\log n)$. Then $\Mul(An) = O(\Mul(n))$ for fixed
+$A$, and $(\log p)\,\Mul(Ap\log p) = O(\Mul(p)\log^2p)$ (\nolinkurl{regular_scale}, \nolinkurl{regular_cost}).
+\item[(K)] Elements of a fixed number field $\mathbb K$ are stored as integer vectors over an integral basis with a
+common denominator; an element of height $H$ takes $O(\log H)$ bits, and a product of elements of $b$ bits costs
+$O(\Mul(b))$ and has $b + O(1)$ bits.
+\item[(BS)] \emph{Binary splitting.} The ordered product of $N$ matrices of fixed size over $\mathcal O_{\mathbb K}$
+with entries of $b$ bits, computed by a balanced product tree, costs $O(\Mul(Nb)\log N)$
+(\nolinkurl{treeCostL_le}, \nolinkurl{matSize_mul_le}, \nolinkurl{treeCost_matrix_le}). A series whose terms satisfy
+$X_{n+1} = q_n^{-1}A_nX_n$, $s_n = s_{n-1} + q_n^{-1}B_nX_n$ is summed by the product tree of the matrices
+$\bigl[\begin{smallmatrix}A_n & 0\\ B_n & q_n\end{smallmatrix}\bigr]$ \cite{HP98}.
+\item[(A)] Approximate arithmetic on $P$-bit fixed-point numbers costs $O(\Mul(P))$ per operation, with the usual
+rounding errors.
+\item[(E)] The constants $\pi$ and $\gamma$, and $\exp$ and $\log$ at algebraic points with $O(\log p)$ bits, can be
+computed to $p$ bits in $O(\Mul(p)\log^2p)$ \cite{BM80,HP98,BZ10}.
+\end{itemize}
 
-\emph{Bit-burst.} Let $Y(c) \in \CC^D$ satisfy $cY'(c) = (B_0 + cB_1)Y(c)$ with algebraic $B_0, B_1$, whose only finite
-singular point is $c = 0$. Its Taylor coefficients at $c_0 \ne 0$ satisfy
-$c_0(l+1)Y_{l+1} = (B_0 + c_0B_1 - l)Y_l + B_1Y_{l-1}$, and the series converges for $|c - c_0| < |c_0|$. Given
-$Y(c_0)$ at a rational $c_0$, and $c$ with $|c - c_0| \le |c_0|/2$ whose approximations to $p$ bits cost
-$O(\Mul(p)\log^2p)$, the bit-burst algorithm \cite{CC90,vdH99} computes $Y(c)$ to $p$ bits in $O(\Mul(p)\log^2p)$: one
-chooses rational $c_j$ with $2^j$-bit expansions converging to $c$ and steps from $c_j$ to $c_{j+1}$ by summing the
-Taylor series with binary splitting. The $j$-th step has $O(p/2^j)$ terms with $O(2^j + \log p)$-bit coefficients;
-the steps with $2^j \ge \log p$ cost $O(\Mul(p)\log p)$ each, and the others form a geometric sum bounded by
-$O(\Mul(p\log p)\log p)$. The constants depend on $D$, on $B_0, B_1$, on $|c_0|$ and on an a priori bound $2^{O(p)}$ for
-$|Y|$ on the disk $|c - c_0| \le \frac34|c_0|$.
+\emph{Certified series.} By (M), (BS) and (A), a series is summed to absolute error $2^{-p}$ in
+$O(\Mul(Nb)\log N + \Mul(p+G))$ bit operations if it comes with a \emph{certificate} $(N, b, G)$: its terms satisfy a
+recurrence of fixed order over $\mathbb K$ whose coefficients have at most $b$ bits for $n \le N$, the tail after $N$
+terms is at most $2^{-p}$, and all solutions of the recurrence, normalized as in the product tree, are at most $2^G$
+for $n \le N$ (so that $G$ guard bits absorb the rounding errors). With $N = O(p)$, $b = O(\log p)$ and $G = O(p)$
+this is $O(\Mul(p)\log^2p)$. Every piece below is a fixed number of certified series, or a bit-burst evaluation.
 
-\subsection{Reduction}\label{app:reduction}
-By Lemma~\ref{lem:reduction}, Remark~\ref{rem:twist}, and the decomposition of $\chi$ into parts of parity $\delta$, the
-$j$-th Laurent coefficient of $L_F(s,\chi)$ at $s_0$ is a finite combination of Laurent coefficients of order at most
-$j + J$ of functions $\sum_{k\ge k_0}\chi(k)f(1/k)k^{-s}$ at the algebraic points $s_0 + \sigma + \delta$, with $f$
-analytic at $0$ and annihilated by an operator satisfying (H), and of the finitely many entire functions
-$F(k)\chi(k)k^{-s}$, $k < k_0$. Here we use that, for $F \in \RegQ$, each $f_{\sigma,j}$ in
-\eqref{eq:frob} has algebraic coefficients and satisfies (H). Indeed, write
-$B_\sigma = x^{-\sigma}\sum_j(\log x)^jf_{\sigma,j}(1/x)$; each $B_\sigma$ is obtained from $F$ by a polynomial in the
-monodromy operator $\mathcal M$ around $t = 1/x = 0$ (the projection onto the generalized eigenspace for
-$e^{2\pi i\sigma}$), so it is a solution of $L$. Since
-$e^{-2\pi i\sigma}\mathcal MB_\sigma = x^{-\sigma}\sum_j(\log x - 2\pi i)^jf_{\sigma,j}(1/x)$, the functions
-$x^{-\sigma}\sum_j(\log x - 2\pi im)^jf_{\sigma,j}(1/x)$, $0 \le m \le J$, are solutions of $L$ too, and solving for the
-coefficients of the powers of $m$ expresses each $f_{\sigma,j}(t)$ as a polynomial in $\log t$ whose coefficients are
-of the form $t^{-\sigma}y(1/t)$ with $y$ a solution of $L$. Moderate growth at $t = 0$ is preserved by sums and
-products, so $f_{\sigma,j}$ is annihilated by an operator with a regular singular point at $t = 0$, i.e.\ satisfying (H).
-We may therefore assume from now on that $\chi$ is even (the odd case only changes $u^{-1/2}$ into $u^{-3/2}$ in the dual
-terms), and, to simplify the notation, $\chi = 1$; the weights $w(k)$ and $c_\delta\hat\chi(n)n^\delta$ lie in a fixed
-number field (containing $\pi^{1/2+\delta}$ as a factor that is computed once) and do not change the analysis. We take
-$u_0$ to be the square of a fixed rational number.
+\emph{Bit-burst.} Let $Y(c) \in \CC^D$ satisfy $cY'(c) = (B_0 + cB_1)Y(c)$, with $B_0, B_1$ over $\mathbb K$, whose
+only finite singular point is $c = 0$. Its Taylor coefficients at $c_0 \ne 0$ satisfy
+$c_0(l+1)Y_{l+1} = (B_0 + c_0B_1 - l)Y_l + B_1Y_{l-1}$ (\nolinkurl{taylor_rec_iff}). The bit-burst algorithm
+\cite{CC90,vdH99} steps from $c_0$ to $c$ through rational points $c_i$ with $2^ib_0$-bit expansions, summing the
+Taylor series at $c_i$ in $h = c_{i+1} - c_i$ by binary splitting. The step is controlled by the \emph{Taylor-step
+lemma} (\nolinkurl{taylor_step_bound}, \nolinkurl{taylor_step_tail}): if
+\[
+  \theta \ge |h|\,\frac{\|B_0 + c_iB_1\|}{|c_i|}, \qquad \theta \ge |h|\,\|B_1\|, \qquad \theta \ge \frac{|h|}{|c_i|},
+\]
+then every solution of the recurrence satisfies $\|h^lY_l\| \le (2\theta)^l\|Y_0\|$; for $\theta < \frac12$ the
+step has norm at most $1/(1-2\theta)$ and the tail after $L$ terms is at most $(2\theta)^L\|Y_0\|/(1-2\theta)$.
+Take $|c - c_0| \le \frac12|c_0|p^{-A}$, where $p^{A-1} \ge \|B_0\| + |c|\,\|B_1\| + 1$, and
+$b_0 \ge 2A\log_2p$. Then $\theta_0 \le \frac12p^{-1}$ for the first step, which therefore has $O(p/\log p)$ terms
+with $O(\log p)$-bit coefficients, and $\theta_i \le p^A2^{-2^ib_0} \le 2^{-2^{i-1}b_0}$ for the later ones, which have
+$O(p/2^ib_0)$ terms with $O(2^ib_0)$-bit coefficients. Since $\sum_i\theta_i \le \frac14$, the steps amplify errors by at most $e$
+(\nolinkurl{error_propagation_linear}), so no a priori bound on $Y$ is needed beyond $|Y(c_0)|$; the total cost is
+$O(\Mul(p)\log^2p)$ (\nolinkurl{bitBurst_cost_le}). The convergent Taylor series at $c_i$ continues $Y$ along the
+segment $[c_i, c_{i+1}]$.
 
-\subsection{Truncation}\label{app:truncation}
-By the bounds in Theorem~\ref{thm:split}, the tails beyond the first neglected $k$-term and dual term are bounded by
-geometric series, so $p$ bits need
+\subsection{Estimates}\label{app:estimates}
+Fix the data of Theorem~\ref{thm:uniform}, let $S \ge 2$ bound $|s_0|$ and $f(x) = \sum a_nx^n$ with
+$|a_n| \le CR^n$. The following are proved in the formalization; $A$ denotes a constant depending only on the fixed
+data.
+\begin{itemize}
+\item[(G1)] $|1/\Gamma(w)| \le e^{\pi|\operatorname{Im}w|/2}/\Gamma(\operatorname{Re}w)$ and
+$|\Gamma(w)| \le \Gamma(\operatorname{Re}w)$ for $\operatorname{Re}w \ge \frac12$ (\nolinkurl{norm_inv_Gamma_le_G1},
+\nolinkurl{norm_Gamma_le_Gamma_re}).
+\item[(G2)] $|1/\Gamma(w)| \le e^{1+\pi T/2}(2T+2)^{\lceil T\rceil+1}$ for $|w| \le T$ (\nolinkurl{norm_inv_Gamma_le_G2}).
+\item[(G3)] $|\Gamma(w)| \le 2^N\Gamma(\operatorname{Re}w + N)/\min(\delta, 1)$ if $\operatorname{Re}w + N \ge 1$ and
+$|w + j| \ge \delta$ for $j < N$ (\nolinkurl{norm_Gamma_le_G3}).
+\item[(Li)] \emph{Liouville.} $|\alpha|_v \ge H(\alpha)^{-1}$ for $\alpha \in \mathbb K^\times$ and every archimedean
+place $v$, and $|\alpha + \beta|_v \ge (2^{[\mathbb K:\QQ]}H(\alpha)H(\beta))^{-1}$ if $\alpha + \beta \ne 0$
+(\nolinkurl{inv_mulHeight}$_1$\nolinkurl{_le_abv}, \nolinkurl{small_divisor}). Hence the divisors $s_0 + \sigma + n$, $a_* + n$ and
+the $\delta$ of (G3) are at least $p^{-A}$.
+\item[(GS)] $\sum_jx^j|1/\Gamma(\sigma + j + 1)| \le e^{AS\log S}\max(1,x)^{-\operatorname{Re}\sigma}e^x
+\le e^{AS\log S}(1+x)^Se^x$ for $|\sigma| \le S$, $x \ge 0$; the tail of
+$P(a,y) = y^ae^{-y}\sum_iy^i/\Gamma(a+i+1)$ (\nolinkurl{hasSum_gammaPTerm}) after $N \ge 2y + 2S$ terms is at most
+$e^{AS\log S}y^{\operatorname{Re}a}(1+y)^S4^y2^{-N}$ for $|a| \le S$ (the factor $4^y$ cannot be omitted); and
+$|\Gamma(w,x)| \le 2x^{\operatorname{Re}w-1}e^{-x}$ for $\operatorname{Re}w \le \frac x2 + 1$
+(\nolinkurl{sum_pow_mul_norm_inv_Gamma_le_sharp}, \nolinkurl{sum_pow_mul_norm_inv_Gamma_le},
+\nolinkurl{norm_gammaPTerm_tail_uniform}, \nolinkurl{norm_upperGamma_le}).
+\item[(KB)] \emph{Kernel.} For $|s| \le S$, $|h_s(u)| \le e^{AS\log S}e^{R^2u}$ for $u \ge u_0$ and
+$|h_s(u)| \le e^{AS\log S}u^{-S/2-1}$ for $0 < u \le u_0$; hence $|I_k(s)| \le e^{AS\log S}e^{-(k^2-R^2)u_0}$ for
+$k > R$ and $|J_m(s)| \le e^{AS\log S}e^{-\pi^2m^2/(2u_0)}$, for every $s$ with $|s| \le S$, also where the pieces
+are defined by continuation (\nolinkurl{norm_kernel_le_far}, \nolinkurl{norm_kernel_le_near},
+\nolinkurl{norm_kTerm_le_uniform}, \nolinkurl{norm_dualTerm_le_uniform}). For a twist of period $q$, $\pi^2$ becomes
+$\pi^2/q^2$.
+\item[(T)] \emph{Truncation.} For fixed $s$, by the bounds in Theorem~\ref{thm:split}, the tails beyond the first
+neglected $k$-term and dual term are bounded by geometric series, so $p$ bits need
 \begin{equation}\label{eq:counts}
-  k \le k_{\max} \approx \sqrt{\frac{p\log 2}{u_0}}, \qquad m \le m_{\max} \approx \frac{q}{\pi}\sqrt{p\log 2\cdot u_0},
+  k \le k_{\max} \approx \sqrt{\frac{p\log 2}{u_0}}, \qquad m \le m_{\max} \approx \frac{q}{\pi}\sqrt{p\log 2\cdot u_0}
 \end{equation}
-that is, $O(\sqrt p)$ terms on each side ($q$ the period of $\chi$); the choice of $u_0$ only balances the two sides
-(Section~\ref{sec:complexity}).
+(\nolinkurl{Bounds/Truncation.lean}); uniformly in $|s| \le S$, (KB) gives the same with $p$ replaced by
+$p + AS\log S$ and $m_{\max}$ multiplied by $\sqrt2$. Either way there are $O(\sqrt p)$ terms on each side, and the
+tails are at most twice their first terms (\nolinkurl{tail_le_two_mul}).
+\item[(D)] \emph{Dual moments.} The moments $Z_t[g](c) = \int_0^{u_0}u^{-t}e^{-c/u}g(u)\dd u$ satisfy
+\eqref{eq:ibp} and $-\partial_cZ_t = Z_{t+1}$, and $D_a = Z_{1-a}[1]$ satisfies \eqref{eq:Drec}
+(\nolinkurl{dualMoment_ibp}, \nolinkurl{hasDerivAt_dualMoment}, \nolinkurl{momentD_rec}); the system of
+Proposition~\ref{prop:dual} holds with explicit $B_0, B_1$ (\nolinkurl{dual_system}).
+\item[(S)] \emph{Starting values.} $D_{a+n} = \alpha_nD_a + \beta_nE$ with $\alpha_n = (-c)^n/(a+1)_n$ for every
+complex $a$ with $a + 1 + i \ne 0$ (\nolinkurl{momentD_add_nat_eq}), and $\sum_nx^n/(n!)^2 \le e^{2\sqrt x}$
+(\nolinkurl{sum_pow_div_factorial_sq_le}).
+\item[(B)] \emph{Bernoulli numbers.} We have $B_n(b/f) = -nf^{1-n}L(1-n, \mathbf 1_{b+f\ZZ})$ and
+$f^n(n+1)\#\,B_n(b/f) \in \ZZ$, where $N\#$ is the product of the primes $\le N$; $|B_n(x)| \le 4e\cdot n!$ on $[0,1]$; and a real number within $1/(2D)$ of a rational number whose denominator divides
+$D$ determines that rational number by rounding (\nolinkurl{bernoulli_eq_LFunction}, \nolinkurl{isInt_den_mul_bernoulli_eval},
+\nolinkurl{abs_bernoulli_eval_le}, \nolinkurl{bernoulli_eval_eq_round}).
+\end{itemize}
 
-\subsection{The $k$-terms}\label{app:kterms}
-Let $k \ge k_0$, $\kappa = k^2$ and $x = \kappa u_0$. With $Q(\sigma_0+m, x) = Q(\sigma_0, x) + e^{-x}\sum_{j=0}^{m-1}x^{\sigma_0+j}/\Gamma(\sigma_0+j+1)$,
-the series for $I_k(s)$ in Theorem~\ref{thm:split} becomes, for $f(x) = A_0(x^2) + xA_1(x^2)$,
+\subsection{The pieces}\label{app:pieces}
+By Theorem~\ref{thm:split}, after the reduction of Section~\ref{app:uniform}, the value is a combination of the
+$k$-terms $I_k(s)$, $k_0 \le k \le k_{\max}$, the dual terms $J_m(s)$, $1 \le m \le m_{\max}$, and the main term
+$M(s)$, at $s = s_0 + \varepsilon$ over $\mathbb K[\varepsilon]/(\varepsilon^{j+1})$. Table~\ref{tab:certificates}
+lists how each is computed; we comment on the entries. Throughout, $x = k^2u_0$, $c = \pi^2m^2/q^2$ and
+$S = |s_0| + 2$; in Theorem~\ref{thm:complexity}, $S = O(1)$.
+
+\begin{table}[ht]
+\centering\footnotesize
+\caption{The pieces and their certificates $(N, b, G)$ for $p$ bits (Section~\ref{app:tools}; for the dual terms, the stages of the bit-burst); each costs $O(\Mul(p)\log^2p)$. The guard bits $G$ come from (GS), (KB), (S), (G1)--(G3) and (Li).}
+\label{tab:certificates}
+\begin{tabular}{@{}lllll@{}}
+\toprule
+piece & number & $N$ & $b$ & $G$ \\
+\midrule
+$k$-terms $I_k$, double series \eqref{eq:Ik} & $O(\sqrt p)$ & $O(p)$ & $O(\log p)$ & $O(S\log S + \log p)$ \\
+$P(a, x)$ and $1/\Gamma(w)$ & $O(\sqrt p)$, $O(1)$ & $O(p)$ & $O(\log p)$ & $O(p)$ \\
+dual terms $J_m$, bit-burst for \eqref{eq:fuchsys} & $O(\sqrt p)$ & stages & stages & $O(p)$ \\
+starting values $Y(c_0)$, series \eqref{eq:startvals} & $O(\sqrt p)$ & $O(p)$ & $O(\log p)$ & $O(\sqrt{c_0} + S\log S)$ \\
+main term $M$, series in $n$ & $1$ & $O(p)$ & $O(\log p)$ & $O(S\log S + \log p)$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\emph{$k$-terms.}\label{app:kterms} Splitting the series of Theorem~\ref{thm:split} by the parity of $n$ and using
+$Q(\sigma_0+m, x) = Q(\sigma_0, x) + e^{-x}\sum_{j<m}x^{\sigma_0+j}/\Gamma(\sigma_0+j+1)$ gives
+(\nolinkurl{kTerm_double_series}), for
+$f(x) = A_0(x^2) + xA_1(x^2)$ and $\kappa = k^2$,
 \begin{equation}\label{eq:Ik}
 \begin{split}
   I_k(s) &= k^{-s}\Bigl(Q\bigl(\tfrac s2, x\bigr)A_0\bigl(\tfrac1\kappa\bigr) + Q\bigl(\tfrac{s+1}2, x\bigr)\frac{A_1(1/\kappa)}{k}\Bigr) \\
-  &\quad + e^{-x}u_0^{s/2}\sum_{m=1}^{\infty}\frac{a_{2m}}{\kappa^m}\sum_{j=0}^{m-1}\frac{x^j}{\Gamma(\frac s2+j+1)} \\
-  &\quad + e^{-x}u_0^{(s+1)/2}\sum_{m=1}^{\infty}\frac{a_{2m+1}}{\kappa^m}\sum_{j=0}^{m-1}\frac{x^j}{\Gamma(\frac{s+1}2+j+1)},
+  &\quad + e^{-x}u_0^{s/2}\sum_{m=1}^{\infty}\frac{a_{2m}}{\kappa^m}\sum_{j=0}^{m-1}\frac{x^j}{\Gamma(\frac s2+j+1)}
+   + e^{-x}u_0^{(s+1)/2}\sum_{m=1}^{\infty}\frac{a_{2m+1}}{\kappa^m}\sum_{j=0}^{m-1}\frac{x^j}{\Gamma(\frac{s+1}2+j+1)}.
 \end{split}
 \end{equation}
-since
-\[
-  k^{-s-2m}x^{s/2+j} = u_0^{s/2}\kappa^{-m}x^j, \qquad k^{-s-2m-1}x^{(s+1)/2+j} = u_0^{(s+1)/2}\kappa^{-m}x^j.
-\]
-After factoring out
-$1/\Gamma(\frac s2+1)$ and $1/\Gamma(\frac{s+1}2+1)$ (or, if $\frac s2+1$ or $\frac{s+1}2+1$ is a non-positive integer,
-$1/\Gamma(\frac s2+j_1+1)$ with $j_1$ as in Section~\ref{app:uniform}, the finitely many terms with $j < j_1$ being
-polynomials in $s$ times that factor), the inner sums satisfy first-order inhomogeneous recurrences in $m$
-with coefficients in $\QQ(s)$, and $a_n$ is P-recursive, so the double sums are binary splitting series over a fixed
-number field. Their terms are bounded by $|a_n|\kappa^{-n/2}$ times $e^{x}$, which the prefactor $e^{-x}$ cancels, so
-$O(p/\log(k/R))$ terms suffice, with $O(\log p)$-bit coefficients since $\kappa, x = O(p)$. The values $A_0(1/\kappa)$ and
-$A_1(1/\kappa)$ are holonomic functions at a rational point inside the disk of convergence, $k^{-s} = e^{-s\log k}$ costs
-$O(\Mul(p)\log^2p)$, and the incomplete gamma values are needed only to absolute precision $2^{-p}|k^s|$
-(Section~\ref{app:gamma}). Each $I_k$ therefore costs $O(\Mul(p)\log^2p)$.
+Factor out $1/\Gamma(\sigma_0 + j_1 + 1)$, $\sigma_0 \in \{\frac s2, \frac{s+1}2\}$, with $j_1$ the least index for
+which $\operatorname{Re}(\sigma_0 + j_1 + 1) \ge \frac12$; the $O(S)$ terms with $j < j_1$ are polynomials in $s$
+times that factor, and the others follow a recurrence that divides only by units of
+$\mathbb K[\varepsilon]/(\varepsilon^{j+1})$. The double sums are then certified series in $m$ over $\mathbb K$: their
+terms are at most $|a_n|\kappa^{-n/2}$ times the sum in (GS), so $O(p/\log(k/R))$ terms and $O(S\log S + \log p)$
+guard bits suffice. $A_0(1/\kappa)$ and $A_1(1/\kappa)$ are holonomic values inside the disk of convergence, and
+$k^{-s}$ costs one logarithm per $k$.
 
-\subsection{Incomplete gamma functions}\label{app:gamma}
-Let $a$ be algebraic and $y > 0$ rational with $y = O(p)$. If $a \in \ZZ_{\le0}$ then $Q(a,y) = 0$ and $P(a,y) = 1$.
-Otherwise
-\[
-  P(a,y) = \frac{y^ae^{-y}}{\Gamma(a)}\sum_{i=0}^{\infty}\frac{y^i}{(a)_{i+1}},
-\]
-for every such $a$, also when $\operatorname{Re}a \le 0$. The terms grow up to $i \approx y$ and then decrease
-geometrically, so $O(p)$ terms and $O(p)$ guard bits (for the cancellation in $Q = 1 - P$) suffice, and binary splitting
-over the number field gives $P(a,y)$ and $Q(a,y)$ in $O(\Mul(p)\log^2p)$. The factor $1/\Gamma(a)$ is computed once
-for each of the finitely many $a$ that occur (modulo $\ZZ$), as $\Gamma(a) = \gamma(a,N) + \Gamma(a,N)$ with
-$N = O(p)$, where $\Gamma(a,N) = O(N^{\operatorname{Re}a}e^{-N})$ is negligible and $\gamma(a,N)$ is the series above;
-other $a$ in the same class follow by $\Gamma(a+1) = a\Gamma(a)$. For the derivatives in $s$ (Section~\ref{app:jets})
-the same series are evaluated over truncated power series $\mathbb K[\varepsilon]/(\varepsilon^{j+1})$ in $a + \varepsilon$,
-which multiplies the cost by a constant. In particular nothing changes for $\operatorname{Re}a \le 0$: the pieces of
-Theorem~\ref{thm:split} are entire in $s$, and so are the series that compute them.
+\emph{Incomplete gamma functions.} For $a \in \ZZ_{\le0}$, $Q(a,y) = 0$. Otherwise $P(a,y)$ is the series of (GS),
+with the factor $1/\Gamma(a + i_1 + 1)$ taken out as above; it has $O(p + S)$ terms, and by (GS) its tail is at most
+$2^{-p}$ after $N = 2y + 2S + p + O(y + S\log S) = O(p)$ terms, since $y = O(p)$. The
+$O(1)$ values $1/\Gamma(w)$ with $\operatorname{Re}w \ge \frac12$, $|w| \le 3S$ come from
+$\Gamma(w) = \gamma(w, N) + \Gamma(w, N)$ with $N = O(p)$, where $|\Gamma(w,N)| \le 2N^{3S}e^{-N}$ by (GS) and
+$|\Gamma(w)| \ge 0.88\,e^{-3\pi S/2}$ by (G1).
 
-\subsection{The dual terms}\label{app:dual}
-With \eqref{eq:kernelparts},
-\[
-  J_m(s) = Z_{1/2}[h_s](c) = Z_{(3-s)/2}[G_0](c) + Z_{1-s/2}[G_1](c), \qquad c = \pi^2m^2
-\]
-(or $\pi^2m^2/q^2$), and by Lemma~\ref{lem:kernelhol} and Proposition~\ref{prop:dual} it is a fixed linear form in the
-solution $Y(c)$ of a system \eqref{eq:fuchsys} of fixed dimension (two blocks, for $G_0$ and $G_1$), whose matrices
-depend only on $f$, $s$ and $u_0$. We multiply $G_0$ and $G_1$ by the constants $\Gamma(m_2 + \frac s2)$ and
-$\Gamma(m_2 + \frac{s+1}2)$, with $m_2$ the least integer for which their real parts are at least $\frac12$. Then their
-power series coefficients become rational functions of $s$. We also replace $E$ by $\widetilde E = Eu_0^{1-t}$, which
-satisfies $c\,\partial_c\widetilde E = -(c/u_0)\widetilde E$. After this, the entries of $B_0$ and $B_1$ are polynomials in $s$
-with coefficients in a fixed number field, and the inverse factors $1/\Gamma$ and the powers $u_0^{1-t}$ are computed
-once. We evaluate it by the bit-burst algorithm from a rational point $c_0$ with $c_0 \le c$ and $|c - c_0| \le 2^{-8}c$.
+\emph{Dual terms.}\label{app:dual} By Lemma~\ref{lem:kernelhol} and Proposition~\ref{prop:dual},
+$J_m(s) = Z_{(3-s)/2}[G_0](c) + Z_{1-s/2}[G_1](c)$ is a fixed linear form in the solution $Y(c)$ of a system
+\eqref{eq:fuchsys} of fixed dimension. We multiply $G_0$, $G_1$ by $\Gamma(m_2 + \frac s2)$, $\Gamma(m_2 + \frac{s+1}2)$,
+with $m_2$ the least integer making the real parts at least $\frac12$, so that their coefficients are rational
+functions of $s$, and replace $E$ by $\widetilde E = Eu_0^{1-t}$. The inhomogeneity $b$ of \eqref{eq:Gsys} then has
+entries $\Gamma(\sigma_0+m_2)/\Gamma(\sigma_0+m)$, $m < m_1 + r$, times polynomials of bounded degree, with the common
+factor $\beta = (\sigma_0 + m_1 + r)_{m_2-m_1-r}$ of degree $O(S)$; we use $\beta C_{t-i}$ and $\beta\widetilde E$ as
+components of $Y$ (the equations of this block are homogeneous in it). Then $B_0, B_1$ are polynomials in $s$ of bounded
+degree with coefficients in $\mathbb K$, so their entries have $O(\log p)$ bits and norm $p^{O(1)}$, and the bit-burst
+of Section~\ref{app:tools} from a rational $c_0 \le c$ with $c - c_0 \le \frac12cp^{-A}$ costs $O(\Mul(p)\log^2p)$;
+$c_0$ has $O(\log p)$ bits. The factors $\beta$, $1/\Gamma$ and $u_0^{1-t}$ are computed once.
 
-\emph{Starting values.} By \eqref{eq:startvals}, the components of $Y(c_0)$ are series of the form
-$\sum_jg_jD_{j-t+1}(c_0)$, with
-$t$ congruent to $\frac{3-s}2$ or $1-\frac s2$ modulo $\ZZ$, so the exponents $a = j - t + 1$ lie in two classes modulo $\ZZ$. By
-\eqref{eq:Drec}, $D_a = \alpha_aD_{a_*} + \beta_aE$ for $a \equiv a_*$, where $D_{a_*}(c_0) = c_0^{a_*}\Gamma(-a_*,c_0/u_0)$ is
-the base value of the class (Section~\ref{app:gamma}) and the coefficients $\alpha_a, \beta_a$ satisfy first-order
-recurrences with coefficients in $\mathbb K(s,c_0,u_0)$. Therefore every component of $Y(c_0)$ is a combination of two
-incomplete gamma values, $E(c_0)$ and the constants $\vartheta^iG_\varepsilon(u_0)$, with coefficients given by series
-with P-recursive terms. Individually, each $D_a = \alpha_aD_{a_*} + \beta_aE$ cancels by up to $e^{c_0/u_0}$. In the
-weighted sums this does not accumulate: since $|g_j| \le CR^{2j}/|\Gamma(j+\sigma_0)|$ and
-$|\alpha_a| \le c_0^{\operatorname{Re}a+O(1)}/|\Gamma(a+1)|$, the terms of $\sum_jg_j\alpha_{j-t+1}$ are of size
-$(R^2c_0)^j/(j!)^2 \cdot c_0^{O(1)} \le e^{2R\sqrt{c_0}}c_0^{O(1)}$, and $E\beta_a = D_a - \alpha_aD_{a_*}$ gives the same
-for the $\beta$-series, while the result is of size $E$ times a factor polynomial in $c_0$. Hence
-$O(\sqrt{c_0} + \log p) = O(\sqrt p)$ guard bits suffice, and the starting values cost $O(\Mul(p)\log^2p)$.
+\emph{Starting values.} By \eqref{eq:startvals} the components of $Y(c_0)$ are series $\sum_jg_jD_{j-t+1}(c_0)$ whose
+exponents lie in two classes modulo $\ZZ$. In each class choose a base exponent $a_*$: the least exponent that occurs,
+or $a_* = 0$ in the integer class, with $D_0 = E_1(c_0/u_0) = \Ein(c_0/u_0) - \gamma - \log(c_0/u_0)$. By (S),
+$D_a = \alpha_aD_{a_*} + \beta_aE$, where going up from $a_*$ divides by $a_* + n$, at least $p^{-A}$ by (Li), and
+going down from $0$ divides by $c_0$. Since $|g_j| \le CR^{2j}/|\Gamma(j+\sigma_0)|$ and
+$|\alpha_a| \le c_0^n/|(a_*+1)_n|$, (G1)--(G3) and (S) bound the terms of $\sum_jg_j\alpha_{j-t+1}$ by
+$e^{AS\log S}e^{2R\sqrt{c_0}}c_0^{AS}$, and $E\beta_a = D_a - \alpha_aD_{a_*}$ gives the same for the $\beta$-series:
+$O(\sqrt{c_0} + S\log S) = O(p)$ guard bits suffice. The base values $D_{a_*}(c_0) = c_0^{a_*}(\Gamma(-a_*) - \gamma(-a_*, c_0/u_0))$
+need $\Gamma(-a_*) \le 2^{O(p)}$, by (G3), or $E_1$. For the jets, the divisions by $a + \frac\varepsilon2$ are by
+units, and $\partial_a^iD_a$ reduce by \eqref{eq:Drec} to jets of the base values.
 
-\emph{Cost of a dual term.} The system has fixed dimension, its matrices do not depend on $m$, and $c_0$ has $O(1)$
-significant bits and $O(\log p)$ bits in all. Since $c_0 \le c$, the factor $E(c)/E(c_0) \le 1$ does not amplify errors
-in the starting values; the other solutions of \eqref{eq:fuchsys} grow at most like $e^{O(\sqrt c)}$ along the path,
-which costs $O(\sqrt p)$ guard bits. The a priori bound needed for the Taylor tails holds since $|Y(c)| \le Ce^{O(1)}$
-on $|c - c_0| \le \frac34c_0$. Each $J_m$ therefore costs $O(\Mul(p)\log^2p)$, and $\pi^2$ is computed once.
+\emph{Main term.} $M(s)$ is a series in $n$ whose terms are $a_n$ times powers of $u_0^{1/2}$, $1/\Gamma$ at
+$\frac{s+n}2$ or $\frac{s+n}2 + 1$, rational functions of $n$ and $s$ with small divisors $s + n - 1$, and, for $k < k_0$,
+$k^{-s-n}P(\frac{s+n}2, k^2u_0) = e^{-x}u_0^{(s+n)/2}\sum_ix^i/\Gamma(\frac{s+n}2+i+1)$; in this form $k^{-n}$ has
+cancelled and the double series has positive majorants. At a pole $s_0 = 1 - n_1$ one term is singular and is
+expanded explicitly.
 
-\subsection{Main term}\label{app:main}
-$M(s)$ is a series in $n$ whose terms are products of $a_n$, powers of $u_0^{1/2}$, $1/\Gamma(\frac{s+n}2)$ or
-$1/\Gamma(\frac{s+n}2+1)$, rational functions of $n$ and $s$, and the values $k^{-s-n}P(\frac{s+n}2, k^2u_0)$ for
-$k < k_0$, which for each $k$ satisfy a first-order inhomogeneous recurrence in $n$ (in steps of $2$). Splitting by the
-parity of $n$, these are binary splitting series with terms decaying like $u_0^{n/2}/\Gamma(\frac n2)$. At a pole
-$s_0 = 1-n_1$ only the term $n = n_1$ of the first sum is singular, and its Laurent expansion is explicit. Hence $M$ and its
-Laurent coefficients cost $O(\Mul(p)\log^2p)$.
+\emph{Derivatives in $s$.} All pieces are computed over $\mathbb K[\varepsilon]/(\varepsilon^{j+1})$. The recurrences
+are polynomial in $s$ except for the factors $1/\Gamma(\sigma_0 + \varepsilon)$, $u_0^{\varepsilon/2}$, $k^{-\varepsilon}$
+and $\beta$, computed once (or once per $k$). The jets of $G_0, G_1$ satisfy a block-triangular system of the form
+\eqref{eq:Gsys}, and Proposition~\ref{prop:dual} applies with the moments
+$Z^{(i)}_t[g] = \int_0^{u_0}u^{-t}(\log u)^ie^{-c/u}g\dd u$, which satisfy
+$c\,Z^{(i)}_{t+1}[g] = Eu_0^{1-t}(\log u_0)^ig(u_0) - (1-t)Z^{(i)}_t[g] - Z^{(i)}_t[\vartheta g] - iZ^{(i-1)}_t[g]$
+(\nolinkurl{dualMomentLog_ibp}).
+This multiplies all costs by a constant depending on $j$.
 
-\subsection{Derivatives in $s$}\label{app:jets}
-All pieces of Theorem~\ref{thm:split} are analytic in $s$ away from the poles, so the Taylor coefficients at $s_0$ of
-order up to $j$ are those of the pieces. We compute every piece over $\mathbb K[\varepsilon]/(\varepsilon^{j+1})$ with
-$s = s_0 + \varepsilon$. The recurrences in $n$, $j$ and $m$ above have coefficients that are polynomial in $s$, except
-for the factors $1/\Gamma(\sigma_0+\varepsilon)$, $u_0^{\varepsilon/2}$ and $k^{-\varepsilon}$, which become
-truncated power series computed once (or once per $k$: one logarithm per $k$, $O(\sqrt p)$ in all). In
-Lemma~\ref{lem:kernelhol} the Pochhammer factors are polynomials in $\varepsilon$, so the jets of $G_0, G_1$ satisfy a
-block-triangular system of the form \eqref{eq:Gsys}, and Proposition~\ref{prop:dual} applies to it with moments of
-$(\log u)^iG$, which satisfy
-\begin{gather*}
-  Z^{(i)}_t[g] = \int_0^{u_0}u^{-t}(\log u)^ie^{-c/u}g\dd u, \\
-  c\,Z^{(i)}_{t+1}[g] = Eu_0^{1-t}(\log u_0)^ig(u_0) - (1-t)Z^{(i)}_t[g] - Z^{(i)}_t[\vartheta g] - iZ^{(i-1)}_t[g],
-\end{gather*}
-and $-\partial_cZ^{(i)}_t = Z^{(i)}_{t+1}$. The starting values need $\partial_a^iD_a$, which differentiating
-\eqref{eq:Drec} reduces to derivatives of the two base values, computed over truncated power series as in
-Section~\ref{app:gamma}. This multiplies all costs by a constant depending on $j$.
+\subsection{Proof of Theorem~\ref{thm:uniform}}\label{app:uniform}
+\begin{proof}[Proof of Theorems~\ref{thm:complexity} and~\ref{thm:uniform}]
+Theorem~\ref{thm:complexity} is the case of fixed data: $F \in \RegQ$ is then a fixed $\mathbb K$-linear combination of
+a basis as in Theorem~\ref{thm:uniform}, for a number field $\mathbb K$ containing all data, and the hypotheses hold
+for $p \ge p_0$. Let $S = |s_0| + 2$, so that $S\log S \le c'p$ when $|s_0| \le cp/\log p$.
 
-\begin{proof}[Proof of Theorem~\ref{thm:complexity}]
-By the reduction, \eqref{eq:counts} and the preceding sections, the Laurent coefficient is a combination with
-algebraic coefficients of $O(\sqrt p)$ $k$-terms and dual terms and the main term, each computable to $p + O(\log p)$
-bits in $O(\Mul(p)\log^2p)$ bit operations, with coefficients bounded by $p^{O(1)}$. Arithmetic in a fixed number field
-costs $O(1)$ multiplications of rationals per operation.
+\emph{Reduction.} By Lemma~\ref{lem:reduction}, Remark~\ref{rem:twist} and the decomposition of $\chi$ into the
+indicators of the $q$ residue classes, the Laurent coefficient is a combination, with coefficients $\lambda_i\chi(a)$
+times fixed algebraic numbers, of Laurent coefficients of bounded order of the functions
+$\sum_{k\ge k_0,\,k\equiv a}f(1/k)k^{-s}$ at the points $s_0 + \sigma$, and of the terms $F(k)\chi(k)k^{-s}$ for
+$k_1 \le k < k_0$. Here $f$ and $\sigma$ range over fixed finite sets, and each $f$ satisfies (H): each
+$B_\sigma = x^{-\sigma}\sum_j(\log x)^jf_{\sigma,j}(1/x)$ is obtained from a solution by a polynomial in the
+monodromy operator at $t = 1/x = 0$, so the functions $x^{-\sigma}\sum_j(\log x - 2\pi im)^jf_{\sigma,j}(1/x)$,
+$0 \le m \le J$, are solutions, and solving for the powers of $m$ exhibits $f_{\sigma,j}$ as a polynomial in
+$\log t$ with coefficients $t^{-\sigma}y(1/t)$ of moderate growth. The values $y_i(k)$, $k < k_0$, are computed once
+by analytic continuation \cite{CC90,vdH99}. The coefficients have $O(p)$ bits and size $e^{O(p)}$, so each piece is
+needed to absolute error $2^{-O(p)}$, and $|k^{-s_0}| \le k_0^S = 2^{O(p)}$. In the odd case of Remark~\ref{rem:twist}
+the kernel is that of $h_{s+\delta}$ with the weights $k^\delta$.
+
+\emph{Cost.} By (T) there are $O(\sqrt p)$ pieces, and by Section~\ref{app:pieces} each is a fixed number of certified
+series with $N = O(p)$, $b = O(\log p)$, $G = O(p)$, or a bit-burst evaluation, so each costs $O(\Mul(p)\log^2p)$.
+
+\emph{Memory.} The pieces are computed one after another and added to a running sum; the constants ($\pi$, the factors
+$1/\Gamma$, $\beta$, the powers of $u_0$, the base values, and $\log k$ as needed) are $O(1)$ numbers of $O(p)$ bits.
+A certified series with $Nb = O(p\log p)$ is split into blocks of $\lceil p/b\rceil$ terms; the product tree of a
+block, computed depth-first, occupies $O(p)$ bits and costs $O(\Mul(p)\log p)$, and the $O(Nb/p)$ block matrices are
+multiplied into a running product rounded to $O(p)$ bits. The normalized partial products are fundamental matrices
+of the recurrence, so all its solutions must be at most $2^{O(p)}$: for the Taylor stages this is the Taylor-step
+lemma, for the recurrences of $a_n$ it follows from (H), and the $\Gamma$-twists are of first order. Hence $O(p)$ bits
+of memory suffice; without blocking the top of the tree has $O(p\log p)$ bits.
+
+\emph{Large $|s_0|$.} If only $|s_0| \le cp$, run the algorithm at precision $P = \lceil p\log_2p\rceil$; for
+$p \ge p_0$ the hypotheses hold with $(P, 2c)$, and the bounds become $O(P^{1/2}\Mul(P)\log^2P) =
+O(p^{1/2}\Mul(p)\log^{7/2}p)$ and $O(p\log p)$ bits, by (M).
+
+\emph{Geometric factors.} For the last statement, follow Section~\ref{app:geometric} with the modifications above: the
+weights $C_k$, $S_k$ have $O(\sqrt p)$ bits and size $2^{O(\sqrt p)}$, the truncation bound gains the factor
+$|z|^{-k}$, and for the $O(1)$ dual points with $\operatorname{Re}c_n < 1$ the values come from the series of
+Section~\ref{sec:geometric} in the $D_a(c_n)$, bounded by $2^{O(p)}$ with (G1)--(G3) and (Li).
 \end{proof}
 
-\subsection{Uniformity and memory}\label{app:uniform}
-For $\alpha$ in a number field $\mathbb K$ the absolute multiplicative height is
-\[
-  H(\alpha) = \prod_v\max(1,|\alpha|_v)^{[\mathbb K_v:\QQ_v]/[\mathbb K:\QQ]}.
-\]
-An $\alpha \in \mathbb K$ with $H(\alpha) \le B$ can be written with $O(\log B)$ bits, all its conjugates are at most
-$B^{[\mathbb K:\QQ]}$ in absolute value, and, if $\alpha \ne 0$, $|\alpha| \ge B^{-[\mathbb K:\QQ]}$ (Liouville's
-inequality, from the product formula).
-
-\begin{proof}[Proof of Theorem~\ref{thm:uniform}]
-Fix an integer $k_0 \ge k_1$ with $k_0 > R$. Assume first that $|s_0| \le cp/\log p$, and let $S = |s_0| + 2$, so that $S\log S \le c'p$. Constants in $O(\cdot)$
-depend only on the fixed data. The cost bounds of Section~\ref{app:tools} depend on four quantities:
-\begin{enumerate}
-\item[(a)] the numbers of $k$-terms and dual terms;
-\item[(b)] the lengths of the series;
-\item[(c)] the bit sizes of the coefficients of their recurrences;
-\item[(d)] the size of the intermediate quantities, which determines the guard bits.
-\end{enumerate}
-We show that (a) is $O(\sqrt p)$, (b) is $O(p)$, (c) is $O(\log p)$ (up to $O(\log p)$ times the step index in the
-bit-burst, as there), and (d) is $2^{O(p)}$, so that $O(p)$ guard bits suffice. Then the proof of
-Theorem~\ref{thm:complexity} goes through unchanged. Elements of $\mathbb K$ of height $p^{O(1)}$ have $O(\log p)$ bits.
-
-\emph{The gamma function.} We use three estimates.
-\begin{itemize}
-\item[(G1)] If $\operatorname{Re}w \ge \frac12$, then
-\[
-  \Bigl|\frac1{\Gamma(w)}\Bigr| \le \frac{e^{\pi|\operatorname{Im}w|/2}}{\Gamma(\operatorname{Re}w)}.
-\]
-Indeed,
-$|\Gamma(x)/\Gamma(x+iy)|^2 = \prod_{n\ge0}(1 + y^2/(x+n)^2)$ decreases in $x$ and equals $\cosh\pi y$ at $x = \frac12$.
-Also $|\Gamma(w)| \le \Gamma(\operatorname{Re}w)$, and $\Gamma \ge 0.88$ on $(0,\infty)$.
-\item[(G2)] If $|w| \le 2S$, then
-$|1/\Gamma(w)| \le e^{O(S\log S)} = 2^{O(p)}$, by (G1) or by $1/\Gamma(w) = \Gamma(1-w)\sin(\pi w)/\pi$.
-\item[(G3)] If moreover
-$w \in \mathbb K$, $H(w) \le p^{O(1)}$ and $w$ is not a pole, then $|\Gamma(w)| \le 2^{O(p)}$. To see this, write
-$\Gamma(w) = \Gamma(w+N)/(w)_N$ with $N = \lceil 2S\rceil + 1$. In $(w)_N$ every factor but the one nearest to $0$ has
-absolute value at least $\frac12$, and that one is at least $p^{-O(1)}$ by Liouville's inequality. In the same way
-$|s_0 + \sigma + n|^{-1} \le p^{O(1)}$ for the exponents $\sigma$ and integers $n$ with $s_0 + \sigma + n \ne 0$.
-\end{itemize}
-
-\emph{Reduction.} Lemma~\ref{lem:reduction}, applied to each $y_i$, and the decomposition of $\chi$ into the indicator
-functions of the $q$ residue classes write the Laurent coefficient as a linear combination of a fixed finite set of
-pieces. The coefficients are the $\lambda_i\chi(a)$ times fixed algebraic numbers, and the pieces are Laurent
-coefficients of bounded order of the functions $\sum_{k\ge k_0,\,k\equiv a}f(1/k)k^{-s}$ at the points
-$s_0 + \sigma$, together with the terms $F(k)\chi(k)k^{-s}$ for $k_1 \le k < k_0$. There are at most $k_0 - k_1$ of the
-latter, a number fixed with $L$: the values $y_i(k)$ at these fixed points are computed once to $O(p)$ bits by
-analytic continuation from $x = k_0$, in quasilinear time \cite{CC90,vdH99}, and $|k^{-s_0}| \le k_0^{S} = 2^{O(p)}$. Here $f$ and $\sigma$ range over fixed
-finite sets. The coefficients have $O(p)$ bits and absolute value $e^{O(p)}$, so each piece is needed with absolute
-error $2^{-O(p)}$, and the $O(1)$ multiplications by coefficients cost $O(\Mul(p))$. The points $s_0 + \sigma$ satisfy
-the hypotheses on $s_0$ with a larger $c$. We may therefore assume that $F = f(1/k)$ is fixed and that $\chi$ is a fixed
-indicator function. The weights $w(k)$, the Gauss sums and the dual points of Remark~\ref{rem:twist} are then fixed.
-
-\emph{Truncation.} Let $s = s_0$. In the kernel
-\[
-  h_s(u) = \sum_{n=0}^{\infty}a_n\frac{u^{(s+n)/2-1}}{\Gamma(\frac{s+n}2)},
-\]
-use (G2) for the $O(S)$ indices $n$ with $\operatorname{Re}\frac{s+n}2 < \frac12$ and (G1) for the others.
-Summing gives
-\begin{alignat*}{2}
-  |h_s(u)| &\le 2^{O(p)}(1+u)^2e^{R^2u} &\qquad& (u \ge u_0), \\
-  |h_s(u)| &\le 2^{O(p)}u^{-S/2-1} && (0 < u \le u_0).
-\end{alignat*}
-The first bound gives $|I_k(s)| \le 2^{O(p)}e^{-(k^2-R^2)u_0}$. For the second, use the inequality
-$e^{-\pi^2m^2/u} \le e^{-\pi^2m^2/(2u_0)}e^{-\pi^2m^2/(2u)}$ and $\max_{u>0}u^{-A}e^{-b/u} = (A/(eb))^A$, which is $2^{O(p)}$ for $b \ge \pi^2/(2q^2)$
-(with $q = 1$ in the untwisted case). This
-gives $|J_m(s)| \le 2^{O(p)}e^{-\pi^2m^2/(2u_0)}$, and the same holds for the twisted dual terms. Hence (a) holds:
-$O(\sqrt p)$ terms on each side reach $2^{-O(p)}$. The same bounds, with $s$ in the disk $|s - s_0| \le 1$, bound the
-Taylor coefficients of every piece at $s_0$ by $2^{O(p)}$, by Cauchy's estimate.
-
-\emph{$k$-terms.} In \eqref{eq:Ik}, factor out $1/\Gamma(\frac s2 + j_1 + 1)$ instead of $1/\Gamma(\frac s2 + 1)$, with
-$j_1 = O(S)$ the least index for which $\operatorname{Re}(\frac s2 + j_1 + 1) \ge \frac12$, and likewise for the odd
-part. The terms with $j \ge j_1$ then follow a recurrence that divides only by numbers $\frac s2 + j + 1$ of real part
-at least $\frac12$. These are units of the ring of truncated power series in $\varepsilon = s - s_0$. The
-$O(S)$ terms with $j < j_1$ are polynomials in $s$ times that factor. By (G1) and (G2),
-$\sum_j x^j|1/\Gamma(\frac s2+j+1)| \le 2^{O(p)}(1+x)^{S}e^x$, and $(1+x)^S = 2^{O(p)}$ since $x = k^2u_0 = O(p)$. Hence the
-terms of the double sums are at most $2^{O(p)}|a_{2m}|\kappa^{-m}$, which gives (b) and (d). The coefficients are
-polynomials in $s$, $m$ and $j$ of bounded degree, hence (c). Further, $|k^{-s}| \le k^S = 2^{O(p)}$, and $A_0(1/\kappa)$,
-$A_1(1/\kappa)$ do not depend on $s$.
-
-\emph{Incomplete gamma functions.} For $|a| \le 2S$ and rational $0 < y = O(p)$ write
-$P(a,y) = y^ae^{-y}\sum_iy^i/\Gamma(a+i+1)$ and factor out $1/\Gamma(a+i_1+1)$ as above. The terms are at most
-$2^{O(p)}(1+y)^{S}e^{y}4^y\cdot 2^{-i}$ for $i \ge 2y + 2S$ (the factor $4^y$ is needed, and is $2^{O(p)}$), so $O(p)$ terms and $O(p)$ guard bits suffice. The factors
-$1/\Gamma(w)$ with $\operatorname{Re}w \ge \frac12$, $|w| \le 3S$, of which $O(1)$ are needed, come from
-$\Gamma(w) = \gamma(w,N) + \Gamma(w,N)$ with $N = O(p)$. Here $|\Gamma(w,N)| \le N^{3S}e^{-N} \le 2^{-\Omega(p)}$
-and $|\Gamma(w)| \ge 0.88\,e^{-3\pi S/2}$ by (G1), so $O(p)$ guard bits give $1/\Gamma(w)$.
-
-\emph{Dual terms.} After the normalization of the dual terms in Section~\ref{app:dual}, the vector $b$ of
-\eqref{eq:Gsys} is not of bounded degree in $s$: by the proof of Lemma~\ref{lem:kernelhol} its entries are
-$\Gamma(\sigma_0+m_2)/\Gamma(\sigma_0+m)$, for the finitely many $m < m_1 + r$, times polynomials of bounded degree, so
-they share the factor $\beta = (\sigma_0+m_1+r)_{m_2-m_1-r}$, a product of $O(S)$ linear factors with $\Theta(p)$ bits
-when $|s_0| \asymp p/\log p$. We therefore use $\beta C_{t-i}$ and $\beta E$ as components of $Y$ in place of
-$C_{t-i}$ and $E$; the equations of this block are homogeneous in it, so only the starting values change, and $\beta$
-is computed once. Then the entries of $B_0$ and
-$B_1$ in \eqref{eq:fuchsys} are polynomials in $s$ of bounded degree with fixed coefficients. Their dimension does not
-depend on $s$. Their entries therefore have $O(\log p)$ bits and $\|B_0\| + \|B_1\| \le p^{A_0}$ for a fixed $A_0$. For
-$\operatorname{Re}c' \ge \pi^2/(2q^2)$ the components of $Y(c')$ are at most $2^{O(p)}$, by the bounds on $h_s$ and
-$|u^{-t}| \le u^{-S}$. We now take the starting point $c_0 \le c$ much closer to $c$ than before. Let
-$\rho = cp^{-A}$ with $A = A_0 + 2$, and take $c - c_0 \le \rho/2$; this still leaves $c_0$ with $O(\log p)$ bits. On
-the disk $|c' - c_0| \le \rho$, Gronwall's inequality bounds the transition matrices of \eqref{eq:fuchsys} and their
-inverses by $\exp\bigl(\rho(\|B_0\|/(c_0-\rho) + \|B_1\|)\bigr) = O(1)$, since $c = O(p)$. Errors in $Y(c_0)$ are therefore not
-amplified, and on this disk $|Y| = O(|Y(c_0)|)$, which bounds the Taylor tails by Cauchy's estimate. In the
-bit-burst, the first step goes from $c_0$ to a point at distance at most $\rho/2$. It has $O(p)$ terms with
-$O(\log p)$-bit coefficients. The later steps have $|c_{i+1} - c_i| \le c\,2^{-b_i}$ with
-$b_i = 2^ib_0 \ge 2A\log_2p$. Their ratio to $\rho$ is at most $2^{-b_i/2}$, so they have $O(p/b_i)$ terms of $O(b_i)$
-bits, as in Section~\ref{app:tools}. For the starting values at $c_0$, choose a base exponent $a_*$ in each class of exponents modulo $\ZZ$. In
-a class of non-integers, take the least exponent that occurs. In the class of integers (if the exponents at $s_0$ are
-integers), take $a_* = 0$, with $D_0 = E_1(c_0/u_0) = \Ein(c_0/u_0) - \gamma - \log(c_0/u_0)$, which needs Euler's constant
-$\gamma$ once, in $O(\Mul(p)\log^2p)$ by the Brent--McMillan algorithm. Going up from $a_*$, \eqref{eq:Drec} divides by
-$a = a_* + n \ne 0$, and $|a| \ge p^{-O(1)}$ by Liouville's inequality. Going down from $0$, it divides by $c_0$.
-Going up, the coefficients are $\alpha_a = (-c_0)^n/(a_*+1)_n$, bounded by
-$2^{O(p)}c_0^n/\Gamma(\operatorname{Re}a_* + n + 1)$ by (G1)--(G3). Going down from $0$ they are at most
-$n!\,c_0^{-n}u_0^{O(1)} = 2^{O(p)}$, since $n = O(S)$. The estimate
-for the cancellation in Section~\ref{app:dual} becomes $2^{O(p)}e^{2R\sqrt{c_0}}c_0^{O(S)} = 2^{O(p)}$, so
-$O(p)$ guard bits suffice. The base values $D_{a_*}(c_0) = c_0^{a_*}(\Gamma(-a_*) - \gamma(-a_*, c_0/u_0))$ need
-$\Gamma(-a_*) \le 2^{O(p)}$ (G3), or $E_1$, and the series of the previous paragraph. With $s = s_0 + \varepsilon$
-the exponents are $a + \frac\varepsilon2$, and the divisions by $a + \frac\varepsilon2$ with $a \ne 0$ are by units
-whose inverses have coefficients of size $p^{O(1)}$, since the order of the jets is fixed. The base values are then computed as jets in $a$, as in
-Section~\ref{app:jets}.
-
-\emph{Main term and jets.} The terms of $M(s)$ are bounded as those of $h_s$, with $u_0^{n/2}$ in place of $u^{n/2}$.
-Its only small divisors are $s + n - 1 \ne 0$, of size at least $p^{-O(1)}$. At a pole $s_0 = 1 - n_1$, where
-$n_1 = O(S)$, one term is singular and is expanded explicitly. Truncated power series in $\varepsilon$ of fixed
-length multiply all costs by a constant.
-
-Hence every piece costs $O(\Mul(p)\log^2p)$ bit operations at precision $O(p)$, and there are $O(\sqrt p)$ of them.
-
-\emph{Memory.} The pieces are computed one after another and added to a running sum. The precomputed constants
-($\pi$, the factors $1/\Gamma$, the powers of $u_0$, the base values and the logarithms $\log k$ as they are needed)
-are $O(1)$ numbers of $O(p)$ bits at any time. Each piece is a fixed number of series summed by binary splitting, or a
-bit-burst evaluation, which is a sequence of $O(\log p)$ such series. Take a series of $N$ terms whose recurrence
-coefficients have $b$ bits, with $Nb = O(p\log p)$. Split it into blocks of $\lceil p/b\rceil$ consecutive terms. The
-product tree of a block has $O(p)$ bits on each level. Computed depth-first, it occupies $O(p)$ bits at any time, plus
-$O(p)$ for multiplication, and costs $O(\Mul(p)\log p)$. The $O(Nb/p)$ block matrices are multiplied in turn into a
-running product rounded to $O(p)$ bits, at cost $O(\Mul(p))$ each. The total time is $O(\Mul(p)\log^2p)$, as without
-blocking. The entries of the normalized partial products are the partial sums and terms of the series, so by (d) they
-are at most $2^{O(p)}$, and the rounding errors are absorbed by $O(p)$ guard bits. Hence the memory is $O(p)$ bits.
-Without blocking, the top of the product tree has $O(Nb) = O(p\log p)$ bits.
-
-\emph{Large $|s_0|$.} If only $|s_0| \le cp$, run the algorithm with precision $P = \lceil p\log_2p\rceil$. For
-$p \ge p_0$ the hypotheses hold with $P$ in place of $p$ and $2c$ in place of $c$: $|s_0| \le cp \le 2cP/\log P$ and
-$H(s_0) \le P^c$. The result has error at most $2^{-P} \le 2^{-p}$. The time is $O(P^{1/2}\Mul(P)\log^2P) =
-O(p^{1/2}\Mul(p)\log^{7/2}p)$, by $\Mul(p\log p) = O(\Mul(p)\log p)$, and the memory is $O(P) = O(p\log p)$.
-\end{proof}
-
-\begin{proof}[Proof of the last statement of Theorem~\ref{thm:uniform}]
-We follow the proof of part~(2) of Theorem~\ref{thm:geometric} (Section~\ref{app:geometric}), with the
-modifications above.
-The reduction to $\chi = 1$ replaces $z$ by the fixed numbers $ze^{2\pi ib/q}$, and the reduction to $f$ satisfying
-(H) is as above. The $k$-terms are those of Theorem~\ref{thm:split} at $s$ and $s+1$. Their weights $C_k$, $S_k$ lie
-in $\mathbb K$, have $O(k) = O(\sqrt p)$ bits, are computed incrementally, and are at most $|z|^{-k} = 2^{O(\sqrt p)}$.
-The truncation bound becomes $2^{O(p)}|z|^{-k}e^{-(k^2-R^2)u_0}$, and $O(\sqrt p)$ terms still suffice.
-
-The dual points $c_n = \pi^2(n-\alpha)^2$ are now complex and $|c_n| \ge \pi^2\alpha_2^2 > 0$. If
-$\operatorname{Re}c_n \ge 1$, the bound on $h_s$ on $(0,u_0]$ gives
-$|J^{(\delta)}_w(c_n)| \le 2^{O(p)}e^{-\operatorname{Re}c_n/(2u_0)}$ as before. There are $O(1)$ remaining $n$, for
-which $J^{(\delta)}_w(c_n)$ is defined by the series of Section~\ref{sec:geometric} in the functions
-$D_a(c) = c^a(\Gamma(-a) - \gamma(-a, c/u_0))$. For these, $|c_n| = O(1)$. Write $c^a\gamma(-a,c/u_0)$ as
-$u_0^a\sum_i(-c/u_0)^i/(i!\,(i-a))$ and use (G1)--(G3) and Liouville's inequality for the factors $1/(i-a)$ and
-$\Gamma(-a)$. This bounds the $n$-th term of that series by $2^{O(p)}$ for $n \le 2S+2$, and by
-$2^{O(p)}(R^2(|c_n|+u_0))^{n/2}/\Gamma(\frac n2 - S)$ for larger $n$. Hence the values are $2^{O(p)}$.
-
-Take Gaussian rational starting points $c_n'$ with $O(\log p)$ bits, $|c_n - c_n'| \le |c_n|p^{-A}/2$, and
-$\operatorname{Im}c_n' > 0$ if $c_n$ lies on the cut. On the disk of radius $|c_n|p^{-A}$ about $c_n'$, Gronwall's
-inequality bounds the transition matrices by $O(1)$ as before, and the bit-burst proceeds as before. The base values
-need $\Gamma(-a_*)$, which is at most $2^{O(p)}$ by (G3), and $\gamma(-a_*, y)$ at a Gaussian rational $y = O(p)$.
-The series for the latter has $O(p)$ terms and cancels by at most $e^{O(|y|)} = 2^{O(p)}$. The cancellation between
-the $k$-terms and the dual terms, $e^{(\log|z|)^2/(4u_0)}$, does not depend on $p$. The memory analysis is unchanged.
-\end{proof}
-
-\emph{Remarks.} The memory bounds assume that $p$-bit integers can be multiplied in time $\Mul(p)$ and space $O(p)$,
-as with FFT-based algorithms; without the blocking of the binary splitting, the memory is $O(p\log p)$ bits in the
-first case. Some bound on $|s_0|$ is needed with real $u_0$: for $|\operatorname{Im}s_0| \gg p$ the cancellation
+\emph{Remarks.} The memory bounds assume multiplication in time $\Mul(p)$ and space $O(p)$, as with FFT-based
+algorithms. Some bound on $|s_0|$ is needed with real $u_0$: for $|\operatorname{Im}s_0| \gg p$ the cancellation
 $e^{\pi|\operatorname{Im}s_0|/4}$ exceeds $2^{O(p)}$ (Remark~\ref{rem:complexu0}), and for $s_0 \to -\infty$ the value
 itself may have more than $p$ bits before the point. For rational $s_0$, and for $s_0$ in an imaginary quadratic
-field, $|s_0| \le H(s_0)$, so the hypothesis of the second case is just $H(s_0) \le cp$. In a general number field a
-bound on $H(s_0)$ does not bound $|s_0|$ (consider the units of a real quadratic field).
-
-The constants depend on the operator $L$; see Section~\ref{sec:openuniform}.
+field, $|s_0| \le H(s_0)$; in a general number field a bound on $H(s_0)$ does not bound $|s_0|$. The constants depend
+on the operator $L$ (Section~\ref{sec:openuniform}).
 
 \subsection{Bernoulli numbers and exponential generating functions}\label{app:sequences}
 \begin{proof}[Proof of Corollary~\ref{cor:bernoulli}]
-By $B_n(x+1) = B_n(x) + nx^{n-1}$ we may assume $0 < x = b/f' \le 1$, with $b, f'$ fixed. For $n \ge 1$ and
-$\operatorname{Re}s > 1$,
-\[
-  \zeta(s, x) = \sum_{k=0}^{\infty}(k+x)^{-s} = f'^{\,s}\sum_{k\equiv b \bmod f'}k^{-s} = f'^{\,s}L_1(s, \mathbf 1_{b+f'\ZZ}),
-\]
-and $\zeta(1-n, x) = -B_n(x)/n$, so $B_n(x) = -nf'^{\,1-n}L_1(1-n, \mathbf 1_{b+f'\ZZ})$. Write
-$B_n(x) = \sum_k\binom nkB_kx^{n-k}$. By von Staudt--Clausen the denominator of $B_k$ divides $\prod_{\ell\le k+1}\ell$
-over primes $\ell$, so $D_nB_n(x) \in \ZZ$ with $D_n = f'^{\,n}\prod_{\ell\le n+1}\ell = e^{O(n)}$. From
-$|B_k| \le 4k!/(2\pi)^k$ we get $|B_n(x)| \le 4n!\sum_k(2\pi)^{-k}/(n-k)! \le 4e\cdot n!$ for $0 \le x \le 1$. Hence
-$p = n\log_2n + O(n)$ bits of $L_1(1-n, \mathbf 1_{b+f'\ZZ})$ determine $B_n(x)$. Theorem~\ref{thm:uniform} applies
-with $F = 1$ ($L = \partial_x$), $\mathbb K = \QQ$, $j = 0$ and $s_0 = 1 - n$: $H(s_0) \le n \le p$ and
-$|s_0| \le n = O(p/\log p)$. The cost is $O(p^{1/2}\Mul(p)\log^2p)$ with $p = \Theta(n\log n)$, and
+By $B_n(x+1) = B_n(x) + nx^{n-1}$ we may assume $0 < x = b/f' \le 1$. By (B), $B_n(x) = -nf'^{\,1-n}L_1(1-n,
+\mathbf 1_{b+f'\ZZ})$, $D_nB_n(x) \in \ZZ$ with $D_n = f'^{\,n}(n+1)\# = e^{O(n)}$, and $|B_n(x)| \le 4e\cdot n!$, so an
+approximation of $L_1(1-n, \cdot)$ with absolute error $e^{-An}$ determines $B_n(x)$, and $n\log_2n + O(n)$ bits suffice.
+Theorem~\ref{thm:uniform} applies with $F = 1$ ($L = \partial_x$), $\mathbb K = \QQ$, $j = 0$, $s_0 = 1 - n$ and
+$p = \Theta(n\log n)$: $H(s_0) \le n \le p$ and $|s_0| = O(p/\log p)$. The cost is $O(p^{1/2}\Mul(p)\log^2p)$, and
 $\Mul(n\log n) = O(\Mul(n)\log n)$. For the Euler polynomials,
-$E_n(x) = \frac2{n+1}(B_{n+1}(x) - 2^{n+1}B_{n+1}(\frac x2))$. The tangent and Genocchi numbers are $2^{2n}(2^{2n}-1)|B_{2n}|/(2n)$
-and $2(1-2^n)B_n$, and $B_{n,\chi}$ is a fixed linear combination of the rationals $f^{n-1}B_n(a/f)$.
+$E_n(x) = \frac2{n+1}(B_{n+1}(x) - 2^{n+1}B_{n+1}(\frac x2))$; the tangent and Genocchi numbers are
+$2^{2n}(2^{2n}-1)|B_{2n}|/(2n)$ and $2(1-2^n)B_n$, and $B_{n,\chi}$ is a fixed combination of the $f^{n-1}B_n(a/f)$.
 \end{proof}
 
 \begin{proof}[Proof of Corollary~\ref{cor:egf}]
-Since $a_n = n(n-1)\cdots(n-m+1)\,b_{n-m}$ and $b_n = \lambda^nc_n$, with $b_n = n![t^n]R(e^{\lambda t})$ and
-$c_n = n![t^n]R(e^t)$, it suffices to compute $c_n$. Over a fixed extension of $\mathbb K$ containing the poles,
-$R(x)$ is a Laurent polynomial plus a combination of terms $(1 - x/\rho)^{-i}$. A Laurent polynomial contributes
-$\sum_j\gamma_jj^n$. For $|\rho| > 1$, the expansion
-$(1 - e^t/\rho)^{-i} = \sum_{k\ge0}\binom{k+i-1}{i-1}\rho^{-k}e^{kt}$ converges near $t = 0$. It contributes a fixed
-combination of the values $\Li_{-n-l}(1/\rho)$ with $0 \le l < i$. For $|\rho| < 1$, expand
-$(1 - e^t/\rho)^{-i} = (-\rho e^{-t})^i(1 - \rho e^{-t})^{-i}$ in the same way, which gives values
-$\Li_{-n-l}(\rho)$. For a root of unity $\rho \ne 1$, both sides of the first expansion are rational functions of
-$z = 1/\rho$, continuous on $|z| \le 1$, $z \ne 1$. At $|z| = 1$ the value $\Li_{-n-l}(z)$ is $L_1(-n-l,\chi)$ with the
-periodic $\chi(k) = z^k$. By Theorem~\ref{thm:uniform}, with $F = 1$ and $s_0 = -n-l$, each of these $O(1)$
-values can be computed to $p$ bits within the stated bounds, for $p = O(n\log n)$.
-
-It remains to bound the size and the denominator of $a_n$. $R(e^{\lambda t})$ is analytic in a fixed disk about
-$t = 0$, so $|a_n| \le C^nn!$. Write $R = P/Q$ with $P, Q \in \mathcal O_{\mathbb K}[x, x^{-1}]$ and $Q(1) \ne 0$, and
-choose $d \ge 1$ with $d\lambda \in \mathcal O_{\mathbb K}$. The series $\sum_ne_nt^n/n!$ with
-$e_n \in d^{-n}\mathcal O_{\mathbb K}$ form a ring that contains $e^{\pm j\lambda t}$, and
-$1/Q(e^{\lambda t}) = \sum_{i\ge0}(Q(1) - Q(e^{\lambda t}))^i/Q(1)^{i+1}$, where only $i \le n$ contribute to the $n$-th
-coefficient. With $N = |N_{\mathbb K/\QQ}(Q(1))|$ we get
-$d^{\,n}N^{n+1}a_n \in \mathcal O_{\mathbb K} \cap \QQ = \ZZ$. Hence $p = n\log_2n + O(n)$ bits determine $a_n$.
+Since $a_n = n(n-1)\cdots(n-m+1)\,b_{n-m}$ and $b_n = \lambda^nc_n$, with $c_n = n![t^n]R(e^t)$, it suffices to compute
+$c_n$. Over a fixed extension of $\mathbb K$ containing the poles, $R(x)$ is a Laurent polynomial plus a combination of
+terms $(1 - x/\rho)^{-i}$. A Laurent polynomial contributes $\sum_j\gamma_jj^n$. For $|\rho| > 1$,
+$(1 - e^t/\rho)^{-i} = \sum_{k\ge0}\binom{k+i-1}{i-1}\rho^{-k}e^{kt}$ contributes a fixed combination of the
+$\Li_{-n-l}(1/\rho)$, $0 \le l < i$; for $|\rho| < 1$, expand $(-\rho e^{-t})^i(1 - \rho e^{-t})^{-i}$ in the same way;
+for a root of unity $\rho \ne 1$, $\Li_{-n-l}(1/\rho) = L_1(-n-l,\chi)$ with $\chi(k) = \rho^{-k}$, by continuity on
+$|z| \le 1$, $z \ne 1$. Theorem~\ref{thm:uniform} computes each of these $O(1)$ values. Finally
+$|a_n| \le C^nn!$, and with $R = P/Q$, $P, Q \in \mathcal O_{\mathbb K}[x, x^{-1}]$, $Q(1) \ne 0$, $d\lambda \in \mathcal O_{\mathbb K}$
+and $N = |N_{\mathbb K/\QQ}(Q(1))|$, the expansion $1/Q(e^{\lambda t}) = \sum_i(Q(1) - Q(e^{\lambda t}))^i/Q(1)^{i+1}$ in
+the ring of series $\sum e_nt^n/n!$ with $e_n \in d^{-n}\mathcal O_{\mathbb K}$ gives $d^nN^{n+1}a_n \in \ZZ$. Hence
+$n\log_2n + O(n)$ bits determine $a_n$.
 \end{proof}
 
 \subsection{Geometric factors}\label{app:geometric}
 \begin{proof}[Proof of Theorem~\ref{thm:geometric}(2)]
-Expanding $\chi$ into additive characters $e^{2\pi ibk/q}$ replaces $z$ by the algebraic numbers $ze^{2\pi ib/q}$ of
-the same modulus, so we may take $\chi = 1$. By Lemma~\ref{lem:reduction} and Section~\ref{app:jets} we may take
-$j = 0$ and $F$ as in \eqref{eq:f} with $f$ satisfying~(H), and we use Theorem~\ref{thm:geometric}(1).
+Expanding $\chi$ into additive characters replaces $z$ by the algebraic numbers $ze^{2\pi ib/q}$, so we may take
+$\chi = 1$; by Lemma~\ref{lem:reduction} and the derivatives in $s$, we may take $j = 0$ and $f$ satisfying~(H), and
+we use Theorem~\ref{thm:geometric}(1). Since $|z|^{-k}e^{-(k^2-R^2)u_0} \le 2^{-p}$ for
+$k \ge \sqrt{p\log2/u_0} + O(1)$ and the dual terms are $O(e^{-\operatorname{Re}c_n/u_0})$, $O(\sqrt p)$ terms suffice;
+the cancellation between them is at most $e^{(\log|z|)^2/(4u_0)}$. The $k$-terms at $s$ and $s+1$ are computed as in
+Section~\ref{app:pieces}, $C_k$ and $S_k$ incrementally, and $L_k(w)$, $H(w)$ are series like the main term.
 
-\emph{Truncation.} Since $|z|^{-k}e^{-(k^2-R^2)u_0} \le 2^{-p}$ for $k \ge \sqrt{p\log2/u_0} + O(1)$ and the dual
-terms are $O(e^{-\operatorname{Re}c_n/u_0})$, the sums can be truncated after $O(\sqrt p)$ terms; the cancellation
-between terms is bounded by $e^{(\log|z|)^2/(4u_0)}$, so $p + O(1)$ bits suffice.
-
-\emph{$k$-terms and main term.} $I_k(s)$ and $I_k(s+1)$ are computed as in Section~\ref{app:kterms}, $C_k$ and $S_k$
-incrementally in the number field generated by $z$, and the finitely many $L_k(w)$ and $H(w)$ are convergent series
-with P-recursive terms, like the main term of Theorem~\ref{thm:split}.
-
-\emph{Dual terms.} Proposition~\ref{prop:dual} holds for complex $c$ by analytic continuation: $J^{(\delta)}_w(c)$ is a
-component of the solution $Y$ of $cY' = (B_0 + cB_1)Y$, whose only finite singular point is $0$, and its continuation
-to $\CC\setminus(-\infty,0]$ is that of $Y$. Fix $n$. Compute $c_n$ to $p$ bits from $\pi$ and $\log z$, in
-$O(\Mul(p)\log^2p)$, and choose a Gaussian rational $c_n'$ with numerator and denominator of $O(\log p)$ bits and
-$|c_n - c_n'| \le |c_n'|/4$, with $\operatorname{Im}c_n' > 0$ if $c_n$ lies on the cut. The relations
-\eqref{eq:startvals} and \eqref{eq:Drec} hold for complex $c$ by analytic continuation. The base values
-$D_a(c_n') = (c_n')^a(\Gamma(-a) - \gamma(-a, c_n'/u_0))$, one per class of $a$ modulo $\ZZ$, need $\Gamma(-a)$ at an
-algebraic point (once) and $\gamma(-a, y)$ at the Gaussian rational $y = c_n'/u_0$. The latter is given by its
-everywhere convergent series, which has $O(|y| + p) = O(p)$ terms that are P-recursive with coefficients of
-$O(\log p)$ bits, so binary splitting costs $O(\Mul(p)\log^2p)$. The series \eqref{eq:startvals} at $c_n'$ is of
-the same kind, and the cancellation in it is at most $e^{O(|c_n'|/u_0)} = 2^{O(p)}$, absorbed by $O(p)$ guard bits as in
-Section~\ref{app:dual}. Finally the bit-burst (Section~\ref{app:tools}) takes $Y$ from $c_n'$ to $c_n$ in
-$O(\Mul(p)\log^2p)$, with $|Y| \le 2^{O(p)}$ on $|c - c_n'| \le \frac34|c_n'|$. When $c_n$ lies on the cut, the Taylor
-series at $c_n'$ continues $Y$ along the segment from $c_n'$ to $c_n$, which gives the boundary value from above.
-
-Each of the $O(\sqrt p)$ terms thus costs $O(\Mul(p)\log^2p)$, which proves the bound.
+For the dual terms, Proposition~\ref{prop:dual} holds for complex $c$ by analytic continuation: $J^{(\delta)}_w(c)$ is a
+component of the solution of $cY' = (B_0 + cB_1)Y$, continued to $\CC\setminus(-\infty, 0]$. Compute $c_n$ to $p$
+bits and choose a Gaussian rational $c_n'$ with $O(\log p)$ bits, $|c_n - c_n'| \le \frac12|c_n|p^{-A}$, and
+$\operatorname{Im}c_n' > 0$ if $c_n$ lies on the cut. The base values $D_a(c_n') = (c_n')^a(\Gamma(-a) - \gamma(-a, c_n'/u_0))$
+need $\Gamma(-a)$ once and $\gamma(-a, y)$ at the Gaussian rational $y = c_n'/u_0$, an everywhere convergent series with
+$O(p)$ P-recursive terms and cancellation $e^{O(|y|)} = 2^{O(p)}$; the series \eqref{eq:startvals} at $c_n'$ is of the
+same kind. The bit-burst from $c_n'$ to $c_n$ is controlled by the Taylor-step lemma, which needs only $|Y(c_n')|$
+and no bound on a disk; when $c_n$ lies on the cut, the Taylor series at $c_n'$ continue $Y$ along the segment, which
+gives the boundary value from above. Each of the $O(\sqrt p)$ terms costs $O(\Mul(p)\log^2p)$.
 \end{proof}
 
 \subsection{Stretched exponentials}\label{app:stretched}
 We sketch the cost analysis for $\Lambda(s;\tau,r)$ (Proposition~\ref{prop:expsplit}) with $r = r_1/r_2$ in lowest
-terms, $0 < r \le 1$, and algebraic $s$ and $\tau > 0$. Write $a_j = (s-rj)/2$; then $a_j$ modulo $\ZZ$ depends only on
-$j$ modulo $2r_2$, and within each class the coefficients $c_j = (-\tau)^j/(j!\Gamma(a_j))$ are hypergeometric in $j$.
-We use $|\Gamma(a,x)| \le x^{\operatorname{Re}a-1}e^{-x}$ for $\operatorname{Re}a \le 1$, $x > 0$, and
+terms, $0 < r \le 1$, and algebraic $s$ and $\tau > 0$. Write $a_j = (s-rj)/2$; then $a_j$ modulo $\ZZ$ depends only
+on $j$ modulo $2r_2$, and within each class the coefficients $c_j = (-\tau)^j/(j!\Gamma(a_j))$ are hypergeometric in
+$j$. We use $|\Gamma(a,x)| \le x^{\operatorname{Re}a-1}e^{-x}$ for $\operatorname{Re}a \le 1$, $x > 0$, and
 $|1/\Gamma(a)| \le \Gamma(1-\operatorname{Re}a)\cosh(\pi\operatorname{Im}a)/\pi$ for $\operatorname{Re}a \le 0$.
 
 \emph{$k$-terms.} The $j$-th term of $I_k$ is at most
 $e^{-k^2u_0}\,O(1)\,(\tau u_0^{-r/2})^j\,\Gamma(1+\frac{rj}2-\frac{\operatorname{Re}s}2)/j!$, which decays like
-$(j!)^{r/2-1}$ since $r < 2$. Hence $O(p/\log p)$ terms suffice, and within each class they are P-recursive by
-$Q(a+1,x) = Q(a,x) + x^ae^{-x}/\Gamma(a+1)$: binary splitting, $O(\Mul(p)\log^2p)$ per $k$.
+$(j!)^{r/2-1}$; within each class the terms are P-recursive by $Q(a+1,x) = Q(a,x) + x^ae^{-x}/\Gamma(a+1)$.
 
 \emph{Dual terms.} For $c > 0$ and $\operatorname{Re}a < 0$, $|D_a(c)| \le c^{\operatorname{Re}a}\Gamma(-\operatorname{Re}a)$,
-so the $j$-th term of the series for $J_m$ at a starting point $c_0$ is at most
-$O(1)(\tau c_0^{-r/2})^j\Gamma(\frac{rj}2+O(1))^2/j!$. This decays like $(j!)^{r-1}$ for $r < 1$, and geometrically with
-ratio $\tau/(2\sqrt{c_0})$ for $r = 1$ (take $c_0 > \tau^2$). For $1 < r < 2$ it grows like $(j!)^{r-1}$ for every
-$c_0$, so the starting values need another method; we do not treat this case. Within each class the terms are P-recursive by
-\eqref{eq:Drec}. With $v = u^{1/(2r_2)}$ the kernel is a power of $u$ times an entire function $H(v^{-r_1})$, whose
-coefficients satisfy $c_{j+2r_2}/c_j = \tau^{2r_2}(a_j-1)(a_j-2)\cdots(a_j-r_1)/(j+1)_{2r_2}$. The degree $2r_2$ of the
-denominator exceeds the degree $r_1$ of the numerator, so $H$ satisfies an equation with property~(H), and the proofs
-of Lemma~\ref{lem:kernelhol} and Proposition~\ref{prop:dual}, with $t$ shifted in steps of $1/(2r_2)$, give a
-first-order system in $c$ with $c = 0$ as only finite singular point. The bit-burst then takes the moments from a
-rational $c_0$ to $\pi^2m^2$, as in Section~\ref{app:dual}.
+so the $j$-th term of the series for $J_m$ at $c_0$ is at most $O(1)(\tau c_0^{-r/2})^j\Gamma(\frac{rj}2+O(1))^2/j!$.
+This decays like $(j!)^{r-1}$ for $r < 1$, and geometrically with ratio $\tau/(2\sqrt{c_0})$ for $r = 1$, which needs
+$c_0 > \tau^2$: for $m \le \tau/\pi$ one starts at such a $c_0$ and continues along the real axis. For $1 < r < 2$ the
+terms grow like $(j!)^{r-1}$ for every $c_0$; we do not treat this case. With $v = u^{1/(2r_2)}$ the kernel is a power
+of $u$ times an entire function $H(v^{-r_1})$ whose coefficients satisfy
+$c_{j+2r_2}/c_j = \tau^{2r_2}(a_j-1)(a_j-2)\cdots(a_j-r_1)/(j+1)_{2r_2}$, so $H$ satisfies an equation with
+property~(H). The integration by parts of Proposition~\ref{prop:dual}, with $t$ shifted in steps of $1/(2r_2)$, now
+raises the moment index, and solving for the highest index gives a linear system in $c$ whose only finite singular
+point is $c = 0$, possibly of higher Poincar\'e rank; the bit-burst applies at $c \gg 0$ unchanged.
 
-\emph{Main term.} $M_\tau(1-s) = \Gamma(\frac{1-s}r)\tau^{(s-1)/r}/r$ needs one value of $\Gamma$ at an algebraic point
-and one exponential and logarithm; the tails $T_w$ are convergent series with P-recursive terms.
+\emph{Main term.} $M_\tau(1-s) = \Gamma(\frac{1-s}r)\tau^{(s-1)/r}/r$ needs one value of $\Gamma$ at an algebraic point;
+the tails $T_w$ are convergent series with P-recursive terms.
 
 Altogether $\Lambda(s;\tau,r)$ costs $p^{3/2+o(1)}$, the extra factors coming only from the $O(\log p)$ variation in the
-lengths of the series. For the products of Proposition~\ref{prop:prodsplit} every piece is a double sum over $n$ and
-$j$ of terms that are holonomic in $(n, j)$. By closure of holonomic sequences under definite summation
-\cite{Zei90}, the inner sums are P-recursive in $n$, so the outer sum can be computed by binary splitting from
-finitely many initial values. Unwanted solutions of the recurrence grow at most like $(n!)^{O(1)}C^n$, so $O(p\log p)$
-guard bits suffice, which again gives $p^{3/2+o(1)}$. We have not written out the order and degree of these
-recurrences.
+lengths of the series. For the products of Proposition~\ref{prop:prodsplit} every piece is a double sum of terms
+holonomic in $(n, j)$; by closure under definite summation \cite{Zei90} the inner sums are P-recursive in $n$, and
+since unwanted solutions grow at most like $(n!)^{O(1)}C^n$, $O(p\log p)$ guard bits suffice, which again gives
+$p^{3/2+o(1)}$.
 
 \end{small}
 

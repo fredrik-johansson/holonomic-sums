@@ -12,8 +12,8 @@ Lean: `lean/` (this directory).
 (`AppA/Regularity.lean`), L4 (`AppA/KernelBounds.lean`, untwisted), L5 (`AppA/GammaSums.lean`; the tail bound L5′
 needs an extra factor `4^y`, see the README), L6 (`AppA/StartValues.lean`), L7 (`AppA/BernoulliExact.lean`),
 L8 (`AppA/Liouville.lean`), L9 (`AppA/LogMoments.lean`), L11 (`AppA/KTermDouble.lean`). Not done: L10 (the text now
-rescales the `C`, `E` block instead), L12. A draft of the restructured appendix built on these is
-`paper/appendixA_new.tex`.
+rescales the `C`, `E` block instead), L12. The appendix of `zetaF.tex` has since been rewritten along the lines of §5,
+citing these lemmas in its Section A.2; the line numbers below refer to the old appendix.
 
 ---
 

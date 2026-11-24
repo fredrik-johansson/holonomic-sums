@@ -57,8 +57,8 @@ This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 20
 | **Algorithms K1 and K2 in the form of Theorem 3.2**: `μ_k = k^{-2}∑ b_n k^{-n}`, `F(k) = k^{-2}∑ c_n k^{-n}` (explicit `b_n`, Cauchy-product `c_n`), so for `k₀ ≥ 3`, `u₀ > 0`: `log K = ∑_{1≤k<k₀} μ_k log k - (d/ds) splitRHS(b)(2)` and `log K log 2 = ∑_{2≤k<k₀} F(k) + splitRHS(c)(2)` | `hasSum_gkMu`, `hasSum_F`, `khinchinZ_eq_split`, `logK_split`, `logK_mul_log_two_split` (`Khinchin/KSplit.lean`) | proved |
 | **Proposition 6.4** (denominator bound for a rational `K`): a rational strictly between Farey neighbours `a/b < c/e` has denominator `≥ b+e`; every rational strictly between `x_{T₀}` and `x_{T₁}`, `x_t = (tp_N+p_{N-1})/(tq_N+q_{N-1})`, has denominator `≥ (T₀+1)q_N + q_{N-1}` | `farey_denom_ge`, `den_xt`, `xt_strictMono`, `den_ge_of_between` (`Khinchin/Farey.lean`) | proved (the numerical inputs are not formalized) |
 | Binary-splitting cost (App. A.1): `≤ S` bits per level, cost `≤ d·M(S)`; **bit-burst cost sum**: steps with `n_j 2^j ≤ p` terms of `≤ 2^j + L` bits cost `≤ D·M(Jp + 2Lp)` in total | `treeCost_le`, `bitBurst_cost_le` (`Bounds/BinarySplitting.lean`) | proved (scalar cost model) |
-| **App. A.5**: `P(a,y) = 1 - Q(a,y) = ∑_i y^{a+i}e^{-y}/Γ(a+i+1)` for all `a ∈ ℂ` (including `a ∈ ℤ_{≤0}`), and the tail from `N` is `≤ 2|t_N|` once `Re a + N + 1 ≥ 2y` | `hasSum_gammaPTerm`, `norm_tail_gammaPTerm_le` (`IncompleteGammaSeries.lean`) | proved |
-| **(G1)** (App. A.9): `|1/Γ(x+iy)| ≤ e^{π|y|/2}/Γ(x)` for `x ≥ 1/2`, and `|Γ(x+iy)| ≤ Γ(x)`, via `|Γ(x)/Γ(x+iy)|² = ∏(1 + y²/(x+n)²)` and `cosh πy` at `x = 1/2` | `norm_inv_Gamma_le_G1`, `norm_Gamma_le_Gamma_re`, `tendsto_gProd`, `ratio_half` (`GammaG1.lean`) | proved |
+| **App. A.3** (incomplete gamma): `P(a,y) = 1 - Q(a,y) = ∑_i y^{a+i}e^{-y}/Γ(a+i+1)` for all `a ∈ ℂ` (including `a ∈ ℤ_{≤0}`), and the tail from `N` is `≤ 2|t_N|` once `Re a + N + 1 ≥ 2y` | `hasSum_gammaPTerm`, `norm_tail_gammaPTerm_le` (`IncompleteGammaSeries.lean`) | proved |
+| **(G1)** (App. A.2): `|1/Γ(x+iy)| ≤ e^{π|y|/2}/Γ(x)` for `x ≥ 1/2`, and `|Γ(x+iy)| ≤ Γ(x)`, via `|Γ(x)/Γ(x+iy)|² = ∏(1 + y²/(x+n)²)` and `cosh πy` at `x = 1/2` | `norm_inv_Gamma_le_G1`, `norm_Gamma_le_Gamma_re`, `tendsto_gProd`, `ratio_half` (`GammaG1.lean`) | proved |
 | **(G2)**, explicit: `|w| ≤ T ⇒ |1/Γ(w)| ≤ e^{1+πT/2}(2T+2)^{⌈T⌉+1}`, via `1/Γ(w) = (w)_N/Γ(w+N)`, (G1) and `Γ ≥ 1/e` on `[1,∞)` | `norm_inv_Gamma_le_G2`, `inv_Gamma_eq_prod_mul`, `realGamma_ge_exp_neg_one` | proved |
 | **(G3)**: `|Γ(w)| ≤ Γ(Re w + N) 2^N/min(δ,1)` if `Re w + N ≥ 1` and `|w+j| ≥ δ` for `j < N` (all factors of `(w)_N` but one are `≥ 1/2`) | `norm_Gamma_le_G3`, `prod_norm_add_nat_ge` | proved (with L8 for `δ`) |
 | Bit-burst Taylor recurrence `c₀(l+1)Y_{l+1} = (B₀ + c₀B₁ - l)Y_l + B₁Y_{l-1}` ⇔ `cY' = (B₀ + cB₁)Y` (formal power series at `c₀`) | `taylor_rec_iff` (`Bounds/TaylorRec.lean`) | proved |
@@ -84,7 +84,7 @@ This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 20
 * **Holonomy is defined on coefficient sequences.** Operators are polynomials in `x` with coefficients in
   `K[θ]`, which is the form condition (H) is stated in.
 * **Regular class.** `FrobeniusData` takes the expansion (3) as data and requires each `f_{σ,j}` to
-  satisfy (H). This is the form Appendix A.2 reduces to; Mathlib has no Frobenius theory.
+  satisfy (H). This is the form the reduction in Appendix A.4 uses; Mathlib has no Frobenius theory.
 * **`1/Γ` is Mathlib's `(Gamma ·)⁻¹`,** which is `0` at the poles, so it is the entire function `1/Γ`.
   Identities such as `(x)_n/Γ(x+n) = 1/Γ(x)` then hold with no case distinctions.
 * **Continuation via Mellin transforms.** Each term of the series for `I_k`, `J_m` and `M` is `a_n/Γ(w)`
@@ -145,6 +145,7 @@ This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 20
 * `FuchsianAddClosed` (Fuchs's criterion for the LCLM), kept as an explicit hypothesis.
 * Section 6: the classical identity `Ci x = γ + log x - Cin x`.
 * Appendix A: L10 (only needed in the rescaled form now in the text) and L12 (explicit truncation counts) of
-  `APPENDIX_A_PLAN.md`, the twisted (`π²/q²`) variant of L4; a draft of the restructured appendix, citing the formal
-  estimates, is `paper/appendixA_new.tex` (preview `paper/zetaF_appA_draft.pdf`).
+  `APPENDIX_A_PLAN.md`, the twisted (`π²/q²`) variant of L4. The appendix of the paper has been rewritten around the
+  formal estimates (cost model + list of estimates with Lean names in A.2 + narrative); appendix numbers in this
+  README refer to that version.
 * Sections 5 and 7–8 (Theorems 5.1 and 5.4, Corollary 5.6, Proposition 5.8, the applications) beyond the cost model and the Bernoulli identity of Corollary 5.5.
