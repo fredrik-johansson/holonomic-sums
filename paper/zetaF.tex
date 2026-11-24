@@ -3764,38 +3764,38 @@ with the closed forms of its pieces, Algorithms~K1 and~K2 as instances of Theore
 Proposition~\ref{thm:khrat}, and the error bounds of Section~\ref{sec:khbounds}. In this appendix: every estimate of
 Section~\ref{app:estimates}, among them the Taylor-step lemma that controls the bit-burst algorithm.
 
-\emph{What is not formalized.} Bit complexity itself: there is no machine model, the cost model of
-Section~\ref{app:tools} is assumed, and the account of the algorithm in Sections~\ref{app:pieces}
-and~\ref{app:uniform}, which combines the formal estimates with that model, is informal. Three mathematical steps
-enter the formalization as explicit hypotheses or are left out: that the even and odd parts of a function satisfying
-(H) again satisfy (H) (the first step of the proof of Lemma~\ref{lem:kernelhol}, via Fuchs's criterion); the
-representation of the damped kernels of Propositions~\ref{prop:expsplit} and~\ref{prop:prodsplit} as inverse Laplace
-transforms; and the monodromy argument in the reduction of Section~\ref{app:uniform}. The identity
-$\Ci(x) = \gamma + \log x - \int_0^x(1-\cos t)\,\mathrm dt/t$ used in Theorem~\ref{thm:khinchin} is classical and is not
-formalized, and neither are the applications of Section~\ref{sec:other} and the computations.
+\emph{What is not formalized.} Bit complexity itself. Mathlib's interface for Turing machines has no primitives for
+integer arithmetic with time and space accounting, nor for the standard algorithms built on it (fast multiplication,
+binary splitting, rounding), so expressing the algorithms at that level would have meant building such a framework
+first. We formalized instead the bounds on which the cost analysis rests (Section~\ref{app:estimates}); the cost model
+of Section~\ref{app:tools} is assumed, and the account of the algorithm in Sections~\ref{app:pieces}
+and~\ref{app:uniform}, which combines the formal bounds with that model, is informal. Three mathematical steps enter
+the formalization as explicit hypotheses or are left out. The first is that the even and odd parts of a function
+satisfying (H) again satisfy (H) (the first step of the proof of Lemma~\ref{lem:kernelhol}). The proof uses Fuchs's
+criterion, that a linear differential operator is regular singular at a point if and only if all its solutions have
+moderate growth there, together with the fact that the solutions of the least common left multiple of two operators
+are the sums of their solutions. Mathlib has neither the analytic theory of linear differential equations (solution
+spaces near a singular point, Frobenius bases) nor least common left multiples of differential operators; the
+formalization works with recurrences on coefficient sequences, and the statement is kept as the hypothesis that
+sequences satisfying (H) are closed under addition. The second is the representation of the damped kernels of
+Propositions~\ref{prop:expsplit} and~\ref{prop:prodsplit} as inverse Laplace transforms, which needs Hankel or
+Mellin--Barnes contour integrals, and the third is the monodromy argument in the reduction of
+Section~\ref{app:uniform}. The identity $\Ci(x) = \gamma + \log x - \int_0^x(1-\cos t)\,\mathrm dt/t$ used in
+Theorem~\ref{thm:khinchin} is classical and is not formalized, and neither are the applications of
+Section~\ref{sec:other} and the computations.
 
-\emph{What the formalization changed.} Formalizing the arguments exposed the following errors and gaps, all of which
-are corrected in the text.
-\begin{itemize}
-\item In Propositions~\ref{prop:expsplit} and~\ref{prop:prodsplit} the series for the dual terms obtained by termwise
-integration converge only for $r < 1$, or $r = 1$ and $\tau < 2\pi m$; for $1 < r < 2$ their terms grow like
-$(j!)^{r-1}$. The dual terms are therefore defined by their integrals, Claim~C is restricted to $0 < r \le 1$, and
-the case $1 < r < 2$ is listed as an open problem (Section~\ref{sec:open}). In Proposition~\ref{prop:prodsplit} the
-$k$-terms also need $k > R$, and the terms of $M_\pm$ are continuations in $s$.
-\item In Theorem~\ref{thm:geometric}(1) the functions $H(w)$ and $L_k(w)$ were defined by integrals that diverge for
-$\operatorname{Re}w \le -n_0$; they are now defined by their entire termwise series.
-\item In Lemma~\ref{lem:kernelhol} the inhomogeneity $b$ was claimed to have coefficients in $\mathbb K(s)$; this holds
-only after the normalization now stated in the lemma. In the uniform proof $b$ has $\Theta(p)$ bits, and the dual
-system is rescaled accordingly (Section~\ref{app:pieces}).
-\item The analyticity of $D_a(c)$ in $c$ was argued through $c^a\Gamma(-a)$, which fails for $a \in \ZZ_{\ge0}$, where a
-logarithm appears; the conclusion is unchanged.
-\item In Section~\ref{sec:khbounds} the refined bound for a Taylor stage fails for large negative steps and now assumes
-$|\delta| \le U$, and the bound on the tail of the $k$-sum needs $(2k_1+1)U \ge \log 2$.
-\item In this appendix: the factorization of the $k$-terms broke down at $s_0 \in \{-2, -4, \dots\}$, the base value
-$E_1$ of the integer class needs Euler's constant, the tail of the series for $P(a,y)$ carries a factor $4^y$, and
-several constants were misstated.
-\end{itemize}
-Apart from the restriction of Claim~C, none of these changes a stated result.
+\emph{What the formalization changed.} Formalizing the arguments exposed a handful of minor errors (unstated
+conditions, a misstated constant or bound, a definition by an integral that diverges in part of the range), which have
+been corrected without changing the overall argument. The exception is a genuine gap in Propositions~\ref{prop:expsplit}
+and~\ref{prop:prodsplit}. Their proofs integrate the damped kernel $h_s(u) = \sum_jc_ju^{a_j-1}$ termwise, on the
+grounds that $e^{-c/u}$ suppresses every power of $u$, which gives the dual terms as series
+$J_m = \sum_jc_jD_{a_j-1/2}(\pi^2m^2)$. The $j$-th term of this series has size about
+$(\tau(\pi m)^{-r})^j\Gamma(\frac{rj}2)^2/j!$, that is $(j!)^{r-1}$ times a geometric factor, so the series converges
+for $r < 1$, for $r = 1$ only when $\tau < 2\pi m$, and diverges for every $m$ when $1 < r < 2$; for $r = \frac32$,
+$\tau = 1$ and $m = 1$ its terms exceed $10^{232}$ at $j = 800$. The splitting identity itself is unaffected when
+$J_m$ is defined by its integral, and this is how it is now stated. But the evaluation of the dual terms behind Claim~C
+needs the series, so Claim~C is now restricted to $0 < r \le 1$, and the case $1 < r < 2$ is listed as an open problem
+(Section~\ref{sec:open}).
 
 The following proof text is LLM-generated and unedited by the author.
 
@@ -3920,14 +3920,14 @@ main term $M$, series in $n$ & $1$ & $O(p)$ & $O(\log p)$ & $O(S\log S + \log p)
 \end{table}
 
 \emph{$k$-terms.}\label{app:kterms} Splitting the series of Theorem~\ref{thm:split} by the parity of $n$ and using
-$Q(\sigma_0+m, x) = Q(\sigma_0, x) + e^{-x}\sum_{j<m}x^{\sigma_0+j}/\Gamma(\sigma_0+j+1)$ gives
-(\nolinkurl{kTerm_double_series}), for
-$f(x) = A_0(x^2) + xA_1(x^2)$ and $\kappa = k^2$,
+$Q(\sigma_0+m, x) = Q(\sigma_0, x) + e^{-x}\sum_{j<m}x^{\sigma_0+j}/\Gamma(\sigma_0+j+1)$ gives,
+for $f(x) = A_0(x^2) + xA_1(x^2)$ and $\kappa = k^2$ (\nolinkurl{kTerm_double_series}),
 \begin{equation}\label{eq:Ik}
 \begin{split}
-  I_k(s) &= k^{-s}\Bigl(Q\bigl(\tfrac s2, x\bigr)A_0\bigl(\tfrac1\kappa\bigr) + Q\bigl(\tfrac{s+1}2, x\bigr)\frac{A_1(1/\kappa)}{k}\Bigr) \\
-  &\quad + e^{-x}u_0^{s/2}\sum_{m=1}^{\infty}\frac{a_{2m}}{\kappa^m}\sum_{j=0}^{m-1}\frac{x^j}{\Gamma(\frac s2+j+1)}
-   + e^{-x}u_0^{(s+1)/2}\sum_{m=1}^{\infty}\frac{a_{2m+1}}{\kappa^m}\sum_{j=0}^{m-1}\frac{x^j}{\Gamma(\frac{s+1}2+j+1)}.
+  I_k(s) &= k^{-s}\Bigl(Q\bigl(\tfrac s2, x\bigr)A_0\bigl(\tfrac1\kappa\bigr)
+    + Q\bigl(\tfrac{s+1}2, x\bigr)\frac{A_1(1/\kappa)}{k}\Bigr) \\
+  &\quad + e^{-x}u_0^{s/2}\sum_{m=1}^{\infty}\frac{a_{2m}}{\kappa^m}\sum_{j=0}^{m-1}\frac{x^j}{\Gamma(\frac s2+j+1)} \\
+  &\quad + e^{-x}u_0^{(s+1)/2}\sum_{m=1}^{\infty}\frac{a_{2m+1}}{\kappa^m}\sum_{j=0}^{m-1}\frac{x^j}{\Gamma(\frac{s+1}2+j+1)}.
 \end{split}
 \end{equation}
 Factor out $1/\Gamma(\sigma_0 + j_1 + 1)$, $\sigma_0 \in \{\frac s2, \frac{s+1}2\}$, with $j_1$ the least index for
