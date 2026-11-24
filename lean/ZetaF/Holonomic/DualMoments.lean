@@ -1,10 +1,10 @@
 /-
-# Dual moments and the integration-by-parts recurrence (3.5)
+# Dual moments and the integration-by-parts recurrence (11)
 
 Paper §3.4: for `c > 0`, `Z_t[g](c) = ∫₀^{u₀} u^{-t} e^{-c/u} g(u) du` and, with `E = e^{-c/u₀}`,
-`c Z_{t+1}[g] = E u₀^{1-t} g(u₀) - (1-t) Z_t[g] - Z_t[θ g]`          (3.5)
+`c Z_{t+1}[g] = E u₀^{1-t} g(u₀) - (1-t) Z_t[g] - Z_t[θ g]`          (11)
 `Z_t[u^j g] = Z_{t-j}[g]`,  `c C_{t+1} = E u₀^{1-t} - (1-t) C_t`  (`C_t = Z_t[1]`),
-`a D_a + c D_{a-1} = E u₀^a`  (`D_a = Z_{1-a}[1]`)                 (3.7)
+`a D_a + c D_{a-1} = E u₀^a`  (`D_a = Z_{1-a}[1]`)                 (14)
 
 We use the weight `w_t(u) = u^{-t} e^{-c/u}` for `u > 0`, extended by `0` for `u ≤ 0`; it is continuous on
 all of `ℝ` (for `c > 0`), which makes the boundary term at `0` vanish without any limiting argument.
@@ -102,7 +102,7 @@ lemma dualMoment_mul_pow (u₀ c : ℝ) (t : ℂ) (j : ℕ) (g : ℝ → ℂ) (h
   simp only
   rw [dualWeight_sub_nat t j hu.1]; ring
 
-/-- **The integration-by-parts recurrence (3.5).**  For `c, u₀ > 0` and `g` of class `C¹` on
+/-- **The integration-by-parts recurrence (11).**  For `c, u₀ > 0` and `g` of class `C¹` on
 `[0, u₀]`, with `E = e^{-c/u₀}` and `θ g = u g'`:
 `c Z_{t+1}[g] = E u₀^{1-t} g(u₀) - (1-t) Z_t[g] - Z_t[θ g]`. -/
 theorem dualMoment_ibp {u₀ c : ℝ} (hc : 0 < c) (hu₀ : 0 < u₀) (t : ℂ) {g g' : ℝ → ℂ}
@@ -165,7 +165,7 @@ theorem dualMoment_one_rec {u₀ c : ℝ} (hc : 0 < c) (hu₀ : 0 < u₀) (t : �
 /-- `D_a = ∫₀^{u₀} u^{a-1} e^{-c/u} du = Z_{1-a}[1]`. -/
 noncomputable def momentD (u₀ c : ℝ) (a : ℂ) : ℂ := dualMoment u₀ c (1 - a) fun _ => 1
 
-/-- **Recurrence (3.7)**: `a D_a + c D_{a-1} = E u₀^a`. -/
+/-- **Recurrence (14)**: `a D_a + c D_{a-1} = E u₀^a`. -/
 theorem momentD_rec {u₀ c : ℝ} (hc : 0 < c) (hu₀ : 0 < u₀) (a : ℂ) :
     a * momentD u₀ c a + c * momentD u₀ c (a - 1) = (rexp (-(c / u₀)) : ℂ) * (u₀ : ℂ) ^ a := by
   have := dualMoment_one_rec hc hu₀ (1 - a)
@@ -173,7 +173,7 @@ theorem momentD_rec {u₀ c : ℝ} (hc : 0 < c) (hu₀ : 0 < u₀) (a : ℂ) :
   rw [show (1 - (a - 1) : ℂ) = 1 - a + 1 by ring, this, show (1 - (1 - a) : ℂ) = a by ring]
   ring
 
-/-! ### Linearity and the row recurrence of Proposition 3.3 -/
+/-! ### Linearity and the row recurrence of Proposition 3.6 -/
 
 section linearity
 
@@ -215,7 +215,7 @@ lemma dualMoment_congr {u₀ c : ℝ} (hu₀ : 0 ≤ u₀) (t : ℂ) {g₁ g₂ 
   rw [intervalIntegral.integral_of_le hu₀, intervalIntegral.integral_of_le hu₀]
   exact setIntegral_congr_fun measurableSet_Ioc fun u hu => by simp only [h hu]
 
-/-- **Proposition 3.3, row recurrence.**  Let `𝐆 = (G_r)` satisfy the system (3.4)
+/-- **Proposition 3.6, row recurrence.**  Let `𝐆 = (G_r)` satisfy the system (10)
 `θ 𝐆 = A(u) 𝐆 + b(u)`, `A = ∑_{i ≤ d} A_i u^i`, `b = ∑_{i ≤ e} b_i u^i`.  Then, with
 `W_t = Z_t[𝐆]` and `C_t = Z_t[1]`,
 `c W_{t+1} = E u₀^{1-t} 𝐆(u₀) - (1-t) W_t - ∑_i A_i W_{t-i} - ∑_i b_i C_{t-i}`. -/
@@ -286,7 +286,7 @@ lemma norm_dualWeight_anti {t : ℂ} {u c₁ c₂ : ℝ} (h : c₁ ≤ c₂) :
     have := inv_pos.2 hu
     nlinarith
 
-/-- **`-∂_c Z_t[g] = Z_{t+1}[g]`** (paper, before Proposition 3.3). -/
+/-- **`-∂_c Z_t[g] = Z_{t+1}[g]`** (paper, before Proposition 3.6). -/
 theorem hasDerivAt_dualMoment {u₀ c : ℝ} (hc : 0 < c) (hu₀ : 0 < u₀) (t : ℂ) {g : ℝ → ℂ}
     (hg : ContinuousOn g (Icc 0 u₀)) :
     HasDerivAt (fun x => dualMoment u₀ x t g) (-dualMoment u₀ c (t + 1) g) c := by

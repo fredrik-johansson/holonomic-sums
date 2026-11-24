@@ -4,7 +4,7 @@
 For `x > 0` and every `a ∈ ℂ`, `Γ(a, x) = ∫_x^∞ t^{a-1} e^{-t} dt` and
 `Q(a, x) = Γ(a, x)/Γ(a)` (with `1/Γ = 0` at the poles, so `Q` is entire in `a`).  We prove
 `Γ(a+1, x) = a Γ(a, x) + x^a e^{-x}` and hence `Q(a+1, x) = Q(a, x) + x^a e^{-x}/Γ(a+1)`
-(paper §3.4 after Proposition 3.3, and Appendix A.4), for all `a ∈ ℂ`.
+(paper §3.4 after Proposition 3.6, and Appendix A.4), for all `a ∈ ℂ`.
 -/
 import ZetaF.Holonomic.GammaTwist
 

@@ -6,7 +6,7 @@ Paper: Definition 2.1 (`def:regular`), Definition 2.2 (`def:functions`), Lemma 2
 ## Design
 
 The paper defines `F ∈ 𝓡` via an operator `L` for which `∞` is an ordinary or regular singular point;
-by Frobenius's method every solution then has an expansion (eq. (2.1))
+by Frobenius's method every solution then has an expansion (eq. (3))
 `F(x) = ∑_{σ ∈ Σ} ∑_{j ≤ J} x^{-σ} (log x)^j f_{σ,j}(1/x)`.
 Mathlib has no Frobenius theory, so we take the *expansion* as the primary datum
 (`FrobeniusData`), and require each `f_{σ,j}` to be annihilated by an operator satisfying condition (H)
@@ -42,7 +42,7 @@ def IsFuchsianHolonomic (K : Subfield ℂ) (a : ℕ → ℂ) : Prop :=
 /-- The algebraic numbers, as a subfield of `ℂ`. -/
 noncomputable abbrev algebraicNumbers : Subfield ℂ := (algebraicClosure ℚ ℂ).toSubfield
 
-/-- **Analytic at infinity, with data** (the setting (3.1)/(eq:f) of the paper):
+/-- **Analytic at infinity, with data** (the setting (4) of the paper):
 `F(x) = f(1/x)`, `f(x) = ∑ a_n x^n`, `|a_n| ≤ C R^n`. -/
 structure AnalyticAtInftyData where
   /-- Taylor coefficients of `f`. -/
@@ -52,7 +52,7 @@ structure AnalyticAtInftyData where
   R_nonneg : 0 ≤ R
   bound : GeomBounded a R
 
-/-- Frobenius-type expansion at infinity (eq. (2.1) of the paper):
+/-- Frobenius-type expansion at infinity (eq. (3) of the paper):
 `F(x) = ∑_{σ ∈ Σ} ∑_{j ≤ J} x^{-σ} (log x)^j f_{σ,j}(1/x)`. -/
 structure FrobeniusData where
   /-- The exponents `Σ`. -/

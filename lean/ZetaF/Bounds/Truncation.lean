@@ -1,5 +1,5 @@
 /-
-# Truncation of the theta splitting (Appendix A.3, (A.1))
+# Truncation of the theta splitting (Appendix A.3, eq. (18))
 
 For the abstract splitting (`theta_split`) we prove explicit tail bounds
 * `‖∑_{k ≥ K} I_k‖ ≤ C_far · e^{-(K² - k₀²)u₀} / (1 - e^{-u₀})`,
@@ -104,7 +104,7 @@ theorem norm_tsum_dualTerm_tail_le (M : ℕ) (hu₀ : 0 < u₀)
         exact setIntegral_nonneg measurableSet_Ioc fun u hu =>
           mul_nonneg (Real.rpow_nonneg hu.1.le _) (norm_nonneg _)
 
-/-! ### The term counts (A.1) -/
+/-! ### The term counts (18) -/
 
 /-- Number of `k`-terms for `p` bits: `K = ⌈√(p log 2 / u₀)⌉`. -/
 noncomputable def kCount (p : ℕ) (u₀ : ℝ) : ℕ := ⌈√(p * Real.log 2 / u₀)⌉₊

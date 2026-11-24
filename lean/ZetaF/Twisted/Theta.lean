@@ -1,5 +1,5 @@
 /-
-# Theta transformation with a periodic weight (Remark 3.6, `δ = 0`)
+# Theta transformation with a periodic weight (Remark 3.7, `δ = 0`)
 
 For `χ` of period `q`, `θ_χ(u) = ∑_{k ∈ ℤ} χ(k) e^{-k²u} = (1/q)√(π/u) ∑_{n ∈ ℤ} χ̂(n) e^{-π²n²/(q²u)}`
 with the Gauss sums `χ̂(n) = ∑_{a=0}^{q-1} χ(a) e^{2πian/q}`; for even `χ` also `χ̂` is even.
@@ -191,7 +191,7 @@ lemma tsum_int_of_even_complex {f : ℤ → ℂ} (hf : Summable f) (he : ∀ n, 
   push_cast
   ring
 
-/-- **Remark 3.6 (`δ = 0`), theta side**: for `χ` even of period `q`,
+/-- **Remark 3.7 (`δ = 0`), theta side**: for `χ` even of period `q`,
 `∑_{k ≥ 1} χ(k) e^{-k²u} = ½ c₀ χ̂(0) u^{-1/2} - ½ χ(0) + c₀ u^{-1/2} ∑_{n ≥ 1} χ̂(n) e^{-π²n²/(q²u)}`
 with `c₀ = √π/q`. -/
 theorem tsum_char_theta_half {q : ℕ} (hq : 0 < q) {χ : ℤ → ℂ} (hper : Function.Periodic χ q)

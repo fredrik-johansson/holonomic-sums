@@ -1,12 +1,12 @@
 /-
-# The kernel `h_s` (paper §3.2, eq. (3.2)) and its basic properties
+# The kernel `h_s` (paper §3.2, eq. (6)) and its basic properties
 
 `h_s(u) = ∑_{n ≥ 0} a_n u^{(s+n)/2 - 1} / Γ((s+n)/2)`.
 
 For `|a_n| ≤ C R^n` and `Re s > 0` we prove:
 * termwise bounds by the real majorant `∑ D R^n u^{(σ+n)/2-1}/Γ((σ+n)/2)`, `σ = Re s`;
 * continuity of `h_s` on `(0, ∞)`;
-* the Laplace representation (eq. (3.3)): `k^{-s} f(1/k) = ∫₀^∞ e^{-k²u} h_s(u) du` for `k > R`;
+* the Laplace representation (eq. (7)): `k^{-s} f(1/k) = ∫₀^∞ e^{-k²u} h_s(u) du` for `k > R`;
 * the integrability hypotheses of the abstract splitting (`theta_split`), for `Re s > 1`.
 -/
 import ZetaF.GammaBounds
@@ -25,7 +25,7 @@ namespace ZetaF
 noncomputable def kernelTerm (a : ℕ → ℂ) (s : ℂ) (n : ℕ) (u : ℝ) : ℂ :=
   a n * (Complex.Gamma ((s + n) / 2))⁻¹ * (u : ℂ) ^ ((s + n) / 2 - 1)
 
-/-- The kernel `h_s(u) = ∑_n a_n u^{(s+n)/2-1}/Γ((s+n)/2)` (eq. (3.2)). -/
+/-- The kernel `h_s(u) = ∑_n a_n u^{(s+n)/2-1}/Γ((s+n)/2)` (eq. (6)). -/
 noncomputable def kernel (a : ℕ → ℂ) (s : ℂ) (u : ℝ) : ℂ := ∑' n, kernelTerm a s n u
 
 /-- Coefficients of the real majorant. -/
@@ -181,7 +181,7 @@ lemma integral_norm_exp_mul_kernelTerm_le {D k : ℝ} (hk : 0 < k) (hs : 0 < s.r
     _ = D * (1 / k) ^ s.re * (R / k) ^ n := by
         unfold majCoeff; simp only [div_pow, one_pow]; field_simp
 
-/-- **Laplace representation (3.3)**: for `k > R`,
+/-- **Laplace representation (7)**: for `k > R`,
 `∑_n a_n k^{-s-n} = ∫₀^∞ e^{-k²u} h_s(u) du`. -/
 theorem hasSum_laplace_kernel (ha : GeomBounded a R) (hR : 0 ≤ R) (hs : 0 < s.re) {k : ℝ}
     (hk : R < k) :

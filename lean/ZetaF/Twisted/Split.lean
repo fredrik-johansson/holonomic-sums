@@ -1,5 +1,5 @@
 /-
-# Theta splitting with complex coefficients (generalizes `theta_split`; used for Remark 3.6)
+# Theta splitting with complex coefficients (generalizes `theta_split`; used for Remark 3.7)
 
 Let `c, d : ℕ → ℂ` be bounded and suppose the transformation
 `∑_{k ≥ 1} c_k e^{-k²u} = α u^{-1/2} + β + u^{-1/2} ∑_{m ≥ 1} d_m e^{-λm²/u}` (`u > 0`).
@@ -297,7 +297,7 @@ noncomputable def charDual (q : ℕ) (χ : ℤ → ℂ) (m : ℕ) : ℂ := ((√
 /-- The main-term constants of an even `q`-periodic twist. -/
 noncomputable def charAlpha (q : ℕ) (χ : ℤ → ℂ) : ℂ := ((1 / 2 * (√π / q) : ℝ) : ℂ) * gaussSum q χ 0
 
-/-- **Twisted splitting** (abstract form, Section 5 of the paper, even case).  For an even
+/-- **Twisted splitting** (abstract form, Remark 3.7, even case).  For an even
 `q`-periodic `χ` the tail `∑_{k ≥ k₀} χ(k) ∫₀^∞ e^{-k²u} h(u) du` splits into the far part, the dual
 part with coefficients `(√π/q) χ̂(m)` and Gaussian exponent `π²m²/(q²u)`, and the main term with
 weight `½(√π/q) χ̂(0) u^{-1/2} - ½ χ(0) - ∑_{k < k₀} χ(k) e^{-k²u}`. -/

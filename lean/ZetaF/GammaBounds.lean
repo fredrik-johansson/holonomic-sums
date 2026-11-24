@@ -4,7 +4,7 @@
 * `Γ(Re w)/|Γ(w)|` is nonincreasing under `w ↦ w + 1` (for `Re w > 0`).  This is a weak but
   elementary substitute for estimate (G1) of Appendix A.9 (`|1/Γ(w)| ≤ e^{π|Im w|/2}/Γ(Re w)`), and
   suffices for all convergence statements in §3 at a fixed `s`.
-* `∑ q^n / Γ((σ+n)/2)` converges for every `q` (the kernel `E_s` of (3.2) is entire).
+* `∑ q^n / Γ((σ+n)/2)` converges for every `q` (the kernel `E_s` of (6) is entire).
 -/
 import ZetaF.Deps
 

@@ -7,7 +7,7 @@ If `β` satisfies an (H)-recurrence `∑_{j=0}^r Q_j(m-j) β_{m-j} = 0` (for lar
 
 Moreover `deg Q̃_j ≤ deg Q_j + r - j`, `deg Q̃_0 = deg Q_0 + r` and `Q̃_0` has the same leading
 coefficient as `Q_0`; hence the coefficient of `θ^{d+r}` in `∑_j u^j Q̃_j(θ)` is a nonzero constant,
-which is what gives the first-order system (3.4) polynomial coefficients.
+which is what gives the first-order system (10) polynomial coefficients.
 
 We use Mathlib's convention `1/Γ = (Gamma ·)⁻¹`, which is `0` at the poles, so no case distinction is
 needed: the identity `(x)_n / Γ(x + n) = 1/Γ(x)` holds for all `x`.
@@ -114,7 +114,7 @@ lemma natDegree_coeff_zero_gammaTwist (L : ThetaOp ℂ) (σ₀ : ℂ) (h0 : L.co
   · rw [natDegree_mul h0 hm.ne_zero, natDegree_pochFactor, Nat.sub_zero]
   · rw [leadingCoeff_mul, hm.leadingCoeff, mul_one]
 
-/-- **(H) is preserved, in the strong form needed for (3.4).**  If `L` satisfies (H) with
+/-- **(H) is preserved, in the strong form needed for (10).**  If `L` satisfies (H) with
 `d = deg Q_0`, then for `1 ≤ j` the coefficient of `θ^{d+r}` in `Q̃_j` vanishes, while in `Q̃_0` it is
 the leading coefficient of `Q_0` (nonzero).  Hence in `∑_j u^j Q̃_j(θ)` the top coefficient of `θ` is
 a nonzero constant. -/
