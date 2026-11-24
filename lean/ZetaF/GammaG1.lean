@@ -231,4 +231,75 @@ theorem norm_inv_Gamma_le_G2 {w : ℂ} {T : ℝ} (hT : 0 ≤ T) (hw : ‖w‖ �
         mul_le_mul hprod hG1 (norm_nonneg _) (by positivity)
     _ = _ := by ring
 
+/-! ### (G3): `Γ` away from its poles -/
+
+/-- In `(w)_N = ∏_{j<N} (w+j)` every factor except possibly the one nearest to `0` has absolute
+value at least `1/2`; hence `∏ |w+j| ≥ min(δ,1) 2^{-N}` if all factors are at least `δ`. -/
+lemma prod_norm_add_nat_ge (w : ℂ) (N : ℕ) {δ : ℝ} (hδ0 : 0 < δ)
+    (hδ : ∀ j < N, δ ≤ ‖w + j‖) :
+    min δ 1 * (1 / 2) ^ N ≤ ∏ j ∈ range N, ‖w + j‖ := by
+  have hre : ∀ j : ℕ, |w.re + j| ≤ ‖w + j‖ := fun j => by
+    have := Complex.abs_re_le_norm (w + j); simpa using this
+  have hmin : min δ 1 ≤ 1 := min_le_right _ _
+  have hmin0 : 0 ≤ min δ 1 := le_min hδ0.le zero_le_one
+  by_cases hbad : ∃ j₀ < N, |w.re + j₀| < 1 / 2
+  · obtain ⟨j₀, hj₀N, hj₀⟩ := hbad
+    have hmem : j₀ ∈ range N := mem_range.2 hj₀N
+    rw [← mul_prod_erase _ _ hmem]
+    have hgood : ∀ j ∈ (range N).erase j₀, (1 / 2 : ℝ) ≤ ‖w + j‖ := by
+      intro j hj
+      rw [mem_erase, mem_range] at hj
+      refine le_trans ?_ (hre j)
+      by_contra h
+      push Not at h
+      rcases lt_or_gt_of_ne hj.1 with hlt | hlt
+      · have : (j : ℝ) + 1 ≤ j₀ := by exact_mod_cast hlt
+        have := abs_lt.1 h; have := abs_lt.1 hj₀; linarith
+      · have : (j₀ : ℝ) + 1 ≤ j := by exact_mod_cast hlt
+        have := abs_lt.1 h; have := abs_lt.1 hj₀; linarith
+    have h1 : (1 / 2 : ℝ) ^ (N - 1) ≤ ∏ j ∈ (range N).erase j₀, ‖w + j‖ := by
+      calc (1 / 2 : ℝ) ^ (N - 1) = ∏ _j ∈ (range N).erase j₀, (1 / 2 : ℝ) := by
+            rw [prod_const, card_erase_of_mem hmem, card_range]
+        _ ≤ _ := prod_le_prod₀ (fun _ _ => by norm_num) hgood
+    have h2 : (1 / 2 : ℝ) ^ N ≤ (1 / 2) ^ (N - 1) :=
+      pow_le_pow_of_le_one (by norm_num) (by norm_num) (Nat.sub_le N 1)
+    calc min δ 1 * (1 / 2) ^ N ≤ δ * (1 / 2) ^ (N - 1) :=
+          mul_le_mul (min_le_left _ _) h2 (by positivity) hδ0.le
+      _ ≤ ‖w + j₀‖ * ∏ j ∈ (range N).erase j₀, ‖w + j‖ :=
+          mul_le_mul (hδ j₀ hj₀N) h1 (by positivity) (norm_nonneg _)
+  · push Not at hbad
+    calc min δ 1 * (1 / 2) ^ N ≤ 1 * (1 / 2) ^ N :=
+          mul_le_mul_of_nonneg_right hmin (by positivity)
+      _ = ∏ _j ∈ range N, (1 / 2 : ℝ) := by simp
+      _ ≤ _ := prod_le_prod₀ (fun _ _ => by norm_num) fun j hj =>
+          (hbad j (mem_range.1 hj)).trans (hre j)
+
+/-- **(G3)**: if `Re w + N ≥ 1` and `|w + j| ≥ δ > 0` for `j < N`, then
+`|Γ(w)| ≤ Γ(Re w + N) 2^N / min(δ, 1)`.  (In the paper `δ ≥ p^{-O(1)}` by Liouville's inequality
+and `N = O(S)`, which gives `|Γ(w)| ≤ 2^{O(p)}`.) -/
+theorem norm_Gamma_le_G3 {w : ℂ} {N : ℕ} (hN : 1 ≤ w.re + N) {δ : ℝ} (hδ0 : 0 < δ)
+    (hδ : ∀ j < N, δ ≤ ‖w + j‖) :
+    ‖Gamma w‖ ≤ Real.Gamma (w.re + N) * 2 ^ N / min δ 1 := by
+  have hreN : (w + N).re = w.re + N := by simp
+  have hGN : Gamma (w + N) ≠ 0 := Gamma_ne_zero_of_re_pos (by rw [hreN]; linarith)
+  have hP := prod_norm_add_nat_ge w N hδ0 hδ
+  have hmin0 : 0 < min δ 1 := lt_min hδ0 one_pos
+  have hPpos : 0 < ∏ j ∈ range N, ‖w + j‖ := lt_of_lt_of_le (by positivity) hP
+  have hP0 : (∏ j ∈ range N, (w + j)) ≠ 0 := by
+    rw [← norm_ne_zero_iff, norm_prod]; exact hPpos.ne'
+  have hinv := inv_Gamma_eq_prod_mul w N
+  have hG : Gamma w = Gamma (w + N) / ∏ j ∈ range N, (w + j) := by
+    rw [← inv_inv (Gamma w), hinv, mul_inv, inv_inv, div_eq_mul_inv, mul_comm]
+  have hwN : w + N = ((((w + N).re : ℝ) : ℂ)) + (((w + N).im : ℝ) : ℂ) * I := by
+    apply Complex.ext <;> simp
+  have hbound := norm_Gamma_le_Gamma_re (x := (w + N).re) (by rw [hreN]; linarith) (w + N).im
+  rw [← hwN, hreN] at hbound
+  rw [hG, norm_div, norm_prod, div_le_iff₀ hPpos]
+  calc ‖Gamma (w + N)‖ ≤ Real.Gamma (w.re + N) := hbound
+    _ = Real.Gamma (w.re + N) * 2 ^ N / min δ 1 * (min δ 1 * (1 / 2) ^ N) := by
+        field_simp
+        rw [← mul_pow]; norm_num
+    _ ≤ _ := mul_le_mul_of_nonneg_left hP (by
+        have := Real.Gamma_pos_of_pos (show 0 < w.re + N by linarith); positivity)
+
 end ZetaF
