@@ -44,3 +44,10 @@ import ZetaF.Polylog.Split
 import ZetaF.Polylog.Geometric
 import ZetaF.Polylog.Slit
 import ZetaF.Polylog.DiskFull
+import ZetaF.Khinchin.ZetaZ
+import ZetaF.Khinchin.Farey
+import ZetaF.Khinchin.Bounds
+import ZetaF.Khinchin.LogK
+import ZetaF.Khinchin.Dilog
+import ZetaF.Khinchin.BBC
+import ZetaF.Khinchin.K1
