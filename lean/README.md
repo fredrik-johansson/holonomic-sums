@@ -3,10 +3,11 @@
 This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 2026 draft), built on Mathlib
 (`master`, Lean `v4.37.0-rc1`).
 
-* To build: run `lake exe cache get && lake build` in this directory (about 16,500 lines in 60 files; building `Polylog/Slit.lean` needs more than 7 GB of RAM).
-* There is no `sorry`, `admit` or `axiom`. The main theorems depend only on `propext`,
+* To build: run `lake exe cache get && lake build` in this directory (about 18,000 lines in 65 files; building `Polylog/Slit.lean` needs more than 7 GB of RAM).
+* The library (`ZetaF/`) has no `sorry`, `admit` or `axiom` (`plan/` holds proposed statements only). The main theorems depend only on `propext`,
   `Classical.choice` and `Quot.sound`.
 * `ZetaF/Open.lean` records statements as named `Prop`s and says which of them are proved.
+* `APPENDIX_A_PLAN.md` analyses Appendix A of the paper and proposes how to restructure it around formal lemmas.
 
 ## What is formalized
 
@@ -50,6 +51,10 @@ This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 20
 | **Section 6.4.2, error bounds for Algorithm K3** (kernel `G(u) = Ein(4u)/u`): `G(u) ≤ e^{4u}/u`, `G` nondecreasing; `0 < I_k ≤ e^{-(k²-4)U}/((k²-4)U)` (`k ≥ 3`); `J_m ≤ 2√(πU) G(U) e^{-c/U}`; the evaluation-point error `|J(c) - J(c')| ≤ √π G(U) U^{1/2} e^{-ξ/U}/ξ · |c-c'|` for `c, c' ≥ ξ` (the paper's `|J'(ξ)|` bound, which has an extra, harmless, factor `2`) | `kerG_le`, `kerG_mono`, `kTermK_pos`, `kTermK_le`, `dualTermK_le`, `integral_inv_sq_exp`, `dualTermK_lipschitz` (`Khinchin/Bounds.lean`) | proved |
 | **Theorem 6.3, closed forms**: `I_k = e^{-k²U}∑_{n≥1}(4/k²)^n e_n(k²U)/n²` (`k ≥ 3`); `M = ∑_{n≥1} 4^n/n² (π_n(U) - 4^{-n}π_n(4U)) - ½∑_{n≥1}(4U)^n/(n²n!)`; `J_m = √π∑_{n≥1} 4^n/(n·n!) D_{n-1/2}(c_m) = √π(D_{-1/2}∑(-16c)^n/(n(2n)!) + E·𝓑(c))`, via `∫_U^∞ e^{-κu}u^n = n!/κ^{n+1}e^{-κU}e_{n+1}(κU)` and `∫_0^U e^{-au}u^n = n!/a^{n+1}π_{n+1}(aU)` | `hasSum_kTermK`, `hasSum_mainK3`, `hasSum_dualTermK`, `dualTermK_eq`, `integral_Ioi_exp_pow`, `integral_Ioc_exp_pow` (`Khinchin/K3Closed.lean`) | proved; `D_{-1/2} = √(π/c) erfc√(c/U)` and the `Ci` form of `∑(-16c)^n/(n(2n)!)` not formalized |
 | **Starting values** (equation (Drec), Section 6.4.2): `a D_a + c D_{a-1} = E U^a` for all real `a`; `0 < D_a ≤ E U^a/a` (`a > 0`); `D_{n-1/2} = α_n D_{-1/2} + β_n E` with `α_n = (-c)^n/(½)_n` and the paper's `β_n`; `|b_nα_n| = (16c)^n/(2n)!`; if `16c ≤ ½(2N+1)(2N+2)`, `4U ≤ ½(N+1)` (`N ≥ 1`), the tails of the `α`- and `β`-series are at most twice their first (majorant) terms | `Drec`, `Dint_pos`, `Dint_le`, `Dint_half_eq`, `abs_bS_mul_alphaS`, `alpha_tail`, `beta_tail` (`Khinchin/StartVals.lean`) | proved |
+| **Theorem 6.3, `erfc` and `Ci`**: `D_{-1/2}(c) = √(π/c) erfc √(c/U)`; `∑_{n≥1}(-16c)^n/(n(2n)!) = -2 Cin(4√c)` with `Cin x = ∫_0^x (1-cos t)/t` (`= γ + log x - Ci x`, classical, not formalized); hence `J_m = -(2π/√c) erfc(√(c/U)) Cin(4√c) + √π e^{-c/U} 𝓑(c)` | `Dint_neg_half`, `hasSum_Cin`, `hasSum_alpha_series`, `dualTermK_closed_form` (`Khinchin/ErfcCin.lean`) | proved |
+| **Section 6.4.2, remaining bounds**: tails of `∑I_k` and `∑J_m` at most twice the first bound (once `e^{-(2k₁+1)U} ≤ ½`, `e^{-π²(2m₁+2)/U} ≤ ½`); the `k`-series: `t_n ≤ τ_n` (`n-1 ≤ x`), `t_n ≤ (4/κ)^n/n²`, tail from `N` `≤ 2τ_N + (9/5)(4/κ)^{n₁}/n₁²` (`κ ≥ 9`, `U ≤ ¼`, `n₁ = ⌈x⌉+1`); terms of `M` `≤ (5/2)(4U)^n/(n²n!)` (`≤ 3(8U)^n/n!`), its tails; `Li₂(1/9)` tail `≤ 9^{-N}` | `kTail_le`, `mTail_le`, `tK_le_tau`, `kSeries_tail_ceil`, `kTermK_sub_partial`, `abs_mTerm_le`, `mTail_le'`, `mMaj_le_paper`, `Li₂_ninth_tail` (`Khinchin/Bounds2.lean`) | proved |
+| **Section 6.4.2, Taylor stages**: `Z_t[g](c₀+δ) = ∑_l (-δ)^l/l! Z_{t+l}[g](c₀)` (`|δ| < c₀`); `∫_0^∞ u^{-a}e^{-c/u} = Γ(a-1)/c^{a-1}`; remainder after `L ≥ 2` terms `≤ B U^j c₀^{1-t-j} ρ^L/(1-ρ)` (`1 ≤ t+j ≤ 2`), i.e. the paper's `2e^{4U}ρ^L/(c₀^{1/2}(1-ρ))`; the refined bound `8e^{4U}E(|δ|/U)^L/L!(U^{1/2}/c₀ + U^{3/2}/c₀²) + 2e^{4U}ρ^{⌊c₀/(2U)⌋+1}/(c₀^{1/2}(1-ρ))` under `|δ| ≤ (L+1)U/2` (finding 8) | `hasSum_Zr`, `integral_kx_Ioi`, `integral_kx_Ioc_le`, `Dint_le_E`, `taylor_remainder_le`, `taylor_remainder_paper`, `taylor_remainder_le_E`, `taylor_remainder_paper_E` (`Khinchin/TaylorStage.lean`) | proved |
+| **Algorithms K1 and K2 in the form of Theorem 3.2**: `μ_k = k^{-2}∑ b_n k^{-n}`, `F(k) = k^{-2}∑ c_n k^{-n}` (explicit `b_n`, Cauchy-product `c_n`), so for `k₀ ≥ 3`, `u₀ > 0`: `log K = ∑_{1≤k<k₀} μ_k log k - (d/ds) splitRHS(b)(2)` and `log K log 2 = ∑_{2≤k<k₀} F(k) + splitRHS(c)(2)` | `hasSum_gkMu`, `hasSum_F`, `khinchinZ_eq_split`, `logK_split`, `logK_mul_log_two_split` (`Khinchin/KSplit.lean`) | proved |
 | **Proposition 6.4** (denominator bound for a rational `K`): a rational strictly between Farey neighbours `a/b < c/e` has denominator `≥ b+e`; every rational strictly between `x_{T₀}` and `x_{T₁}`, `x_t = (tp_N+p_{N-1})/(tq_N+q_{N-1})`, has denominator `≥ (T₀+1)q_N + q_{N-1}` | `farey_denom_ge`, `den_xt`, `xt_strictMono`, `den_ge_of_between` (`Khinchin/Farey.lean`) | proved (the numerical inputs are not formalized) |
 | Binary-splitting cost (App. A.1): `≤ S` bits per level, cost `≤ d·M(S)`; **bit-burst cost sum**: steps with `n_j 2^j ≤ p` terms of `≤ 2^j + L` bits cost `≤ D·M(Jp + 2Lp)` in total | `treeCost_le`, `bitBurst_cost_le` (`Bounds/BinarySplitting.lean`) | proved (scalar cost model) |
 | **App. A.5**: `P(a,y) = 1 - Q(a,y) = ∑_i y^{a+i}e^{-y}/Γ(a+i+1)` for all `a ∈ ℂ` (including `a ∈ ℤ_{≤0}`), and the tail from `N` is `≤ 2|t_N|` once `Re a + N + 1 ≥ 2y` | `hasSum_gammaPTerm`, `norm_tail_gammaPTerm_le` (`IncompleteGammaSeries.lean`) | proved |
@@ -57,6 +62,7 @@ This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 20
 | **(G2)**, explicit: `|w| ≤ T ⇒ |1/Γ(w)| ≤ e^{1+πT/2}(2T+2)^{⌈T⌉+1}`, via `1/Γ(w) = (w)_N/Γ(w+N)`, (G1) and `Γ ≥ 1/e` on `[1,∞)` | `norm_inv_Gamma_le_G2`, `inv_Gamma_eq_prod_mul`, `realGamma_ge_exp_neg_one` | proved |
 | **(G3)**: `|Γ(w)| ≤ Γ(Re w + N) 2^N/min(δ,1)` if `Re w + N ≥ 1` and `|w+j| ≥ δ` for `j < N` (all factors of `(w)_N` but one are `≥ 1/2`) | `norm_Gamma_le_G3`, `prod_norm_add_nat_ge` | proved (Liouville's inequality for `δ` not formalized) |
 | Bit-burst Taylor recurrence `c₀(l+1)Y_{l+1} = (B₀ + c₀B₁ - l)Y_l + B₁Y_{l-1}` ⇔ `cY' = (B₀ + cB₁)Y` (formal power series at `c₀`) | `taylor_rec_iff` (`Bounds/TaylorRec.lean`) | proved |
+| **Taylor step** (App. A, lemma L1 of `APPENDIX_A_PLAN.md`): every solution of the Taylor recurrence of `cY' = (B₀+cB₁)Y` at `c₀` satisfies `‖h^l Y_l‖ ≤ (2θ)^l ‖Y₀‖` once `|h|‖B₀+c₀B₁‖ ≤ θ|c₀|`, `|h|‖B₁‖ ≤ θ`, `|h| ≤ θ|c₀|`; tail `≤ (2θ)^L‖Y₀‖/(1-2θ)` for `θ < ½` | `taylor_step_bound`, `taylor_step_tail` (`Bounds/TaylorStep.lean`) | proved |
 | **Proposition 4.2, termwise forms**: for the damped kernel `h_s = ∑_j c_j u^{a_j-1}`, `I_k = ∑_j c_j ∫_{u₀}^∞ e^{-k²u}u^{a_j-1}` for `0 < r < 2`, and `J_m = ∑_j c_j D_{a_j-1/2}(π²m²)` for `0 < r < 1`; growth bounds `|1/Γ(z)| ≤ Γ(1-Re z)e^{π|Im z|}/π` and `Γ(1+aj) ≤ (j!)^a` | `hasSum_kTerm_damped`, `hasSum_dualTerm_damped` (`Damped/Kernel.lean`); `norm_inv_Gamma_le_reflect`, `Gamma_one_add_mul_le`, `summable_pow_mul_Gamma_div_factorial`, `summable_pow_mul_Gamma_sq_div_factorial` (`Damped/GammaGrowth.lean`) | proved |
 | **Proposition 4.2, the identity** `Λ(s;τ,r) = ∑_k I_k + √π∑_m J_m + M` (`0 < r < 1`, `M` as an integral) | `damped_split` (`Damped/Split.lean`) | proved, assuming the kernel representation `∫₀^∞ e^{-k²u}h_s = e^{-τk^r}k^{-s}` and integrability of `h_s` (finding 6) |
 | **Proposition 4.3, termwise forms**: for the product kernel `h_s = ∑_{n,j} a_n c_j(s+n) u^{a_{n,j}-1}` (double series over `ℕ×ℕ`), `I_k = ∑ a_n c_j ∫_{u₀}^∞ e^{-k²u}u^{a-1}` for `0 < r < 2`, `k > R`, and `J_m = ∑ a_n c_j D_{a-1/2}(π²m²)` for `0 < r < 1`, every `m`; any regrouping (e.g. by `ℓ = qn - j`, the paper's `b_ℓ`); the identity `Λ_F^{≥k₀} = ∑I_k + √π∑J_m + M` | `prodKernel`, `hasSum_kTerm_prod`, `hasSum_dualTerm_prod`, `hasSum_kTerm_prod_fiberwise`, `hasSum_dualTerm_prod_fiberwise`, `prod_damped_split`, `prod_damped_split_integral` (`Damped/Product.lean`, `Damped/ProductSplit.lean`) | proved, assuming the kernel representation (as for Prop. 4.2); `M_±` closed forms not formalized |
@@ -78,7 +84,7 @@ This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 20
   integration, the factor `Γ(Re w)` cancels against `1/Γ(w)` (bounded uniformly on compact sets by
   `gammaRatio_bounded`), and because `u₀^x/Γ(x+1) ≤ e^{u₀/λ}λ^x`.
 
-## Findings about the paper (1, 2, 4 and 5 fixed in `paper/zetaF.tex` on this branch)
+## Findings about the paper (1, 2, 4, 5, 7, 8 and part of 9 fixed in `paper/zetaF.tex` on this branch)
 
 1. **Lemma 3.1 claimed `b ∈ 𝕂(s)[u]^ℓ`, which is false as stated.** `b` involves the initial
    coefficients `β_m/Γ(m+σ₀)`. It is now stated as `b ∈ ℂ[u]^ℓ`, plus the precise normalization
@@ -109,12 +115,26 @@ This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 20
    Laplace transform of `e^{-τ y^{r/2}} y^{-s/2}`, and is exponentially small at `0`, is justified only briefly
    (via a Mellin transform computed "in a strip"). It is classical, but its proof needs Mellin–Barnes or Hankel
    contour arguments; `damped_split` takes it as a hypothesis.
+7. **Section 6.4.2, small conditions.** The tail of `∑ I_k` is at most twice its first term only once
+   `(2k₁+1)U ≥ log 2` (now stated); this holds at the cutoff `k_max`.
+8. **Section 6.4.2, the refined Taylor-stage bound needs `|δ|` small compared with `U`.** The bound
+   `8e^{4U}E(|δ|/U)^L/L!(…) + …` is false for `δ < 0` and `|δ|/U` large (e.g. `t = 3/2`, `c₀ = 22.2`, `U = 1/16`,
+   `δ = -2`, `L = 2`: error `6.8·10^{-143}`, bound `3.3·10^{-153}`). It holds when `|δ| ≤ (L+1)U/2`, in
+   particular for `|δ| ≤ U`; the text now says so (`taylor_remainder_paper_E`).
+9. **Appendix A** (from the analysis in `APPENDIX_A_PLAN.md`, §6). In the uniform proof, the normalized
+   inhomogeneity `b` of Lemma 3.1 has a common factor `β = (σ₀+m₁+r)_{m₂-m₁-r}` of degree `O(S)` with `Θ(p)` bits,
+   so `B₀` did not have `O(log p)`-bit entries as claimed; the text now rescales the `C`, `E` block by `β`. Also
+   fixed: the `k`-term factorization at `s₀ ∈ {-2, -4, …}` (`{-3, -5, …}` for the odd part), Euler's `γ` for the base
+   value `E₁` of the integer class, `e^{-3πS/2}` for `e^{-πS/2}`, and the period `q` in two bounds. The other
+   points listed there (unjustified guard-bit and a-priori-bound claims in A.6, A.9 and A.11) are best handled by
+   restructuring the appendix around lemma L1 and are left for that.
 
 ## Roadmap (not done)
 
 * The damped splittings: the kernel representation for Propositions 4.2–4.3 (Wright functions), the main
   terms `M`, `M_±` via complete Mellin integrals, and `J_m` for `r = 1`, `τ < 2πm`. `split_theta_lin` and the `Continuation/` files are the templates.
 * `FuchsianAddClosed` (Fuchs's criterion for the LCLM), kept as an explicit hypothesis.
-* Section 6: the `erfc`/`Ci` identifications in Theorem 6.3, the `k`-series tails and Taylor-stage bounds of
-  Section 6.4.2, Algorithms K1/K2 in the form of Theorem 3.2.
+* Section 6: the classical identity `Ci x = γ + log x - Cin x`.
+* Appendix A: the restructuring and the formal lemmas L2–L12 proposed in `APPENDIX_A_PLAN.md` (statements in
+  `plan/AppAStatements.lean`).
 * Sections 5 and 7–8 (Theorems 5.1 and 5.4, Corollary 5.6, Proposition 5.8, the applications) beyond the cost model and the Bernoulli identity of Corollary 5.5.

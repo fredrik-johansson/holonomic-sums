@@ -2333,7 +2333,7 @@ intervals, as in FLINT \cite{FLINT,Joh17}).
 \[
   0 < I_k \le \frac{e^{-(k^2-4)U}}{(k^2-4)U}, \qquad 0 < J_m \le 2\sqrt{\pi U}\,G(U)\,e^{-\pi^2(m+\frac12)^2/U},
 \]
-and both tails are at most twice their first term, so $p$ bits need $k_{\max} \approx \sqrt{4 + p\log2/U}$ and
+and both tails are at most twice their first term (for the $k$-tail from $k_1$ once $(2k_1+1)U \ge \log 2$), so $p$ bits need $k_{\max} \approx \sqrt{4 + p\log2/U}$ and
 $m_{\max} \approx \sqrt{pU\log 2}/\pi$.
 \item \emph{$k$-series.} The $n$-th term of $e^{-x}\sum_{n=1}^{\infty}P_n/n^2$ is
 \[
@@ -2347,7 +2347,7 @@ every state component at $c_0$ is at most
 \[
   \frac{2e^{4U}\rho^L}{c_0^{1/2}(1-\rho)},
 \]
-and, using
+and, if moreover $|\delta| \le U$, using
 \[
   C_t(c_0) = c_0^{1-t}\,\Gamma\Bigl(t-1, \frac{c_0}U\Bigr), \quad \Gamma(a, y) \le \frac{y^{a-1}e^{-y}}{1 - (a-1)/y},
 \]
@@ -3816,7 +3816,9 @@ since
   k^{-s-2m}x^{s/2+j} = u_0^{s/2}\kappa^{-m}x^j, \qquad k^{-s-2m-1}x^{(s+1)/2+j} = u_0^{(s+1)/2}\kappa^{-m}x^j.
 \]
 After factoring out
-$1/\Gamma(\frac s2+1)$ and $1/\Gamma(\frac{s+1}2+1)$, the inner sums satisfy first-order inhomogeneous recurrences in $m$
+$1/\Gamma(\frac s2+1)$ and $1/\Gamma(\frac{s+1}2+1)$ (or, if $\frac s2+1$ or $\frac{s+1}2+1$ is a non-positive integer,
+$1/\Gamma(\frac s2+j_1+1)$ with $j_1$ as in Section~\ref{app:uniform}, the finitely many terms with $j < j_1$ being
+polynomials in $s$ times that factor), the inner sums satisfy first-order inhomogeneous recurrences in $m$
 with coefficients in $\QQ(s)$, and $a_n$ is P-recursive, so the double sums are binary splitting series over a fixed
 number field. Their terms are bounded by $|a_n|\kappa^{-n/2}$ times $e^{x}$, which the prefactor $e^{-x}$ cancels, so
 $O(p/\log(k/R))$ terms suffice, with $O(\log p)$-bit coefficients since $\kappa, x = O(p)$. The values $A_0(1/\kappa)$ and
@@ -3969,7 +3971,8 @@ Summing gives
   |h_s(u)| &\le 2^{O(p)}u^{-S/2-1} && (0 < u \le u_0).
 \end{alignat*}
 The first bound gives $|I_k(s)| \le 2^{O(p)}e^{-(k^2-R^2)u_0}$. For the second, use the inequality
-$e^{-\pi^2m^2/u} \le e^{-\pi^2m^2/(2u_0)}e^{-\pi^2m^2/(2u)}$ and $\max_{u>0}u^{-A}e^{-b/u} \le A^A$ for $b \ge 1$. This
+$e^{-\pi^2m^2/u} \le e^{-\pi^2m^2/(2u_0)}e^{-\pi^2m^2/(2u)}$ and $\max_{u>0}u^{-A}e^{-b/u} = (A/(eb))^A$, which is $2^{O(p)}$ for $b \ge \pi^2/(2q^2)$
+(with $q = 1$ in the untwisted case). This
 gives $|J_m(s)| \le 2^{O(p)}e^{-\pi^2m^2/(2u_0)}$, and the same holds for the twisted dual terms. Hence (a) holds:
 $O(\sqrt p)$ terms on each side reach $2^{-O(p)}$. The same bounds, with $s$ in the disk $|s - s_0| \le 1$, bound the
 Taylor coefficients of every piece at $s_0$ by $2^{O(p)}$, by Cauchy's estimate.
@@ -3989,12 +3992,18 @@ $P(a,y) = y^ae^{-y}\sum_iy^i/\Gamma(a+i+1)$ and factor out $1/\Gamma(a+i_1+1)$ a
 $2^{O(p)}y^{S}e^{y}\cdot 2^{-i}$ for $i \ge 2y + 2S$, so $O(p)$ terms and $O(p)$ guard bits suffice. The factors
 $1/\Gamma(w)$ with $\operatorname{Re}w \ge \frac12$, $|w| \le 3S$, of which $O(1)$ are needed, come from
 $\Gamma(w) = \gamma(w,N) + \Gamma(w,N)$ with $N = O(p)$. Here $|\Gamma(w,N)| \le N^{3S}e^{-N} \le 2^{-\Omega(p)}$
-and $|\Gamma(w)| \ge 0.88\,e^{-\pi S/2}$ by (G1), so $O(p)$ guard bits give $1/\Gamma(w)$.
+and $|\Gamma(w)| \ge 0.88\,e^{-3\pi S/2}$ by (G1), so $O(p)$ guard bits give $1/\Gamma(w)$.
 
-\emph{Dual terms.} After the normalization of the dual terms in Section~\ref{app:dual}, the entries of $B_0$ and
+\emph{Dual terms.} After the normalization of the dual terms in Section~\ref{app:dual}, the vector $b$ of
+\eqref{eq:Gsys} is not of bounded degree in $s$: by the proof of Lemma~\ref{lem:kernelhol} its entries are
+$\Gamma(\sigma_0+m_2)/\Gamma(\sigma_0+m)$, for the finitely many $m < m_1 + r$, times polynomials of bounded degree, so
+they share the factor $\beta = (\sigma_0+m_1+r)_{m_2-m_1-r}$, a product of $O(S)$ linear factors with $\Theta(p)$ bits
+when $|s_0| \asymp p/\log p$. We therefore use $\beta C_{t-i}$ and $\beta E$ as components of $Y$ in place of
+$C_{t-i}$ and $E$; the equations of this block are homogeneous in it, so only the starting values change, and $\beta$
+is computed once. Then the entries of $B_0$ and
 $B_1$ in \eqref{eq:fuchsys} are polynomials in $s$ of bounded degree with fixed coefficients. Their dimension does not
 depend on $s$. Their entries therefore have $O(\log p)$ bits and $\|B_0\| + \|B_1\| \le p^{A_0}$ for a fixed $A_0$. For
-$\operatorname{Re}c' \ge \frac12\pi^2$ the components of $Y(c')$ are at most $2^{O(p)}$, by the bounds on $h_s$ and
+$\operatorname{Re}c' \ge \pi^2/(2q^2)$ the components of $Y(c')$ are at most $2^{O(p)}$, by the bounds on $h_s$ and
 $|u^{-t}| \le u^{-S}$. We now take the starting point $c_0 \le c$ much closer to $c$ than before. Let
 $\rho = cp^{-A}$ with $A = A_0 + 2$, and take $c - c_0 \le \rho/2$; this still leaves $c_0$ with $O(\log p)$ bits. On
 the disk $|c' - c_0| \le \rho$, Gronwall's inequality bounds the transition matrices of \eqref{eq:fuchsys} and their
@@ -4005,7 +4014,8 @@ $O(\log p)$-bit coefficients. The later steps have $|c_{i+1} - c_i| \le c\,2^{-b
 $b_i = 2^ib_0 \ge 2A\log_2p$. Their ratio to $\rho$ is at most $2^{-b_i/2}$, so they have $O(p/b_i)$ terms of $O(b_i)$
 bits, as in Section~\ref{app:tools}. For the starting values at $c_0$, choose a base exponent $a_*$ in each class of exponents modulo $\ZZ$. In
 a class of non-integers, take the least exponent that occurs. In the class of integers (if the exponents at $s_0$ are
-integers), take $a_* = 0$, with $D_0 = E_1(c_0/u_0)$. Going up from $a_*$, \eqref{eq:Drec} divides by
+integers), take $a_* = 0$, with $D_0 = E_1(c_0/u_0) = \Ein(c_0/u_0) - \gamma - \log(c_0/u_0)$, which needs Euler's constant
+$\gamma$ once, in $O(\Mul(p)\log^2p)$ by the Brent--McMillan algorithm. Going up from $a_*$, \eqref{eq:Drec} divides by
 $a = a_* + n \ne 0$, and $|a| \ge p^{-O(1)}$ by Liouville's inequality. Going down from $0$, it divides by $c_0$.
 Going up, the coefficients are $\alpha_a = (-c_0)^n/(a_*+1)_n$, bounded by
 $2^{O(p)}c_0^n/\Gamma(\operatorname{Re}a_* + n + 1)$ by (G1)--(G3). Going down from $0$ they are at most

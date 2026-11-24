@@ -57,3 +57,8 @@ import ZetaF.Damped.ProductSplit
 import ZetaF.Applications.Bernoulli
 import ZetaF.Khinchin.StartVals
 import ZetaF.Khinchin.K3Closed
+import ZetaF.Khinchin.Bounds2
+import ZetaF.Khinchin.TaylorStage
+import ZetaF.Khinchin.ErfcCin
+import ZetaF.Khinchin.KSplit
+import ZetaF.Bounds.TaylorStep
