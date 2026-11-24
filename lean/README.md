@@ -3,7 +3,7 @@
 This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 2026 draft), built on Mathlib
 (`master`, Lean `v4.37.0-rc1`).
 
-* To build: run `lake exe cache get && lake build` in this directory (about 5,600 lines in 27 files).
+* To build: run `lake exe cache get && lake build` in this directory (about 6,300 lines in 30 files).
 * There is no `sorry`, `admit` or `axiom`. The main theorems depend only on `propext`,
   `Classical.choice` and `Quot.sound`.
 * `ZetaF/Open.lean` records statements as named `Prop`s and says which of them are proved.
@@ -26,6 +26,7 @@ This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 20
 | **Meromorphic continuation of `ζ_F` for `F ∈ 𝓡`** (Lemma 2.3 + Theorem 3.2): holomorphic on `ℂ ∖ {1-σ-n}` | `zetaF_continuation`, `regularRHS`, `regularDomain` (`Continuation/Regular.lean`) | proved |
 | Twisted theta transformation (Remark 3.7): even `χ` (`δ = 0`) and odd `χ` (`δ = 1`, `c₁ = -iπ^{3/2}q^{-2}`) | `gaussSum`, `tsum_char_theta_half` (`Twisted/Theta.lean`); `tsum_mul_cexp_shifted_sq`, `tsum_char_theta_odd_half`, `gaussSum_neg_of_odd` (`Twisted/Odd.lean`) | proved; the odd case by differentiating the shifted theta identity in a complex shift |
 | **Remark 3.7**, twisted splitting with the paper's `J^χ_n = Z_{1/2+δ}[h_{s+δ}](π²n²/q²)` and `M^χ`: even part (`Re s > 1`), odd part (`Re s > 2`), arbitrary periodic `χ` (`Re s > 2`) | `theta_split_char`, `zetaTail_split_char` (`Twisted/Split.lean`); `theta_split_char_odd`, `zetaTail_split_char_odd`, `zetaTail_split_periodic` (`Twisted/SplitOdd.lean`) | proved for `Re s` large (the continuation is not done) |
+| **Theorem 4.1(1) on `|z| = 1`**: `Li_F^{≥k₀}(s,z) = ∑(C_k I_k(s) + k S_k I_k(s+1)) + (√π/2)∑_{n∈ℤ}(J^{(0)}_s(c_n) - iπ(n-α)J^{(1)}_{s+1}(c_n)) - ½H(s) - ∑_{k<k₀}(…)`, `c_n = π²(n-α)²` | `tsum_geo_theta`, `tsum_geo_theta_odd`, `tsum_geoC_theta`, `tsum_geoS_theta` (`Polylog/Theta.lean`); `split_theta_lin` (`Polylog/Split.lean`); `polylogTail_split` (`Polylog/Geometric.lean`) | proved for real `α` and `Re s > 2`; the paper then continues in `α` to `|z| < 1` (not formalized) |
 | Series forms `I_k = ∑ a_n k^{-s-n} Q((s+n)/2, k²u₀)`, `M = ∑ a_n(…)`, `J_m = ∑ a_n D_{(s+n-1)/2}/Γ` | `hasSum_kTerm_gammaQ`, `hasSum_mainSeries`, `hasSum_dSeries` | proved (`I_k`, `J_m` for all `s`; `M` for `Re s > 1`, then by continuation) |
 | **Lemma 3.1** (recurrence part): Γ-twist, (H) preserved, constant top θ-coefficient | `annihilatesEventually_gammaTwist`, `IsFuchsian.gammaTwist`, `gammaTwist_top_coeff` | proved |
 | (11), `Z_t[u^j g] = Z_{t-j}[g]`, `C_t` recurrence, (14), `-∂_c Z_t = Z_{t+1}` | `dualMoment_ibp`, `dualMoment_mul_pow`, `dualMoment_one_rec`, `momentD_rec`, `hasDerivAt_dualMoment` | proved |
@@ -49,7 +50,7 @@ This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 20
   integration, the factor `Γ(Re w)` cancels against `1/Γ(w)` (bounded uniformly on compact sets by
   `gammaRatio_bounded`), and because `u₀^x/Γ(x+1) ≤ e^{u₀/λ}λ^x`.
 
-## Findings about the paper (both fixed in `paper/zetaF.tex` on this branch)
+## Findings about the paper (1, 2 and 4 fixed in `paper/zetaF.tex` on this branch)
 
 1. **Lemma 3.1 claimed `b ∈ 𝕂(s)[u]^ℓ`, which is false as stated.** `b` involves the initial
    coefficients `β_m/Γ(m+σ₀)`. It is now stated as `b ∈ ℂ[u]^ℓ`, plus the precise normalization
@@ -57,15 +58,20 @@ This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 20
 2. **Theorem 4.1(1), "for all `s ∈ ℂ`".** `H(w)` and `L_k(w)` were defined by integrals that diverge for
    `Re w ≤ -n₀`. The text now defines them for all `w` by their entire termwise series, as for `M` in
    Theorem 3.2.
-3. **Still open:** the first paragraph of the proof of Lemma 3.1 (`A₀`, `A₁` satisfy (H), via Fuchs's
+3. **Still open (not a flaw):** the first paragraph of the proof of Lemma 3.1 (`A₀`, `A₁` satisfy (H), via Fuchs's
    criterion for an LCLM). It is correct, but it is the one step resting on a cited theorem
    (`EvenPartFuchsian`, `OddPartFuchsian`).
+4. **Section 4.1, analyticity of `D_a`.** "`D_a` is `c^aΓ(-a)` minus an entire function" fails for
+   `a ∈ ℤ_{≥0}`, where `Γ(-a)` has a pole; there `D_a(c) = -(-c)^a/a! · log(c/u₀) +` entire.
+   This case occurs in `J^{(δ)}_w` for integer `w`. The conclusion (analytic on `ℂ ∖ (-∞, 0]`) is
+   unaffected; the sentence now treats both cases.
 
 ## Roadmap (not done)
 
-* The continuation of the twisted splitting to all `s`; the polylogarithm and damped splittings
-  (Theorem 4.1, Propositions 4.2–4.3). `split_of_pointwise` and the `Continuation/` files are the
-  templates.
+* The continuation of the twisted and geometric splittings to all `s`, and of the geometric one in
+  `α` to `|z| < 1` (needs `J^{(δ)}_w` on the slit plane and a boundary-uniqueness argument);
+  the damped splittings (Propositions 4.2–4.3, which need the inverse Laplace transform of
+  `e^{-τx^r}x^{-s}`). `split_theta_lin` and the `Continuation/` files are the templates.
 * The bit-burst cost sum.
 * The sharp form of (G1) (Euler product for `|Γ(x)/Γ(x+iy)|²`), and (G2)–(G3).
 * `EvenPartFuchsian`, `OddPartFuchsian` (Fuchs's criterion).

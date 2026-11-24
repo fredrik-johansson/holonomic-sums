@@ -1155,7 +1155,7 @@ which are entire functions of $w$. By \eqref{eq:startvals},
   J^{(\delta)}_w(c) = \sum_{n=0}^{\infty}\frac{a_n}{\Gamma(\frac{w+n}2)}D_{(w+n-1)/2-\delta}(c), \qquad
   D_a(c) = c^a\Gamma\Bigl(-a, \frac c{u_0}\Bigr).
 \]
-Each $D_a$ is analytic on $\CC\setminus(-\infty,0]$, being $c^a\Gamma(-a)$ minus an entire function, and the series converges locally uniformly there, since its terms are
+Each $D_a$ is analytic on $\CC\setminus(-\infty,0]$: for $a \notin \ZZ_{\ge0}$ it is $c^a\Gamma(-a)$ minus $u_0^a$ times an entire function of $c$, and for $a \in \ZZ_{\ge0}$ it is $-\frac{(-c)^a}{a!}\log\frac c{u_0}$ plus an entire function. The series converges locally uniformly there, since its terms are
 $O(R^n(|c|+u_0)^{n/2}e^{|c|/u_0}/\Gamma(\frac n2))$. Hence $J^{(\delta)}_w$ continues analytically to
 $\CC\setminus(-\infty,0]$. All $c_n$ lie in this domain except $c_0 = -\pi^2\alpha_2^2$ when $\alpha_1 = 0$, i.e.\
 $0 < z < 1$; there $J^{(\delta)}_w(c_0)$ denotes the boundary value from $\operatorname{Im}c > 0$.

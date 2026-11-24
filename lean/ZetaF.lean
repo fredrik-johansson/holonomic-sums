@@ -25,3 +25,6 @@ import ZetaF.Twisted.Theta
 import ZetaF.Twisted.Split
 import ZetaF.Twisted.Odd
 import ZetaF.Twisted.SplitOdd
+import ZetaF.Polylog.Theta
+import ZetaF.Polylog.Split
+import ZetaF.Polylog.Geometric
