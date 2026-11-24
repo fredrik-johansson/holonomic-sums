@@ -111,4 +111,4 @@ This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 20
 * `FuchsianAddClosed` (Fuchs's criterion for the LCLM), kept as an explicit hypothesis.
 * Section 6: the closed forms in Theorem 6.3 (`erfc`, `Ci`), the remaining error bounds of Section 6.4.2
   (`k`-series tails, Taylor stages, starting values), Algorithms K1/K2 in the form of Theorem 3.2.
-* Sections 5 and 7–8 (complexity theorems, Corollaries 5.4–5.5, the applications) beyond the cost model.
+* Sections 5 and 7–8 (Theorems 5.1 and 5.4, Corollaries 5.5–5.6, Proposition 5.8, the applications) beyond the cost model.
