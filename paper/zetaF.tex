@@ -207,7 +207,7 @@ For the damped zeta functions the splitting identities are proved (Propositions~
 and~\ref{prop:prodsplit}), but we only sketch the cost analysis, so we state that bound separately.
 
 \begin{claimC}[Section~\ref{sec:dampedcost}, Appendix~\ref{app:stretched}]
-Let $\tau > 0$ and $s_0$ be algebraic and $j \ge 0$ fixed. When $F = 1$ and $r \in \QQ$, $0 < r < 2$, or when
+Let $\tau > 0$ and $s_0$ be algebraic and $j \ge 0$ fixed. When $F = 1$ and $r \in \QQ$, $0 < r \le 1$, or when
 $F \in \RegQ$ is analytic at infinity and $r = 1/q$ with an integer $q \ge 2$, the $j$-th Taylor coefficient of
 $\Lambda_F(s;\tau,r)$ at $s_0$ can be computed to $p$ bits in $p^{3/2+o(1)}$ bit operations.
 \end{claimC}
@@ -1238,10 +1238,11 @@ For $u_0 > 0$ and $s \notin \{rj, 1+rj : j \ge 0\}$ (where single terms have pol
 where
 \begin{gather*}
   I_k = \sum_{j=0}^{\infty}\frac{(-\tau)^j}{j!}\,k^{rj-s}\,Q(a_j, k^2u_0), \qquad
-  J_m = \sum_{j=0}^{\infty}c_j\,D_{a_j-1/2}(\pi^2m^2), \\
+  J_m = \int_0^{u_0}u^{-1/2}e^{-\pi^2m^2/u}h_s(u)\dd u, \\
   M = M_\tau(1-s) - \frac{\sqrt\pi}2T_{1/2} + \frac12T_1, \qquad
   T_w = -\sum_{j=0}^{\infty}c_j\frac{u_0^{a_j+w-1}}{a_j+w-1}.
 \end{gather*}
+If $r < 1$, or $r = 1$ and $\tau < 2\pi m$, then $J_m = \sum_{j=0}^{\infty}c_j\,D_{a_j-1/2}(\pi^2m^2)$.
 \end{proposition}
 
 \begin{proof}
@@ -1249,14 +1250,19 @@ For $\operatorname{Re}s$ sufficiently negative, $\int_0^\infty x^{z-1}e^{-x^2u}\
 gives $\int_0^\infty u^{-z/2}h_s(u)\dd u = 2M_\tau(z-s)/\Gamma(\frac z2)$ in a strip, so $h_s$ is the inverse Laplace
 transform in $x^2$ of $e^{-\tau x^r}x^{-s}$ (for $r \le 2$, $y \mapsto e^{-\tau y^{r/2}}$ is completely monotone),
 and it is exponentially small as $u \to 0$. Now proceed as in the proof of Theorem~\ref{thm:split} with $k_0 = 1$:
-the $k$-terms and the dual terms are integrated termwise, which converges since $u$ stays away from $0$, respectively
-$e^{-c/u}$ kills the powers of $u$. The main term is
+the $k$-terms are integrated termwise, which converges since $u$ stays away from $0$. The $j$-th term of the
+series for $J_m$ is $O\bigl((\tau(\pi m)^{-r})^j\,\Gamma(\frac{rj}2+O(1))^2/j!\bigr)$ (Appendix~\ref{app:stretched}),
+so for $r < 1$, and for $r = 1$ with $\tau < 2\pi m$, the series of absolute values of the integrals converges and
+$J_m$ may also be integrated termwise. The main term is
 $M = \int_0^{u_0}(\frac12\sqrt{\pi/u} - \frac12)h_s\dd u$, and the integrals over $(0, u_0]$ are complete integrals,
 $\int_0^\infty u^{-1/2}h_s\dd u = 2M_\tau(1-s)/\sqrt\pi$ and $\int_0^\infty h_s\dd u = 0$ ($z = 1$ and $z = 0$), minus
 the tails $T_{1/2}$ and $T_1$, integrated termwise. Both sides are analytic in $s$.
 \end{proof}
 
 The series for $J_m$ converges geometrically with ratio about $\tau/(2\pi m)$ when $r = 1$, and faster when $r < 1$.
+For $r = 1$ and $2\pi m \le \tau$, and for every $m$ when $1 < r < 2$, it diverges: by Stirling's formula its terms
+grow like $(j!)^{r-1}$ times a geometric factor. The identity itself holds for all $0 < r < 2$, with $J_m$ defined by
+the integral.
 
 \subsection{The damped zeta function of a regular $F$}\label{sec:products}
 Now let $F$ satisfy \eqref{eq:f}, let $r = 1/q$ with an integer $q \ge 1$, and consider the damped zeta function
@@ -1300,6 +1306,9 @@ where, with $I^-_k$ the part of $I_k$ with $\ell < 0$, and the restriction of $h
   - \sum_{k=1}^{k_0-1}\bigl(k^{-s}V(k) - I^-_k\bigr).
 \end{gather*}
 \end{proposition}
+
+As in Proposition~\ref{prop:expsplit}, the series for $J_m$ converges for $q \ge 2$, but for $q = 1$ only when
+$\tau < 2\pi m$; in general $J_m$ is the integral $\int_0^{u_0}u^{-1/2}e^{-\pi^2m^2/u}h_s(u)\dd u$.
 
 \begin{proof}
 For $x > R$ the summand is $\int_0^\infty e^{-x^2u}h_s(u)\dd u$, and the proof of Theorem~\ref{thm:split} applies to
@@ -1912,7 +1921,7 @@ sum & direct & zeta values & splitting & bound \\
 $\sum_k\chi(k)z^kF(k)k^{-s}$, $|z| < 1$ & $p^{2}$ & $p^{2}$ & $p^{3/2}$ & Thm.~\ref{thm:geometric} \\
 \quad e.g.\ $\Li_s(z)$, $\log\sigma$, $\gamma(z)$ & & & & \\
 $\Phi(z,s,a) = \sum_{k\ge0}z^k(k+a)^{-s}$ & $p^{2}$ & $p^{2}$ & $p^{3/2}$ & Thm.~\ref{thm:geometric} \\
-$\sum_ke^{-\tau k^r}k^{-s}$, $r \in \QQ$, $0 < r < 2$ & $p^{1+1/r}$ & $p^{2}$ ($r < 1$) & $p^{3/2}$ & sketched \\
+$\sum_ke^{-\tau k^r}k^{-s}$, $r \in \QQ$, $0 < r \le 1$ & $p^{1+1/r}$ & $p^{2}$ ($r < 1$) & $p^{3/2}$ & sketched \\
 $\sum_ke^{-\tau k^{1/q}}F(k)k^{-s}$ & $p^{1+q}$ & $p^{2}$ & $p^{3/2}$ & sketched \\
 \bottomrule
 \end{tabular}
@@ -3594,7 +3603,9 @@ be computed in subquadratic time by any method.
 
 \subsection{Damped zeta functions}
 For $\Lambda_F$ with general $F \in \Reg$ (Appendix~\ref{app:stretched}), make the cost analysis explicit, with the orders
-and degrees of the recurrences, and treat irrational $r$ and $r$ not of the form $1/q$.
+and degrees of the recurrences, and treat irrational $r$ and $r$ not of the form $1/q$. For $F = 1$ and $1 < r < 2$
+the identity of Proposition~\ref{prop:expsplit} holds, but the series for the dual terms and for the starting values
+of the dual moments diverge; find a quasi-optimal way to evaluate $J_m$ there.
 
 \subsection{Large height}
 Give an exact, smoothed Riemann--Siegel formula for $\zeta_F$ with $O(\sqrt t)$ terms at height $t$
@@ -4138,7 +4149,7 @@ Each of the $O(\sqrt p)$ terms thus costs $O(\Mul(p)\log^2p)$, which proves the 
 
 \subsection{Stretched exponentials}\label{app:stretched}
 We sketch the cost analysis for $\Lambda(s;\tau,r)$ (Proposition~\ref{prop:expsplit}) with $r = r_1/r_2$ in lowest
-terms, $0 < r < 2$, and algebraic $s$ and $\tau > 0$. Write $a_j = (s-rj)/2$; then $a_j$ modulo $\ZZ$ depends only on
+terms, $0 < r \le 1$, and algebraic $s$ and $\tau > 0$. Write $a_j = (s-rj)/2$; then $a_j$ modulo $\ZZ$ depends only on
 $j$ modulo $2r_2$, and within each class the coefficients $c_j = (-\tau)^j/(j!\Gamma(a_j))$ are hypergeometric in $j$.
 We use $|\Gamma(a,x)| \le x^{\operatorname{Re}a-1}e^{-x}$ for $\operatorname{Re}a \le 1$, $x > 0$, and
 $|1/\Gamma(a)| \le \Gamma(1-\operatorname{Re}a)\cosh(\pi\operatorname{Im}a)/\pi$ for $\operatorname{Re}a \le 0$.
@@ -4151,7 +4162,8 @@ $Q(a+1,x) = Q(a,x) + x^ae^{-x}/\Gamma(a+1)$: binary splitting, $O(\Mul(p)\log^2p
 \emph{Dual terms.} For $c > 0$ and $\operatorname{Re}a < 0$, $|D_a(c)| \le c^{\operatorname{Re}a}\Gamma(-\operatorname{Re}a)$,
 so the $j$-th term of the series for $J_m$ at a starting point $c_0$ is at most
 $O(1)(\tau c_0^{-r/2})^j\Gamma(\frac{rj}2+O(1))^2/j!$. This decays like $(j!)^{r-1}$ for $r < 1$, and geometrically with
-ratio $\tau/(2\sqrt{c_0})$ for $r = 1$ (take $c_0 > \tau^2$). Within each class the terms are P-recursive by
+ratio $\tau/(2\sqrt{c_0})$ for $r = 1$ (take $c_0 > \tau^2$). For $1 < r < 2$ it grows like $(j!)^{r-1}$ for every
+$c_0$, so the starting values need another method; we do not treat this case. Within each class the terms are P-recursive by
 \eqref{eq:Drec}. With $v = u^{1/(2r_2)}$ the kernel is a power of $u$ times an entire function $H(v^{-r_1})$, whose
 coefficients satisfy $c_{j+2r_2}/c_j = \tau^{2r_2}(a_j-1)(a_j-2)\cdots(a_j-r_1)/(j+1)_{2r_2}$. The degree $2r_2$ of the
 denominator exceeds the degree $r_1$ of the numerator, so $H$ satisfies an equation with property~(H), and the proofs

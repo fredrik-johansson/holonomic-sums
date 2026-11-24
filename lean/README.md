@@ -3,7 +3,7 @@
 This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 2026 draft), built on Mathlib
 (`master`, Lean `v4.37.0-rc1`).
 
-* To build: run `lake exe cache get && lake build` in this directory (about 10,600 lines in 40 files).
+* To build: run `lake exe cache get && lake build` in this directory (about 11,000 lines in 43 files).
 * There is no `sorry`, `admit` or `axiom`. The main theorems depend only on `propext`,
   `Classical.choice` and `Quot.sound`.
 * `ZetaF/Open.lean` records statements as named `Prop`s and says which of them are proved.
@@ -45,6 +45,8 @@ This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 20
 | **(G2)**, explicit: `|w| ≤ T ⇒ |1/Γ(w)| ≤ e^{1+πT/2}(2T+2)^{⌈T⌉+1}`, via `1/Γ(w) = (w)_N/Γ(w+N)`, (G1) and `Γ ≥ 1/e` on `[1,∞)` | `norm_inv_Gamma_le_G2`, `inv_Gamma_eq_prod_mul`, `realGamma_ge_exp_neg_one` | proved |
 | **(G3)**: `|Γ(w)| ≤ Γ(Re w + N) 2^N/min(δ,1)` if `Re w + N ≥ 1` and `|w+j| ≥ δ` for `j < N` (all factors of `(w)_N` but one are `≥ 1/2`) | `norm_Gamma_le_G3`, `prod_norm_add_nat_ge` | proved (Liouville's inequality for `δ` not formalized) |
 | Bit-burst Taylor recurrence `c₀(l+1)Y_{l+1} = (B₀ + c₀B₁ - l)Y_l + B₁Y_{l-1}` ⇔ `cY' = (B₀ + cB₁)Y` (formal power series at `c₀`) | `taylor_rec_iff` (`Bounds/TaylorRec.lean`) | proved |
+| **Proposition 4.2, termwise forms**: for the damped kernel `h_s = ∑_j c_j u^{a_j-1}`, `I_k = ∑_j c_j ∫_{u₀}^∞ e^{-k²u}u^{a_j-1}` for `0 < r < 2`, and `J_m = ∑_j c_j D_{a_j-1/2}(π²m²)` for `0 < r < 1`; growth bounds `|1/Γ(z)| ≤ Γ(1-Re z)e^{π|Im z|}/π` and `Γ(1+aj) ≤ (j!)^a` | `hasSum_kTerm_damped`, `hasSum_dualTerm_damped` (`Damped/Kernel.lean`); `norm_inv_Gamma_le_reflect`, `Gamma_one_add_mul_le`, `summable_pow_mul_Gamma_div_factorial`, `summable_pow_mul_Gamma_sq_div_factorial` (`Damped/GammaGrowth.lean`) | proved |
+| **Proposition 4.2, the identity** `Λ(s;τ,r) = ∑_k I_k + √π∑_m J_m + M` (`0 < r < 1`, `M` as an integral) | `damped_split` (`Damped/Split.lean`) | proved, assuming the kernel representation `∫₀^∞ e^{-k²u}h_s = e^{-τk^r}k^{-s}` and integrability of `h_s` (finding 6) |
 | **Bit-burst radius of convergence**: solutions of that recurrence satisfy `‖Y_l‖ ≤ C t^l` for every `t > 1/|c₀|`, so `∑ h^l Y_l` converges for `|h| < |c₀|` | `taylor_rec_growth`, `taylor_rec_summable` (`Bounds/TaylorRec.lean`) | proved |
 | **Bit-burst error analysis**: truncation error of a Taylor stage `≤ C(t|h|)^L/(1-t|h|)`; global error of a chain of steps with Lipschitz constants `M_j` and local errors `ε_j` is `∏M_j·‖y₀-x₀‖ + ∑ε_j∏_{i>j}M_i` (`≤ M^n(‖y₀-x₀‖ + ∑ε_j)` uniformly, operator norms for linear steps); "every tail is at most twice its first term" once terms halve; the error from the evaluation point is `δ·max|J'|` | `taylor_rec_tail_le` (`Bounds/TaylorRec.lean`); `error_propagation`, `error_propagation_uniform`, `error_propagation_linear`, `tail_le_of_ratio`, `tail_le_two_mul`, `point_error_le` (`Bounds/ErrorProp.lean`) | proved |
 | Γ bounds: monotone ratio, uniform (G1)-type bound on `{Re w ≥ 1, |Im w| ≤ Y}`, `y^x ≤ e^y Γ(x+1)` | `GammaBounds.lean`, `GammaUniform.lean` | proved |
@@ -63,7 +65,7 @@ This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 20
   integration, the factor `Γ(Re w)` cancels against `1/Γ(w)` (bounded uniformly on compact sets by
   `gammaRatio_bounded`), and because `u₀^x/Γ(x+1) ≤ e^{u₀/λ}λ^x`.
 
-## Findings about the paper (1, 2 and 4 fixed in `paper/zetaF.tex` on this branch)
+## Findings about the paper (1, 2, 4 and 5 fixed in `paper/zetaF.tex` on this branch)
 
 1. **Lemma 3.1 claimed `b ∈ 𝕂(s)[u]^ℓ`, which is false as stated.** `b` involves the initial
    coefficients `β_m/Γ(m+σ₀)`. It is now stated as `b ∈ ℂ[u]^ℓ`, plus the precise normalization
@@ -79,9 +81,23 @@ This is a formalization of parts of `paper/zetaF.tex` (F. Johansson, November 20
    This case occurs in `J^{(δ)}_w` for integer `w`. The conclusion (analytic on `ℂ ∖ (-∞, 0]`) is
    unaffected; the sentence now treats both cases.
 
+5. **Propositions 4.2–4.3 and Claim C: the series for the damped dual terms diverge for `r > 1`.** The `j`-th
+   term of `J_m = ∑_j c_j D_{a_j-1/2}(π²m²)` is of size `(τ(πm)^{-r})^j Γ(rj/2)²/j!`, i.e. `(j!)^{r-1}` times a
+   geometric factor: the series converges for `r < 1`, for `r = 1` only when `τ < 2πm`, and diverges for every `m`
+   when `1 < r < 2` (numerically, for `r = 3/2`, `τ = 1`, `m = 1`, the terms reach `10^{232}` at `j = 800`). The proof's
+   termwise integration of the dual terms ("`e^{-c/u}` kills the powers of `u`") is therefore valid only in that
+   range, and the bit-burst starting values of Claim C diverge for `1 < r < 2`. The splitting identity itself is
+   unaffected (with `J_m` the integral). The text now defines `J_m` by the integral, states when the series
+   converges (also for `q = 1` in Proposition 4.3), restricts Claim C and its sketch to `0 < r ≤ 1`, and lists
+   `1 < r < 2` as an open problem. Formalized: `hasSum_dualTerm_damped` (`r < 1`).
+6. **Proposition 4.2, the kernel representation.** That the damped kernel (a Wright function) is the inverse
+   Laplace transform of `e^{-τ y^{r/2}} y^{-s/2}`, and is exponentially small at `0`, is justified only briefly
+   (via a Mellin transform computed "in a strip"). It is classical, but its proof needs Mellin–Barnes or Hankel
+   contour arguments; `damped_split` takes it as a hypothesis.
+
 ## Roadmap (not done)
 
 * Theorem 4.1(1) on the rest of the disc (`J^{(δ)}_w(c)` for `Re c ≤ 0`, via `D_a` on the slit plane).
-* The damped splittings (Propositions 4.2–4.3, which need the inverse Laplace transform of
-  `e^{-τx^r}x^{-s}`). `split_theta_lin` and the `Continuation/` files are the templates.
+* The damped splittings: the kernel representation for Proposition 4.2 (Wright functions), the main term
+  `M` via complete Mellin integrals, and Proposition 4.3. `split_theta_lin` and the `Continuation/` files are the templates.
 * `EvenPartFuchsian`, `OddPartFuchsian` (Fuchs's criterion).

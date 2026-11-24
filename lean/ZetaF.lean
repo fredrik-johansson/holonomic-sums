@@ -31,6 +31,9 @@ import ZetaF.Continuation.Geometric
 import ZetaF.Analysis.Boundary
 import ZetaF.Polylog.Disk
 import ZetaF.Polylog.DiskEntire
+import ZetaF.Damped.GammaGrowth
+import ZetaF.Damped.Kernel
+import ZetaF.Damped.Split
 import ZetaF.Twisted.Theta
 import ZetaF.Twisted.Split
 import ZetaF.Twisted.Odd
