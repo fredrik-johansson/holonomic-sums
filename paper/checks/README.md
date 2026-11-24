@@ -9,4 +9,5 @@ Each script sums every piece of the identity as a series and compares with an in
 | polylog_complex_z.py | Li_{0.3}(z), z = e^{-1+0.6 pi i}, additive twist (Section 4.4) | 41 digits |
 | lerch.py | Lerch Phi(e^{-1}, 0.3, 0.3), shifted lattice (Section 4.4) | 41 digits |
 | product_r1.py | Prop. 4.3, sum_{k>=2} e^{-k} log(1+1/k) k^{-0.3} | 45 digits |
+| expsplit_divergence.py | Prop. 4.2/4.3: the dual series diverge for r > 1, and for r = 1 when tau >= 2 pi m (term growth) | — |
 | product_r_half.py | Prop. 4.3 with q = 2, sum_{k>=2} e^{-sqrt k} log(1+1/k) k^{-0.3} | 33 digits (working precision) |

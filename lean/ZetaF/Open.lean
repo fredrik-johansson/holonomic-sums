@@ -6,7 +6,8 @@ fixed.  Status:
 * `KTermEntire`, `DualTermEntire`: **proved** (`kTermEntire`, `dualTermEntire` in
   `ZetaF/Continuation/Entire.lean`).
 * `ZetaTailContinuation`: **proved** (`zetaTailContinuation` in `ZetaF/Continuation/Theorem.lean`).
-* `EvenPartFuchsian`, `OddPartFuchsian`: open.
+* `EvenPartFuchsian`, `OddPartFuchsian`: reduced to the single hypothesis `FuchsianAddClosed ⊤`
+  (Fuchs's criterion for the LCLM) in `ZetaF/Holonomic/Parity.lean`.
 -/
 import ZetaF.Splitting.Kernel
 

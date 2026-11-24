@@ -34,6 +34,7 @@ import ZetaF.Polylog.DiskEntire
 import ZetaF.Damped.GammaGrowth
 import ZetaF.Damped.Kernel
 import ZetaF.Damped.Split
+import ZetaF.Holonomic.Parity
 import ZetaF.Twisted.Theta
 import ZetaF.Twisted.Split
 import ZetaF.Twisted.Odd
@@ -41,3 +42,5 @@ import ZetaF.Twisted.SplitOdd
 import ZetaF.Polylog.Theta
 import ZetaF.Polylog.Split
 import ZetaF.Polylog.Geometric
+import ZetaF.Polylog.Slit
+import ZetaF.Polylog.DiskFull
