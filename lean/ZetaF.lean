@@ -30,6 +30,7 @@ import ZetaF.Continuation.Twisted
 import ZetaF.Continuation.Geometric
 import ZetaF.Analysis.Boundary
 import ZetaF.Polylog.Disk
+import ZetaF.Polylog.DiskEntire
 import ZetaF.Twisted.Theta
 import ZetaF.Twisted.Split
 import ZetaF.Twisted.Odd

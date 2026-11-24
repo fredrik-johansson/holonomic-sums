@@ -425,32 +425,19 @@ noncomputable def kSumTermC (a : ℕ → ℂ) (k₀ : ℕ) (u₀ : ℝ) (s : ℂ
   geoC (geoZ α) (k + k₀) * kTerm (kernel a s) u₀ (k + k₀) +
     ((k + k₀ : ℕ) : ℂ) * geoS (geoZ α) (k + k₀) * kTerm (kernel a (s + 1)) u₀ (k + k₀)
 
-/-- **The `k`-sum is entire in `α`** (the Gaussian decay of `I_k` beats `|z|^{-k}`). -/
-theorem differentiable_kSumC (ha : GeomBounded a R) (hR : 0 ≤ R) {k₀ : ℕ} (hRk : R < k₀)
-    {u₀ : ℝ} (hu₀ : 0 < u₀) (s : ℂ) :
-    Differentiable ℂ fun α => ∑' k, kSumTermC a k₀ u₀ s k α := by
-  obtain ⟨B₁, hB₁⟩ := kTerm_local_bound ha hR hRk hu₀ s
-  obtain ⟨B₂, hB₂⟩ := kTerm_local_bound ha hR hRk hu₀ (s + 1)
-  have hB₁0 : 0 ≤ B₁ := by
-    have := (norm_nonneg _).trans (hB₁ s (mem_ball_self one_pos) k₀ le_rfl); simpa using this
-  have hB₂0 : 0 ≤ B₂ := by
-    have := (norm_nonneg _).trans (hB₂ (s + 1) (mem_ball_self one_pos) k₀ le_rfl)
-    simpa using this
-  refine differentiable_tsum_of_local_bound (fun k => ?_) fun α₀ => ?_
-  · unfold kSumTermC
-    exact ((differentiable_geoC _).mul_const _).add
-      (((differentiable_geoS _).const_mul _).mul_const _)
-  set A := 2 * π * (|α₀.im| + 1)
+/-- The bound on the `k`-th term used for summing over `k`. -/
+lemma norm_kSumTermC_le {k₀ : ℕ} {u₀ : ℝ} (hu₀ : 0 < u₀) {s α : ℂ} {A B₁ B₂ : ℝ}
+    (hB₁0 : 0 ≤ B₁) (hB₂0 : 0 ≤ B₂) (hz1 : ‖geoZ α‖ ≤ rexp A) (hz2 : ‖geoZ α‖⁻¹ ≤ rexp A) (k : ℕ)
+    (hK1 : ‖kTerm (kernel a s) u₀ (k + k₀)‖ ≤
+      rexp (-(((k + k₀ : ℕ) : ℝ) ^ 2 - (k₀ : ℝ) ^ 2) * u₀) * B₁)
+    (hK2 : ‖kTerm (kernel a (s + 1)) u₀ (k + k₀)‖ ≤
+      rexp (-(((k + k₀ : ℕ) : ℝ) ^ 2 - (k₀ : ℝ) ^ 2) * u₀) * B₂) :
+    ‖kSumTermC a k₀ u₀ s k α‖ ≤
+      rexp A ^ k₀ * rexp ((A + 1) ^ 2 / (4 * u₀)) * (B₁ + B₂ * k₀) * ((k : ℝ) ^ 0 * rexp (-1) ^ k) +
+        rexp A ^ k₀ * rexp ((A + 1) ^ 2 / (4 * u₀)) * B₂ * ((k : ℝ) ^ 1 * rexp (-1) ^ k) := by
   set E := rexp A
   set q := rexp (-1)
   set M := E ^ k₀ * rexp ((A + 1) ^ 2 / (4 * u₀))
-  have hq : ‖q‖ < 1 := by
-    rw [Real.norm_of_nonneg (Real.exp_pos _).le, Real.exp_lt_one_iff]; norm_num
-  have hs1 := summable_pow_mul_geometric_of_norm_lt_one 1 hq
-  have hs0 := summable_pow_mul_geometric_of_norm_lt_one 0 hq
-  refine ⟨0, fun k => M * (B₁ + B₂ * k₀) * ((k : ℝ) ^ 0 * q ^ k) + M * B₂ * ((k : ℝ) ^ 1 * q ^ k),
-    (hs0.mul_left _).add (hs1.mul_left _), fun k _ α hα => ?_⟩
-  obtain ⟨hz1, hz2⟩ := norm_geoZ_le hα
   have hexp : E ^ (k + k₀) * rexp (-(((k + k₀ : ℕ) : ℝ) ^ 2 - (k₀ : ℝ) ^ 2) * u₀) ≤ M * q ^ k := by
     have e1 : E ^ (k + k₀) = E ^ k₀ * rexp (k * A) := by
       rw [pow_add, mul_comm, Real.exp_natCast_mul]
@@ -464,8 +451,6 @@ theorem differentiable_kSumC (ha : GeomBounded a R) (hR : 0 ≤ R) {k₀ : ℕ} 
     have hk : (0 : ℝ) ≤ k := Nat.cast_nonneg _
     push_cast
     nlinarith [this, mul_nonneg (mul_nonneg hk hk0) hu₀.le]
-  have hK1 := hB₁ s (mem_ball_self one_pos) (k + k₀) (Nat.le_add_left _ _)
-  have hK2 := hB₂ (s + 1) (mem_ball_self one_pos) (k + k₀) (Nat.le_add_left _ _)
   have hC := norm_geoC_le_pow hz1 hz2 (k + k₀)
   have hS := norm_geoS_le_pow hz1 hz2 (k + k₀)
   set X := rexp (-(((k + k₀ : ℕ) : ℝ) ^ 2 - (k₀ : ℝ) ^ 2) * u₀)
@@ -482,6 +467,38 @@ theorem differentiable_kSumC (ha : GeomBounded a R) (hR : 0 ≤ R) {k₀ : ℕ} 
     _ ≤ (M * q ^ k) * (B₁ + B₂ * ((k + k₀ : ℕ) : ℝ)) :=
         mul_le_mul_of_nonneg_right hexp (by positivity)
     _ = _ := by push_cast; ring
+
+lemma summable_kSumBound (A u₀ B₁ B₂ : ℝ) (k₀ : ℕ) :
+    Summable fun k : ℕ =>
+      rexp A ^ k₀ * rexp ((A + 1) ^ 2 / (4 * u₀)) * (B₁ + B₂ * k₀) * ((k : ℝ) ^ 0 * rexp (-1) ^ k) +
+        rexp A ^ k₀ * rexp ((A + 1) ^ 2 / (4 * u₀)) * B₂ * ((k : ℝ) ^ 1 * rexp (-1) ^ k) := by
+  have hq : ‖rexp (-1)‖ < 1 := by
+    rw [Real.norm_of_nonneg (Real.exp_pos _).le, Real.exp_lt_one_iff]; norm_num
+  exact ((summable_pow_mul_geometric_of_norm_lt_one 0 hq).mul_left _).add
+    ((summable_pow_mul_geometric_of_norm_lt_one 1 hq).mul_left _)
+
+lemma differentiable_kSumTermC (k₀ : ℕ) (u₀ : ℝ) (s : ℂ) (k : ℕ) : Differentiable ℂ (kSumTermC a k₀ u₀ s k) := by
+  unfold kSumTermC
+  exact ((differentiable_geoC _).mul_const _).add
+    (((differentiable_geoS _).const_mul _).mul_const _)
+
+/-- **The `k`-sum is entire in `α`** (the Gaussian decay of `I_k` beats `|z|^{-k}`). -/
+theorem differentiable_kSumC (ha : GeomBounded a R) (hR : 0 ≤ R) {k₀ : ℕ} (hRk : R < k₀)
+    {u₀ : ℝ} (hu₀ : 0 < u₀) (s : ℂ) :
+    Differentiable ℂ fun α => ∑' k, kSumTermC a k₀ u₀ s k α := by
+  obtain ⟨B₁, hB₁⟩ := kTerm_local_bound ha hR hRk hu₀ s
+  obtain ⟨B₂, hB₂⟩ := kTerm_local_bound ha hR hRk hu₀ (s + 1)
+  have hB₁0 : 0 ≤ B₁ := by
+    have := (norm_nonneg _).trans (hB₁ s (mem_ball_self one_pos) k₀ le_rfl); simpa using this
+  have hB₂0 : 0 ≤ B₂ := by
+    have := (norm_nonneg _).trans (hB₂ (s + 1) (mem_ball_self one_pos) k₀ le_rfl)
+    simpa using this
+  refine differentiable_tsum_of_local_bound (differentiable_kSumTermC k₀ u₀ s)
+    fun α₀ => ⟨0, _, summable_kSumBound (2 * π * (|α₀.im| + 1)) u₀ B₁ B₂ k₀, fun k _ α hα => ?_⟩
+  obtain ⟨hz1, hz2⟩ := norm_geoZ_le hα
+  exact norm_kSumTermC_le hu₀ hB₁0 hB₂0 hz1 hz2 k
+    (hB₁ s (mem_ball_self one_pos) (k + k₀) (Nat.le_add_left _ _))
+    (hB₂ (s + 1) (mem_ball_self one_pos) (k + k₀) (Nat.le_add_left _ _))
 
 /-! ### The right-hand side for complex `α` -/
 
