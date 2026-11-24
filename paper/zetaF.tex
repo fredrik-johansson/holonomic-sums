@@ -853,10 +853,13 @@ $\sum_{j=0}^{r}q_j(n-j)a_{n-j} = 0$ for large $n$, with the coefficient $q_0$ of
 Let $f$ be annihilated by an operator satisfying (H), with coefficients in a field $\mathbb K \subset \CC$, and fix
 $s$. Then each of $G_0 = u\,g_0(u)$ and $G_1 = g_1(u)$ is annihilated by an operator with coefficients in
 $\mathbb K(s)[u]$, and for $G = G_0, G_1$ there are $\ell \ge 1$, $A \in \mathbb K(s)[u]^{\ell\times\ell}$ and
-$b \in \mathbb K(s)[u]^\ell$ such that $\mathbf G = (G, \vartheta G, \dots, \vartheta^{\ell-1}G)^T$ satisfies
+$b \in \CC[u]^\ell$ such that $\mathbf G = (G, \vartheta G, \dots, \vartheta^{\ell-1}G)^T$ satisfies
 \begin{equation}\label{eq:Gsys}
   \vartheta\mathbf G = A(u)\,\mathbf G + b(u).
 \end{equation}
+If moreover the coefficients $a_n$ of $f$ lie in $\mathbb K$, and $m_2 \in \ZZ$ is such that $\sigma_0 + m_2$ is not
+a pole of $\Gamma$, where $\sigma_0 = \frac s2$ for $G_0$ and $\sigma_0 = \frac{s+1}2$ for $G_1$, then
+$\Gamma(\sigma_0+m_2)\,\mathbf G$ satisfies \eqref{eq:Gsys} with the same $A$ and with $b \in \mathbb K(s)[u]^\ell$.
 \end{lemma}
 
 \begin{proof}
@@ -888,6 +891,13 @@ coefficient of $\widetilde Q_0$. Dividing by it expresses $\vartheta^{d+r}G$ as 
 $G, \dots, \vartheta^{d+r-1}G$ with polynomial coefficients, plus a polynomial: this is \eqref{eq:Gsys}, with a
 companion matrix of size $\ell = d + r$, where $r$ is the degree in $y$ of the operator of $B$ and $d$ its order. Taking $B = A_0$, $\sigma_0 = \frac s2$ gives $G_0$, and $B = A_1$, $\sigma_0 = \frac{s+1}2$ gives
 $G_1$.
+
+The matrix $A$ depends only on the $\widetilde Q_j$, whose coefficients lie in $\mathbb K(\sigma_0) = \mathbb K(s)$.
+The polynomial $b$, on the other hand, is a linear combination of the finitely many initial coefficients
+$\gamma_m$, $m < m_1 + r$, which involve the values $1/\Gamma(m+\sigma_0)$ and in general do not lie in
+$\mathbb K(s)$. Multiplied by $\Gamma(\sigma_0+m_2)$ they become $\beta_m\,\Gamma(\sigma_0+m_2)/\Gamma(\sigma_0+m)$, and
+$\Gamma(x+m_2)/\Gamma(x+m)$ is a rational function of $x$ (a Pochhammer symbol or its reciprocal); this gives the
+last statement. This normalization is the one used in Appendix~\ref{app:dual}.
 \end{proof}
 
 Condition (H) is what the dual side needs. It makes the coefficient of the highest power of $\vartheta$ in the
@@ -1133,7 +1143,14 @@ For $w \in \CC$ let $h_w$ be the kernel \eqref{eq:kernel} of $F(x)x^{-w}$, and
   I_k(w) = \mathcal L[h_w](k^2), \qquad J^{(\delta)}_w(c) = Z_{1/2+\delta}[h_w](c), \\
   L_k(w) = \int_0^{u_0}e^{-k^2u}h_w\dd u, \qquad H(w) = \int_0^{u_0}h_w\dd u,
 \end{gather*}
-for $\delta \in \{0,1\}$ and $\operatorname{Re}c > 0$. By \eqref{eq:startvals},
+for $\delta \in \{0,1\}$ and $\operatorname{Re}c > 0$. The integrals $L_k(w)$ and $H(w)$ converge only for
+$\operatorname{Re}w > -n_0$; for all $w$ they denote, as for $M$ in Theorem~\ref{thm:split}, the termwise
+continuations
+\[
+  L_k(w) = \sum_{n=0}^{\infty}a_n\,k^{-w-n}P\Bigl(\frac{w+n}2, k^2u_0\Bigr), \qquad
+  H(w) = \sum_{n=0}^{\infty}a_n\frac{u_0^{(w+n)/2}}{\Gamma(\frac{w+n}2+1)},
+\]
+which are entire functions of $w$. By \eqref{eq:startvals},
 \[
   J^{(\delta)}_w(c) = \sum_{n=0}^{\infty}\frac{a_n}{\Gamma(\frac{w+n}2)}D_{(w+n-1)/2-\delta}(c), \qquad
   D_a(c) = c^a\Gamma\Bigl(-a, \frac c{u_0}\Bigr).
