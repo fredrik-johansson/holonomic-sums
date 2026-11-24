@@ -478,8 +478,9 @@ function, and discusses the limits of the method. Section~\ref{sec:complexity} p
 uniform bounds and their consequences for integer sequences, and compares the theta splitting with classical
 methods. Section~\ref{sec:khinchin} defines the Khinchin zeta function and gives three algorithms for Khinchin's
 constant, with an implementation and a computation to $10^7$ digits. Section~\ref{sec:other} treats other
-constants of Table~\ref{tab:constants}, and Section~\ref{sec:open} lists open problems. Appendix~\ref{app:cost} contains the
-cost analysis and Appendix~\ref{sec:khpseudo} an annotated reference implementation for Khinchin's constant.
+constants of Table~\ref{tab:constants}, and Section~\ref{sec:open} lists open problems. Appendix~\ref{app:cost} describes a
+Lean formalization of much of the paper, including the corrections it led to, and contains the cost analysis;
+Appendix~\ref{sec:khpseudo} an annotated reference implementation for Khinchin's constant.
 
 %======================================================================
 \section{Preliminaries}\label{sec:defs}
@@ -3734,15 +3735,67 @@ verification computation of Khinchin's constant.
 %======================================================================
 \appendix
 
-\section{Proofs of the complexity bounds}\label{app:cost}
+\section{Formalization and proofs of the complexity bounds}\label{app:cost}
 
 This appendix proves Theorems~\ref{thm:complexity} and~\ref{thm:uniform} (Sections~\ref{app:tools}--\ref{app:uniform}),
 Corollaries~\ref{cor:bernoulli} and~\ref{cor:egf} (Section~\ref{app:sequences}), Theorem~\ref{thm:geometric}(2)
-(Section~\ref{app:geometric}), and sketches Claim~C (Section~\ref{app:stretched}). The proof is organized in three
-layers: a cost model, stated as assumptions (Section~\ref{app:tools}); a list of estimates, which are pure mathematics
-and are proved in the accompanying Lean formalization, in the directory \texttt{lean/} of the repository of this paper (Section~\ref{app:estimates}); and an account of the algorithm
-that combines them (Sections~\ref{app:pieces} and~\ref{app:uniform}). Theorem~\ref{thm:complexity} is the special
-case of Theorem~\ref{thm:uniform} in which all data are fixed, so only the latter is proved.
+(Section~\ref{app:geometric}), and sketches Claim~C (Section~\ref{app:stretched}). Much of the mathematics of the paper,
+including every estimate these proofs use, has also been formalized, and we first describe that formalization.
+
+\emph{The formalization.} The directory \texttt{lean/} of the repository of this paper contains a formalization in
+Lean~4 with its mathematics library Mathlib (Lean v4.37.0-rc1, Mathlib of November 2026; about $20\,000$ lines). It
+contains no unproved statements (\texttt{sorry}) and introduces no axioms; the main theorems depend only on the three
+standard axioms of Lean's logic. Like the proof text below, the formalization was produced by an LLM-based agent, not
+by the author. Its proofs are checked by the Lean kernel, but whether a formal statement says what the paper says must
+be checked by reading it: the file \texttt{lean/README.md} lists, for each result of the paper, the Lean names of the
+corresponding statements and any differences in hypotheses, and \texttt{ZetaF/Open.lean} records the statements that
+remain open.
+
+\emph{What is formalized.} In Section~\ref{sec:splitting}: the abstract theta splitting and Theorem~\ref{thm:split} for
+every $s \in \CC$ (the $k$-terms and dual terms are entire, the main term is meromorphic with poles only at
+$s = 1 - n$, the sums converge, the identity holds, and the right-hand side does not depend on $u_0$), hence, with
+Lemma~\ref{lem:reduction}, the meromorphic continuation of $\zeta_F$ for $F \in \Reg$; the recurrence part of
+Lemma~\ref{lem:kernelhol}; Proposition~\ref{prop:dual} for real $c > 0$; and the twisted splittings of
+Remark~\ref{rem:twist}. In Section~\ref{sec:beyond}: Theorem~\ref{thm:geometric}(1) on the punctured disk and on
+$|z| = 1$, $z \ne 1$, for every $s$, and Propositions~\ref{prop:expsplit} and~\ref{prop:prodsplit} in termwise form. In Section~\ref{sec:complexity}:
+Proposition~\ref{prop:cont} and the identity behind Corollary~\ref{cor:bernoulli}. In Section~\ref{sec:khinchin}:
+Proposition~\ref{prop:Z}, the formulas \eqref{eq:K1}--\eqref{eq:K3} with Lemma~\ref{lem:dilog}, Theorem~\ref{thm:khinchin}
+with the closed forms of its pieces, Algorithms~K1 and~K2 as instances of Theorem~\ref{thm:split},
+Proposition~\ref{thm:khrat}, and the error bounds of Section~\ref{sec:khbounds}. In this appendix: every estimate of
+Section~\ref{app:estimates}, among them the Taylor-step lemma that controls the bit-burst algorithm.
+
+\emph{What is not formalized.} Bit complexity itself: there is no machine model, the cost model of
+Section~\ref{app:tools} is assumed, and the account of the algorithm in Sections~\ref{app:pieces}
+and~\ref{app:uniform}, which combines the formal estimates with that model, is informal. Three mathematical steps
+enter the formalization as explicit hypotheses or are left out: that the even and odd parts of a function satisfying
+(H) again satisfy (H) (the first step of the proof of Lemma~\ref{lem:kernelhol}, via Fuchs's criterion); the
+representation of the damped kernels of Propositions~\ref{prop:expsplit} and~\ref{prop:prodsplit} as inverse Laplace
+transforms; and the monodromy argument in the reduction of Section~\ref{app:uniform}. The identity
+$\Ci(x) = \gamma + \log x - \int_0^x(1-\cos t)\,\mathrm dt/t$ used in Theorem~\ref{thm:khinchin} is classical and is not
+formalized, and neither are the applications of Section~\ref{sec:other} and the computations.
+
+\emph{What the formalization changed.} Formalizing the arguments exposed the following errors and gaps, all of which
+are corrected in the text.
+\begin{itemize}
+\item In Propositions~\ref{prop:expsplit} and~\ref{prop:prodsplit} the series for the dual terms obtained by termwise
+integration converge only for $r < 1$, or $r = 1$ and $\tau < 2\pi m$; for $1 < r < 2$ their terms grow like
+$(j!)^{r-1}$. The dual terms are therefore defined by their integrals, Claim~C is restricted to $0 < r \le 1$, and
+the case $1 < r < 2$ is listed as an open problem (Section~\ref{sec:open}). In Proposition~\ref{prop:prodsplit} the
+$k$-terms also need $k > R$, and the terms of $M_\pm$ are continuations in $s$.
+\item In Theorem~\ref{thm:geometric}(1) the functions $H(w)$ and $L_k(w)$ were defined by integrals that diverge for
+$\operatorname{Re}w \le -n_0$; they are now defined by their entire termwise series.
+\item In Lemma~\ref{lem:kernelhol} the inhomogeneity $b$ was claimed to have coefficients in $\mathbb K(s)$; this holds
+only after the normalization now stated in the lemma. In the uniform proof $b$ has $\Theta(p)$ bits, and the dual
+system is rescaled accordingly (Section~\ref{app:pieces}).
+\item The analyticity of $D_a(c)$ in $c$ was argued through $c^a\Gamma(-a)$, which fails for $a \in \ZZ_{\ge0}$, where a
+logarithm appears; the conclusion is unchanged.
+\item In Section~\ref{sec:khbounds} the refined bound for a Taylor stage fails for large negative steps and now assumes
+$|\delta| \le U$, and the bound on the tail of the $k$-sum needs $(2k_1+1)U \ge \log 2$.
+\item In this appendix: the factorization of the $k$-terms broke down at $s_0 \in \{-2, -4, \dots\}$, the base value
+$E_1$ of the integer class needs Euler's constant, the tail of the series for $P(a,y)$ carries a factor $4^y$, and
+several constants were misstated.
+\end{itemize}
+Apart from the restriction of Claim~C, none of these changes a stated result.
 
 The following proof text is LLM-generated and unedited by the author.
 
