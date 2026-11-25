@@ -73,7 +73,7 @@ including every sum $\sum_{k=1}^{\infty} A(k)$ or $\sum_{k=1}^{\infty} \log A(k)
 algebraic function with algebraic coefficients, most of which had no previously known algorithm with better than
 quadratic complexity.
 For example, we obtain the first subquadratic algorithm for
-Khinchin's constant which we compute to $10^7$ digits.
+Khinchin's constant, which we compute to $10^7$ digits.
 We demonstrate the method and its speedup on many other examples taken from analysis,
 geometry, number theory and physics.
 \end{abstract}
@@ -99,7 +99,7 @@ Two strikingly similar series
 \end{equation}
 express two seemingly unrelated numbers: Euler's constant, the regularized limit of the harmonic numbers
 \[
-\gamma = \lim_{n \to \infty} ( ( \tfrac{1}{1} + \tfrac{1}{2} + \ldots + \tfrac{1}{n} ) - \log n) = 0.5772156649\ldots,
+\gamma = \lim_{n \to \infty} ( ( \tfrac{1}{1} + \tfrac{1}{2} + \cdots + \tfrac{1}{n} ) - \log n) = 0.5772156649\ldots,
 \]
 and Khinchin's constant, the limit
 \[
@@ -177,11 +177,11 @@ $\kappa$ and $c$), the \emph{kernel}
 h_s(u) = \sum_{n=0}^{\infty} a_n \frac{u^{(s+n)/2-1}}{\Gamma(\frac{s+n}{2})}
 \]
 is a Borel-type transform of $f$, and the \emph{main term} $M$ is an
-explicit sum~of elementary functions and incomplete gamma functions carrying all the poles.
+explicit sum of elementary functions and incomplete gamma functions carrying all the poles.
 \end{theoremA}
 
 For $F = 1$, $k_0 = 1$ and $u_0 = \pi$ this is Riemann's formula, and the two infinite sums
-are symmetric in $s$ and $1-s$ which gives the
+are symmetric in $s$ and $1-s$, which gives the
 functional equation. The two sums differ in general
 but both are rapidly convergent: the $k$-terms decay
 like $e^{-k^2u_0}$ and the dual terms like $e^{-\pi^2m^2/u_0}$.
@@ -336,7 +336,7 @@ $2\pi p_t(0) - 1$, $0 < \alpha < 2$ & $1$ & $2\Lambda(0;t,\alpha)$ \\
 Special cases of sums in this class were already known to be efficiently computable.
 Among the constants of Table~\ref{tab:constants},
 Euler's constant $\gamma$ and the two closed forms involving $\pi$
-can be computed in quasilinar time.
+can be computed in quasilinear time.
 More generally, so can every number that is the value at an algebraic point of a holonomic function
 with algebraic coefficients and initial values \cite{CC90,vdH99}, such as the integer zeta values $\zeta(3), \zeta(5),
 \dots$ \cite{Kar95,Kar98}, ordinary polylogarithms at algebraic points and Catalan's constant; this includes many periods and
@@ -469,7 +469,7 @@ methods. Section~\ref{sec:khinchin} defines the Khinchin zeta function and gives
 constant, with an implementation and a computation to $10^7$ digits. Section~\ref{sec:other} treats other
 constants of Table~\ref{tab:constants}, and Section~\ref{sec:open} lists open problems. Appendix~\ref{app:cost} describes a
 Lean formalization of much of the paper and contains the cost analysis;
-Appendix~\ref{sec:khpseudo} an annotated reference implementation for Khinchin's constant.
+Appendix~\ref{sec:khpseudo} gives an annotated reference implementation for Khinchin's constant.
 
 The git repository containing this paper and associated code
 and data is \url{https://github.com/fredrik-johansson/holonomic-sums/}.
