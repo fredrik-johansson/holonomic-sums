@@ -1123,8 +1123,8 @@ entropy
 where $-\partial_s\Li_s(z)|_{s=1} = \sum_kz^k\log(k)/k$.
 
 Damped zeta functions occur, for example, in partition functions over energy levels that grow like a fractional power
-of the quantum number, such as the Landau levels of graphene (Section~\ref{sec:physics}), and in connection with
-differential equations and probability distributions with a fractional parameter (Section~\ref{sec:expsqrt}).
+of the quantum number, such as the Landau levels of graphene, and in connection with
+differential equations and probability distributions with a fractional parameter; see Section~\ref{sec:expsqrt}.
 
 \subsection{The polylogarithm: geometric factors}\label{sec:geometric}
 Let $F$ satisfy \eqref{eq:f} and let $0 < |z| < 1$. Write $z = e^{2\pi i\alpha}$ with $\alpha = \alpha_1 + i\alpha_2$,
@@ -2575,9 +2575,12 @@ are weakly correlated), $|z_n| < 3.6$ for $n \ge 10^3$, and $z_N = 1.47 \approx 
 
 This section treats several other constants of Table~\ref{tab:constants}. For the constants of Euler, Stieltjes, Stirling and
 Glaisher (Section~\ref{sec:stieltjes}) we only compare the splitting with the classical formulas. For
-$\mathcal A$, $\mathcal C$, $K_{-1}$, the constant of Theodorus, the Hardy--Littlewood function and the vortex sum
-(Sections~\ref{sec:AG}--\ref{sec:vortex}), and for two values of damped functions, Somos's constant and
-$\sum_ke^{-\sqrt k}$ (Sections~\ref{sec:somos} and~\ref{sec:expsqrt}), we give the kernels and the recurrences of both sides.
+$\mathcal A$, $\mathcal C$, $K_{-1}$, the constant of Theodorus and the Hardy--Littlewood function
+(Sections~\ref{sec:AG}--\ref{sec:HL}), Somos's constant, a value of a damped function with a geometric factor
+(Section~\ref{sec:somos}), and three constants from physics and probability, the vortex sum, $\operatorname{Tr}\Delta^{-3/2}$
+on $S^2$ and the stretched-exponential sum $\sum_ke^{-\sqrt k}$ (Sections~\ref{sec:vortex}--\ref{sec:expsqrt}), we give the
+kernels and the recurrences of both sides. Sections~\ref{sec:physics} and~\ref{sec:expsqrt} also survey where such sums
+arise in spectral theory, statistical mechanics and probability.
 Section~\ref{sec:appcomp} reports computations of all of them to $10^6$ digits with a generic program.
 
 \subsection{The constants of Euler, Stieltjes, Stirling and Glaisher}\label{sec:stieltjes}
@@ -2871,6 +2874,58 @@ $x_k = \kappa u_0$, the $k$-terms are
 \]
 a $2\times2$ recurrence as for Khinchin's constant.
 
+\subsection{Somos's quadratic recurrence constant}\label{sec:somos}
+Somos's quadratic recurrence constant is
+\[
+  \sigma = \sqrt{1\sqrt{2\sqrt{3\cdots}}} = \prod_{k=1}^{\infty}k^{1/2^k} = 1.6616879496\ldots,
+\]
+named after the recurrence $g_n = ng_{n-1}^2$, $g_0 = 1$, whose solutions grow like $\sigma^{2^n}/(n + 2 + O(1/n))$
+\cite[\S6.10]{Fin03}, \cite[A112302]{OEIS}. Its logarithm is
+\[
+  \log\sigma = \sum_{k=1}^{\infty}2^{-k}\log k = -\partial_s\Li_s(\tfrac12)\big|_{s=0}
+  = \sum_{k=1}^{\infty}2^{-k}\log\Bigl(1+\frac1k\Bigr).
+\]
+The same method applies to the generalizations $\sigma_t = \prod_kk^{1/t^k}$, $t > 1$, and to the generalized
+Euler-constant function of Sondow and Hadjicostas \cite{SH07},
+\[
+  \gamma(z) = \sum_{k=1}^{\infty}z^{k-1}\Bigl(\frac1k - \log\Bigl(1+\frac1k\Bigr)\Bigr) \quad (|z| < 1),
+  \qquad \gamma(\tfrac12) = 2\log\frac2\sigma.
+\]
+
+\emph{The splitting.} We compute $\log\sigma$ from Theorem~\ref{thm:geometric} with $F = 1$ and $k_0 = 1$ (Crandall's
+formula), differentiated in $s$. Write $z = \frac12 = e^{2\pi i\alpha}$ with $\alpha = i\log2/(2\pi)$, and put
+\begin{gather*}
+  x_k = k^2u_0, \qquad y_n = \frac{\pi^2(n-\alpha)^2}{u_0}, \qquad C_k = \frac{2^{-k}+2^k}2, \qquad S_k = \frac{2^{-k}-2^k}2, \\
+  L_0 = \log u_0 - \psi(\tfrac12), \qquad V_a(y) = e^yy^{-a}\Gamma(a,y).
+\end{gather*}
+Then
+\[
+  -\log\sigma = \sum_{k=1}^{\infty}\Bigl(C_k\frac{E_1(x_k)}2 + S_kB_k\Bigr) + \frac{\sqrt\pi}2\operatorname{Re}T_0
+  + \sqrt\pi\sum_{n=1}^{\infty}\operatorname{Re}T_n - \frac{\log u_0 + \gamma}4,
+\]
+where
+\begin{gather*}
+  B_k = \frac12Q\Bigl(\frac12,x_k\Bigr)\Bigl(\partial_a\log\Gamma(a,x_k)\big|_{a=1/2} - \psi(\tfrac12) - 2\log k\Bigr), \\
+  T_n = \frac{e^{-y_n}}{2\sqrt{u_0}}\Bigl(V_{1/2}(y_n) - i\sqrt{\frac{u_0}\pi}\,\frac{L_0 - V_0(y_n)}{\pi(n-\alpha)}\Bigr).
+\end{gather*}
+The point $c_0 = -\frac14\log^22$ lies on the cut, but only $\operatorname{Re}T_0$ is needed, which is the same from both
+sides and is elementary in $\erfi(\log2/(2\sqrt{u_0}))$ and $\operatorname{Ei}(\log^22/(4u_0))$. The pieces of size $2^k$
+in the $k$-terms cancel to $O(2^ke^{-x_k})$, which costs $k$ guard bits.
+
+\emph{Evaluation.} For large $x_k$ the $k$-terms use Legendre's continued fraction for $\Gamma(0,x_k)$ and
+$\Gamma(a,x_k)$, differentiated in $a$ by forward differentiation of the matrix product; for small $x_k$ they use the
+lower series, with $\log k$ assembled from logarithms of primes. In the dual terms, $V_a$ satisfies
+$yV_a' = (y-a)V_a - 1$. Its Taylor coefficients at a Gaussian dyadic point satisfy a two-term recurrence, which we sum
+by binary splitting with Gaussian integers, and the bit-burst goes from the real point $\operatorname{Re}y_n$, where
+$V_a$ is an incomplete gamma value at a dyadic argument, to $y_n$. We use $u_0 = 1$.
+
+\emph{Reference.} The reference is the sum over prime powers
+\[
+  \log\sigma = \sum_p\log p\sum_{e\ge1}\frac1{2^{p^e}-1},
+\]
+with the logarithms of all primes up to $p$ (the precision) computed from
+$\log q = \operatorname{arctanh}\frac1{2q^2-1} + \frac12\log\frac{q^2-1}{4} + \log 2$.
+
 \subsection{Periodic arrays of vortex rings}\label{sec:vortex}
 
 Consider an infinite row of identical coaxial thin-cored vortex rings of radius $r$ and circulation $\Gamma$, spaced
@@ -3005,7 +3060,8 @@ determinants $\exp(-\zeta_A'(0))$ \cite{Eli95,Kir02};
 $m_k^2 = m^2 + k^2/R^2$, and a one-loop amplitude becomes a sum over $k$ of a loop function of $m_k$, such as the KK top
 tower of Table~\ref{tab:constants} \cite{Pet02} and the Epstein--Hurwitz sums $\sum_k(k^2+a^2)^{-t}$;
 \item partition functions $\operatorname{Tr}e^{-H/(k_BT)}$ and other thermal sums over bound states, regularized where
-they diverge;
+they diverge (energy levels that grow like a fractional power of the quantum number lead to stretched-exponential sums
+instead, Section~\ref{sec:expsqrt});
 \item integrals against the Bose--Einstein and Fermi--Dirac weights, which become sums over the Boltzmann factors
 $e^{-kt}$.
 \end{itemize}
@@ -3066,26 +3122,6 @@ function, the zeta-value expansion needs only even zeta values with factorially 
 \]
 where $\xi = 1$ corresponds to about $1.58\cdot10^5$\,K.
 
-Energy levels that grow like a fractional power of the quantum number lead instead to damped zeta functions
-(Section~\ref{sec:beyond}). In graphene in a perpendicular magnetic field $B$, the charge carriers behave as massless
-Dirac fermions, and their Landau levels are not equidistant, as for a nonrelativistic electron gas, but
-\[
-  E_{\pm n} = \pm E_1\sqrt n, \qquad E_1 = v_F\sqrt{2e\hbar B} \approx 36\,\mathrm{meV}\cdot(B/1\,\mathrm T)^{1/2},
-\]
-with $v_F \approx 10^6$\,m/s the Fermi velocity \cite{CGPNG09}. The Boltzmann sums over the conduction-band levels
-$n \ge 1$, which give the partition function in the nondegenerate limit and its moments, are values of
-$\Lambda(s;\tau,\frac12)$ with $\tau = E_1/(k_BT)$:
-\[
-  \sum_{n=1}^{\infty}n^{-s}e^{-\tau\sqrt n} = \Lambda(s;\tau,\tfrac12).
-\]
-For instance, the mean energy over these levels is $E_1\Lambda(-\frac12;\tau,\frac12)/\Lambda(0;\tau,\frac12)$. For
-$\tau = 1$, which is $B = 10$\,T at about $1\,330$\,K, the sum $\Lambda(0;1,\frac12)$ is the constant $S$ of
-Section~\ref{sec:expsqrt}, and
-\begin{gather*}
-  \Lambda(-\tfrac12;1,\tfrac12) = \sum_{n=1}^{\infty}\sqrt n\,e^{-\sqrt n} = 3.86299603659638723326\ldots, \\
-  \frac{\Lambda(-\frac12;1,\frac12)}{\Lambda(0;1,\frac12)} = 2.31260791984760101746\ldots
-\end{gather*}
-
 Integrals against the Bose--Einstein weight lead to sums of the same kind. For an entire holonomic function $G$ with
 $|G(t)| \le Ce^{ct}$, $c < 1$, on the positive axis,
 \[
@@ -3139,70 +3175,43 @@ $\int_N^\infty F = 2(N(N+1))^{-1/2}$, and the zeta-value expansion
 where $\zeta(2n+2,\frac32) = (2^{2n+2}-1)\zeta(2n+2) - 2^{2n+2}$, which needs only even zeta values and converges like
 $9^{-n}$.
 
-\subsection{Somos's quadratic recurrence constant}\label{sec:somos}
-Somos's quadratic recurrence constant is
-\[
-  \sigma = \sqrt{1\sqrt{2\sqrt{3\cdots}}} = \prod_{k=1}^{\infty}k^{1/2^k} = 1.6616879496\ldots,
-\]
-named after the recurrence $g_n = ng_{n-1}^2$, $g_0 = 1$, whose solutions grow like $\sigma^{2^n}/(n + 2 + O(1/n))$
-\cite[\S6.10]{Fin03}, \cite[A112302]{OEIS}. Its logarithm is
-\[
-  \log\sigma = \sum_{k=1}^{\infty}2^{-k}\log k = -\partial_s\Li_s(\tfrac12)\big|_{s=0}
-  = \sum_{k=1}^{\infty}2^{-k}\log\Bigl(1+\frac1k\Bigr).
-\]
-The same method applies to the generalizations $\sigma_t = \prod_kk^{1/t^k}$, $t > 1$, and to the generalized
-Euler-constant function of Sondow and Hadjicostas \cite{SH07},
-\[
-  \gamma(z) = \sum_{k=1}^{\infty}z^{k-1}\Bigl(\frac1k - \log\Bigl(1+\frac1k\Bigr)\Bigr) \quad (|z| < 1),
-  \qquad \gamma(\tfrac12) = 2\log\frac2\sigma.
-\]
+\subsection{Stretched-exponential sums}\label{sec:expsqrt}
+The summands of Section~\ref{sec:physics} are regular at infinity. A Boltzmann factor $e^{-E_n/(k_BT)}$ over energy
+levels that grow like a fractional power of the quantum number is not, and leads instead to the damped zeta functions
+of Section~\ref{sec:beyond}; so does a heat kernel whose generator has a fractional power in its spectrum. We give one
+example of each; at the simplest parameters both lead to the same constant.
 
-\emph{The splitting.} We compute $\log\sigma$ from Theorem~\ref{thm:geometric} with $F = 1$ and $k_0 = 1$ (Crandall's
-formula), differentiated in $s$. Write $z = \frac12 = e^{2\pi i\alpha}$ with $\alpha = i\log2/(2\pi)$, and put
+\emph{Landau levels of graphene.} In graphene in a perpendicular magnetic field $B$, the charge carriers behave as
+massless Dirac fermions, and their Landau levels are not equidistant, as for a nonrelativistic electron gas, but
+\[
+  E_{\pm n} = \pm E_1\sqrt n, \qquad E_1 = v_F\sqrt{2e\hbar B} \approx 36\,\mathrm{meV}\cdot(B/1\,\mathrm T)^{1/2},
+\]
+with $v_F \approx 10^6$\,m/s the Fermi velocity \cite{CGPNG09}. The Boltzmann sums over the conduction-band levels
+$n \ge 1$, which give the partition function in the nondegenerate limit and its moments, are values of
+$\Lambda(s;\tau,\frac12)$ with $\tau = E_1/(k_BT)$:
+\[
+  \sum_{n=1}^{\infty}n^{-s}e^{-\tau\sqrt n} = \Lambda(s;\tau,\tfrac12).
+\]
+For instance, the mean energy over these levels is $E_1\Lambda(-\frac12;\tau,\frac12)/\Lambda(0;\tau,\frac12)$. For
+$\tau = 1$, which is $B = 10$\,T at about $1\,330$\,K,
 \begin{gather*}
-  x_k = k^2u_0, \qquad y_n = \frac{\pi^2(n-\alpha)^2}{u_0}, \qquad C_k = \frac{2^{-k}+2^k}2, \qquad S_k = \frac{2^{-k}-2^k}2, \\
-  L_0 = \log u_0 - \psi(\tfrac12), \qquad V_a(y) = e^yy^{-a}\Gamma(a,y).
+  \Lambda(-\tfrac12;1,\tfrac12) = \sum_{n=1}^{\infty}\sqrt n\,e^{-\sqrt n} = 3.86299603659638723326\ldots, \\
+  \frac{\Lambda(-\frac12;1,\frac12)}{\Lambda(0;1,\frac12)} = 2.31260791984760101746\ldots
 \end{gather*}
-Then
-\[
-  -\log\sigma = \sum_{k=1}^{\infty}\Bigl(C_k\frac{E_1(x_k)}2 + S_kB_k\Bigr) + \frac{\sqrt\pi}2\operatorname{Re}T_0
-  + \sqrt\pi\sum_{n=1}^{\infty}\operatorname{Re}T_n - \frac{\log u_0 + \gamma}4,
-\]
-where
-\begin{gather*}
-  B_k = \frac12Q\Bigl(\frac12,x_k\Bigr)\Bigl(\partial_a\log\Gamma(a,x_k)\big|_{a=1/2} - \psi(\tfrac12) - 2\log k\Bigr), \\
-  T_n = \frac{e^{-y_n}}{2\sqrt{u_0}}\Bigl(V_{1/2}(y_n) - i\sqrt{\frac{u_0}\pi}\,\frac{L_0 - V_0(y_n)}{\pi(n-\alpha)}\Bigr).
-\end{gather*}
-The point $c_0 = -\frac14\log^22$ lies on the cut, but only $\operatorname{Re}T_0$ is needed, which is the same from both
-sides and is elementary in $\erfi(\log2/(2\sqrt{u_0}))$ and $\operatorname{Ei}(\log^22/(4u_0))$. The pieces of size $2^k$
-in the $k$-terms cancel to $O(2^ke^{-x_k})$, which costs $k$ guard bits.
 
-\emph{Evaluation.} For large $x_k$ the $k$-terms use Legendre's continued fraction for $\Gamma(0,x_k)$ and
-$\Gamma(a,x_k)$, differentiated in $a$ by forward differentiation of the matrix product; for small $x_k$ they use the
-lower series, with $\log k$ assembled from logarithms of primes. In the dual terms, $V_a$ satisfies
-$yV_a' = (y-a)V_a - 1$. Its Taylor coefficients at a Gaussian dyadic point satisfy a two-term recurrence, which we sum
-by binary splitting with Gaussian integers, and the bit-burst goes from the real point $\operatorname{Re}y_n$, where
-$V_a$ is an incomplete gamma value at a dyadic argument, to $y_n$. We use $u_0 = 1$.
-
-\emph{Reference.} The reference is the sum over prime powers
-\[
-  \log\sigma = \sum_p\log p\sum_{e\ge1}\frac1{2^{p^e}-1},
-\]
-with the logarithms of all primes up to $p$ (the precision) computed from
-$\log q = \operatorname{arctanh}\frac1{2q^2-1} + \frac12\log\frac{q^2-1}{4} + \log 2$.
-
-\subsection{A stretched-exponential sum}\label{sec:expsqrt}
-The wrapped symmetric $\alpha$-stable distribution on the circle \cite{MJ00}, which is also the heat kernel of the
-fractional Laplacian $(-\Delta)^{\alpha/2}$ there, has the density
+\emph{Fractional diffusion.} The wrapped symmetric $\alpha$-stable distribution on the circle \cite{MJ00}, which is
+also the heat kernel of the fractional Laplacian $(-\Delta)^{\alpha/2}$ there, has the density
 \[
   p_t(x) = \frac1{2\pi}\Bigl(1 + 2\sum_{k=1}^{\infty}e^{-tk^\alpha}\cos kx\Bigr) \qquad (0 < \alpha < 2).
 \]
 At $x = 0$ this is $(1 + 2\Lambda(0;t,\alpha))/(2\pi)$, and when $x/2\pi$ is rational it is a value of $\Lambda$ with
-a periodic weight (Section~\ref{sec:twistshift}). We compute the peak density for $\alpha = \frac12$ and $t = 1$,
+a periodic weight (Section~\ref{sec:twistshift}).
+
+\emph{The constant.} For $\tau = 1$ in the first example and for $\alpha = \frac12$, $t = 1$ in the second, both lead to
 \[
-  p_1(0) = \frac{1+2S}{2\pi} = 0.69086194719938\ldots, \qquad S = \sum_{k=1}^{\infty}e^{-\sqrt k} = \Lambda(0;1,\tfrac12).
+  S = \sum_{k=1}^{\infty}e^{-\sqrt k} = \Lambda(0;1,\tfrac12),
 \]
-For $S$ we use
+the second through the peak density $p_1(0) = (1+2S)/(2\pi) = 0.69086194719938\ldots$ To compute $S$ we use
 Proposition~\ref{prop:expsplit} with $r = \frac12$, $\tau = 1$ and $s = 0$. Then $a_j = -j/4$, and the class $j \equiv 0 \pmod 4$ drops out at $s = 0$.
 
 \emph{The kernel.} For $j = 4m+\varrho$, $\varrho \in \{1,2,3\}$, the kernel is $\omega_\varrho w^{1+\varrho/4}H_\varrho(w)$
