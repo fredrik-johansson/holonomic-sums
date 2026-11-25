@@ -256,7 +256,7 @@ also closed under integration, and contains the periods of
 families of algebraic curves depending algebraically on $k$ such as complete elliptic, hyperelliptic and abelian integrals.
 Bose--Einstein integrals lead to such sums (Section~\ref{sec:physics}).
 
-Table~\ref{tab:constants} lists constants from classical analysis, number theory and mathematical physics expressed in terms of $\zeta_F$ and its relatives, including examples from the tables of Flajolet and Vardi~\cite{FV96} and of Finch~\cite{Fin03},
+Table~\ref{tab:constants} lists constants from classical analysis, number theory, mathematical physics and probability expressed in terms of $\zeta_F$ and its relatives, including examples from the tables of Flajolet and Vardi~\cite{FV96} and of Finch~\cite{Fin03},
 Sloane's OEIS~\cite{OEIS}, and other sources. By Theorem~B and Claim~C, all of them can be computed in
 $p^{3/2+o(1)}$ bit operations at algebraic values of their parameters.
 
@@ -289,9 +289,9 @@ H\"older means $K_q$, $q<1$ & $\mu_k$ & $Z(-q)^{1/q}$ \\
 $\mathcal A = \sum_{k=2}^{\infty}\frac{\log k}{k^2-1}$ & $\frac1{k^2-1}$ ($k\ge2$) & $-\zeta_F'(0)$ \\
 $\mathcal C = \sum_{k=1}^{\infty}\frac{\log k}{k(k+1)}$ & $\frac{1}{k(k+1)}$ & $-\zeta_F'(0)$ \\
 \midrule
-\multicolumn{3}{@{}p{\textwidth}@{}}{\emph{Analysis and geometry} (Sections~\ref{sec:theodorus} and~\ref{sec:HL},
+\multicolumn{3}{@{}p{\textwidth}@{}}{\emph{Analysis and geometry} (Sections~\ref{sec:theodorus}, \ref{sec:HL}, \ref{sec:somos},
 Remark~\ref{rem:puiseux}): the spiral of Theodorus, with Hlawka's constant
-$\lim_{n\to\infty}(\sum_{k<n}\arctan k^{-1/2} - 2\sqrt n)$; an algebraic example.} \\
+$\lim_{n\to\infty}(\sum_{k<n}\arctan k^{-1/2} - 2\sqrt n)$; an algebraic example; $t > 1$.} \\
 \midrule
 Theodorus $\sum_{k=1}^{\infty}\frac{1}{(k+1)\sqrt k}$ & $\frac1{k+1}$ & $\zeta_F(\frac12)$ \\
 Hlawka's constant & $\arctan\frac1{\sqrt k}$ & $\zeta_F(0)$ (regularized) \\
@@ -300,33 +300,30 @@ $\sum_{k=1}^{\infty}\frac{1}{k^{3/2}+1}$ & $\frac1{k^3-1}$ ($k\ge2$) & $\frac12+
 $\sum_{k=1}^{\infty}(k\arcsin\frac1k - 1)$ & $k\arcsin\frac1k - 1$ & $\zeta_F(0)$ (A323737) \\
 $\sum_{k=2}^{\infty}\zeta''(k)$ \cite{Fin18} & $\frac1{k(k-1)}$ ($k\ge2$) & $\zeta_F''(0)$ \\
 Boyadzhiev's constant \cite{Boy19} & $\frac1k\log(1+\frac1k)$ & $\zeta_F(0)$ \\
+Somos's $\sigma_2$; $\sigma_t = \prod_kk^{t^{-k}}$ & $1$; or $F_2$ ($t = 2$) & $e^{-\partial_s\Li_s(\frac1t)|_{s=0}}$; or $e^{\Li_{F_2}(0,\frac12)}$ \\
+Sondow--Hadjicostas $\gamma(z)$ & $F_1$ & $z^{-1}\Li_{F_1}(0,z)$ \\
 \midrule
-\multicolumn{3}{@{}p{\textwidth}@{}}{\emph{Mathematical physics} (Sections~\ref{sec:vortex}, \ref{sec:physics}):
-coaxial rings of unit radius spaced $\lambda$ apart ($\theta/2\pi \in \QQ$);
-hydrogen \cite{EKR11}, $\xi = I/(k_BT)$; Laplacian $\Delta$ on the unit sphere $S^2$ \cite{Eli95,Kir02}.} \\
+\multicolumn{3}{@{}p{\textwidth}@{}}{\emph{Fields and spectra} (Sections~\ref{sec:vortex}, \ref{sec:physics}):
+coaxial rings of unit radius spaced $\lambda$ apart ($\theta/2\pi \in \QQ$); Laplacian $\Delta$ on the unit sphere $S^2$
+\cite{Eli95,Kir02}; Kaluza--Klein tower of the top quark.} \\
 \midrule
 vortex rings $U(\lambda)$ & ${}_2F_1(\frac32,\frac32;2;-\frac{4}{\lambda^2k^2})$ & $\lambda^{-3}\zeta_F(3)$ \\
 ring resonators $S_\lambda(\theta)$ & ${}_2F_1(\frac32,\frac32;3;-\frac{4}{\lambda^2k^2})$ & $\frac{\pi}{2\lambda^3}L_F(3,\cos k\theta)$ \\
 Epstein--Hurwitz $E_a(t)$, $t > \frac12$ & $(1+\frac{a^2}{k^2})^{-t}$ & $\zeta_F(2t)$ \\
-Planck--Larkin $\sigma(T)$ & $e^{\xi/k^2} - 1 - \xi/k^2$ & $2\zeta_F(-2)$ \\
 $\operatorname{Tr}\Delta^{-3/2}$ & $(2+\frac1k)(1+\frac1k)^{-3/2}$ & $\zeta_F(2)$ \\
 Casimir energy $\frac12\operatorname{Tr}\Delta^{1/2}$ & $(2+\frac1k)(1+\frac1k)^{1/2}$ & $\frac12\zeta_F(-2) + \frac1{48}$ \\
 KK top tower \cite[(27)]{Pet02} & $(\tau_k - 1)y_k^2 - 1$ & $\zeta_F(0)$, $y_k = \arcsin\tau_k^{-1/2}$, \\
  & & $\tau_k = 4(m_t^2 + k^2/R^2)/m_H^2$ \\
 \midrule
-\multicolumn{3}{@{}p{\textwidth}@{}}{\emph{Geometric factors: polylogarithms and Lerch transcendents} (Sections~\ref{sec:geometric},
-\ref{sec:somos}); $F_1$, $F_2$ as above;
-$t > 1$; $j \in \frac12 + \ZZ$ for Bose--Einstein and Fermi--Dirac; Fisher's log-series distribution.} \\
+\multicolumn{3}{@{}p{\textwidth}@{}}{\emph{Statistical mechanics and probability} (Sections~\ref{sec:beyond}, \ref{sec:physics},
+\ref{sec:expsqrt}): hydrogen \cite{EKR11}, $\xi = I/(k_BT)$; $j \in \frac12 + \ZZ$ for Bose--Einstein and Fermi--Dirac;
+Landau levels of graphene, $\tau = E_1/(k_BT)$; Fisher's log-series distribution; wrapped stable density $p_t$.} \\
 \midrule
-Somos's $\sigma_2$; $\sigma_t = \prod_kk^{t^{-k}}$ & $1$; or $F_2$ ($t = 2$) & $e^{-\partial_s\Li_s(\frac1t)|_{s=0}}$; or $e^{\Li_{F_2}(0,\frac12)}$ \\
-Sondow--Hadjicostas $\gamma(z)$ & $F_1$ & $z^{-1}\Li_{F_1}(0,z)$ \\
+Planck--Larkin $\sigma(T)$ & $e^{\xi/k^2} - 1 - \xi/k^2$ & $2\zeta_F(-2)$ \\
 Bose--Einstein $g_{j}(z)$ & $1$ & $\Li_j(z)$ \\
 Fermi--Dirac $F_{j-1}(\eta)$, $\eta < 0$ & $1$ & $-\Li_j(-e^\eta)$ \\
+graphene $\sum_{n=1}^{\infty}e^{-\tau\sqrt n}$ & $1$ & $\Lambda(0;\tau,\frac12)$ \\
 log-series entropy $H(z)$ & $1$ & $\partial_s\Li_s(z)|_{s=1}$ \\
-\midrule
-\multicolumn{3}{@{}p{\textwidth}@{}}{\emph{Fractional spectra and diffusion} (Sections~\ref{sec:physics}, \ref{sec:expsqrt}): graphene; wrapped stable density $p_t$.} \\
-\midrule
-$\sum_ne^{-\tau\sqrt n}$, $\tau = E_1/(k_BT)$ & $1$ & $\Lambda(0;\tau,\frac12)$ \\
 $2\pi p_t(0) - 1$, $0 < \alpha < 2$ & $1$ & $2\Lambda(0;t,\alpha)$ \\
 \bottomrule
 \end{tabular*}
