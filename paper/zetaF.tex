@@ -2017,9 +2017,8 @@ $\prod_k(k+1)^2/(k(k+2))$ telescopes to $2$),
 \]
 and in particular the harmonic mean is $K_{-1} = 1/Z(1)$.
 
-By Proposition~\ref{prop:cont}, $Z$ is
-meromorphic with simple poles at $s = -1, -2, -3, \dots$ of residues $1/\log 2$, $-2/\log 2$, $\frac{7}{2\log2}, \dots$,
-and is analytic in $\operatorname{Re}s > -1$.
+By Proposition~\ref{prop:cont}, $Z$ is meromorphic and analytic in $\operatorname{Re}s > -1$, with simple poles at
+$s = -1, -2, -3, \dots$; the first three residues are $1/\log 2$, $-2/\log 2$ and $7/(2\log 2)$.
 
 \begin{proposition}\label{prop:Z}
 The H\"older means
@@ -3275,8 +3274,8 @@ the split points of Sections~\ref{sec:somos} and~\ref{sec:expsqrt} for the dampe
 to the counts \eqref{eq:counts}.)
 
 Tables~\ref{tab:apps} and~\ref{tab:appsref} show its timings with $8$ threads (on
-the machine of Section~\ref{sec:khresults}) for $\mathcal A$, $\mathcal C$, $T$ (for $K_{-1}$), $\mathcal T$, the vortex sum at
-$\lambda = 1$ ($\beta = 4$, $k_0 = 3$), $H(1)$, $\operatorname{Tr}\Delta^{-3/2}$ on $S^2$, $\sigma$ and $S = \sum_ke^{-\sqrt k}$. Besides the theta splitting, the
+the machine of Section~\ref{sec:khresults}) for $\mathcal A$, $\mathcal C$, $T$ (for $K_{-1}$), $\mathcal T$, $H(1)$, $\sigma$,
+the vortex sum at $\lambda = 1$ ($\beta = 4$, $k_0 = 3$), $\operatorname{Tr}\Delta^{-3/2}$ on $S^2$ and $S = \sum_ke^{-\sqrt k}$. Besides the theta splitting, the
 program implements the reference methods of Sections~\ref{sec:somos} and~\ref{sec:expsqrt} for $\sigma$ and $S$, Euler--Maclaurin
 summation for $\mathcal T$, and two reference methods for the others. The
 zeta-value expansion \eqref{eq:zetavalue} is applied after taking out the terms $k \le 31$, so that it converges
@@ -3316,21 +3315,21 @@ $\mathcal T$ & $10^4$ & $606$/$12$ & $7.17$\,s ($0.60$) & $1.09$\,s & $64$\,MB \
  & $10^5$ & $1\,918$/$38$ & $476$\,s ($0.65$) & $60.4$\,s & $277$\,MB \\
  & $10^6$ & $6\,068$/$120$ & $27\,804$\,s ($0.62$) & $3\,482$\,s & $1.65$\,GB \\
 \midrule
-$U(1)$ & $10^4$ & $303$/$24$ & $9.85$\,s ($0.52$) & $1.34$\,s & $73$\,MB \\
- & $10^5$ & $959$/$76$ & $677$\,s ($0.56$) & $85.6$\,s & $305$\,MB \\
- & $10^6$ & $3\,034$/$241$ & $37\,795$\,s ($0.50$) & $4\,736$\,s & $2.19$\,GB \\
-\midrule
 $H(1)$ & $10^4$ & $303$/$24$ & $6.15$\,s ($0.35$) & $0.86$\,s & $73$\,MB \\
  & $10^5$ & $959$/$76$ & $419$\,s ($0.41$) & $52.8$\,s & $419$\,MB \\
  & $10^6$ & $3\,034$/$241$ & $28\,465$\,s ($0.36$) & $3\,564$\,s & $2.44$\,GB \\
 \midrule
-$\operatorname{Tr}\Delta^{-3/2}$ & $10^4$ & $607$/$12$ & $4.12$\,s ($0.29$) & $0.65$\,s & $55$\,MB \\
- & $10^5$ & $1\,919$/$38$ & $255$\,s ($0.31$) & $32.7$\,s & $310$\,MB \\
- & $10^6$ & $6\,069$/$120$ & $16\,144$\,s ($0.29$) & $2\,021$\,s & $2.10$\,GB \\
-\midrule
 $\sigma$ & $10^4$ & $152$/$48$ & $10.4$\,s ($0.30$) & $1.41$\,s & $72$\,MB \\
  & $10^5$ & $480$/$152$ & $652$\,s ($0.29$) & $82.8$\,s & $148$\,MB \\
  & $10^6$ & $1\,517$/$483$ & $41\,423$\,s ($0.27$) & $5\,268$\,s & $948$\,MB \\
+\midrule
+$U(1)$ & $10^4$ & $303$/$24$ & $9.85$\,s ($0.52$) & $1.34$\,s & $73$\,MB \\
+ & $10^5$ & $959$/$76$ & $677$\,s ($0.56$) & $85.6$\,s & $305$\,MB \\
+ & $10^6$ & $3\,034$/$241$ & $37\,795$\,s ($0.50$) & $4\,736$\,s & $2.19$\,GB \\
+\midrule
+$\operatorname{Tr}\Delta^{-3/2}$ & $10^4$ & $607$/$12$ & $4.12$\,s ($0.29$) & $0.65$\,s & $55$\,MB \\
+ & $10^5$ & $1\,919$/$38$ & $255$\,s ($0.31$) & $32.7$\,s & $310$\,MB \\
+ & $10^6$ & $6\,069$/$120$ & $16\,144$\,s ($0.29$) & $2\,021$\,s & $2.10$\,GB \\
 \midrule
 $\sum_ke^{-\sqrt k}$ & $10^4$ & $608$/$12$ & $15.9$\,s ($0.57$) & $2.11$\,s & $73$\,MB \\
  & $10^5$ & $1\,920$/$38$ & $1\,025$\,s ($0.56$) & $129$\,s & $400$\,MB \\
@@ -3364,17 +3363,17 @@ $T$ ($K_{-1}$) & $10^4$ & $31.9$\,s & $4.12$\,s & $3.36$\,s & $1.16$\,s & $0.23$
 $\mathcal T$ & $10^4$ & -- & -- & $0.98$\,s & $0.50$\,s & $0.14$ & $0.46$ \\
  & $10^5$ & -- & -- & $181$\,s & $115$\,s & $0.38$ & $1.9$ \\
 \midrule
-$U(1)$ & $10^4$ & $53.5$\,s & $8.58$\,s & $61.3$\,s & $8.16$\,s & $5.4$ & $6.1$ \\
- & $10^5$ & $53\,348$\,s & $6\,905$\,s & -- & -- & $79$ & $81$ \\
-\midrule
 $H(1)$ & $10^4$ & $1.01$\,s & $0.15$\,s & $4.34$\,s & $0.93$\,s & $0.16$ & $0.17$ \\
  & $10^5$ & $304$\,s & $39.1$\,s & $1\,925$\,s & $345$\,s & $0.73$ & $0.74$ \\
 \midrule
-$\operatorname{Tr}\Delta^{-3/2}$ & $10^4$ & $2.38$\,s & $2.38$\,s & $1.31$\,s & $0.54$\,s & $0.32$ & $0.83$ \\
- & $10^5$ & $663$\,s & $663$\,s & $233$\,s & $124$\,s & $0.91$ & $3.8$ \\
-\midrule
 $\sigma^\dagger$ & $10^4$ & -- & -- & $1.07$\,s & $0.18$\,s & $0.10$ & $0.13$ \\
  & $10^5$ & -- & -- & $142$\,s & $19.1$\,s & $0.22$ & $0.23$ \\
+\midrule
+$U(1)$ & $10^4$ & $53.5$\,s & $8.58$\,s & $61.3$\,s & $8.16$\,s & $5.4$ & $6.1$ \\
+ & $10^5$ & $53\,348$\,s & $6\,905$\,s & -- & -- & $79$ & $81$ \\
+\midrule
+$\operatorname{Tr}\Delta^{-3/2}$ & $10^4$ & $2.38$\,s & $2.38$\,s & $1.31$\,s & $0.54$\,s & $0.32$ & $0.83$ \\
+ & $10^5$ & $663$\,s & $663$\,s & $233$\,s & $124$\,s & $0.91$ & $3.8$ \\
 \midrule
 $\sum_ke^{-\sqrt k}$ & $10^4$ & -- & -- & $2.92$\,s & $0.69$\,s & $0.18$ & $0.33$ \\
  & $10^5$ & -- & -- & $1\,703$\,s & $302$\,s & $1.7$ & $2.3$ \\
@@ -3436,10 +3435,10 @@ The values are, to $50$ digits (the $10^6$-digit files are in the repository\foo
   e^{\mathcal C-1} &= 0.80939402054063913071793188059409131721595399242500\ldots, \\
   K_{-1} &= 1.74540566240734686349459630968366106729493661877798\ldots, \\
   \mathcal T &= 1.86002507922119030718069591571714332466652412152345\ldots, \\
-  U(1) &= 0.26882772504004215799420784633078761581126503327691\ldots, \\
   H(1) &= 1.47282823195618529629494738382314582532386592787930\ldots, \\
-  \operatorname{Tr}\Delta^{-3/2} &= 2.07054447632160590509314982808257430800874099821595\ldots, \\
   \sigma &= 1.66168794963359412129581892274995074996441863502506\ldots, \\
+  U(1) &= 0.26882772504004215799420784633078761581126503327691\ldots, \\
+  \operatorname{Tr}\Delta^{-3/2} &= 2.07054447632160590509314982808257430800874099821595\ldots, \\
   S &= 1.67040681796633972123962780986372002147147238406408\ldots
 \end{align*}
 To our knowledge $\mathcal A$, $\mathcal C$ and $K_{-1}$ had previously been published to about $10^2$--$10^3$ digits
