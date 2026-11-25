@@ -1661,7 +1661,7 @@ are hypergeometric. With $k_0 = 2$ the Hurwitz zeta values are $\zeta(2j,2) = \z
 whose terms decrease like $4^{-j}j^{-3/2}$, so that $p$ bits need about $p/2$ even zeta values; with $k_0 = 1$ the
 series would converge only like $j^{-3/2}$.
 
-The $N = \Theta(p)$ values needed can be computed together in $\widetilde O(p^2)$ bit operations, for every $s$. For
+The $N = \Theta(p)$ zeta values needed can be computed together in $\widetilde O(p^2)$ bit operations, for every $s$~ \cite{Joh14}. For
 integer $s$ they are $\zeta(2), \dots, \zeta(N)$ minus finite power sums, and
 \[
   \log\Gamma(1+x) = -\gamma x + \sum_{n=2}^{\infty}\frac{(-1)^n\zeta(n)}{n}x^n,
@@ -1673,11 +1673,11 @@ With $L \approx p\log 2$ and $T \approx eL$,
 \]
 truncating the lower incomplete gamma series of $\Gamma(1+x) = \gamma(1+x,L) + \Gamma(1+x,L)$, and the sum is evaluated by
 binary splitting with polynomials in $x$ truncated to degree $N$; the numbers at the top of the product tree have
-$\widetilde O(Np)$ bits, so the cost is $\widetilde O(Np)$ \cite{Joh14}. (Equivalently one can apply Euler--Maclaurin summation to
+$\widetilde O(Np)$ bits, so the cost is $\widetilde O(Np)$. (Equivalently one can apply Euler--Maclaurin summation to
 $\log\Gamma(1+x)$ or $\psi(1+x)$ over $\RR[[x]]$, forming $\prod_{k<L}(k+x)$ or $\sum_{k<L}1/(k+x)$ by a product tree.) In
 particular all $\zeta(n)$, $n \le N$, even and odd, cost $\widetilde O(N^2)$ at precision $N$, which is quasi-optimal;
 the classical alternatives (Bernoulli numbers for the even values \cite{Har10}, Borwein's algorithm \cite{Bor00} or
-Euler products for each odd value) are not. For non-integer $s$, Euler--Maclaurin summation applied to the generating
+Euler products for each odd value) are not. For non-integer~$s$, Euler--Maclaurin summation applied to the generating
 function
 \[
   \sum_{n=0}^{\infty}\zeta(s+n,k_0)\,y^n = \sum_{k=k_0}^{\infty}\frac{k^{-s}}{1-y/k}
@@ -1785,7 +1785,7 @@ the dual terms.}
 \subsection{Euler--Maclaurin summation}\label{sec:em}
 For $N \ge k_0$ and $J \ge 1$, with $g(x) = F(x)x^{-s}$,
 \[
-  \zeta_F^{\ge k_0}(s) = \sum_{k=k_0}^{N-1}F(k)k^{-s} + \mathcal M_F(s;N) + \frac12g(N)
+  \zeta_F^{\ge k_0}(s) = \sum_{k=k_0}^{N-1} \frac{F(k)}{k^s} + \mathcal M_F(s;N) + \frac{g(N)}{2}
   - \sum_{j=1}^{J}\frac{B_{2j}}{(2j)!}g^{(2j-1)}(N) + R_J(s),
 \]
 with $|R_J(s)| \le 2\zeta(2J)(2\pi)^{-2J}\int_N^\infty|g^{(2J)}(x)|\dd x$. In our setting all the ingredients are
@@ -1793,10 +1793,12 @@ explicit: the Mellin part is $\mathcal M_F(s;N) = \int_N^\infty g(x)\dd x$, whic
 $\sum_na_nN^{1-s-n}/(s+n-1)$, and the
 derivatives $g^{(i)}(N)$ are, up to factorials, the Taylor coefficients of $F(x)x^{-s}$ at $x = N$, which for
 holonomic $F$ satisfy a linear recurrence, so that after the direct terms everything costs $O(J)$ arithmetic operations plus the Bernoulli
-numbers. Since $R_J$ is analytic for $\operatorname{Re}s > 1 - n_0 - 2J$, the formula gives the continuation in
+numbers.
+
+Since $R_J$ is analytic for $\operatorname{Re}s > 1 - n_0 - 2J$, the formula gives the continuation in
 growing half-planes, which is the classical proof that $\zeta_F^{\ge N}(s) - \mathcal M_F(s;N)$ is entire. For $p$ bits at fixed $s$ one
 needs $N$ and $J$ proportional to $p$, so the cost is $p^{2+o(1)}$: $\Theta(p)$ values $F(k)$, each in
-$O(\Mul(p)\log^2p)$ for $F \in \RegQ$ and together in $\widetilde O(p^2)$ for generic data (\emph{Generic data} at the beginning of
+$O(\Mul(p)\log^2p)$ for $\smash{F \in \RegQ}$ and together in $\smash{\widetilde O(p^2)}$ for generic data (\emph{Generic data} at the beginning of
 Section~\ref{sec:complexity}), and $\Theta(p)$ Bernoulli numbers.
 
 \emph{Example.} For the summand $F(k) = k\arcsin\frac1k - 1$ of Section~\ref{sec:zetavalue} at $s = 0$, so that $g = F$, the
@@ -2531,38 +2533,6 @@ real numbers whose expansion begins with $a_0, \ldots, a_N$ is an interval, thes
 $K$. Let $p_n/q_n$ be the convergents. Then $q_N = 2.484246\ldots\cdot10^{4\,999\,999}$, and the largest of these
 partial quotients is $a_{7\,384\,031} = 34\,770\,305$.
 
-These partial quotients look like those of a typical real number. We have $N/D = 0.969914$ and
-$\frac1N\log q_N = 1.187005$, against the constants $6\log2\log10/\pi^2 = 0.970270\ldots$ of Lochs' theorem
-\cite{Loc64} and $\pi^2/(12\log2) = 1.186569\ldots$ of L\'evy's theorem \cite{Lev36}, and the proportions of the
-partial quotients $1$, $2$ and $3$ are $0.414921$, $0.169996$ and $0.093136$, against the Gauss--Kuzmin probabilities
-$0.415037$, $0.169925$ and $0.093109$.
-
-\begin{proposition}\label{thm:khrat}
-%Assume that $K \in I$, i.e.\ that the $10^7$ digits of Section~\ref{sec:khresults} are correct.
-If $K = p/q$ with
-integers $p$ and $q > 0$, then $q \ge 10q_N + q_{N-1} > 2.587\cdot10^{5\,000\,000}$, and $p > 6.94\cdot10^{5\,000\,000}$.
-\end{proposition}
-
-\begin{proof}
-Let
-\[
-  x_t = \frac{tp_N + p_{N-1}}{tq_N + q_{N-1}} = [a_0; a_1, \ldots, a_N, t].
-\]
-Its denominator is $q(x_t) = tq_N + q_{N-1}$ (in lowest terms), and consecutive $x_t$ are Farey neighbours, since
-\begin{multline*}
-  \bigl((t+1)p_N + p_{N-1}\bigr)(tq_N + q_{N-1}) - (tp_N + p_{N-1})\bigl((t+1)q_N + q_{N-1}\bigr) \\
-  = p_Nq_{N-1} - p_{N-1}q_N = \pm1.
-\end{multline*}
-Exact rational arithmetic shows that $I$ lies
-between $x_9$ and $x_{27}$ and contains $x_{10}, \ldots, x_{26}$. A rational number strictly between two Farey
-neighbours $a/b$ and $c/e$ has denominator at least $b + e$. Hence every rational number in $I$ is either one of
-$x_{10}, \ldots, x_{26}$ or has denominator at least $q(x_9) + q(x_{10})$; in both cases its denominator is at least
-$q(x_{10}) = 10q_N + q_{N-1}$. The bound for $p$ follows from $K > 2.685$.
-\end{proof}
-
-The proposition rests on the rigorous error bounds of Section~\ref{sec:khbounds} and on the agreement of two
-independent computations.
-
 \begin{figure}[ht]
 \centering
 \begin{tikzpicture}
@@ -2597,6 +2567,38 @@ $z_n = \sqrt n\,(\log G_n - \log K)$ (right), for $10 \le n \le N = 9\,699\,141$
 $K e^{\pm2\sigma/\sqrt n}$ (left) and $\pm2\sigma$ (right), with $\sigma = 1.10$ estimated from the partial quotients.}
 \label{fig:khcf}
 \end{figure}
+
+These partial quotients look like those of a typical real number. We have $N/D = 0.969914$ and
+$\frac1N\log q_N = 1.187005$, against the constants $6\log2\log10/\pi^2 = 0.970270\ldots$ of Lochs' theorem
+\cite{Loc64} and $\pi^2/(12\log2) = 1.186569\ldots$ of L\'evy's theorem \cite{Lev36}, and the proportions of the
+partial quotients $1$, $2$ and $3$ are $0.414921$, $0.169996$ and $0.093136$, against the Gauss--Kuzmin probabilities
+$0.415037$, $0.169925$ and $0.093109$.
+
+\begin{proposition}\label{thm:khrat}
+%Assume that $K \in I$, i.e.\ that the $10^7$ digits of Section~\ref{sec:khresults} are correct.
+If $K = p/q$ with
+integers $p$ and $q > 0$, then $q \ge 10q_N + q_{N-1} > 2.587\cdot10^{5\,000\,000}$, and $p > 6.94\cdot10^{5\,000\,000}$.
+\end{proposition}
+
+\begin{proof}
+Let
+\[
+  x_t = \frac{tp_N + p_{N-1}}{tq_N + q_{N-1}} = [a_0; a_1, \ldots, a_N, t].
+\]
+Its denominator is $q(x_t) = tq_N + q_{N-1}$ (in lowest terms), and consecutive $x_t$ are Farey neighbours, since
+\begin{multline*}
+  \bigl((t+1)p_N + p_{N-1}\bigr)(tq_N + q_{N-1}) - (tp_N + p_{N-1})\bigl((t+1)q_N + q_{N-1}\bigr) \\
+  = p_Nq_{N-1} - p_{N-1}q_N = \pm1.
+\end{multline*}
+Exact rational arithmetic shows that $I$ lies
+between $x_9$ and $x_{27}$ and contains $x_{10}, \ldots, x_{26}$. A rational number strictly between two Farey
+neighbours $a/b$ and $c/e$ has denominator at least $b + e$. Hence every rational number in $I$ is either one of
+$x_{10}, \ldots, x_{26}$ or has denominator at least $q(x_9) + q(x_{10})$; in both cases its denominator is at least
+$q(x_{10}) = 10q_N + q_{N-1}$. The bound for $p$ follows from $K > 2.685$.
+\end{proof}
+
+The proposition rests on the rigorous error bounds of Section~\ref{sec:khbounds} and on the agreement of two
+independent computations.
 
 By Khinchin's theorem the geometric means $G_n = (a_1\cdots a_n)^{1/n}$ of almost every $x$ tend to $K$; whether
 $K$ itself has this property is not known. Its first $N$ partial quotients give $G_N = 2.686720\ldots$, and the
