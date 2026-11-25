@@ -1204,8 +1204,9 @@ Then part~(1) is Crandall's formula for $\Li_s(z)$ \cite[(34)]{Cra12} with $\lam
 his series for the Hurwitz zeta function \cite[(30)]{Cra12}; see also \cite{BB15}. Crandall states it for
 $\operatorname{Re}z \in [0,1)$, as an analytic continuation. What the theorem adds is the general regular factor $F$,
 for which the incomplete gamma functions become the holonomic functions $I_k$ and $J^{(\delta)}_w$, and the bound
-in~(2). An implementation of the case $F = 1$, differentiated in $s$, computes Somos's quadratic recurrence constant
-to $10^6$ digits (Section~\ref{sec:somos}).
+in~(2).
+%An implementation of the case $F = 1$, differentiated in $s$, computes Somos's quadratic recurrence constant
+%to $10^6$ digits (Section~\ref{sec:somos}).
 
 \subsection{The damped zeta function of $F = 1$}\label{sec:stretched}
 For $\tau > 0$ and $0 < r < 2$ let
@@ -1320,7 +1321,6 @@ A periodic weight $\chi(k)$ acts only on the theta side (Remark~\ref{rem:twist})
 the kernels are unchanged, the odd part uses the kernel of the summand divided by $x$, and the dual points are shifted
 as in Remark~\ref{rem:twist}. In the kernel route, a complex $z$ can also be handled by putting $|z|^k$ into the kernel
 and treating $(z/|z|)^k = e^{2\pi i\alpha_1k}$ as an additive twist, with the real dual points $\pi^2(n-\alpha_1)^2$.
-
 The power may also be shifted:
 \[
   z^k(k+a)^{-s}F(k) = z^{-a}\psi(k+a), \qquad \psi(y) = z^yF(y-a)y^{-s},
@@ -1329,9 +1329,9 @@ and $F(y-a)$ is again regular at infinity. Poisson summation over the shifted la
 characteristic), applied to the even and the odd part of $\psi$ (the latter written as $y$ times the kernel of
 $\psi(y)/y$), gives dual terms with the factors $\cos 2\pi ma$ and $\sin 2\pi ma$. The lattice points with
 $|n+a| < k_0$ are treated like the terms $k < k_0$ in Theorem~\ref{thm:split}. This is Crandall's sign trick
-\cite[\S2.4]{Cra12}. For $F = 1$ it gives the Lerch transcendent $\Phi(z,s,a) = \sum_{k=0}^{\infty}z^k(k+a)^{-s}$.
+\cite[\S2.4]{Cra12}. For $F = 1$ it gives the classical Lerch transcendent $\Phi(z,s,a) = \sum_{k=0}^{\infty}z^k(k+a)^{-s}$.
 
-\subsection{Limits}\label{sec:limits}
+\subsection{Limits of the method}\label{sec:limits}
 The splitting gains nothing when the kernel is itself a theta series: then each $k$-term is a rapidly convergent sum
 and the method sees a two-dimensional lattice. For instance, by its partial fraction expansion,
 $\operatorname{sech}(\pi x)$ has the kernel
@@ -1340,7 +1340,6 @@ $\operatorname{sech}(\pi x)$ has the kernel
 \]
 and the Lambert series $\sum_kk^{-s}/(e^{\tau k}-1) = \sum_{j=1}^{\infty}\Lambda(s;j\tau,1)$ needs $p/\tau$
 polylogarithms. Then about $p$ terms are needed, and nothing is gained over direct summation.
-
 The same happens for $L$-functions of degree $d \ge 2$, whose dual kernels decay like $e^{-c(n/\sqrt N)^{2/d}}$, and
 for lattice sums $\sum_{k\in\ZZ^d}F(Q(k))$ with a positive definite quadratic form $Q$: replacing $e^{-k^2u}$ by
 $e^{-Q(k)u}$ and using Ewald's theta transformation gives a splitting, but with $O(p^{d/2})$ terms.
@@ -1647,7 +1646,7 @@ which justifies the interchange.
 \end{proof}
 
 Its terms have size $(R/k_0)^n$, so $p$ bits need about $p/\log_2(k_0/R)$ Hurwitz zeta values. Increasing $k_0$ accelerates the convergence at the price of more
-explicit terms $F(k)k^{-s}$, $k < k_0$; this is the classical acceleration of zeta series \cite{FV96}.
+explicit terms $F(k)k^{-s}$, $k < k_0$; this technique is classical~\cite{FV96}.
 
 The $N = \Theta(p)$ values needed can be computed together in $\widetilde O(p^2)$ bit operations, for every $s$. For
 integer $s$ they are $\zeta(2), \dots, \zeta(N)$ minus finite power sums, and
@@ -1706,12 +1705,13 @@ with $|a_n|k^{-\sigma-n} \ge 2^{-p}$; the cell $(k, n)$ needs only about $p + \l
 \item \emph{long columns} $n < n_1$, as $\zeta(s+n, K_0) = \zeta(s+n) - \sum_{k=1}^{K_0-1}k^{-s-n}$, where the
 subtraction costs relative but not absolute precision.
 \end{itemize}
+
 No algorithm for the Hurwitz zeta function is needed, and only $n_1$ zeta values. In a column, by a dilation (Section~\ref{sec:twists}),
 only $K_0 \le k < 2K_0$ and the odd $k \ge 2K_0$ need to be summed: if $X$ is that
 partial sum, then $\zeta(s+n, K_0) = X/(1 - 2^{-s-n})$. The rows cost $O(K_0\Mul(p)\log^2p)$, while the
 number $\Theta(p/\log(K_0/R))$ of columns decreases only logarithmically in $K_0$. Peeling off rows therefore saves at most a
-factor $\log p$ (with $K_0 \approx p/\log p$), and the cost remains $p^{2+o(1)}$. In practice the gain is a constant factor. The
-implementation for Khinchin's constant in FLINT (Section~\ref{sec:khimpl}) uses $K_0$ between $6$ and $12$, so
+factor $\log p$ (with $K_0 \approx p/\log p$), and the cost remains $p^{2+o(1)}$. In practice the gain is a constant factor.
+An optimized implementation of the zeta expansion for Khinchin's constant in FLINT (Section~\ref{sec:khimpl}) uses $K_0$ between $6$ and $12$, so
 about three times fewer columns than with $K_0 = 2$, and $K(n_1)$ between $2^3$ and $2^{17}$, so no zeta values for
 $n \ge n_1$. Its rows are products of logarithms, all obtained from $\log q$ for the primes $q \le K_0$.
 
