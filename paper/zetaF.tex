@@ -463,13 +463,6 @@ that \cite{Joh21} argued only briefly.
 To our knowledge Dirichlet series for holonomic $F$ have not been studied as such. What holonomy adds is that every piece of the splitting is again holonomic, which is
 what makes the fast evaluation possible.
 
-%In physics, sums of the class are usually truncated and the tail estimated by its leading term;
-%besides the vortex rings of Table~\ref{tab:constants}, examples are Matsubara-frequency sums of one-loop integrals at
-%finite temperature \cite{HLS24}, with arctangents of algebraic functions of the frequency index, and sums over
-%Kaluza--Klein towers \cite{Pet02}, with $\arcsin^2$ of algebraic functions of the mode number. Classical sums such as
-%$\sum_k\log\cos\frac\pi k$, whose summands are analytic at infinity but not holonomic, are outside the class
-%(Section~\ref{sec:open}).
-
 \subsection{Outline}
 Section~\ref{sec:defs} defines the classes $\Reg$ and $\RegQ$ of summands and the functions
 \eqref{eq:functions}, and recalls the fast evaluation of holonomic functions. Section~\ref{sec:splitting} works out one
@@ -479,8 +472,11 @@ uniform bounds and their consequences for integer sequences, and compares the th
 methods. Section~\ref{sec:khinchin} defines the Khinchin zeta function and gives three algorithms for Khinchin's
 constant, with an implementation and a computation to $10^7$ digits. Section~\ref{sec:other} treats other
 constants of Table~\ref{tab:constants}, and Section~\ref{sec:open} lists open problems. Appendix~\ref{app:cost} describes a
-Lean formalization of much of the paper, including the corrections it led to, and contains the cost analysis;
+Lean formalization of much of the paper and contains the cost analysis;
 Appendix~\ref{sec:khpseudo} an annotated reference implementation for Khinchin's constant.
+
+The git repository containing this paper and associated code
+and data is \url{https://github.com/fredrik-johansson/holonomic-sums/}.
 
 %======================================================================
 \section{Preliminaries}\label{sec:defs}
@@ -583,7 +579,7 @@ analytic questions concern the tails; the splittings below are applied to a tail
 enough for the expansion of $F$ at infinity to converge at $k_0$, and the terms with $k < k_0$ are added directly. We call $\Li_F$ and $\Lambda_F$ \emph{damped}, as opposed to
 $\zeta_F$ and $L_F$, since the factors $z^k$ and $e^{-\tau k^r}$ make the series converge; for $r = 1$ the two
 coincide, $\Lambda_F(s;\tau,1) = \Li_F(s,e^{-\tau})$. The name \emph{damped zeta function} is ours; for
-$r = \frac12$ and real $\tau$ these are sums of Boltzmann factors over energy levels $E_k \propto \sqrt k$, such as
+$r = \frac12$ and real $\tau$ these are, in physical terms, sums of Boltzmann factors over energy levels $E_k \propto \sqrt k$, such as
 the relativistic Landau levels of graphene.
 
 \begin{lemma}\label{lem:reduction}
@@ -736,10 +732,16 @@ $K$, $\mu_k$, $Z$ & Khinchin's constant, Gauss--Kuzmin probabilities, Khinchin z
 \section{Theta splitting}\label{sec:splitting}
 
 The model is Riemann's second proof of the functional equation \cite{Rie59}. Inserting
-$k^{-s} = \Gamma(\frac s2)^{-1}\int_0^\infty u^{s/2-1}e^{-k^2u}\dd u$ into $\zeta(s) = \sum_{k=1}^{\infty}k^{-s}$
-writes $\zeta(s)$ as the Mellin transform of the theta series $\Theta(u) = \sum_{k=1}^{\infty}e^{-k^2u}$. Splitting the
+\[
+k^{-s} = \frac{1}{\Gamma(\tfrac s2)} \int_0^\infty u^{s/2-1}e^{-k^2u}\dd u
+\]
+into $\zeta(s) = \sum_{k=1}^{\infty}k^{-s}$
+allows writing $\zeta(s)$ as the Mellin transform of the theta series $\Theta(u) = \sum_{k=1}^{\infty}e^{-k^2u}$. Splitting the
 integral at $u = \pi$, integrating termwise on $[\pi,\infty)$ and using the theta transformation
-$\Theta(u) = \frac12\sqrt{\pi/u} - \frac12 + \sqrt{\pi/u}\,\Theta(\pi^2/u)$ on $(0,\pi]$ gives
+\[
+\Theta(u) = \frac12\sqrt{\pi/u} - \frac12 + \sqrt{\pi/u}\,\Theta(\pi^2/u)
+\]
+on $(0,\pi]$ gives
 \begin{multline}\label{eq:riemann}
   \zeta(s) = \sum_{k=1}^{\infty}k^{-s}Q\Bigl(\frac s2,\pi k^2\Bigr)
   + \frac{\pi^{s-1/2}\Gamma(\frac{1-s}2)}{\Gamma(\frac s2)}\sum_{m=1}^{\infty}m^{s-1}Q\Bigl(\frac{1-s}2,\pi m^2\Bigr) \\
@@ -749,7 +751,7 @@ with $Q$ as in Section~\ref{sec:evalhol}. Both sums converge like $\sum_ke^{-\pi
 under $s \mapsto 1-s$ is the functional equation. For general $F$, the factor $f(1/k)$ is absorbed by replacing
 $u^{s/2-1}/\Gamma(\frac s2)$ with a kernel $h_s(u)$ (Section~\ref{sec:kernel}); the splitting point $u_0$ becomes a
 free parameter that balances the two sides (Theorem~\ref{thm:split}); and when $F$ is holonomic, so are both sides,
-as functions of $k^2$ and $m^2$ (Section~\ref{sec:twosides}). We first carry out these steps for one sum.
+as functions of $k^2$ and $m^2$ (Section~\ref{sec:twosides}). %We first carry out these steps for one sum.
 
 \subsection{A first example}\label{sec:workedexample}
 Before the general construction, here is Theorem~A for a sum with $F \ne 1$ in which every piece is explicit. Let
@@ -1128,10 +1130,6 @@ where $-\partial_s\Li_s(z)|_{s=1} = \sum_kz^k\log(k)/k$.
 
 Damped zeta functions occur, for example, in connection with differential equations and probability distributions with
 a fractional parameter; see Section~\ref{sec:expsqrt} for an example.
-
-%We have checked each splitting identity of this section numerically, by summing every piece as a series and comparing
-%with an independent evaluation; the scripts are in the directory \texttt{paper/checks} of the repository
-%(\url{https://github.com/fredrik-johansson/holonomic-sums}).
 
 \subsection{The polylogarithm: geometric factors}\label{sec:geometric}
 Let $F$ satisfy \eqref{eq:f} and let $0 < |z| < 1$. Write $z = e^{2\pi i\alpha}$ with $\alpha = \alpha_1 + i\alpha_2$,
@@ -1554,10 +1552,11 @@ This proves \cite[Theorem~2]{Joh21} for $B_n$ and $E_n$, extends it to $B_n(x)$ 
 explicit. The classical algorithms for $B_n$ (from $\zeta(n)$ by an Euler product, or multimodular \cite{Har10}) take
 $n^{2+o(1)}$ bit operations. Harvey's subquadratic algorithm \cite{Har14}, which computes $B_n$ modulo many primes, has
 a time--space tradeoff: with a parameter $\frac13 \le \alpha \le \frac12$ it uses $n^{1+\alpha}\log^{4-\alpha+o(1)}n$
-bit operations and $O(n^{2-2\alpha}\log^{1+2\alpha}n)$ bits of memory. At $\alpha = \frac13$ it is faster than
-Corollary~\ref{cor:bernoulli} but needs $n^{4/3+o(1)}$ bits of memory; at $\alpha = \frac12$ its memory is
-$O(n\log^2n)$ and its time $n^{3/2}\log^{7/2+o(1)}n$, comparable to the $O(n^{3/2}\log^{9/2}n)$ of
-Corollary~\ref{cor:bernoulli} with $\Mul(n) = O(n\log n)$. Harvey's algorithm has only been stated for $B_n$, although
+bit operations and $O(n^{2-2\alpha}\log^{1+2\alpha}n)$ bits of memory.
+At $\alpha = \frac13$ it is faster than Corollary~\ref{cor:bernoulli} but needs $n^{4/3+o(1)}$ bits of memory;
+at $\alpha = \frac12$ its memory is $O(n\log^2n)$ and its time $n^{3/2}\log^{7/2+o(1)}n$, comparable to the $O(n^{3/2}\log^{9/2}n)$ of
+Corollary~\ref{cor:bernoulli} with $\Mul(n) = O(n\log n)$.
+Harvey's algorithm has only been stated for $B_n$, although
 it may well extend to $E_n$ and $B_{n,\chi}$; we know of no other published subquadratic algorithm for $E_n$,
 $B_n(x)$ or $B_{n,\chi}$.
 
@@ -2488,8 +2487,8 @@ digits the theta splitting is $5.7$ times faster ($11.4$ hours of wall time agai
 ($10.5$ GB against $15.3$ GB). Both methods parallelize almost perfectly: the ratio of CPU to wall time is $7.9$--$8.0$ on
 $8$ threads. The $10^7$-digit result of the theta splitting has error radius $1.8\cdot10^{-10\,000\,044}$, and the
 two results agree. Since the theta splitting shares nothing with the zeta-value method (no Bernoulli numbers or power
-sums), it is a genuinely independent check. The $10^7$ digits after the decimal point are available at
-\url{https://github.com/fredrik-johansson/holonomic-sums/blob/main/results/digits/khinchin_10000000.txt}.
+sums), it is a genuinely independent check. The $10^7$ digits after the decimal point are available
+in the repository.\footnote{\url{https://github.com/fredrik-johansson/holonomic-sums/blob/main/results/digits/khinchin_10000000.txt}}
 
 \subsection{The continued fraction of $K$}\label{sec:khcf}
 With $D = 10^7$ and $d = \lfloor 10^DK\rfloor$, we have $K \in I = [d, d+1] \cdot 10^{-D}$. We computed the
@@ -2534,13 +2533,6 @@ $q(x_{10}) = 10q_N + q_{N-1}$. The bound for $p$ follows from $K > 2.685$.
 The proposition rests on the rigorous error bounds of Section~\ref{sec:khbounds} and on the agreement of two
 independent computations.
 
-By Khinchin's theorem the geometric means $G_n = (a_1\cdots a_n)^{1/n}$ of almost every $x$ tend to $K$; whether
-$K$ itself has this property is not known. Its first $N$ partial quotients give $G_N = 2.686720\ldots$, and the
-normalized error $z_n = \sqrt n\,(\log G_n - \log K)$ behaves as the central limit theorem for $\sum_k\log a_k$
-\cite{IK02} predicts (Figure~\ref{fig:khcf}): batch means over blocks of $10^4$ partial quotients give a standard
-deviation $\sigma \approx 1.10$ (less than $\operatorname{Var}(\log a_1)^{1/2} = 1.18$, since consecutive partial quotients
-are weakly correlated), $|z_n| < 3.6$ for $n \ge 10^3$, and $z_N = 1.47 \approx 1.34\,\sigma$.
-
 \begin{figure}[ht]
 \centering
 \begin{tikzpicture}
@@ -2575,6 +2567,13 @@ $z_n = \sqrt n\,(\log G_n - \log K)$ (right), for $10 \le n \le N = 9\,699\,141$
 $K e^{\pm2\sigma/\sqrt n}$ (left) and $\pm2\sigma$ (right), with $\sigma = 1.10$ estimated from the partial quotients.}
 \label{fig:khcf}
 \end{figure}
+
+By Khinchin's theorem the geometric means $G_n = (a_1\cdots a_n)^{1/n}$ of almost every $x$ tend to $K$; whether
+$K$ itself has this property is not known. Its first $N$ partial quotients give $G_N = 2.686720\ldots$, and the
+normalized error $z_n = \sqrt n\,(\log G_n - \log K)$ behaves as the central limit theorem for $\sum_k\log a_k$
+\cite{IK02} predicts (Figure~\ref{fig:khcf}): batch means over blocks of $10^4$ partial quotients give a standard
+deviation $\sigma \approx 1.10$ (less than $\operatorname{Var}(\log a_1)^{1/2} = 1.18$, since consecutive partial quotients
+are weakly correlated), $|z_n| < 3.6$ for $n \ge 10^3$, and $z_N = 1.47 \approx 1.34\,\sigma$.
 
 %======================================================================
 \section{Other constants}\label{sec:other}
@@ -2673,10 +2672,11 @@ with
 \[
 F_x(k) = k\log\Bigl(1+\frac xk\Bigr) - x + \frac{x^2}{2k}
 \]
-which interpolates $G(n) = \prod_{i=0}^{n-2} i!$, with Glaisher's constant
-as the particular value $A = (2^{1/24}e^{1/8}\pi^{-1/4}/G(\frac12))^{2/3}$.
+which interpolates $G(n) = \prod_{i=0}^{n-2} i!$.
 For algebraic $x$, the value $G(x)$ is thus computable in time $p^{3/2+o(1)}$;
 unlike $\psi(x)$ and $\Gamma(x)$ no better method is known when $x \in \Qbar \setminus \ZZ$.
+Glaisher's constant
+is the particular value $A = (2^{1/24}e^{1/8}\pi^{-1/4}/G(\frac12))^{2/3}$.
 \end{remark}
 
 \subsection{The Alladi--Grinstead and L\"uroth constants}\label{sec:AG}
@@ -3243,7 +3243,7 @@ at the cutoff from $4xF'' + 2F' - F = 0$, and $\int_M^\infty e^{-\sqrt x}\dd x =
 \subsection{Computations}\label{sec:appcomp}
 We computed the constants of Sections~\ref{sec:AG}--\ref{sec:expsqrt} with a generic implementation of
 Theorem~\ref{thm:complexity} at $s = 0$ (at $s = \frac12$ for $\mathcal T$), the program \texttt{holsum}
-(\url{https://github.com/fredrik-johansson/holonomic-sums}). It is much less optimized than the implementation of
+in the repository.\footnote{\url{https://github.com/fredrik-johansson/holonomic-sums}} It is much less optimized than the implementation of
 Section~\ref{sec:khimpl}: ball arithmetic
 throughout, FLINT's default matrix products, heuristic (but conservative) truncation of the
 series, the same growth factor $4$, and split point $u_0 = \frac1{16}$ for the constants of
@@ -3406,8 +3406,7 @@ series), which grows by a factor of about $130$ per decade but is $4.6$ times fa
 $10^5$ digits, so that the crossover should be near $10^7$ digits. For the generating function $\sum_kF(k)2^{-k}$ of a
 general $F \in \Reg$ there is no such shortcut.
 
-The values are, to $50$ digits (the $10^6$-digit files are in
-\url{https://github.com/fredrik-johansson/holonomic-sums/tree/main/results/digits}),
+The values are, to $50$ digits (the $10^6$-digit files are in the repository\footnote{\url{https://github.com/fredrik-johansson/holonomic-sums/tree/main/results/digits}}),
 \begin{align*}
   \mathcal A &= 1.02313872642793929553508807697521809749214527936608\ldots, \\
   \mathcal C &= 0.78853056591150896106027632345455466647274966822328\ldots, \\
@@ -3742,7 +3741,8 @@ Corollaries~\ref{cor:bernoulli} and~\ref{cor:egf} (Section~\ref{app:sequences}),
 (Section~\ref{app:geometric}), and sketches Claim~C (Section~\ref{app:stretched}). Much of the mathematics of the paper,
 including every estimate these proofs use, has also been formalized, and we first describe that formalization.
 
-\emph{The formalization.} The directory \texttt{lean/} of the repository of this paper contains a formalization in
+\emph{The formalization.} The directory \texttt{lean/} of the repository\footnote{\url{https://github.com/fredrik-johansson/holonomic-sums/tree/main/lean}}
+of this paper contains a formalization in
 Lean~4 with its mathematics library Mathlib (Lean v4.37.0-rc1, Mathlib of November 2026; about $20\,000$ lines). It
 contains no unproved statements (\texttt{sorry}) and introduces no axioms; the main theorems depend only on the three
 standard axioms of Lean's logic. Like the proof text below, the formalization was produced by an LLM-based agent, not
