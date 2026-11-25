@@ -1,7 +1,7 @@
 """
 Reference implementation of the dilogarithm-series theta splitting for
 Khinchin's constant (Theorem thm:khinchin of zetaF.tex), listed with
-annotations in Appendix B of the paper (khinchin_listing.tex).
+annotations in Appendix B, which copies it: keep its line numbers fixed.
 
 Exact rational matrices (python-flint fmpq_mat) are multiplied by binary
 splitting; real numbers are Arb balls, and every truncation adds its bound

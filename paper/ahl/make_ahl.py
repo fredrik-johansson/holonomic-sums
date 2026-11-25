@@ -23,7 +23,7 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PAPER = os.path.dirname(HERE)
-INPUTS = ['zetaF.tex', 'khinchin_listing.tex', 'khinchin_ref.py', 'khcf_gm.dat']
+INPUTS = ['zetaF.tex']
 
 PREAMBLE = r'''\pdfoutput=1
 \documentclass[AHL,XML,longabstracts,Unicode]{cedram}
