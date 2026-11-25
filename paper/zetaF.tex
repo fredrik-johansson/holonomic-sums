@@ -1543,8 +1543,8 @@ Dirichlet beta function, so the corollary computes the values of all Dirichlet $
 the negative integers, exactly.
 
 This proves \cite[Theorem~2]{Joh21} for $B_n$ and $E_n$, extends it to $B_n(x)$ and $B_{n,\chi}$, and makes the bounds
-explicit. The classical algorithms for $B_n$ (from $\zeta(n)$ by an Euler product, or multimodular \cite{Har10}) take
-$n^{2+o(1)}$ bit operations. Harvey's subquadratic algorithm \cite{Har14}, which computes $B_n$ modulo many primes, has
+explicit. The classical algorithms for $B_n$ (via the Euler product for $\zeta(n)$, or multimodular \cite{Har10}) take
+$n^{2+o(1)}$ bit operations. Harvey's subquadratic modular algorithm \cite{Har14} has
 a time--space tradeoff: with a parameter $\frac13 \le \alpha \le \frac12$ it uses $n^{1+\alpha}\log^{4-\alpha+o(1)}n$
 bit operations and $O(n^{2-2\alpha}\log^{1+2\alpha}n)$ bits of memory.
 At $\alpha = \frac13$ it is faster than Corollary~\ref{cor:bernoulli} but needs $n^{4/3+o(1)}$ bits of memory;
@@ -1661,7 +1661,8 @@ are hypergeometric. With $k_0 = 2$ the Hurwitz zeta values are $\zeta(2j,2) = \z
 whose terms decrease like $4^{-j}j^{-3/2}$, so that $p$ bits need about $p/2$ even zeta values; with $k_0 = 1$ the
 series would converge only like $j^{-3/2}$.
 
-The $N = \Theta(p)$ zeta values needed can be computed together in $\widetilde O(p^2)$ bit operations, for every $s$~ \cite{Joh14}. For
+In general, the $N = \Theta(p)$ zeta values needed by zeta
+expansion can be computed together in $\widetilde O(p^2)$ bit operations, for every $s$~ \cite{Joh14}. For
 integer $s$ they are $\zeta(2), \dots, \zeta(N)$ minus finite power sums, and
 \[
   \log\Gamma(1+x) = -\gamma x + \sum_{n=2}^{\infty}\frac{(-1)^n\zeta(n)}{n}x^n,
@@ -1675,9 +1676,9 @@ truncating the lower incomplete gamma series of $\Gamma(1+x) = \gamma(1+x,L) + \
 binary splitting with polynomials in $x$ truncated to degree $N$; the numbers at the top of the product tree have
 $\widetilde O(Np)$ bits, so the cost is $\widetilde O(Np)$. (Equivalently one can apply Euler--Maclaurin summation to
 $\log\Gamma(1+x)$ or $\psi(1+x)$ over $\RR[[x]]$, forming $\prod_{k<L}(k+x)$ or $\sum_{k<L}1/(k+x)$ by a product tree.) In
-particular all $\zeta(n)$, $n \le N$, even and odd, cost $\widetilde O(N^2)$ at precision $N$, which is quasi-optimal;
+particular all $\zeta(n)$, $n \le N$, cost $\widetilde O(N^2)$ at precision $N$, which is quasi-optimal;
 the classical alternatives (Bernoulli numbers for the even values \cite{Har10}, Borwein's algorithm \cite{Bor00} or
-Euler products for each odd value) are not. For non-integer~$s$, Euler--Maclaurin summation applied to the generating
+Euler products) are not. For non-integer~$s$, Euler--Maclaurin summation applied to the generating
 function
 \[
   \sum_{n=0}^{\infty}\zeta(s+n,k_0)\,y^n = \sum_{k=k_0}^{\infty}\frac{k^{-s}}{1-y/k}
@@ -1728,16 +1729,6 @@ An optimized implementation of the zeta expansion for Khinchin's constant in FLI
 about three times fewer columns than with $K_0 = 2$, and $K(n_1)$ between $2^3$ and $2^{17}$, so no zeta values for
 $n \ge n_1$. Its rows are products of logarithms, all obtained from $\log q$ for the primes $q \le K_0$.
 
-Theorem~\ref{thm:split} is a smooth version of the same picture (Figure~\ref{fig:cells}, right). By its series for
-$I_k$, the $k$-term is row $k$ with the weight $Q(\frac{s+n}2, k^2u_0)$. This weight is close to $1$ above the parabola
-$n = 2u_0k^2 - \sigma$ and close to $0$ below it, with a transition of width $O(k\sqrt{u_0})$. Once the parabola has
-left the significant cells, the remaining weight of row $k$ is about $e^{-k^2u_0}$, so the $k$-terms end at
-$k_{\max} \approx \sqrt{p\log2/u_0}$. The cells below the parabola are never summed individually. In column $n$ their
-sum is $\sum_{k}k^{-s-n}P(\frac{s+n}2, k^2u_0)$, the part of Riemann's splitting of $\zeta(s+n, k_0)$ that Poisson
-summation turns into dual terms, and the sum over $n$ of these columns is $\sqrt\pi\sum_mJ_m + M$. The zeta-value
-expansion covers what the rows leave with $\Theta(p)$ columns of $p$ bits each, and the theta splitting covers it with
-$O(\sqrt p)$ dual terms.
-
 \begin{figure}[ht]
 \centering
 \begin{tikzpicture}[x=0.52cm, y=0.62cm, font=\footnotesize]
@@ -1777,10 +1768,22 @@ $O(\sqrt p)$ dual terms.
 \caption{The cells $(k, n)$ of $\sum_{k=k_0}^{\infty}\sum_{n=0}^{\infty}a_nk^{-s-n}$ (schematic); the cells above the
 solid curve $|a_n|k^{-\sigma-n} = 2^{-p}$ are negligible. Left: zeta-value expansion with rows $k < K_0$, short columns
 summed directly and long columns from zeta values. Right: Theorem~\ref{thm:split}, where row $k$ is weighted by
-$Q(\frac{s+n}2, k^2u_0)$, which switches smoothly across the dashed parabola, and the cells below it are replaced by
+$Q(\frac{s+n}2, k^2u_0)$, which switches smoothly across the dashed parabola; the cells below it are replaced by
 the dual terms.}
 \label{fig:cells}
 \end{figure}
+
+Theorem~\ref{thm:split} is a smooth version of the same picture (Figure~\ref{fig:cells}, right). By its series for
+$I_k$, the $k$-term is row $k$ with the weight $Q(\frac{s+n}2, k^2u_0)$. This weight is close to $1$ above the parabola
+$n = 2u_0k^2 - \sigma$ and close to $0$ below it, with a transition of width $O(k\sqrt{u_0})$. Once the parabola has
+left the significant cells, the remaining weight of row $k$ is about $e^{-k^2u_0}$, so the $k$-terms end at
+$k_{\max} \approx \sqrt{p\log2/u_0}$. The cells below the parabola are never summed individually. In column $n$ their
+sum is $\sum_{k}k^{-s-n}P(\frac{s+n}2, k^2u_0)$, the part of Riemann's splitting of $\zeta(s+n, k_0)$ that Poisson
+summation turns into dual terms, and the sum over $n$ of these columns is $\sqrt\pi\sum_mJ_m + M$. The zeta-value
+expansion covers what the rows leave with $\Theta(p)$ columns of $p$ bits each, and the theta splitting covers it with
+$O(\sqrt p)$ dual terms.
+
+
 
 \subsection{Euler--Maclaurin summation}\label{sec:em}
 For $N \ge k_0$ and $J \ge 1$, with $g(x) = F(x)x^{-s}$,
@@ -1935,7 +1938,10 @@ holonomic, so that the dual moments are again values of a holonomic system. For 
 $n$. For $q = 1$ this is $\Li_F(s,e^{-\tau})$, which Theorem~\ref{thm:geometric} already covers; the new cases are
 $q \ge 2$. We have not written out the orders of the recurrences, the guard bits or the starting values in full.
 The classical alternatives are direct summation, with $p^{1+1/r+o(1)}$ bit operations, and the expansion
-$\Lambda(s;\tau,r) = M_\tau(1-s) + \sum_{n=0}^{\infty}\zeta(s-rn)(-\tau)^n/n!$ in zeta values (from a
+\[
+\Lambda(s;\tau,r) = M_\tau(1-s) + \sum_{n=0}^{\infty}\zeta(s-rn)(-\tau)^n/n!
+\]
+in zeta values (from a
 Mellin--Barnes integral; see \cite{Joh26}), which converges for $r < 1$, and for $r = 1$ when $\tau < 2\pi$, and costs
 $p^{2+o(1)}$ like \eqref{eq:zetavalue}. An implementation for $r = \frac12$ computes $\sum_ke^{-\sqrt k}$ to $10^6$
 digits (Section~\ref{sec:expsqrt}). For $r = 1$ Proposition~\ref{prop:expsplit} is an alternative to
