@@ -61,7 +61,7 @@ Throughout, $F$ is analytic at infinity:
 \end{equation}
 and $n_0 = \min\{n : a_n \ne 0\}$ (we exclude $f = 0$). We write $\zeta_F(s) = \sum_{k=1}^{\infty}F(k)k^{-s}$ and
 $\zeta_F^{\ge k_0}(s) = \sum_{k=k_0}^{\infty}F(k)k^{-s}$. Most of what follows is a routine consequence of the expansion in
-Hurwitz zeta values \cite{FV96}, \cite[Proposition~5.6]{Joh26},
+Hurwitz zeta values \cite{FV96}, \cite[Proposition~5.7]{Joh26},
 \begin{equation}\label{eq:zetavalue}
   \zeta_F^{\ge k_0}(s) = \sum_{n=0}^{\infty}a_n\,\zeta(s+n,k_0), \qquad \zeta(w,k_0) = \sum_{k=k_0}^{\infty}k^{-w},
 \end{equation}
@@ -120,7 +120,7 @@ where $P$ is a polynomial whose coefficients are linear in $F(k_0), F'(k_0), \do
 \begin{proof}
 The first formula is termwise integration. By \eqref{eq:zetavalue}, the difference is
 $\sum_{n=0}^{\infty}a_n(\zeta(s+n,k_0) - k_0^{1-s-n}/(s+n-1))$, a locally uniformly convergent series of entire
-functions (the classical proof is by Euler--Maclaurin summation, see \cite[Section~5.3]{Joh26}).
+functions (the classical proof is by Euler--Maclaurin summation, see \cite[Section~5.5]{Joh26}).
 For the recurrence, $\int_{k_0}^\infty x^{-s}\vartheta_xF\dd x = -k_0^{1-s}F(k_0) + (s-1)\mathcal M_F^{\ge k_0}(s)$ and multiplication by
 $x^i$ shifts $s$ by $-i$; iterate.
 \end{proof}

@@ -5,7 +5,7 @@ For `F(x) = ∑_{σ,j} x^{-σ} (log x)^j f_{σ,j}(1/x)` (`k ≥ k₀`), Lemma 2.
 analytic case give a function
 `Z(s) = ∑_{k<k₀} F(k) k^{-s} + ∑_{σ,j} (-∂_s)^j Z_{σ,j}(s+σ)`
 holomorphic away from the points `s = 1 - σ - n`, equal to `ζ_F(s)` where the Dirichlet series converges.
-This is the analytic content of Proposition 5.3 (poles only at `1 - σ - n`).
+This is the analytic content of Proposition 5.7 (poles only at `1 - σ - n`).
 -/
 import ZetaF.Continuation.Theorem
 

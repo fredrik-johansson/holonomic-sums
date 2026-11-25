@@ -250,7 +250,7 @@ theorem oddPartFuchsian_of_addClosed (h : FuchsianAddClosed ⊤) : OddPartFuchsi
 /-- **Lemma 3.1 (recurrence form), given the Fuchs step.** If `f = ∑ a_n x^n` is Fuchsian-holonomic,
 then for every `σ₀` the coefficients `γ_m = a_{2m}/Γ(m+σ₀)` of `G₀` (and `a_{2m+1}/Γ(m+σ₀)` of `G₁`)
 are annihilated by an (H)-operator `∑_j u^j Q̃_j(θ)` in which the top power of `θ` has a nonzero
-constant coefficient (so that dividing by it gives the system (9) with polynomial coefficients). -/
+constant coefficient (so that dividing by it gives the system (10) with polynomial coefficients). -/
 theorem lemma31_recurrence {K : Subfield ℂ} (hadd : FuchsianAddClosed K) {a : ℕ → ℂ}
     (ha : IsFuchsianHolonomic K a) (σ₀ : ℂ) (δ : ℕ) (hδ : δ ≤ 1) :
     ∃ L : ThetaOp ℂ, L.IsFuchsian ∧

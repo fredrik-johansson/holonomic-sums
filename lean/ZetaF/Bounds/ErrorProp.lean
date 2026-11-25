@@ -1,12 +1,12 @@
 /-
-# Error propagation (Appendix A.1 and Section 9.3)
+# Error propagation (Appendix A.1 and Section 6.4.2)
 
 * `error_propagation`: a chain of Lipschitz steps `x_{j+1} = f_j(x_j)`, computed with local errors
   `‖y_{j+1} - f_j(y_j)‖ ≤ ε_j`, has global error `∏ M_j ‖y_0 - x_0‖ + ∑ ε_j ∏_{i>j} M_i`.
   This is the error analysis of the bit-burst stages, where `f_j` is the transition matrix of
   `cY' = (B₀ + cB₁)Y` from `c_j` to `c_{j+1}` and `ε_j` is the truncation error of stage `j`.
 * `tail_le_of_ratio`, `tail_le_two_mul`: "every tail is at most twice its first term" once the
-  terms decrease by a factor `2`, the device used throughout the error bounds of Section 9.
+  terms decrease by a factor `2`, the device used throughout the error bounds of Section 6.4.2 and Appendix A.
 * `point_error_le`: the last item, evaluating at `c_ℓ` with `|c - c_ℓ| ≤ δ` costs `δ max|J'|`.
 -/
 import ZetaF.Deps

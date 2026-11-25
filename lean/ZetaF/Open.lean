@@ -32,7 +32,7 @@ def DualTermEntire : Prop :=
   ∀ (a : ℕ → ℂ) (R : ℝ), 0 ≤ R → GeomBounded a R → ∀ u₀ : ℝ, 0 < u₀ → ∀ m : ℕ, 0 < m →
     Differentiable ℂ fun s => dualTerm (kernel a s) u₀ m
 
-/-- Proposition 5.3 / meromorphic continuation: `ζ_F^{≥k₀}` extends meromorphically to `ℂ`, with at most
+/-- Proposition 5.7 / meromorphic continuation: `ζ_F^{≥k₀}` extends meromorphically to `ℂ`, with at most
 simple poles at `s = 1 - n`.  Here in the weak form: the right-hand side of the splitting is analytic on
 `Re s > 1` and extends analytically to `ℂ` minus `{1 - n}`. -/
 def ZetaTailContinuation : Prop :=

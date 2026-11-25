@@ -1960,13 +1960,13 @@ is proved and the cost analysis sketched.}
 \label{tab:expclass}
 \begin{tabular}{lllll}
 \toprule
-sum & direct & splitting & zeta values & bound \\
+sum & direct & zeta values & splitting & bound \\
 \midrule
-$\sum_k\chi(k)z^kF(k)k^{-s}$, $|z| < 1$ & $p^{2}$ & $p^{3/2}$ & $p^{2}$ & Thm.~\ref{thm:geometric} \\
+$\sum_k\chi(k)z^kF(k)k^{-s}$, $|z| < 1$ & $p^{2}$ & $p^{2}$ & $p^{3/2}$ & Thm.~\ref{thm:geometric} \\
 \quad e.g.\ $\Li_s(z)$, $\log\sigma$, $\gamma(z)$ & & & & \\
-$\Phi(z,s,a) = \sum_{k\ge0}z^k(k+a)^{-s}$ & $p^{2}$ & $p^{3/2}$ & $p^{2}$ & Thm.~\ref{thm:geometric} \\
-$\sum_ke^{-\tau k^r}k^{-s}$, $r \in \QQ$, $0 < r \le 1$ & $p^{1+1/r}$ & $p^{3/2}$ & $p^{2}$ ($r < 1$) & sketched \\
-$\sum_ke^{-\tau k^{1/q}}F(k)k^{-s}$ & $p^{1+q}$ & $p^{3/2}$ & $p^{2}$ & sketched \\
+$\Phi(z,s,a) = \sum_{k\ge0}z^k(k+a)^{-s}$ & $p^{2}$ & $p^{2}$ & $p^{3/2}$ & Thm.~\ref{thm:geometric} \\
+$\sum_ke^{-\tau k^r}k^{-s}$, $r \in \QQ$, $0 < r \le 1$ & $p^{1+1/r}$ & $p^{2}$ ($r < 1$) & $p^{3/2}$ & sketched \\
+$\sum_ke^{-\tau k^{1/q}}F(k)k^{-s}$ & $p^{1+q}$ & $p^{2}$ & $p^{3/2}$ & sketched \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -2502,14 +2502,14 @@ it is $3$ times faster at $10^5$ digits and $5$ times faster at $3\cdot10^5$ dig
 \label{tab:khinchin}
 \begin{tabular}{rrrrrrrr}
 \toprule
-& & \multicolumn{3}{c}{theta splitting} & \multicolumn{3}{c}{zeta values} \\
-\cmidrule(lr){3-5}\cmidrule(lr){6-8}
-digits & $k$/dual terms & CPU & wall & memory & CPU & wall & memory \\
+& \multicolumn{3}{c}{zeta values} & \multicolumn{4}{c}{theta splitting} \\
+\cmidrule(lr){2-4}\cmidrule(l){5-8}
+digits & CPU & wall & memory & $k$/dual terms & CPU & wall & memory \\
 \midrule
-$10^5$ & $1\,919$/$38$ & $88.3$\,s & $11.2$\,s & $223$\,MB & $18.7$\,s & $2.43$\,s & $78$\,MB \\
-$10^6$ & $6\,069$/$121$ & $5\,416$\,s & $679$\,s & $1.08$\,GB & $4\,239$\,s & $544$\,s & $1.27$\,GB \\
-$2\cdot10^6$ & $8\,583$/$171$ & $18\,815$\,s & $2\,355$\,s & $1.78$\,GB & $23\,485$\,s & $3\,372$\,s & $1.96$\,GB \\
-$10^7$ & $19\,194$/$382$ & $327\,183$\,s & $40\,921$\,s & $10.5$\,GB & $1\,852\,090$\,s & $235\,475$\,s & $15.3$\,GB \\
+$10^5$ & $18.7$\,s & $2.43$\,s & $78$\,MB & $1\,919$/$38$ & $88.3$\,s & $11.2$\,s & $223$\,MB \\
+$10^6$ & $4\,239$\,s & $544$\,s & $1.27$\,GB & $6\,069$/$121$ & $5\,416$\,s & $679$\,s & $1.08$\,GB \\
+$2\cdot10^6$ & $23\,485$\,s & $3\,372$\,s & $1.96$\,GB & $8\,583$/$171$ & $18\,815$\,s & $2\,355$\,s & $1.78$\,GB \\
+$10^7$ & $1\,852\,090$\,s & $235\,475$\,s & $15.3$\,GB & $19\,194$/$382$ & $327\,183$\,s & $40\,921$\,s & $10.5$\,GB \\
 \bottomrule
 \end{tabular}
 \end{table}

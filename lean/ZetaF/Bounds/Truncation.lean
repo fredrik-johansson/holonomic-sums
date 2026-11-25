@@ -1,5 +1,5 @@
 /-
-# Truncation of the theta splitting (Appendix A.3, eq. (18))
+# Truncation of the theta splitting (Appendix A.2, eq. (18))
 
 For the abstract splitting (`theta_split`) we prove explicit tail bounds
 * `‖∑_{k ≥ K} I_k‖ ≤ C_far · e^{-(K² - k₀²)u₀} / (1 - e^{-u₀})`,

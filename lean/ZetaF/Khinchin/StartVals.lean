@@ -1,7 +1,7 @@
 /-
 Copyright (c) 2026. Released under Apache 2.0 license.
 
-# Starting values for the moment systems (Section 5 / Section 6.4.2)
+# Starting values for the moment systems (Section 3.4 / Section 6.4.2)
 
 The starting values of the bit-burst evaluation are built from the integrals
 `D_a(c) = ∫_0^U u^{a-1} e^{-c/u} du`. This file proves
