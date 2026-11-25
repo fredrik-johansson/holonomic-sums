@@ -578,9 +578,7 @@ converge for all $s$ and define entire functions. Finitely many terms are entire
 analytic questions concern the tails; the splittings below are applied to a tail $\zeta_F^{\ge k_0}$ with $k_0$ large
 enough for the expansion of $F$ at infinity to converge at $k_0$, and the terms with $k < k_0$ are added directly. We call $\Li_F$ and $\Lambda_F$ \emph{damped}, as opposed to
 $\zeta_F$ and $L_F$, since the factors $z^k$ and $e^{-\tau k^r}$ make the series converge; for $r = 1$ the two
-coincide, $\Lambda_F(s;\tau,1) = \Li_F(s,e^{-\tau})$. The name \emph{damped zeta function} is ours; for
-$r = \frac12$ and real $\tau$ these are, in physical terms, sums of Boltzmann factors over energy levels $E_k \propto \sqrt k$, such as
-the relativistic Landau levels of graphene.
+coincide, $\Lambda_F(s;\tau,1) = \Li_F(s,e^{-\tau})$. The name \emph{damped zeta function} is ours.
 
 \begin{lemma}\label{lem:reduction}
 If $F$ is given for $x \ge k_0$ by \eqref{eq:frob} (with any power series $f_{\sigma,j}$ convergent for
@@ -1128,8 +1126,9 @@ entropy
 \]
 where $-\partial_s\Li_s(z)|_{s=1} = \sum_kz^k\log(k)/k$.
 
-Damped zeta functions occur, for example, in connection with differential equations and probability distributions with
-a fractional parameter; see Section~\ref{sec:expsqrt} for an example.
+Damped zeta functions occur, for example, in partition functions over energy levels that grow like a fractional power
+of the quantum number, such as the Landau levels of graphene (Section~\ref{sec:physics}), and in connection with
+differential equations and probability distributions with a fractional parameter (Section~\ref{sec:expsqrt}).
 
 \subsection{The polylogarithm: geometric factors}\label{sec:geometric}
 Let $F$ satisfy \eqref{eq:f} and let $0 < |z| < 1$. Write $z = e^{2\pi i\alpha}$ with $\alpha = \alpha_1 + i\alpha_2$,
@@ -3071,6 +3070,26 @@ function, the zeta-value expansion needs only even zeta values with factorially 
 \]
 where $\xi = 1$ corresponds to about $1.58\cdot10^5$\,K.
 
+Energy levels that grow like a fractional power of the quantum number lead instead to damped zeta functions
+(Section~\ref{sec:beyond}). In graphene in a perpendicular magnetic field $B$, the charge carriers behave as massless
+Dirac fermions, and their Landau levels are not equidistant, as for a nonrelativistic electron gas, but
+\[
+  E_{\pm n} = \pm E_1\sqrt n, \qquad E_1 = v_F\sqrt{2e\hbar B} \approx 36\,\mathrm{meV}\cdot(B/1\,\mathrm T)^{1/2},
+\]
+with $v_F \approx 10^6$\,m/s the Fermi velocity \cite{CGPNG09}. The Boltzmann sums over the conduction-band levels
+$n \ge 1$, which give the partition function in the nondegenerate limit and its moments, are values of
+$\Lambda(s;\tau,\frac12)$ with $\tau = E_1/(k_BT)$:
+\[
+  \sum_{n=1}^{\infty}n^{-s}e^{-\tau\sqrt n} = \Lambda(s;\tau,\tfrac12).
+\]
+For instance, the mean energy over these levels is $E_1\Lambda(-\frac12;\tau,\frac12)/\Lambda(0;\tau,\frac12)$. For
+$\tau = 1$, which is $B = 10$\,T at about $1\,330$\,K, the sum $\Lambda(0;1,\frac12)$ is the constant $S$ of
+Section~\ref{sec:expsqrt}, and
+\begin{gather*}
+  \Lambda(-\tfrac12;1,\tfrac12) = \sum_{n=1}^{\infty}\sqrt n\,e^{-\sqrt n} = 3.86299603659638723326\ldots, \\
+  \frac{\Lambda(-\frac12;1,\frac12)}{\Lambda(0;1,\frac12)} = 2.31260791984760101746\ldots
+\end{gather*}
+
 Integrals against the Bose--Einstein weight lead to sums of the same kind. For an entire holonomic function $G$ with
 $|G(t)| \le Ce^{ct}$, $c < 1$, on the positive axis,
 \[
@@ -4137,6 +4156,8 @@ Monographs in Mathematics, Springer, 2014.
 \bibitem{BZ10} R.~P.~Brent and P.~Zimmermann, \emph{Modern Computer Arithmetic}, Cambridge University Press, 2010.
 \bibitem{CC20} B.~Candelpergher and M.-A.~Coppo, Laurent expansion of harmonic zeta functions, preprint, HAL hal-02444740.
 \bibitem{CC90} D.~V.~Chudnovsky and G.~V.~Chudnovsky, Computer algebra in the service of mathematical physics and number theory, in \emph{Computers in Mathematics}, Lecture Notes in Pure and Appl.\ Math.\ 125, Dekker, 1990, 109--232.
+\bibitem{CGPNG09} A.~H.~Castro Neto, F.~Guinea, N.~M.~R.~Peres, K.~S.~Novoselov and A.~K.~Geim, The electronic
+properties of graphene, Rev.\ Mod.\ Phys.\ 81 (2009), 109--162.
 \bibitem{CHTZZ07} H.~Cheng, G.~Hanrot, E.~Thom\'e, E.~Zima and P.~Zimmermann, Time- and space-efficient evaluation of some hypergeometric constants, Proc.\ ISSAC 2007, 85--91.
 \bibitem{CN62} K.~Chandrasekharan and R.~Narasimhan, Functional equations with multiple gamma factors and the average order of arithmetical functions, Ann.\ of Math.\ 76 (1962), 93--136.
 \bibitem{CN81} P.~Cassou-Nogu\`es, Applications arithm\'etiques de l'\'etude des valeurs aux entiers n\'egatifs des s\'eries de Dirichlet associ\'ees \`a un polyn\^ome, Ann.\ Inst.\ Fourier 31 (1981), no.~4.
