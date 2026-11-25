@@ -1648,6 +1648,19 @@ which justifies the interchange.
 Its terms have size $(R/k_0)^n$, so $p$ bits need about $p/\log_2(k_0/R)$ Hurwitz zeta values. Increasing $k_0$ accelerates the convergence at the price of more
 explicit terms $F(k)k^{-s}$, $k < k_0$; this technique is classical~\cite{FV96}.
 
+\emph{Example.} The summand $F(k) = k\arcsin\frac1k - 1$ of Table~\ref{tab:constants} is holonomic but not algebraic.
+Here $f(x) = x^{-1}\arcsin x - 1$, $R = 1$, and the coefficients
+\[
+  a_{2j} = \binom{2j}{j}\frac{1}{4^j(2j+1)}, \qquad a_{2j+1} = 0, \qquad \frac{a_{2j+2}}{a_{2j}} = \frac{(2j+1)^2}{(2j+2)(2j+3)},
+\]
+are hypergeometric. With $k_0 = 2$ the Hurwitz zeta values are $\zeta(2j,2) = \zeta(2j) - 1$, and
+\begin{align*}
+  \sum_{k=1}^{\infty}\Bigl(k\arcsin\frac1k - 1\Bigr) &= \frac\pi2 - 1 + \sum_{j=1}^{\infty}\binom{2j}{j}\frac{\zeta(2j) - 1}{4^j(2j+1)} \\
+  &= 0.68538530275123375552\ldots,
+\end{align*}
+whose terms decrease like $4^{-j}j^{-3/2}$, so that $p$ bits need about $p/2$ even zeta values; with $k_0 = 1$ the
+series would converge only like $j^{-3/2}$.
+
 The $N = \Theta(p)$ values needed can be computed together in $\widetilde O(p^2)$ bit operations, for every $s$. For
 integer $s$ they are $\zeta(2), \dots, \zeta(N)$ minus finite power sums, and
 \[
@@ -1785,6 +1798,29 @@ growing half-planes, which is the classical proof that $\zeta_F^{\ge N}(s) - \ma
 needs $N$ and $J$ proportional to $p$, so the cost is $p^{2+o(1)}$: $\Theta(p)$ values $F(k)$, each in
 $O(\Mul(p)\log^2p)$ for $F \in \RegQ$ and together in $\widetilde O(p^2)$ for generic data (\emph{Generic data} at the beginning of
 Section~\ref{sec:complexity}), and $\Theta(p)$ Bernoulli numbers.
+
+\emph{Example.} For the summand $F(k) = k\arcsin\frac1k - 1$ of Section~\ref{sec:zetavalue} at $s = 0$, so that $g = F$, the
+Mellin part is elementary, since $\frac{x^2}2\arcsin\frac1x + \frac12\sqrt{x^2-1}$ is an antiderivative of
+$x\arcsin\frac1x$:
+\[
+  \mathcal M_F(0;N) = N - \frac{N^2}2\arcsin\frac1N - \frac12\sqrt{N^2-1}
+  = \sum_{j=1}^{\infty}\frac{a_{2j}N^{1-2j}}{2j-1}.
+\]
+For the Taylor coefficients $F_i = F^{(i)}(N)/i!$, the second derivative $H = F'' = x^{-1}(x^2-1)^{-3/2}$ satisfies
+$x(x^2-1)H' + (4x^2-1)H = 0$. Substituting $x = N + t$ gives a four-term recurrence for the Taylor coefficients $h_i$ of
+$H$ at $N$,
+\begin{multline*}
+  N(N^2-1)(i+1)h_{i+1} \\ = -\bigl((3N^2-1)i + 4N^2 - 1\bigr)h_i - N(3i+5)h_{i-1} - (i+2)h_{i-2},
+\end{multline*}
+with $h_0 = N^{-1}(N^2-1)^{-3/2}$ and $F_{i+2} = h_i/((i+1)(i+2))$, together with
+$F_0 = F(N)$ and $F_1 = \arcsin\frac1N - (N^2-1)^{-1/2}$. Hence
+\begin{align*}
+  \sum_{k=1}^{\infty}\Bigl(k\arcsin\frac1k - 1\Bigr) &= \sum_{k=1}^{N-1}F(k) + \mathcal M_F(0;N) + \frac12F(N) \\
+  &\quad - \sum_{j=1}^{J}\frac{B_{2j}}{2j}F_{2j-1} + R_J(0),
+\end{align*}
+where, apart from the direct terms, the only transcendental inputs are $\arcsin\frac1N$ and $\sqrt{N^2-1}$. With
+$N = 10$ and $J = 14$ the error is $1.6\cdot10^{-23}$. For fixed $N$ the corrections first decrease and then grow
+like $(2j)!/(2\pi N)^{2j}$, which is why $N$ and $J$ must both grow like $p$.
 
 \emph{Many derivatives.} Euler--Maclaurin summation gives many derivatives in $s$ at almost no extra cost, also for
 $s$ given numerically and for $F \in \Reg \setminus \RegQ$. Replace $s$ by $s+t$ and work with power series in
