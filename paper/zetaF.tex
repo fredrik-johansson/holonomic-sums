@@ -4217,20 +4217,29 @@ Poisson summation turns the spectrum into periodic orbits: the main term is the 
 dual terms are the orbits of winding number $m$. Theorem~\ref{thm:split} is in this sense the simplest trace formula.
 
 \subsubsection{The sphere} The Laplacian $\Delta$ on the unit sphere $S^2$ has the eigenvalues $\ell(\ell+1)$ with
-multiplicities $2\ell+1$, so
+multiplicities $2\ell+1$, so that for $\operatorname{Re}s > 1$
 \[
-  \zeta_{S^2}(s) = \sum_{\ell=1}^{\infty}\frac{2\ell+1}{(\ell(\ell+1))^s} = \zeta_F(2s-1), \qquad
-  F(k) = \Bigl(2+\frac1k\Bigr)\Bigl(1+\frac1k\Bigr)^{-s},
+  \zeta_{S^2}(s) = \sum_{\ell=1}^{\infty}\frac{2\ell+1}{(\ell(\ell+1))^s} = \sum_{k=1}^{\infty}k^{1-2s}F_s(k), \qquad
+  F_w(k) = \Bigl(2+\frac1k\Bigr)\Bigl(1+\frac1k\Bigr)^{-w}.
 \]
-for $\operatorname{Re}s > 1$. Here $F$ depends on $s$, so the continuation in $s$ is not that of $\zeta_F$ at fixed $F$:
-where a pole of $\zeta(2s-1+j)$ meets a zero of the coefficient $c_j(s)$ of $k^{-j}$ in $F$, a rational correction appears.
+The summand depends on $s$, so $\zeta_{S^2}$ is not the zeta function of a single summand. With $w$ as a separate
+parameter, the function
+\[
+  Z(w,z) = \zeta_{F_w}(z) = \sum_{j=0}^{\infty}c_j(w)\,\zeta(z+j),
+\]
+where $c_j(w)$ is the coefficient of $k^{-j}$ in $F_w$ (a polynomial in $w$), is meromorphic in both variables by
+Proposition~\ref{prop:cont}, and $\zeta_{S^2}(s) = Z(s, 2s-1)$ is its restriction to a line. At a fixed $s_0$ this is the
+value $\zeta_{F_{s_0}}(2s_0-1)$ of the zeta function of the fixed summand $F_{s_0}$, except where the line meets a polar line
+$z = 1-j$ of $Z$ at a zero of $c_j(w)$. There the term $c_j(s)\zeta(2s-1+j)$ has the form $0\cdot\infty$ along the line,
+and its limit adds a rational correction to $\zeta_{F_{s_0}}(2s_0-1)$. Derivatives in $s$ involve both variables,
+$\zeta_{S^2}' = \partial_wZ + 2\partial_zZ$, where $\partial_wF_w = -\log(1+\frac1k)F_w$ is again in the class.
 For integer $s$ the summand is rational, and $\zeta_{S^2}(s)$ reduces to zeta values; for instance
 $(2\ell+1)/(\ell(\ell+1))^2 = \ell^{-2} - (\ell+1)^{-2}$ telescopes to $\zeta_{S^2}(2) = 1$. Half-integer $s$ give algebraic
 summands:
 \begin{align*}
   \zeta_{S^2}(\tfrac32) &= \operatorname{Tr}\Delta^{-3/2} = 2.07054447632160590509\ldots, \\
   \zeta_{S^2}(\tfrac12) &= -1.75429230348530643626\ldots, \\
-  \zeta_{S^2}(-\tfrac12) &= \zeta_F(-2) + \tfrac1{24} = -0.26509554911885852545\ldots
+  \zeta_{S^2}(-\tfrac12) &= \zeta_{F_{-1/2}}(-2) + \tfrac1{24} = -0.26509554911885852545\ldots
 \end{align*}
 The correction $\frac1{24}$ comes from the term $c_3(s)\zeta(2s+2)$ of the expansion, where
 $c_3(s) = -s(s+1)(2s+1)/6$ vanishes at the pole $s = -\frac12$ of $\zeta(2s+2)$:
@@ -4248,10 +4257,10 @@ The determinant is a closed form \cite{Kir02},
 \[
   \det{}'\Delta = \exp(-\zeta_{S^2}'(0)) = e^{1/2-4\zeta'(-1)} = 3.19531148605918608395\ldots,
 \]
-which gives a check: in our setting
+which gives a check: by $\zeta_{S^2}' = \partial_wZ + 2\partial_zZ$ at $w = 0$, $z = -1$,
 \begin{gather*}
-  \zeta_{S^2}'(0) = 2\zeta_{F_0}'(-1) - \zeta_{F_1}(-1) + \frac12, \\
-  F_0(k) = 2+\frac1k, \qquad F_1(k) = \Bigl(2+\frac1k\Bigr)\log\Bigl(1+\frac1k\Bigr),
+  \zeta_{S^2}'(0) = 2\zeta_{F_0}'(-1) - \zeta_{G}(-1) + \frac12, \\
+  F_0(k) = 2+\frac1k, \qquad G(k) = -\partial_wF_w(k)\big|_{w=0} = \Bigl(2+\frac1k\Bigr)\log\Bigl(1+\frac1k\Bigr),
 \end{gather*}
 where the $\frac12$ comes from the term $c_2(s)\zeta(2s+1)$ with $c_2(s) = s^2$.
 
